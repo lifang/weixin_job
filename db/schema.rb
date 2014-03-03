@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140303021015) do
+ActiveRecord::Schema.define(:version => 20140303052914) do
 
   create_table "client_resumes", :force => true do |t|
     t.string   "html_content_datas"
@@ -25,13 +25,15 @@ ActiveRecord::Schema.define(:version => 20140303021015) do
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.string   "root_path"
-    t.integer  "status",       :default => 1
+    t.integer  "status",           :default => 1
     t.string   "cweb"
-    t.boolean  "has_app",      :default => false
+    t.boolean  "has_app",          :default => false
     t.string   "app_account"
     t.string   "app_password"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.string   "company_account",                     :null => false
+    t.string   "company_password",                    :null => false
   end
 
   create_table "company_profiles", :force => true do |t|
