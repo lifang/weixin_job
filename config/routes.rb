@@ -19,7 +19,13 @@ WeixinJob::Application.routes.draw do
     end
   end
   resources :companies do
-    
+    resources :settings do
+
+    end
+
+    resources :positions do
+
+    end
   end
   # Sample resource route with sub-resources:
   #   resources :products do
