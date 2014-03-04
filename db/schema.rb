@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140303052914) do
+ActiveRecord::Schema.define(:version => 20140304065051) do
 
   create_table "client_resumes", :force => true do |t|
     t.string   "html_content_datas"
@@ -34,7 +34,10 @@ ActiveRecord::Schema.define(:version => 20140303052914) do
     t.datetime "updated_at",                          :null => false
     t.string   "company_account",                     :null => false
     t.string   "company_password",                    :null => false
+    t.string   "token"
   end
+
+  add_index "companies", ["token"], :name => "index_companies_on_token"
 
   create_table "company_profiles", :force => true do |t|
     t.integer  "company_id",   :null => false

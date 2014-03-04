@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
 
   def has_sign?
     c_id = params[:company_id].to_i
-    if cookies[:company_id].nil? || cookies[:company_id] != Digest::MD5.hexdigest(c_id)
-      cookies[:company_id] = nil
+    if cookies[:company_account].nil? || cookies[:company_id].nil? || cookies[:company_id] != Digest::MD5.hexdigest(c_id)
+      cookies.delete(:company_account)
       cookies.delete(:company_id)
       flash[:notice] = "请先登陆!"
       redirect_to logins_path
@@ -12,4 +12,5 @@ class ApplicationController < ActionController::Base
       @company = Company.find_by_id(c_id)
     end
   end
+
 end

@@ -11,15 +11,16 @@ class LoginsController < ApplicationController
     company = Company.find_by_company_account(@comp_account)
     if company.nil?
       flash[:notice] = "用户名不存在!"
-      render "logins/index"
+      render "logins/"
     else
       comp_password = params[:comp_password]
       if company.company_password != Digest::MD5.hexdigest(comp_password)
         flash[:notice] = "密码错误!"
-        render "logins/index"
+        render "logins/"
       else
         cookies[:company_id] = {:value =>Digest::MD5.hexdigest(company.id), :path => "/", :secure  => false}
-
+        cookies[:company_account] = {:value =>company.company_account, :path => "/", :secure  => false}
+        
       end
     end
   end
@@ -49,5 +50,13 @@ class LoginsController < ApplicationController
       flash[:notice] = company.errors.messages.values.flatten.join("\\n")
       render "logins/regist"
     end
+  end
+
+  #登出
+  def sign_out
+    cookies.delete(:company_account)
+    cookies.delete(:company_id)
+    flash[:notice] = "注销成功!"
+    redirect_to logins_path
   end
 end
