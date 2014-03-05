@@ -1,0 +1,116 @@
+/* CSS Document */
+*{ padding: 0; margin: 0;}
+body { font-family:"微软雅黑", "宋体", Arial; font-size: 12px; min-width: 1200px; background: #e6e4e4;}
+img { border: none;}
+li { list-style: none;}
+a { text-decoration: none; cursor: pointer;}
+button { cursor: pointer;}
+input,button,select,textarea{ outline: none}
+table { border-collapse: collapse; table-layout: fixed;}
+h1 { line-height: 40px; margin-bottom: 10px;}
+
+.cf:after { clear: both; content:"."; display: block; height: 0; overflow: hidden; visibility:hidden;}
+
+.orangeBtn { padding: 5px; width: 120px; border: 0; background: #f9651b; color: #f2f2f2;} 
+
+
+/* header */
+.header { background: #353535;}
+.logo { height: 84px; line-height: 84px; color: #f2f2f2; font-size: 40px; text-shadow: 2px 2px 2px #f2f2f2; display: inline-block; margin-left: 100px;}
+.userInfo { float: right; margin-right: 100px; color: #ddd; line-height: 84px; font-size: 18px; }
+.userInfo ul { display: none;}
+
+/* main */
+.main {}
+.leftMenu { float: left; width: 200px; background: #373f42;}
+.leftMenuItem { width: 100px; line-height: 20px; margin: 20px auto; color: #8f8f8f; font-size: 14px; padding-left: 15px; }
+.leftMenuItem.hover,.leftMenuItem:hover { box-shadow: -3px 0 0 #f2f2f2; color: #f2f2f2;}
+
+.main_box { background: #f68b0e; overflow: hidden; padding: 100px 0 0 100px;}
+.main_con { background: #f5f4f4; box-shadow: 0 0 15px rgba(0,0,0,0.5); padding: 30px; color: #2c2c2c; overflow: hidden;}
+.main_con2 { background: #e6e4e4; color: #2c2c2c; overflow: hidden;}
+
+/* 招聘职位 */
+.companyInfo { padding-bottom: 10px; border-bottom: 1px solid #ddd;}
+.companyInfo li { padding: 5px 0;}
+.companyInfo li label { display: inline-block; width: 80px; text-align: right; color: #828282;}
+.companyInfo li span { display: inline-block; width: 180px; margin-left: 10px;}
+.companyInfo li a { color: #828282;}
+
+.appInfo { position: relative;}
+.appInfo .angle { color: #a4a2a2; position: absolute; left: 80px; top: -13px;}
+.appInfo ul { margin-top: 10px;}
+.appInfo li { background: #a4a2a2; width: 275px;}
+.appInfo li label { color: #eee;}
+
+.toolbar { background: #868686; height: 80px;}
+.toolBox { display: inline-block;}
+.toolBox button { background: #fff; border: 0 none; height: 30px; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
+.searchTool { width: 250px; float: right; height: 100%; background: #a8a7a7;}
+.searchBox { margin: 22px auto; width: 180px; position: relative;}
+.searchBox input { width: 180px; height: 36px; border: 0; border-radius: 18px; line-height: 36px; text-indent: 20px; background: #e4e8e9; color: #888;}
+.searchBox .search_btn { 
+	position: absolute; 
+	top: 6px; 
+	right: 10px; 
+	background: url(../assets/search_btn.png) no-repeat 0 center;
+	width: 25px; 
+	height: 24px; 
+	text-indent: -999px; 
+	overflow: hidden; 
+	border: 0;
+	cursor: pointer;
+	margin: 0;
+}
+
+.table1 { width: 100%; font-size: 16px; color: #939393;}
+.table1 tr { background: #d3d2d2;}
+.table1 th { background: #e6e4e4;}
+.table1 th,.table1 td { text-align: left; height: 40px; padding: 5px; padding-left: 60px;} 
+
+.delete { display: inline-block; width: 33px; height: 33px; background: url(../assets/delete.png) no-repeat; background-position: -4px -1px; border: 0;}
+.delete:visited { background-position: -4px -41px;}
+.delete:hover { background-position: -4px -81px;}
+.edit { display: inline-block; width: 33px; height: 33px; background: url(../assets/edit.png) no-repeat; background-position: -4px -1px; border: 0;}
+.edit:visited { background-position: -4px -41px;}
+.edit:hover { background-position: -4px -81px;}
+.publish { display: inline-block; width: 33px; height: 33px; background: url(../assets/publish.png) no-repeat; background-position: -4px -1px; border: 0;}
+.publish:visited { background-position: -4px -41px;}
+.publish:hover { background-position: -4px -81px;}
+
+.jobInfo { background: #a8a7a7; float: left; margin: 50px; min-height: 300px;}
+.jobInfo p { line-height: 36px; overflow: hidden; padding: 5px 0;}
+.jobInfo p label { width: 80px; text-align: right; display: inline-block;}
+.jobInfo p input { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 210px;}
+.jobInfo p textarea { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 210px; float: right; resize: none;}
+.jobInfo p button { display: block; margin: 5px auto; width: 159px;}
+.jobInfoTemp { border: 1px dashed #a8a7a7; float: left; margin: 50px; min-height: 280px; width: 430px; padding: 10px;}
+.jobInfoTemp h2 { line-height: 40px; font-size: 18px; }
+.jobTemp { float: left; width: 85px; margin: 0 22px 10px 0;}
+.jobTemp span { display: block; padding: 5px; text-align: center; color: #939393;}
+
+
+/* second_box */
+.second_bg { width:100%; height:100%; z-index:98; position: fixed; top:0; opacity: 0.3; filter: alpha(opacity=30); background: #fff; display: none;}
+.second_box { width:100%; height:100%; z-index:99; position: absolute; top:0; display: none; }
+.second_box.second_box_fixed { position: fixed;}
+.second_content {
+    background-color: #373f42;
+	overflow: auto;
+	margin: 114px auto 50px;
+	position: relative;
+	color: #f2f2f2;
+}
+.second_content h1 { line-height: 40px; background: #373f42; text-indent: 30px; font-size: 18px; padding-top: 10px;}
+.second_content .close {
+    font-size: 28px;
+    line-height: 40px;
+    overflow: hidden;
+    position: absolute;
+    right: 12px;
+	cursor: pointer;
+}
+.second_content p { line-height: 36px;}
+.second_content p label { display: inline-block; width: 120px; text-align: right;}
+.second_content p input { padding: 3px; margin-left: 10px; width: 250px; height: 20px}
+.scdBoxAct { margin: 10px 0; text-align: center; }
