@@ -57,6 +57,7 @@
 						<th>职位描述</th>
 						<th>操作</th>
 					</tr>
+					<%@positions.each do |position|%>
 					<tr>
 						<td>HR经理</td>
 						<td>负责全面的HR事物与部门协调</td>
@@ -66,33 +67,10 @@
 							<button class="publish" title="发布职位"></button>
 						</td>
 					</tr>
-					<tr>
-						<td>HR经理</td>
-						<td>负责全面的HR事物与部门协调</td>
-						<td>
-							<button class="delete" title="删除"></button>
-							<button class="edit" title="修改"></button>
-							<button class="publish" title="发布职位"></button>
-						</td>
-					</tr>
-					<tr>
-						<td>HR经理</td>
-						<td>负责全面的HR事物与部门协调</td>
-						<td>
-							<button class="delete" title="删除"></button>
-							<button class="edit" title="修改"></button>
-							<button class="publish" title="发布职位"></button>
-						</td>
-					</tr>
-					<tr>
-						<td>HR经理</td>
-						<td>负责全面的HR事物与部门协调</td>
-						<td>
-							<button class="delete" title="删除"></button>
-							<button class="edit" title="修改"></button>
-							<button class="publish" title="发布职位"></button>
-						</td>
-					</tr>
+					<%end%>
+					<%if @positions.blank? %>
+					<tr><td rowspan="3">暂无招聘哦~~</td></tr>
+					<%end%>
 				</table>
 			</div>
 		</div>
