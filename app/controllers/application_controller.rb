@@ -1,6 +1,7 @@
-#encoding:utf-8
+#encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  include ApplicationHelper
 
   def has_sign?
     c_id = params[:company_id].to_i
@@ -17,5 +18,27 @@ class ApplicationController < ActionController::Base
   def get_company
     @company = Company.find_by_id params[:company_id]
   end
-  
+
+  #微信所用开始
+
+  #根据cweb参数，获取对应的公司
+  def get_company_by_cweb
+    cweb = params[:cweb]
+    if cweb == "wansu" || cweb == "xyyd"
+      @company = Company.find_by_cweb("xyyd")
+    else
+      @company = Company.find_by_cweb(cweb)
+    end
+    @company
+  end
+
+  #验证请求是否从微信发出
+  def get_signature(cweb, timestamp, nonce)
+    tmp_arr = [cweb, timestamp, nonce]
+    tmp_arr = tmp_arr.compact.sort!
+    tmp_str = tmp_arr.join
+    tmp_encrypted_str = Digest::SHA1.hexdigest(tmp_str)
+    tmp_encrypted_str
+  end
+
 end
