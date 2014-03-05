@@ -13,5 +13,9 @@ class ApplicationController < ActionController::Base
       @company = Company.find_by_id(c_id)
     end
   end
-
+  
+  def get_company
+    @company = Company.find_by_id params[:company_id]
+  end
+  
 end

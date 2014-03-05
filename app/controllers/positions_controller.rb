@@ -1,5 +1,6 @@
 #encoding: utf-8
 class PositionsController < ApplicationController   #招聘职位
+  before_filter :get_company
   def index
     @positions = @company.positions
   end
@@ -13,7 +14,7 @@ class PositionsController < ApplicationController   #招聘职位
   end
   
   def new
-
+    @position = @company.posotions.built
   end
 
   def create
