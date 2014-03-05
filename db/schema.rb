@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140305024045) do
+ActiveRecord::Schema.define(:version => 20140305062904) do
 
   create_table "client_resumes", :force => true do |t|
     t.text     "html_content_datas"
@@ -75,9 +75,10 @@ ActiveRecord::Schema.define(:version => 20140305024045) do
     t.integer  "status"
     t.string   "requirement"
     t.string   "description"
-    t.integer  "position_type_id", :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "menu_id"
+    t.integer  "company_id"
   end
 
   create_table "resume_templates", :force => true do |t|

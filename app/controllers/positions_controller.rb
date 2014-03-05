@@ -1,7 +1,7 @@
 #encoding: utf-8
 class PositionsController < ApplicationController   #招聘职位
   def index
-    @positions = @company.position_types.positions
+    @positions = @company.positions
   end
 
   def edit
