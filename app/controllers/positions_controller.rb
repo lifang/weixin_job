@@ -24,7 +24,7 @@ class PositionsController < ApplicationController   #招聘职位
 
   end
 
-  def delete
+  def destroy
     
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140304065051) do
+ActiveRecord::Schema.define(:version => 20140305015535) do
 
   create_table "client_resumes", :force => true do |t|
     t.string   "html_content_datas"
@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(:version => 20140304065051) do
     t.integer  "client_resume_id", :null => false
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+  end
+
+  create_table "menus", :force => true do |t|
+    t.string   "name"
+    t.integer  "temp_id"
+    t.integer  "level",      :default => 1
+    t.integer  "parent_id",  :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "position_types", :force => true do |t|
