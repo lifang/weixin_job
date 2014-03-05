@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140305022026) do
+ActiveRecord::Schema.define(:version => 20140305023036) do
 
   create_table "client_resumes", :force => true do |t|
     t.string   "html_content_datas"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(:version => 20140305022026) do
     t.string   "company_account",                     :null => false
     t.string   "company_password",                    :null => false
     t.string   "token"
-    t.integer  "app_type",         :default => 0
+    t.integer  "app_type"
   end
 
   add_index "companies", ["token"], :name => "index_companies_on_token"
@@ -58,7 +58,6 @@ ActiveRecord::Schema.define(:version => 20140305022026) do
   create_table "menus", :force => true do |t|
     t.string   "name"
     t.integer  "temp_id"
-    t.integer  "level",      :default => 1
     t.integer  "parent_id",  :default => 0
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
