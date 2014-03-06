@@ -1,41 +1,43 @@
-		<div class="main_con2">
-			<div>
-				<div class="toolbar">
-					<div class="toolBox">
-						<%=link_to  '创建职位', new_company_position_path(@company),class:"white_btn_for_a" %>
-						
-						
-					</div>
-					<div class="searchTool">
-						<div class="searchBox">
-							<input type="text" value="搜索职位" />
-							<button class="search_btn"></button>
-						</div>
-					</div>
-				</div>
-			
-				<table class="table1">
-					<tr>
-						<th>职位名称</th>
-						<th>职位描述</th>
-						<th>操作</th>
-					</tr>
-					<%@positions.each do |position|%>
-					<tr>
-						<td>HR经理</td>
-						<td>负责全面的HR事物与部门协调</td>
-						<td>
-							<button class="delete" title="删除"></button>
-							<button class="edit" title="修改"></button>
-							<button class="publish" title="发布职位"></button>
-						</td>
-					</tr>
-					<%end%>
-					<%if @positions.blank? %>
-					<tr><td colspan="3">暂无招聘哦~~</td></tr>
-					<%end%>
-				</table>
-			</div>
-		</div>
-	
-	
+<div class="main_con2">
+  <div>
+    <div class="toolbar">
+      <div class="toolBox">
+        <%=link_to  '创建职位', new_company_position_path(@company),class:"white_btn_for_a" %>
+
+
+        </div>
+        <div class="searchTool">
+          <div class="searchBox">
+            <input type="text" value="搜索职位" />
+            <button class="search_btn"></button>
+          </div>
+        </div>
+      </div>
+
+      <table class="table1">
+        <tr>
+          <th>职位名称</th>
+          <th>职位描述</th>
+          <th>操作</th>
+        </tr>
+        <%@positions.each do |position|%>
+          <tr>
+            <td><%=position.name%></td>
+            <td><%= position.description %></td>
+            <td>
+              <%=link_to company_position_path(@company,position),method: :delete do%>
+                <button class="delete" title="删除"></button>
+              <%end%>
+              <button class="edit" title="修改"></button>
+              <button class="publish" title="发布职位"></button>
+            </td>
+          </tr>
+        <%end%>
+        <%if @positions.blank? %>
+          <tr><td colspan="3">暂无招聘哦~~</td></tr>
+        <%end%>
+      </table>
+    </div>
+  </div>
+
+

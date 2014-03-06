@@ -23,7 +23,7 @@
       <div class="leftMenu">
         <ul>
           <li class="leftMenuItem hover">设置</li>
-          <li class="leftMenuItem">招聘职位</li>
+          <%=link_to company_positions_path(@company) do%><li class="leftMenuItem">招聘职位</li><%end%>
           <li class="leftMenuItem">简历模板</li>
           <li class="leftMenuItem">公司简介</li>
           <li class="leftMenuItem">菜单</li>

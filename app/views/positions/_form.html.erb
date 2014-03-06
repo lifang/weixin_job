@@ -1,11 +1,11 @@
-<%=form_for(@position) do%>
+<%=form_for(:positions,url:company_positions_path(@company)) do%>
 <p>
 	<label>职位名称</label>
-	<input type="text" />
+	<input type="text" name="positions[name]"/>
 </p>
 <p>
 	<label>职位描述</label>
-	<textarea></textarea>
+	<textarea name="positions[description]" ></textarea>
 </p>
 <p>
 	<button class="orangeBtn">
