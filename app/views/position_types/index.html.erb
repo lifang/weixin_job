@@ -1,0 +1,37 @@
+<div class="main_con2">
+  <div>
+    <div class="toolbar">
+      <button class="orangeBtn scd_btn" name="newJobCategory" style=" float: right; margin: 25px 50px;">新建职位类别</button>
+    </div>
+    <div class="JobCategoryBox">
+      <%@position_types.each do |p_t|%>
+        <p><%=p_t.name%>
+          <span class="close" title="关闭">×</span>
+        </p>
+      <%end%>
+      <%if @position_types.blank? %>
+        <p> 暂无职位类别哦！
+        </p>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+<div class="second_bg"></div>
+<div class="second_box second_box_fixed newJobCategory">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>新建职位类别</h1>
+    <div>
+      <p>
+        <label>类别名称</label>
+        <input type="text" />
+      </p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn">确定</button>
+      <button class="orangeBtn">取消</button>
+    </div>
+
+  </div>
+</div>

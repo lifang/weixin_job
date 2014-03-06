@@ -1,4 +1,13 @@
-$(function(){	
+$(function(){
+    
+        $("#close_flash").click(function() {
+		$("#flash_field").hide();
+		$(".tab_alert").hide();
+	});
+	$("#flash_field").fadeOut(2000);
+
+
+
 	$(".leftMenu").css("height",$(document).height() - 84 +"px");
 	
 	$(".second_box .close").click(function(){

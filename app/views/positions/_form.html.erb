@@ -1,6 +1,12 @@
 <%=form_for(:positions,url:company_positions_path(@company)) do%>
 <input type="hidden" class="id" name="positions[id]" value="" />
 <p>
+	<label>职位类型</label>
+        <select name="positions[types]">
+           <option value="0">请选择...</option>
+        </select>
+</p>
+<p>
 	<label>职位名称</label>
 	<input type="text" name="positions[name]"/>
 </p>
@@ -9,7 +15,7 @@
 	<textarea name="positions[description]" ></textarea>
 </p>
 <p>
-	<button class="orangeBtn">
+	<button class="orangeBtn" type="button" onclick="check_position()">
 		确定
 	</button>
 </p>

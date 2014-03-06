@@ -4,21 +4,16 @@ class PositionsController < ApplicationController   #招聘职位
 
   PerPage = 8
   def index
-    @positions = @company.positions
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
   end
 
   def edit
 
   end
-
-  def update
-
-  end
   
   def new
-    admin = Company.client
     @position = Position.new
-    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage)
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
   end
 
   def create
@@ -29,6 +24,7 @@ class PositionsController < ApplicationController   #招聘职位
       @position = Position.new
       @position.name = name
       @position.description = description
+      @position.status = Position::STATU[:UNRELEASE]
       @position.company_id = @company.id
       if @position.save
         flash[:success] = "新建成功！"
@@ -55,8 +51,21 @@ class PositionsController < ApplicationController   #招聘职位
     end
   end
 
-  def release   #发布
+  def search_position
+    p = params[:position]
+    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%")
+    render 'index'
+  end
 
+  def release   #发布
+     @position = Position.find_by_id(params[:id])
+     if @position && @position.update_attribute(:status,Position::STATU[:RELEASED])
+       flash[:success] = '发布成功'
+       redirect_to company_positions_path(@company)
+     else
+       flash[:error] = '发布失败，不存在职位！'
+       render 'index'
+     end
   end
 
   def destroy

@@ -1,0 +1,35 @@
+.close {
+    background: url(/assets/close.png) no-repeat;
+    cursor: pointer;
+    display: block;
+    height: 17px;
+    width: 17px;
+	text-indent: -999px;
+	overflow: hidden;
+}
+.JobCategoryBox { padding: 30px;}
+.JobCategoryBox p {
+    background: #FFFFFF;
+    display: inline-block;
+ width: 250px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+ font-size: 28px;
+ margin: 5px;
+ box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+ position: relative;
+}
+.JobCategoryBox p .close {
+    font-size: 28px;
+ display: block;
+ width: 20px;
+ height: 20px;
+ line-height: 15px;
+    position: absolute;
+    right: 5px;
+ top: 5px;
+ cursor: pointer;
+ display: none;
+}
+.JobCategoryBox p:hover .close { display: block; }
