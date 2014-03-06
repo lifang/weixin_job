@@ -2,6 +2,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   include ApplicationHelper
+  require 'net/http'
+  require "uri"
+  require 'openssl'
 
   def has_sign?
     c_id = params[:company_id].to_i
@@ -19,6 +22,7 @@ class ApplicationController < ActionController::Base
     @company = Company.find_by_id params[:company_id]
   end
 
+  
   #微信所用开始
 
   #根据cweb参数，获取对应的公司
@@ -40,5 +44,42 @@ class ApplicationController < ActionController::Base
     tmp_encrypted_str = Digest::SHA1.hexdigest(tmp_str)
     tmp_encrypted_str
   end
+
+  #根据app_id 和app_secret获取帐号token
+  def get_access_token
+    app_id = @company.app_id
+    app_secret = @company.app_secret
+    token_action = ACCESS_TOKEN_ACTION % [app_id, app_secret]
+    token_info = create_get_http(WEIXIN_OPEN_URL ,token_action)
+    return token_info
+  end
+
+  #发get请求获得access_token
+  def create_get_http(url ,route)
+    http = set_http(url)
+    request= Net::HTTP::Get.new(route)
+    back_res = http.request(request)
+    return JSON back_res.body
+  end
+
+  #发post请求创建自定义菜单
+  def create_post_http(url,route_action,menu_bar)
+    http = set_http(url)
+    request = Net::HTTP::Post.new(route_action)
+    request.set_body_internal(menu_bar)
+    return JSON http.request(request).body
+  end
+
+  #设置http基本参数
+  def set_http(url)
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    if uri.port==443
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+    http
+  end
+
 
 end
