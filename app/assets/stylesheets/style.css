@@ -46,6 +46,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .toolbar { background: #868686; height: 80px;}
 .toolBox { display: inline-block;}
 .toolBox button { background: #fff; border: 0 none; height: 30px; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
+.white_btn_for_a { background: #fff; border: 0 none; height: 30px;line-height: 2.5;display: block; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
 .searchTool { width: 250px; float: right; height: 100%; background: #a8a7a7;}
 .searchBox { margin: 22px auto; width: 180px; position: relative;}
 .searchBox input { width: 180px; height: 36px; border: 0; border-radius: 18px; line-height: 36px; text-indent: 20px; background: #e4e8e9; color: #888;}
