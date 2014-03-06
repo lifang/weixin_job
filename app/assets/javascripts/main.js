@@ -1,5 +1,4 @@
-$(function(){
-	
+$(function(){	
 	$(".leftMenu").css("height",$(document).height() - 84 +"px");
 	
 	$(".second_box .close").click(function(){
