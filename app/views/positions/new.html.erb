@@ -1,34 +1,37 @@
 <div class="main_con2">
-			<div>
-				<div class="toolbar">
-					<div class="toolBox">
-						<button>创建职位</button>
-					</div>
-					<div class="searchTool">
-						<div class="searchBox">
-							<input type="text" value="搜索职位" />
-							<button class="search_btn"></button>
-						</div>
-					</div>
-				</div>
-			
-				<div>
-					<div class="jobInfo">
-						<%=render 'form'%>
-					</div>
-					<div class="jobInfoTemp">
-						<h2>已有职位模板</h2>
-						<div onclick = "position_edit()">
-                                                  <%@positions.each do|p|%>
-							<div class="jobTemp">
-								<img src="/assets/jobTemp.png" width="85" />
-								<span><%=p.name%></span>
-							</div>
-                                                  <%end%>
-						</div>
-                                                <div></div>
-                                                <%=  will_paginate @positions ,:previous_label=>'上一页',:next_label=>'下一页'   %>
-					</div>
-				</div>
-			</div>
-		</div>
+  <div>
+    <div class="toolbar">
+      <div class="toolBox">
+        <%=link_to  '创建职位', new_company_position_path(@company),class:"white_btn_for_a" %>
+      </div>
+      <div class="searchTool">
+        <div class="searchBox">
+          <input type="text" value="搜索职位" />
+          <button class="search_btn"></button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="jobInfo">
+        <%=render 'form'%>
+      </div>
+      <div class="jobInfoTemp">
+        <h2>已有职位模板</h2>
+        <div >
+          <%@positions.each do|p|%>
+            <div class="jobTemp" onclick ="position_edit(this)">
+              <input type="hidden" class="id" value="<%=p.id%>" />
+              <input type="hidden" class="description" value="<%=p.description%>" />
+              <input type="hidden" class="name" value="<%=p.name%>" />
+              <img src="/assets/jobTemp.png" width="85" />
+              <span><%=p.name%></span>
+            </div>
+          <%end%>
+        </div>
+        <div></div>
+        <%=  will_paginate @positions ,:previous_label=>'上一页',:next_label=>'下一页'   %>
+      </div>
+    </div>
+  </div>
+</div>

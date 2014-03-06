@@ -1,4 +1,5 @@
 <%=form_for(:positions,url:company_positions_path(@company)) do%>
+<input type="hidden" class="id" name="positions[id]" value="" />
 <p>
 	<label>职位名称</label>
 	<input type="text" name="positions[name]"/>
