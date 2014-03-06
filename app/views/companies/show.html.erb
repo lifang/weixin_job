@@ -1,0 +1,113 @@
+<%= javascript_include_tag "companies" %>
+<div class="main_box">
+  <div class="main_con">
+    <div class="companyInfo">
+      <li>
+        <label>公司名称</label>
+        <span><%= @company.name %></span>
+        <a class="scd_btn" name="companyInfoEdit">编辑</a>
+      </li>
+      <li>
+        <label>微信公众账号</label>
+        <span><%= @company.cweb %></span>
+      </li>
+      <li>
+        <label>公众账号类型</label>
+        <span><%= @company.app_type.to_i==0 ? "订阅号" : "服务号" %></span>
+      </li>
+      <li>
+        <label>token</label>
+        <span><%= @company.has_app ? @company.token : "" %></span>
+      </li>
+      <li class="yes">
+        <label>是否配置APP</label>
+        <span><%= @company.has_app ? "是" : "否" %></span>
+        <a class="scd_btn" name="appInfoEdit">修改</a>
+        <div class="appInfo">
+          <span class="angle">▲</span>
+          <ul>
+            <li>
+              <label>APP账号</label>
+              <span><%= @company.has_app ? @company.app_account : "" %></span>
+            </li>
+            <li>
+              <label>APP密码</label>
+              <span><%= @company.has_app ? "******" : "" %></span>
+            </li>           
+          </ul>
+        </div>
+      </li>
+    </div>
+    <div>
+      <img src="/assets/process.png" />
+    </div>
+  </div>
+</div>
+
+
+<div class="second_bg"></div>
+<div class="second_box second_box_fixed companyInfoEdit">
+  <%= form_tag company_path(@company), :method => :put do %>
+    <div class="second_content" style="width: 450px;">
+      <span class="close" title="关闭">×</span>
+      <h1>公司信息编辑</h1>
+      <div>
+        <p>
+          <label>公司名称</label>
+          <input type="text" name="company_name" id="company_name" value="<%= @company.name %>" />
+        </p>
+        <p>
+          <label>微信公众账号</label>
+          <input type="text" name="company_cweb" id="company_cweb" value="<%= @company.cweb %>"/>
+        </p>
+        <p>
+          <label>token</label>
+          <input type="text" name="company_token" id="company_token" value="<%= @company.token %>"/>
+        </p>
+      </div>
+      <input type="hidden" name="edit_type" value="0"/>
+      <input type="hidden" name="company_id" value="<%= @company.id %>"/>
+      <div class="scdBoxAct">
+        <button class="orangeBtn" type="button" onclick="edit_company_valid(this,0)">确定</button>
+        <button class="orangeBtn" type="button" onclick="edit_company_cancel(this)">取消</button>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= form_tag company_path(@company), :method => :put do %>
+  <div class="second_box second_box_fixed appInfoEdit">
+    <div class="second_content" style="width: 450px;">
+      <span class="close" title="关闭">×</span>
+      <h1>APP信息修改</h1>
+      <div>
+        <p>
+          <label>是否配置APP</label>
+          <input type="radio" name="has_app" value="1" <% if @company.has_app==true %>checked<% end %> />
+          <span>是</span>
+          <input type="radio" name="has_app" value="0" <% if @company.has_app==false %>checked<% end %>/>
+          <span>否</span>
+        </p>
+        <p>
+          <label>APP账号</label>
+          <input type="text" name="company_app_account" id="company_app_account" value="<%= @company.has_app ? @company.app_account : '' %>"/>
+        </p>
+        <p>
+          <label>APP密码</label>
+          <input type="text" name="company_app_password" id="company_app_password" value="<%= @company.has_app ? '******' : '' %>"/>
+        </p>
+      </div>
+      <input type="hidden" name="edit_type" value="1"/>
+      <input type="hidden" name="company_id" value="<%= @company.id %>"/>
+      <div class="scdBoxAct">
+        <button class="orangeBtn" type="button" onclick="edit_company_valid(this,1)">确定</button>
+        <button class="orangeBtn" type="button" onclick="edit_company_cancel(this)">取消</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% if flash[:notice] %>
+  <p1><%= flash[:notice] %></p1>
+<% end %>
+
