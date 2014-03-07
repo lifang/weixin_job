@@ -8,6 +8,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
   </head>
   <body>
+    <% flash.each do |name, msg| %>
+      <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
+        <div style="font-size:20px;margin: 200px auto;width: 300px;background: #373f42;;padding: 20px;">
+          <span class="close" id="close_flash" style="float:right;" ></span>
+          <div class="alert_h"><%=msg%></div>
+        </div>
+      </div>
+    <% end %>
     <div class="header">
       <div class="logo">微招聘</div>
       <div class="userInfo">
@@ -21,10 +29,17 @@
     <div class="main">
       <div class="leftMenu">
         <ul>
-          <li class="leftMenuItem hover">设置</li>
-          <li class="leftMenuItem">招聘职位</li>
+          <li class="leftMenuItem ">设置</li>
+          <%=link_to company_position_types_path(@company) do%>
+            <li class="leftMenuItem <%=controller.controller_name == "position_types" ? "hover":""%>">职位类别</li>
+          <%end%>
+          <%=link_to company_positions_path(@company) do%>
+            <li class="leftMenuItem <%=controller.controller_name == "positions" ? "hover":""%>">招聘职位</li>
+          <%end%>
           <li class="leftMenuItem">简历模板</li>
-          <li class="leftMenuItem">公司简介</li>
+           <%=link_to company_company_profiles_path(@company) do%>
+          <li class="leftMenuItem <%=controller.controller_name == "company_profiles" ? "hover":""%>">公司简介</li>
+          <%end%>
           <li class="leftMenuItem">菜单</li>
           <li class="leftMenuItem">导出简历</li>
         </ul>

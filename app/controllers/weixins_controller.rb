@@ -1,5 +1,11 @@
 #encoding:utf-8
-class Weixin::WeixinsController < ApplicationController
+class WeixinsController < ApplicationController
+  require 'digest/sha1'
+  require 'net/http'
+  require "uri"
+  require 'openssl'
+  require "open-uri"
+  require "tempfile"
   before_filter :get_company_by_cweb  #根据cweb参数，获取对应的公司
 
   #用于处理相应服务号的请求以及一开始配置服务器时候的验证，post 或者 get
@@ -8,17 +14,12 @@ class Weixin::WeixinsController < ApplicationController
     tmp_encrypted_str = get_signature(cweb, timestamp, nonce)
     if request.request_method == "POST" && tmp_encrypted_str == signature
       if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
-        create_menu(cweb)  #创建自定义菜单
+        return_app_regist_link
+        create_menu #创建自定义菜单
       elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
+        return_app_regist_link
         #存储消息并推送到ios端
         get_client_message
-        client = Client.find_by_open_id_and_status(params[:xml][:FromUserName], Client::TYPES[:CONCERNED])
-        if client
-          message = "app_regist_link" #TODO
-          message = "&lt;a href='#{MW_URL + message}?open_id=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
-          xml = teplate_xml(message)
-          render :xml => xml        #回复登记app的链接
-        end
       elsif params[:xml][:MsgType] == "image" #用户发送图片
         save_image_or_voice_from_wx(cweb, "image")
         render :text => "ok"
@@ -36,10 +37,10 @@ class Weixin::WeixinsController < ApplicationController
   #接收用户的任何信息
   def get_client_message(wx_resource_url=nil)
     open_id = params[:xml][:FromUserName]
-    if @site
-      current_client =  Client.where("site_id=#{@site.id} and types = #{Client::TYPES[:ADMIN]}")[0]  #后台登陆人员
+    if @company
+      current_client =  Client.where("company_id=#{@company.id} and types = #{Client::TYPES[:ADMIN]}")[0]  #后台登陆人员
       client = Client.find_by_open_id_and_status(open_id, Client::STATUS[:valid])  #查询有效用户
-      if @site.exist_app && client && current_client && client.update_attribute(:has_new_message,true)
+      if @company.has_app && client && current_client && client.update_attribute(:has_new_message,true)
         time_now = Time.now.strftime("%H:%M")
 
         Message.transaction do
@@ -51,26 +52,26 @@ class Weixin::WeixinsController < ApplicationController
               unless params[:xml][:Content].present?
                 content = msg_type_value == 1 ? "图片" : "语音"
               end
-              mess = Message.create!(:site_id => @site.id , :from_user => client.id ,:to_user => current_client.id ,
+              mess = Message.create!(:company_id => @company.id , :from_user => client.id ,:to_user => current_client.id ,
                 :types => Message::TYPES[:weixin], :content => content,
                 :status => Message::STATUS[:UNREAD], :msg_id => params[:xml][:MsgId],
                 :message_type => msg_type_value, :message_path => wx_resource_url)
-              if mess && (!@site.receive_status || !(@site.receive_status && @site.not_receive_start_at && @site.not_receive_end_at && time_now >= @site.not_receive_start_at.strftime("%H:%M") && time_now <= @site.not_receive_end_at.strftime("%H:%M")))
+              if mess && (!@company.receive_status || !(@company.receive_status && @company.not_receive_start_at && @company.not_receive_end_at && time_now >= @site.not_receive_start_at.strftime("%H:%M") && time_now <= @site.not_receive_end_at.strftime("%H:%M")))
                 #推送到IOS端
                 APNS.host = 'gateway.sandbox.push.apple.com'
                 APNS.pem  = File.join(Rails.root, 'config', 'CMR_Development.pem')
                 APNS.port = 2195
                 token = current_client.token
                 if token
-                  badge = Client.where(["site_id=? and types=? and has_new_message=?", @site.id, Client::TYPES[:CONCERNED],
+                  badge = Client.where(["company_id=? and types=? and has_new_message=?", @company.id, Client::TYPES[:CONCERNED],
                       Client::HAS_NEW_MESSAGE[:YES]]).length
                   content = "#{client.name}:#{mess.content}"
                   APNS.send_notification(token,:alert => content, :badge => badge, :sound => client.id)
-                  recent_client = RecentlyClients.find_by_site_id_and_client_id(@site.id, client.id)
+                  recent_client = RecentlyClients.find_by_company_id_and_client_id(@company.id, client.id)
                   if recent_client
                     recent_client.update_attributes!(:content => mess.content)
                   else
-                    RecentlyClients.create!(:site_id => @site.id, :client_id => client.id, :content => mess.content)
+                    RecentlyClients.create!(:company_id => @company.id, :client_id => client.id, :content => mess.content)
                   end
                 end
               end
@@ -81,6 +82,17 @@ class Weixin::WeixinsController < ApplicationController
         end
 
       end
+    end
+  end
+
+  #是否恢复app登记信息
+  def return_app_regist_link
+    client = Client.find_by_open_id_and_status(params[:xml][:FromUserName], Client::TYPES[:CONCERNED])
+    if client
+      message = "app_regist_link" #TODO
+      message = "&lt;a href='#{MW_URL + message}?open_id=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
+      xml = teplate_xml(message)
+      render :xml => xml        #回复登记app的链接
     end
   end
 
@@ -100,5 +112,15 @@ Text
     template_xml
   end
 
-  
+
+  #创建自定义菜单
+  def create_menu
+    access_token = get_access_token
+    if access_token and access_token["access_token"]
+      menu_str = @company.get_menu_by_website
+      c_menu_action = CREATE_MENU_ACTION % access_token["access_token"]
+      response = create_post_http(WEIXIN_OPEN_URL ,c_menu_action ,menu_str)
+    end
+  end
+
 end

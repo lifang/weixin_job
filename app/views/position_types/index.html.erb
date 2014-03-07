@@ -1,0 +1,41 @@
+<div class="main_con2">
+  <div>
+    <div class="toolbar">
+      <button class="orangeBtn scd_btn" name="newJobCategory" style=" float: right; margin: 25px 50px;">新建职位类别</button>
+    </div>
+    <div class="JobCategoryBox">
+      <%@position_types.each do |p_t|%>
+        <p><%=p_t.name%>
+          <%=link_to company_position_type_path(@company,p_t),method:'delete' do%>
+          <span class="close" title="关闭">×</span>
+          <%end%>
+        </p>
+      <%end%>
+      <%if @position_types.blank? %>
+        <p> 暂无职位类别哦！
+        </p>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+<div class="second_bg"></div>
+<div class="second_box second_box_fixed newJobCategory">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>新建职位类别</h1>
+    <%=form_for(:position_types,url:company_position_types_path(@company)) do |f|%>
+      <div>
+        <p>
+          <label>类别名称</label>
+          <input type="text" id="name" name="name"/>
+        </p>
+      </div>
+      <div class="scdBoxAct">
+        <button type="button" class="orangeBtn" onclick="submit_position_types(this)">确定</button>
+        <button type="button" class="orangeBtn" onclick="cancel_position_types(this)">取消</button>
+      </div>
+  <%end%>
+
+  </div>
+</div>

@@ -1,4 +1,6 @@
 WeixinJob::Application.routes.draw do
+  get "company_profiles/index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -18,27 +20,26 @@ WeixinJob::Application.routes.draw do
       post :valid, :create
     end
   end
-  resources :companies do    
-    resources :positions
+
+  resources :companies do
+    resources :company_profiles
+    resources :position_types
     resources :resumes do
       collection do
         get :add_form_item
       end
     end
+    resources :positions do
+      collection do
+        get :search_position
+      end
+      member do
+        get :release
+      end
+    end
   end
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
 
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
+  resources :weixins
 
   # Sample resource route within a namespace:
   #   namespace :admin do

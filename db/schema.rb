@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140306025131) do
+ActiveRecord::Schema.define(:version => 20140306092422) do
+
+  create_table "client_html_infos", :force => true do |t|
+    t.integer  "client_id"
+    t.text     "hash_content"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "client_resumes", :force => true do |t|
     t.text     "html_content_datas"
@@ -54,6 +61,8 @@ ActiveRecord::Schema.define(:version => 20140306025131) do
     t.string   "company_password",                    :null => false
     t.string   "token"
     t.integer  "app_type"
+    t.string   "app_id"
+    t.string   "app_secret"
   end
 
   add_index "companies", ["token"], :name => "index_companies_on_token"
@@ -79,6 +88,9 @@ ActiveRecord::Schema.define(:version => 20140306025131) do
     t.integer  "parent_id",  :default => 0
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
+    t.integer  "company_id"
+    t.integer  "types"
+    t.string   "file_path"
   end
 
   create_table "messages", :force => true do |t|
@@ -109,10 +121,19 @@ ActiveRecord::Schema.define(:version => 20140306025131) do
     t.integer  "status"
     t.string   "requirement"
     t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "menu_id"
     t.integer  "company_id"
+    t.integer  "position_type_id"
+  end
+
+  create_table "recently_clients", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "client_id"
+    t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "resume_templates", :force => true do |t|
