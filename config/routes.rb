@@ -24,7 +24,11 @@ WeixinJob::Application.routes.draw do
   end
 
   resources :companies do
-    resources :company_profiles
+    resources :company_profiles do
+      collection do
+        post :upload_img
+      end
+    end
     resources :position_types
     resources :resumes do
       collection do

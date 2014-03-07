@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140306092422) do
+ActiveRecord::Schema.define(:version => 20140307071354) do
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"
@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(:version => 20140306092422) do
     t.text     "html_content"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.string   "title"
+    t.string   "file_path"
   end
 
   create_table "delivery_resume_records", :force => true do |t|
@@ -141,7 +143,7 @@ ActiveRecord::Schema.define(:version => 20140306092422) do
     t.integer  "company_id",   :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.string   "html_url"
+    t.string   "name",         :null => false
   end
 
 end
