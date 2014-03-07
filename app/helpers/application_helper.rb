@@ -7,7 +7,7 @@ module ApplicationHelper
       if request.url.include?(name)
         return "hover"
       else
-        reruen ""
+        return ""
       end
     end
   end

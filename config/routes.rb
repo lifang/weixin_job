@@ -17,8 +17,10 @@ WeixinJob::Application.routes.draw do
 
   resources :logins do
     collection do
-      post :valid, :create
+      post :valid
+      get :regist
     end
+
   end
 
   resources :companies do
@@ -37,6 +39,7 @@ WeixinJob::Application.routes.draw do
         get :release
       end
     end
+    resources :menus
   end
 
   resources :weixins

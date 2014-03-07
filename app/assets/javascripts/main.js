@@ -4,7 +4,7 @@ $(function(){
 		$("#flash_field").hide();
 		$(".tab_alert").hide();
 	});
-	$("#flash_field").fadeOut(2000);
+	$("#flash_field").fadeOut(3000);
 
 
 

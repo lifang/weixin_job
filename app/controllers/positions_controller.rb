@@ -1,7 +1,7 @@
 #encoding: utf-8
 class PositionsController < ApplicationController   #招聘职位
-  before_filter :get_company
-
+  before_filter :has_sign?
+  before_filter :get_title
   PerPage = 8
 
   def index
@@ -65,14 +65,14 @@ class PositionsController < ApplicationController   #招聘职位
   end
 
   def release   #发布
-     @position = Position.find_by_id(params[:id])
-     if @position && @position.update_attribute(:status,Position::STATU[:RELEASED])
-       flash[:success] = '发布成功'
-       redirect_to company_positions_path(@company)
-     else
-       flash[:error] = '发布失败，不存在职位！'
-       render 'index'
-     end
+    @position = Position.find_by_id(params[:id])
+    if @position && @position.update_attribute(:status,Position::STATU[:RELEASED])
+      flash[:success] = '发布成功'
+      redirect_to company_positions_path(@company)
+    else
+      flash[:error] = '发布失败，不存在职位！'
+      render 'index'
+    end
   end
 
   def destroy
@@ -84,5 +84,10 @@ class PositionsController < ApplicationController   #招聘职位
       flash[:error] = "删除失败！请刷新页面"
       render 'index'
     end
+  end
+
+
+    def get_title
+    @title = "招聘职位"
   end
 end

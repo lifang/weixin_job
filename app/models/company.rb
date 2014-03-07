@@ -5,16 +5,11 @@ class Company < ActiveRecord::Base
   has_many :resume_templates
   has_many :delivery_resume_records
   has_many :company_profiles
-
-<<<<<<< HEAD
-  #has_many :clients, -> { where("types = #{Client::TYPES[:CONCERNED]}") }
-  #has_one :client, -> { where("types = #{Client::TYPES[:ADMIN]}") }
-=======
   has_many :clients
-  scope  :clients, -> { where("types = #{Client::TYPES[:CONCERNED]}") }
-  scope  :client, -> { where("types = #{Client::TYPES[:ADMIN]}") }
+  #scope  :clients, -> { where("types = #{Client::TYPES[:CONCERNED]}") }
+  #scope  :client, -> { where("types = #{Client::TYPES[:ADMIN]}") }
   has_many :menus
->>>>>>> 53cbbb2302aef58ca0cd33025da83288f19cc461
+
   validate :name, :uniqueness => true, :allow_nil => false, :message => "该公司名称已被注册!"
   validate :company_account, :uniqueness => true, :allow_nil => false, :message => "该用户名已被注册!"
 
