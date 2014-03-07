@@ -18,10 +18,12 @@ WeixinJob::Application.routes.draw do
       post :valid, :create
     end
   end
-  resources :companies do
-    
-    resources :positions do
-      
+  resources :companies do    
+    resources :positions
+    resources :resumes do
+      collection do
+        get :add_form_item
+      end
     end
   end
   # Sample resource route with sub-resources:

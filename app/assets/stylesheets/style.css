@@ -111,8 +111,77 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     right: 12px;
 	cursor: pointer;
 }
+.second_content .close_1 {
+    font-size: 28px;
+    line-height: 40px;
+    overflow: hidden;
+    position: absolute;
+    right: 12px;
+	cursor: pointer;
+}
 .second_content p { line-height: 36px;}
 .second_content p label { display: inline-block; width: 120px; text-align: right;}
 .second_content p input[type="text"] { padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
 .second_content p input[type="radio"] { margin-left: 10px; width: 35px; }
 .scdBoxAct { margin: 10px 0; text-align: center; }
+
+/* 简历模板 */
+.addItemBtnBar { background: #7f7e7e; overflow: hidden;}
+.addItemBtnBar li { width: 100px; height: 80px; float: left; border-right: 1px solid #f2f2f2; background-image: url(../assets/addItemBtn1.png); background-repeat: no-repeat; background-color: #4c5457; }
+.addItemBtnBar li:hover,.addItemBtnBar li.hover { background-image: url(../assets/addItemBtn2.png); background-color: #f9651b; }
+.addItemBtnBar li:hover span,.addItemBtnBar li.hover span { color: #fff;}
+.addItemBtnBar li[name="addInfoItem"] { background-position: 0px 0px;}
+.addItemBtnBar li[name="addRdoItem"] { background-position: -101px 0px;}
+.addItemBtnBar li[name="addChekItem"] { background-position: -202px 0px;}
+.addItemBtnBar li[name="addSelItem"] { background-position: -303px 0px;}
+.addItemBtnBar li[name="addTxtItem"] { background-position: -404px 0px;}
+.addItemBtnBar li[name="addSuccess"] { background-position: -505px 0px;}
+.addItemBtnBar li[name="addImgItem"] { background-position: -606px 0px;}
+.addItemBtnBar li span { color: #a3a3a3; display: block; text-align: center; margin-top: 55px; }
+
+
+.phoneVirtual { width: 400px; min-height: 500px; margin: 20px; background: #e3e3e3;}
+
+.itemBox { padding: 10px; color: #6E6E6E; position: relative; margin-bottom: 5px; background: #ccc;}
+.itemBox:hover { box-shadow: 0 0 3px rgba(0,0,0,0.3) inset;}
+.itemBox .close {
+    background: #7f7e7e;
+	color: #f2f2f2;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    height: 20px;
+	 width: 18px;
+    line-height: 18px;
+    position: absolute;
+    right: 0;
+    top: 0;
+	display: none;
+	cursor: pointer;
+}
+.itemBox:hover .close { display: block;}
+.itemBox label { font-size: 14px; line-height: 30px; display: inline-block; width: 120px;}
+.itemBox input[type="text"] { border: 1px solid #C3C3C3; color: #6E6E6E; padding: 4px; width: 200px;}
+.itemBox select { border: 1px solid #C3C3C3; color: #6E6E6E; width: 210px; font-size: 20px;}
+.itemBox span { font-size: 14px; line-height: 30px;}
+.itemBox input[type="radio"],.itemBox input[type="checkbox"] { width: 40px;}
+
+.imgItem { min-height: 150px; text-align: center;}
+.imgItem a { display: block; margin-top: 70px; text-align: center;}
+
+/* 公司简介 */
+.tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto;}
+.tuwenBox textarea { width: 360px; height: 60px; resize: none; border: 1px solid #c2c2c2; padding: 5px; display: block; margin: 5px auto 0;}
+.tuwenBox { position: relative; padding: 5px 0;}
+.tuwenBox:hover { box-shadow: 0 0 5px #fff inset;}
+.tuwenBox .close {
+    font-size: 28px;
+    overflow: hidden;
+    position: absolute;
+	top: 0;
+	right: 10px;
+	cursor: pointer;
+	display: none;
+	color: #fff;
+}
+.tuwenBox:hover .close { display: block;}

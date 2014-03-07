@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140305062904) do
+ActiveRecord::Schema.define(:version => 20140306025131) do
 
   create_table "client_resumes", :force => true do |t|
     t.text     "html_content_datas"
@@ -20,6 +20,24 @@ ActiveRecord::Schema.define(:version => 20140305062904) do
     t.string   "open_id"
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
+  end
+
+  create_table "clients", :force => true do |t|
+    t.string   "name"
+    t.integer  "mobiephone"
+    t.integer  "company_id"
+    t.text     "html_content"
+    t.integer  "types"
+    t.string   "password"
+    t.string   "username"
+    t.string   "avatar_url"
+    t.boolean  "has_new_message"
+    t.boolean  "has_new_record"
+    t.string   "open_id"
+    t.boolean  "status",          :default => false
+    t.string   "remark"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "companies", :force => true do |t|
@@ -63,6 +81,22 @@ ActiveRecord::Schema.define(:version => 20140305062904) do
     t.datetime "updated_at",                :null => false
   end
 
+  create_table "messages", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "from_user"
+    t.integer  "to_user"
+    t.integer  "types"
+    t.text     "content"
+    t.boolean  "status",       :default => false
+    t.string   "msg_id"
+    t.integer  "message_type", :default => 0
+    t.string   "message_path"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "messages", ["msg_id"], :name => "by_msg_id", :unique => true
+
   create_table "position_types", :force => true do |t|
     t.string   "name",       :null => false
     t.integer  "company_id", :null => false
@@ -86,7 +120,7 @@ ActiveRecord::Schema.define(:version => 20140305062904) do
     t.integer  "company_id",   :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.string   "name",         :null => false
+    t.string   "html_url"
   end
 
 end

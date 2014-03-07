@@ -1,0 +1,102 @@
+<div class="second_box second_box_fixed addInfoItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>添加信息栏</h1>
+    <div>
+      <p>
+        <label>添加信息栏</label>
+        <input type="text" name="add_item_title"/>
+      </p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn" onclick="add_form_item('message_div',this, <%= @company.id %>)">确定</button>
+    </div>
+  </div>
+</div>
+<div class="second_box second_box_fixed addImageItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>添加图片</h1>
+    <div>
+      <p>
+        <label>标题名称</label>
+        <input type="text" name="add_item_title"/>
+      </p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn" onclick="add_form_item('image_div',this, <%= @company.id %>)">确定</button>
+    </div>
+  </div>
+</div>
+<div class="second_box second_box_fixed addTxtItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>增加纯文本</h1>
+    <div class="insetBox">
+      <p><label>增加纯文本：</label><input type="text" name="add_item_title"/></p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn" onclick="add_form_item('text_div',this, <%= @company.id %>)">确认</button>
+    </div>
+  </div>
+</div>
+<div class="second_box addItem addRdoItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>增加单选框</h1>
+    <div class="insetBox">
+      <p><label>单选框问题：</label><input type="text" name="add_item_title" /></p>
+      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn addOptBox" onclick="add_tag_p('radio_div',this)">增加选项</button>
+      <button class="orangeBtn addItemSub" onclick="add_form_item('radio_div',this, <%= @company.id %>)">确认</button>
+    </div>
+  </div>
+</div>
+<div class="second_box addItem addChekItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>增加复选框</h1>
+    <div class="insetBox">
+      <p><label>复选框问题：</label><input type="text" name="add_item_title"/></p>
+      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn addOptBox" onclick="add_tag_p('checkbox_div',this)">增加选项</button>
+      <button class="orangeBtn addItemSub" onclick="add_form_item('check_box_div',this, <%= @company.id %>)">确认</button>
+    </div>
+  </div>
+</div>
+<div class="second_box addItem addSelItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>增加下拉框</h1>
+    <div class="insetBox">
+      <p><label>下拉框问题：</label><input type="text" name="add_item_title"/></p>
+      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn addOptBox" onclick="add_tag_p('select_div',this)">增加选项</button>
+      <button class="orangeBtn addItemSub" onclick="add_form_item('select_div',this, <%= @company.id %>)">确认</button>
+    </div>
+  </div>
+</div>
+<div class="second_box addSuccess">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>提交成功页面</h1>
+    <p><label>提示信息：</label><input type="text" name="add_item_alert" /></p>
+    <p><label>电话：</label><input type="text" name="add_item_phone"/></p>
+    <p><label>地址：</label><input type="text" name="add_item_address"/></p>
+    <div class="scdBoxAct">
+      <button class="orangeBtn" onclick="add_form_item('success_div',this, <%= @company.id %>)">确认</button>
+    </div>
+  </div>
+</div>

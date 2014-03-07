@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   def get_company
     @company = Company.find_by_id params[:company_id]
   end
-
+  
   #微信所用开始
 
   #根据cweb参数，获取对应的公司
@@ -41,4 +41,17 @@ class ApplicationController < ActionController::Base
     tmp_encrypted_str
   end
 
+  def save_into_file(content, page, old_file_name)
+    site_root = page.site.root_path if page.site
+    site_path = Rails.root.to_s + SITE_PATH % site_root
+    FileUtils.mkdir_p(site_path) unless Dir.exists?(site_path)
+    if old_file_name.present? && old_file_name != page.file_name
+      File.delete site_path + old_file_name if File.exists?(site_path + old_file_name)
+    end
+    File.open(site_path + page.file_name, "wb") do |f|
+      f.write(content.html_safe)
+    end
+    page.path_name = "/" + site_root + "/" + page.file_name
+    page.save
+  end
 end
