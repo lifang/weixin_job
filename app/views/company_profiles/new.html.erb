@@ -1,3 +1,17 @@
+<script>
+  function add_tuwen(){
+    var html=" \n\
+         <div class='tuwenBox' ><span class='close' title='关闭' onclick='close_tuwen(this)'>×</span> \n\
+            <div class='tuwenImg'>  \n\
+<form accept-charset='UTF-8' action='/companies/<%=@company.id%>/company_profiles/upload_img' data-remote='true' date-type='script' enctype='multipart/form-data' method='post'> \n\
+                 <span onclick='$(this).next().click()' >请点击上传图片</span> \n\
+                <input type='file' name='image' style='display: none;' onchange='change_file(this)'/> \n\
+</form>  \n\
+            </div><textarea></textarea></div> \n\
+"
+    $("#tuwen_box").append(html);
+  }
+</script>
 <div class="main_con2">
   <div>
     <div class="toolbar">
@@ -11,20 +25,36 @@
     </div>
 
     <div>
+      <p>
+        标题：<input type="text" name="title" />
+      </p>
       <div class="jobInfo">
-        <div class="tuwenBox">
-          <span class="close" title="关闭">×</span>
-          <div class="tuwenImg"></div>
-          <textarea></textarea>
-        </div>
-        <div class="tuwenBox">
-          <span class="close" title="关闭">×</span>
-          <div class="tuwenImg"></div>
-          <textarea></textarea>
+        <div id="tuwen_box">
+          <input type="hidden" value="" id="html_content" name="html_content" />
+          <div class="tuwenBox">
+            <span class="close" title="关闭" onclick="close_tuwen(this)">×</span>
+            <div class="tuwenImg">
+              <%=form_for(:company_profiles,url:upload_img_company_company_profiles_path(@company),remote:true, :html =>{:multipart => true,'date-type'=>'script'}) do |f|%>
+                <span onclick="$(this).next().click()" >请点击上传图片</span>
+                <input type="file" name="image" style="display: none;" onchange="change_file(this)"/>
+              <%end%>
+            </div>
+            <textarea></textarea>
+          </div>
+          <div class="tuwenBox" >
+            <span class="close" title="关闭" onclick="close_tuwen(this)">×</span>
+            <div class="tuwenImg"onclick="$(this).next().click()">
+              <%=form_for(:company_profiles,url:upload_img_company_company_profiles_path(@company),remote:true, :html =>{:multipart => true,'date-type'=>'script'}) do |f|%>
+                <span onclick="$(this).next().click()" >请点击上传图片</span>
+                <input type="file" name="image" style="display: none;" onchange="change_file(this)"/>
+              <%end%>
+            </div>
+            <textarea></textarea>
+          </div>
         </div>
         <p>
-          <button class="orangeBtn">添加图文块</button>
-          <button class="orangeBtn">确定</button>
+          <button type=" button" class="orangeBtn" onclick="add_tuwen()">添加图文块</button>
+          <button type=" button" class="orangeBtn" onclick="submit_comany_profiles()">确定</button>
         </p>
       </div>
       <div class="jobInfoTemp">

@@ -119,7 +119,8 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 
 /* 公司简介 */
-.tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto;}
+.tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto; overflow: hidden; text-align: center;}
+.tuwenImg span {display: inline-block; margin-top: 50px;height: 50px;width: 201px;cursor: pointer;}
 .tuwenBox textarea { width: 360px; height: 60px; resize: none; border: 1px solid #c2c2c2; padding: 5px; display: block; margin: 5px auto 0;}
 .tuwenBox { position: relative; padding: 5px 0;}
 .tuwenBox:hover { box-shadow: 0 0 5px #fff inset;}
