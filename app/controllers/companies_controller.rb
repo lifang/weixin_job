@@ -1,6 +1,7 @@
 #encoding: utf-8
 class CompaniesController < ApplicationController
-  before_filter :get_title
+  before_filter :has_sign?
+    before_filter :get_title
   def show
     @company = Company.find_by_id(params[:company_id].to_i)
   end

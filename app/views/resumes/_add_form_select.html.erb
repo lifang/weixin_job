@@ -1,0 +1,14 @@
+<div class="selectItem itemBox select_div">
+  <span class="close" onclick="remove_form_item(this)">×</span>
+  <label><%= @item_tile %></label>
+  <input type="hidden" name="k_name" value="<%= @title_name %>"/>
+  <input type="hidden" name="tags[<%= @title_name %>][<%= :name %>]" value="<%= @item_tile %>"/>
+  <select>
+    <% @options.each do |opt| %>
+      <option><%= opt %></option>
+    <% end %>
+  </select>
+  <% @options.each do |opt| %>
+    <input type="hidden" name="tags[<%= @title_name %>][<%= :options %>][]" value="<%= opt %>"/>
+  <% end %>
+</div>

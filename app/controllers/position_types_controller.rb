@@ -1,7 +1,7 @@
 #encoding: utf-8
 class PositionTypesController < ApplicationController
-  before_filter :get_company
-
+  before_filter :has_sign?
+    before_filter :get_title
   def index
     @position_types = @company.position_types
   end
@@ -32,5 +32,9 @@ class PositionTypesController < ApplicationController
       flash[:error] = "删除失败，不存在职位类型"
       render 'index'
     end
+  end
+
+  def get_title
+    @title = "职位类别"
   end
 end

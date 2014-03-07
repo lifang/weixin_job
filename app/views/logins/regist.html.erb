@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>登录</title>
+    <title>用户注册</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <%= stylesheet_link_tag    "application", "style" %>
     <%= javascript_include_tag "application","main", "logins" %>
@@ -13,29 +13,31 @@
       <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
         <div style="font-size:20px;margin: 200px auto;width: 300px;background: #373f42;;padding: 20px;">
           <span class="close" id="close_flash" style="float:right;" ></span>
-          <div class="alert_h"><%=  flash[:notice] %></div>
+          <div class="alert_h"><%=  flash[:notice]%></div>
         </div>
       </div>
     <% end %>
+    <%= form_tag logins_path(@company), :method => :post do %>
     <div class="loginBox">
-      <h1>微招聘登录</h1>
-      <%= form_tag "/logins/valid", :method => :post do %>
-        <div class="loginForm">
-          <p>
-            <label>用户名</label>
-            <input type="text" name="comp_account" id="comp_account" <% if @comp_account %>value="<%= @comp_account %>"<% end %>/>
-          </p>
-          <p>
-            <label>密码</label>
-            <input type="password" name="comp_password" id="comp_password"/>
-          </p>
-          <p>
-            <label></label>
-            <button class="loginBtn orangeBtn" type="button" onclick="login_valid(this)">登录</button>
-            <a class="register" href="/logins/regist">立即注册</a>
-          </p>
-        </div>
-      <% end %>
+      <h1>微招聘注册</h1>
+      <div class="loginForm">
+        <p>
+          <label>公司名称</label>
+          <input type="text" name="comp_name" id="regist_comp_name"/>
+        </p>
+        <p>
+          <label>用户名</label>
+          <input type="text" name="comp_account" id="regist_comp_account"/>
+        </p>
+        <p>
+          <label>密码</label>
+          <input type="password" name="comp_password" id="regist_comp_password"/>
+        </p>
+        <p>
+          <button class="orangeBtn" type="button" onclick="regist_valid(this)">注册</button>
+        </p>
+      </div>
     </div>
+    <% end %>
   </body>
 </html>

@@ -108,6 +108,6 @@
 <% end %>
 
 <% if flash[:notice] %>
-  <p1><%= flash[:notice] %></p1>
+  <p1><%= flash[:notice].html_safe %></p1>
 <% end %>
 

@@ -1,0 +1,111 @@
+<%= javascript_include_tag "resumes" %>
+<div class="main_con2">
+  <div>
+    <div class="addItemBtnBar">
+      <ul>
+        <li class="scd_btn" name="addInfoItem"><span>信息栏</span></li>
+        <li class="scd_btn" name="addRdoItem"><span>单选框</span></li>
+        <li class="scd_btn" name="addChekItem"><span>复选框</span></li>
+        <li class="scd_btn" name="addSelItem"><span>下拉框</span></li>
+        <li class="scd_btn" name="addTxtItem"><span>纯文本</span></li>
+        <li class="scd_btn" name="addSuccess"><span>提交成功页</span></li>
+        <li class="scd_btn" name="addImageItem"><span>图片</span></li>
+      </ul>
+    </div>
+    <div class="phoneVirtual">
+      <%= form_tag company_resume_path(@company, @resume_temp), :method => :put do %>
+        <div id="form_div">
+          <% @resume_temp.html_content.each do |k,v| %>
+            <% if k.to_s.split("_")[0]=="message" %>
+              <div class="infoItem itemBox message_div">
+                <span class="close" onclick="remove_form_item(this)">×</span>
+                <p><label><%= v[:name] %></label><input type="text"/></p>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+              </div>
+            <% elsif k.to_s.split("_")[0]=="radio" %>
+              <div class="radioItem itemBox radio_div">
+                <span class="close" onclick="remove_form_item(this)">×</span>
+                <p><label><%= v[:name] %></label></p>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                <% v[:options].each do |opt| %>
+                  <div><input type="radio" name="<%= v[:name] %>" /><span><%= opt %></span></div>
+                  <input type="hidden" name="tags[<%= k %>][<%= :options %>][]" value="<%= opt %>"/>
+                <% end %>
+              </div>
+            <% elsif k.to_s.split("_")[0]=="checkbox" %>
+              <div class="checkItem itemBox check_box_div">
+                <span class="close" onclick="remove_form_item(this)">×</span>
+                <p><label><%= v[:name] %></label></p>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                <% v[:options].each do |opt| %>
+                  <div><input type="checkbox" /><span><%= opt %></span></div>
+                  <input type="hidden" name="tags[<%= k %>][<%= :options %>][]" value="<%= opt %>"/>
+                <% end %>
+              </div>
+            <% elsif  k.to_s.split("_")[0]=="select" %>
+              <div class="selectItem itemBox select_div">
+                <span class="close" onclick="remove_form_item(this)">×</span>
+                <label><%= v[:name] %></label>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                <select>
+                  <% v[:options].each do |opt| %>
+                    <option><%= opt %></option>
+                  <% end %>
+                </select>
+                <% v[:options].each do |opt| %>
+                  <input type="hidden" name="tags[<%= k %>][<%= :options %>][]" value="<%= opt %>"/>
+                <% end %>
+              </div>
+            <% elsif k.to_s.split("_")[0]=="image" %>
+              <div class="imgItem itemBox image_div">
+                <span class="close" onclick="remove_form_item(this)">×</span>
+                <a href="javasctipt:void(0)"><%= v[:name] %></a>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :url %>]" value=""/>
+              </div>
+            <% elsif k.to_s.split("_")[0]=="text" %>
+              <div class="txtItem itemBox text_div">
+                <span class="close" onclick="remove_form_item(this)">×</span>
+                <p><%= v[:text] %></p>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :text %>]" value="<%= v[:text] %>"/>
+              </div>
+            <% elsif k.to_s.split("_")[0]=="success" %>
+              <div class="infoItem itemBox success_div">
+                <span class="close" onclick="remove_form_item(this)">×</span>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <p><label>提交成功页</label>   </p>
+                <p>
+                  <label>提示信息</label>
+                  <label><%= v[:alert] %></label>
+                  <input type="hidden" name="tags[<%= k %>][<%= :alert %>]" value="<%= v[:alert] %>"/>
+                </p>
+                <p>
+                  <label>联系电话</label>
+                  <label><%= v[:phone] %></label>
+                  <input type="hidden" name="tags[<%= k %>][<%= :phone %>]" value="<%= v[:phone] %>"/>
+                </p>
+                <p>
+                  <label>地址</label>
+                  <label><%= v[:address] %></label>
+                  <input type="hidden" name="tags[<%= k %>][<%= :address %>]" value="<%= v[:address] %>"/>
+                </p>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="scdBoxAct">
+          <button class="orangeBtn" type="submit">确定</button>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="second_bg"></div>
+<%= render "add_form_item" %>

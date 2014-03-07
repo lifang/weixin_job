@@ -8,14 +8,13 @@ class ApplicationController < ActionController::Base
   require 'openssl'
 
   def has_sign?
-    c_id = params[:company_id].to_i
-    if cookies[:company_account].nil? || cookies[:company_id].nil? || cookies[:company_id] != Digest::MD5.hexdigest(c_id)
+    if cookies[:company_account].nil? || cookies[:company_id].nil? || cookies[:company_id] != Digest::MD5.hexdigest(params[:company_id])
       cookies.delete(:company_account)
       cookies.delete(:company_id)
       flash[:notice] = "请先登陆!"
       redirect_to logins_path
     else
-      @company = Company.find_by_id(c_id)
+      @company = Company.find_by_id(params[:company_id].to_i)
     end
   end
   
@@ -44,6 +43,21 @@ class ApplicationController < ActionController::Base
     tmp_str = tmp_arr.join
     tmp_encrypted_str = Digest::SHA1.hexdigest(tmp_str)
     tmp_encrypted_str
+  end
+
+
+  def save_into_file(content, page, old_file_name)
+    site_root = page.site.root_path if page.site
+    site_path = Rails.root.to_s + SITE_PATH % site_root
+    FileUtils.mkdir_p(site_path) unless Dir.exists?(site_path)
+    if old_file_name.present? && old_file_name != page.file_name
+      File.delete site_path + old_file_name if File.exists?(site_path + old_file_name)
+    end
+    File.open(site_path + page.file_name, "wb") do |f|
+      f.write(content.html_safe)
+    end
+    page.path_name = "/" + site_root + "/" + page.file_name
+    page.save
   end
 
   #根据app_id 和app_secret获取帐号token
@@ -81,6 +95,5 @@ class ApplicationController < ActionController::Base
     end
     http
   end
-
 
 end
