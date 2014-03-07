@@ -20,6 +20,7 @@
         <div >
           <%@positions.each do|p|%>
             <div class="jobTemp" onclick ="position_edit(this)">
+              <input type="hidden" class="types_id" value="<%=p.position_type_id%>" />
               <input type="hidden" class="id" value="<%=p.id%>" />
               <input type="hidden" class="description" value="<%=p.description%>" />
               <input type="hidden" class="name" value="<%=p.name%>" />

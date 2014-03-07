@@ -2,6 +2,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   include ApplicationHelper
+  include PositionsHelper
 
   def has_sign?
     c_id = params[:company_id].to_i

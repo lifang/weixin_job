@@ -4,6 +4,7 @@ class PositionsController < ApplicationController   #招聘职位
 
   PerPage = 8
   def index
+    @position_types = @company.position_types || []
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
   end
 
@@ -12,6 +13,7 @@ class PositionsController < ApplicationController   #招聘职位
   end
   
   def new
+    @position_types = @company.position_types || []
     @position = Position.new
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
   end
@@ -19,9 +21,11 @@ class PositionsController < ApplicationController   #招聘职位
   def create
     id = params[:positions][:id]
     if id == ""
+      types = params[:positions][:types]
       name = params[:positions][:name]
       description = params[:positions][:description]
       @position = Position.new
+      @position.position_type_id = types
       @position.name = name
       @position.description = description
       @position.status = Position::STATU[:UNRELEASE]
@@ -41,8 +45,9 @@ class PositionsController < ApplicationController   #招聘职位
     id = params[:positions][:id]
     name = params[:positions][:name]
     description = params[:positions][:description]
+    types = params[:positions][:types]
     @position = Position.find_by_id(id)
-    if @position && @position.update_attributes(name:name,description:description)
+    if @position && @position.update_attributes(name:name,description:description,position_type_id:types)
       flash[:success] = "更新成功！"
       redirect_to company_positions_path(@company)
     else
@@ -52,8 +57,9 @@ class PositionsController < ApplicationController   #招聘职位
   end
 
   def search_position
+    @position_types = @company.position_types || []
     p = params[:position]
-    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%")
+    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%")||[]
     render 'index'
   end
 

@@ -116,3 +116,21 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .second_content p input[type="text"] { padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
 .second_content p input[type="radio"] { margin-left: 10px; width: 35px; }
 .scdBoxAct { margin: 10px 0; text-align: center; }
+
+
+/* 公司简介 */
+.tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto;}
+.tuwenBox textarea { width: 360px; height: 60px; resize: none; border: 1px solid #c2c2c2; padding: 5px; display: block; margin: 5px auto 0;}
+.tuwenBox { position: relative; padding: 5px 0;}
+.tuwenBox:hover { box-shadow: 0 0 5px #fff inset;}
+.tuwenBox .close {
+    font-size: 28px;
+    overflow: hidden;
+    position: absolute;
+	top: 0;
+	right: 10px;
+	cursor: pointer;
+	display: none;
+	color: #fff;
+}
+.tuwenBox:hover .close { display: block;}

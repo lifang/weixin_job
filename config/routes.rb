@@ -1,4 +1,6 @@
 WeixinJob::Application.routes.draw do
+  get "company_profiles/index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -19,6 +21,7 @@ WeixinJob::Application.routes.draw do
     end
   end
   resources :companies do
+    resources :company_profiles
     resources :position_types
     resources :positions do
       collection do

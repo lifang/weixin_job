@@ -2,8 +2,11 @@
 <input type="hidden" class="id" name="positions[id]" value="" />
 <p>
 	<label>职位类型</label>
-        <select name="positions[types]">
+        <select id="types" name="positions[types]" style="margin-left: 19px;">
            <option value="0">请选择...</option>
+           <%@position_types.each do |pt|%>
+           <option value="<%=pt.id%>"><%=pt.name%></option>
+           <%end%>
         </select>
 </p>
 <p>

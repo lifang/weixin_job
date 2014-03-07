@@ -37,7 +37,9 @@
             <li class="leftMenuItem <%=controller.controller_name == "positions" ? "hover":""%>">招聘职位</li>
           <%end%>
           <li class="leftMenuItem">简历模板</li>
-          <li class="leftMenuItem">公司简介</li>
+           <%=link_to company_company_profiles_path(@company) do%>
+          <li class="leftMenuItem <%=controller.controller_name == "company_profiles" ? "hover":""%>">公司简介</li>
+          <%end%>
           <li class="leftMenuItem">菜单</li>
           <li class="leftMenuItem">导出简历</li>
         </ul>
