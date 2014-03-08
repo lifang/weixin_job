@@ -15,7 +15,14 @@ function regist_valid(obj){
         alert("用户名不能为空!");
     }else if($.trim($("#regist_comp_password").val())==""){
         alert("密码不能为空!");
-    }else{
+    }else if($.trim($("#comp_app_token").val())==""){
+        alert("微信公众账号token不能为空!");
+    }else if($.trim($("#comp_app_id").val())==""){
+        alert("微信公众账号AppId不能为空!");
+    }else if($.trim($("#comp_app_secret").val())==""){
+        alert("微信公众账号AppSecret不能为空!");
+    }
+    else{
        $(obj).parents("form").submit();
     }
 }

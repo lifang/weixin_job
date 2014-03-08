@@ -18,7 +18,7 @@ WeixinJob::Application.routes.draw do
   resources :logins do
     collection do
       post :valid
-      get :regist
+      get :regist, :sign_out
     end
 
   end

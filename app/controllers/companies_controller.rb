@@ -11,7 +11,8 @@ class CompaniesController < ApplicationController
       @company = Company.find_by_id(params[:company_id].to_i)
       edit_type = params[:edit_type].to_i
       if edit_type == 0
-        hash = {:name => params[:company_name], :cweb => params[:company_cweb], :token => params[:company_token]}
+        hash = {:name => params[:company_name], :cweb => params[:company_cweb], :app_type => params[:app_type].to_i,
+          :app_id => params[:company_app_id], :app_secret => params[:company_app_secret]}
         if @company.update_attributes(hash)
           flash[:notice] = "设置成功!"
         else
@@ -31,7 +32,7 @@ class CompaniesController < ApplicationController
       redirect_to "/companies/show?company_id=#{@company.id}"
     end
   end
-
+  
   def get_title
     @title = "设置"
   end

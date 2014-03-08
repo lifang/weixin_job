@@ -5,9 +5,59 @@ class MenusController < ApplicationController   #菜单
   def index
     @resume_tmp = ResumeTemplate.find_by_id(@company.id)
     @positions = Position.select("id,name").where(["company_id =? and status = ?", @company.id, Position::STATUS[:RELEASED]])
-    p @positions
+    @comp_profiles = CompanyProfile.select("id,title").where(["company_id = ?", @company.id])
+    menus = Menu.where(["company_id = ?", @company.id]).group_by{|m|m.parent_id.to_s}
+    @father_menus = menus["0"]
+    @child_menus = menus.except("0")
   end
-  
+
+  def create
+    Menu.transaction do
+      temp_id = params[:temp_id].nil? || params[:temp_id]=="" ? Menu::NO_TEMP : params[:temp_id].to_i
+      types = params[:menu_type].nil? || params[:menu_type]=="" ? Menu::TYPES[:no_type] : params[:menu_type].to_i
+      if params[:parent_id].to_i == 0   #建立一级菜单
+        father_menus = Menu.where(["parent_id = ? and company_id = ?", params[:parent_id].to_i, @company.id]).length
+        if father_menus >= 3
+          flash[:notice] = "每个一级菜单最多只能保持3个!"
+        else
+          menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
+            :company_id => params[:company_id].to_i, :types => types)
+          if menu.save
+            flash[:notice] = "创建成功!"
+          else
+            flash[:notice] = "创建失败!"
+          end
+        end
+      else  #建立二级菜单
+        child_menus = Menu.where(["parent_id = ? and company_id = ?", params[:parent_id].to_i, @company.id]).length
+        if child_menus >= 5
+          flash[:notice] = "每个一级菜单的二级菜单最多只能保持3个!"
+        else
+          menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
+            :company_id => params[:company_id].to_i, :types => types)
+          if menu.save
+            flash[:notice] = "创建成功!"
+          else
+            flash[:notice] = "创建失败!"
+          end
+        end
+      end
+    end
+  end
+
+  def update
+    Menu.transaction do
+      menu = Menu.find_by_id(params[:id].to_i)
+      temp_id = params[:temp_id].nil? || params[:temp_id]=="" ? Menu::NO_TEMP : params[:temp_id].to_i
+      types = params[:menu_type].nil? || params[:menu_type]=="" ? Menu::TYPES[:no_type] : params[:menu_type].to_i
+      hash = {:parent_id => params[:parent_id].to_i, :name => params[:menu_name], :temp_id => temp_id, :types => types}
+      if menu.update_attributes(hash)
+        @status = 1
+      else
+        @status = 0
+      end
+    end
+  end
   def get_title
     @title = "菜单"
   end

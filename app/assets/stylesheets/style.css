@@ -11,7 +11,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 .cf:after { clear: both; content:"."; display: block; height: 0; overflow: hidden; visibility:hidden;}
 
-.orangeBtn { padding: 5px; width: 120px; border: 0; background: #f9651b; color: #f2f2f2;} 
+.orangeBtn { padding: 5px; width: 120px; border: 0; background: #f9651b; color: #f2f2f2;}
 
 /* login */
 .loginBox { width: 400px; margin: 100px auto 0;}
@@ -54,28 +54,27 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .toolbar { background: #868686; height: 80px;}
 .toolBox { display: inline-block;}
 .toolBox button { background: #fff; border: 0 none; height: 30px; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
-.white_btn_for_a { background: #fff; border: 0 none; height: 30px;line-height: 2.5;display: block; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
 .searchTool { width: 250px; float: right; height: 100%; background: #a8a7a7;}
 .searchBox { margin: 22px auto; width: 180px; position: relative;}
 .searchBox input { width: 180px; height: 36px; border: 0; border-radius: 18px; line-height: 36px; text-indent: 20px; background: #e4e8e9; color: #888;}
-.searchBox .search_btn { 
-	position: absolute; 
-	top: 6px; 
-	right: 10px; 
-	background: url(../assets/search_btn.png) no-repeat 0 center;
-	width: 25px; 
-	height: 24px; 
-	text-indent: -999px; 
-	overflow: hidden; 
-	border: 0;
-	cursor: pointer;
-	margin: 0;
+.searchBox .search_btn {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    background: url(../assets/search_btn.png) no-repeat 0 center;
+    width: 25px;
+    height: 24px;
+    text-indent: -999px;
+    overflow: hidden;
+    border: 0;
+    cursor: pointer;
+    margin: 0;
 }
 
 .table1 { width: 100%; font-size: 16px; color: #939393;}
 .table1 tr { background: #d3d2d2;}
 .table1 th { background: #e6e4e4;}
-.table1 th,.table1 td { text-align: left; height: 40px; padding: 5px; padding-left: 60px;} 
+.table1 th,.table1 td { text-align: left; height: 40px; padding: 5px; padding-left: 60px;}
 
 .delete { display: inline-block; width: 33px; height: 33px; background: url(../assets/delete.png) no-repeat; background-position: -4px -1px; border: 0;}
 .delete:visited { background-position: -4px -41px;}
@@ -87,54 +86,45 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .publish:visited { background-position: -4px -41px;}
 .publish:hover { background-position: -4px -81px;}
 
-.jobInfo { background: #a8a7a7; float: left; margin: 50px; min-height: 300px;}
+.jobInfo { background: #a8a7a7; float: left; margin: 50px; min-height: 300px; width: 380px;}
 .jobInfo p { line-height: 36px; overflow: hidden; padding: 5px 0;}
 .jobInfo p label { width: 80px; text-align: right; display: inline-block;}
 .jobInfo p input { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 210px;}
-.jobInfo p textarea { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 210px;height:120px; float: right; resize: none;}
+.jobInfo p select { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 220px;}
+.jobInfo p textarea { margin: 0px 56px 0px 20px; border: 0; padding: 5px; width: 210px; float: right; resize: none;}
 .jobInfo p button { display: block; margin: 5px auto; width: 159px;}
 .jobInfoTemp { border: 1px dashed #a8a7a7; float: left; margin: 50px; min-height: 280px; width: 430px; padding: 10px;}
 .jobInfoTemp h2 { line-height: 40px; font-size: 18px; }
-.jobTemp { float: left; width: 85px; margin: 0 22px 10px 0;}
-.jobTemp.checked .jobTempCheck { display: block;}
-.jobTempCheck { position: absolute; width: 32px; height: 32px; background: url(/assets/jobTempCheck.png) no-repeat; display: none;}
+
+.jobTemp { float: left; width: 85px; margin: 0 22px 10px 0; position: relative;}
 .jobTemp span { display: block; padding: 5px; text-align: center; color: #939393;}
 
-
-/* second_box */
-.second_bg { width:100%; height:100%; z-index:98; position: fixed; top:0; opacity: 0.3; filter: alpha(opacity=30); background: #fff; display: none;}
-.second_box { width:100%; height:100%; z-index:99; position: absolute; top:0; display: none; }
-.second_box.second_box_fixed { position: fixed;}
-.second_content {
-    background-color: #373f42;
-	overflow: auto;
-	margin: 114px auto 50px;
-	position: relative;
-	color: #f2f2f2;
-}
-.second_content h1 { line-height: 40px; background: #373f42; text-indent: 30px; font-size: 18px; padding-top: 10px;}
-.second_content .close {
+.JobCategoryBox { padding: 30px;}
+.JobCategoryBox p {
+    background: #FFFFFF;
+    display: inline-block;
+    width: 250px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
     font-size: 28px;
-    line-height: 40px;
-    overflow: hidden;
-    position: absolute;
-    right: 12px;
-	cursor: pointer;
+    margin: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    position: relative;
 }
-.second_content .close_1 {
+.JobCategoryBox p .close {
     font-size: 28px;
-    line-height: 40px;
-    overflow: hidden;
+    display: block;
+    width: 20px;
+    height: 20px;
+    line-height: 15px;
     position: absolute;
-    right: 12px;
-	cursor: pointer;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    display: none;
 }
-.second_content p { line-height: 36px;}
-.second_content p label { display: inline-block; width: 120px; text-align: right;}
-.second_content p input[type="text"] { padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
-.second_content p input[type="radio"] { margin-left: 10px; width: 35px; }
-.scdBoxAct { margin: 10px 0; text-align: center; }
-
+.JobCategoryBox p:hover .close { display: block; }
 
 /* 简历模板 */
 .addItemBtnBar { background: #7f7e7e; overflow: hidden;}
@@ -157,18 +147,18 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .itemBox:hover { box-shadow: 0 0 3px rgba(0,0,0,0.3) inset;}
 .itemBox .close {
     background: #7f7e7e;
-	color: #f2f2f2;
+    color: #f2f2f2;
     display: block;
     font-size: 24px;
     font-weight: bold;
     height: 20px;
-	 width: 18px;
+    width: 18px;
     line-height: 18px;
     position: absolute;
     right: 0;
     top: 0;
-	display: none;
-	cursor: pointer;
+    display: none;
+    cursor: pointer;
 }
 .itemBox:hover .close { display: block;}
 .itemBox label { font-size: 14px; line-height: 30px; display: inline-block; width: 120px;}
@@ -181,8 +171,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .imgItem a { display: block; margin-top: 70px; text-align: center;}
 
 /* 公司简介 */
-.tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto; overflow: hidden; text-align: center;}
-.tuwenImg span {display: inline-block; margin-top: 50px;height: 50px;width: 201px;cursor: pointer;}
+.tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto;}
 .tuwenBox textarea { width: 360px; height: 60px; resize: none; border: 1px solid #c2c2c2; padding: 5px; display: block; margin: 5px auto 0;}
 .tuwenBox { position: relative; padding: 5px 0;}
 .tuwenBox:hover { box-shadow: 0 0 5px #fff inset;}
@@ -190,13 +179,12 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     font-size: 28px;
     overflow: hidden;
     position: absolute;
-	top: 0;
-	right: 10px;
-	cursor: pointer;
-	display: none;
-	color: #fff;
+    top: 0;
+    right: 10px;
+    cursor: pointer;
+    display: none;
+    color: #fff;
 }
-
 .tuwenBox:hover .close { display: block;}
 
 /* 生成菜单 */
@@ -210,21 +198,20 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .menuLv2 li { position: relative;}
 .menuLv2 li img { position: absolute; top: 22px; left: -33px;}
 .addMenuItem {
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
-	background: #fff;
-	border: none;
-	color: #d3d3d3;
-	font-size: 80px;
-	font-weight: bold;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #fff;
+    border: none;
+    color: #d3d3d3;
+    font-size: 80px;
+    font-weight: bold;
 }
 .menuMakerDtl .menuLv1 button { position: absolute; left: 111px; bottom: 0;}
 .menuMakerDtl .menuLv2 button { position: absolute; left: -39px;}
 .menuMakerDtl li {}
 .menuMakerDtl li span { display: block; line-height: 50px; width: 160px; background: #ff8d00; color: #fff; margin: 5px; text-align: center;}
 .menuMakerDtl li ul { margin-top: -55px; margin-left: 200px;}
-
 
 /* 导出简历 */
 .resumeDownloadTit { height: 84px; background: #7d9199;}
@@ -234,5 +221,79 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .resumeDownloadTit .timer button { padding: 5px 50px; background: #fff; border: 0; color: #828282;}
 .resumeDownloadDtl { background: #fff; overflow: hidden;}
 .resumeDownload { margin: 50px 100px;}
-.zipBtn { background: url( /assets/resumeDownload.png) no-repeat; height: 71px; width: 71px; border: 0; color: #fff; line-height: 100px; float: left;}
+
+.zipBtn { background: url(../assets/resumeDownload.png) no-repeat; height: 71px; width: 71px; border: 0; color: #fff; line-height: 100px; float: left;}
 .downloadBtn { margin-left: 10px; height: 71px; line-height: 71px; width: 200px; background: #f6b435; border: 0; color: #fff; font-size: 36px; }
+
+/* second_box */
+.second_bg { width:100%; height:100%; z-index:98; position: fixed; top:0; opacity: 0.3; filter: alpha(opacity=30); background: #fff; display: none;}
+.second_box { width:100%; height:100%; z-index:99; position: absolute; top:0; display: none; }
+.second_box.second_box_fixed { position: fixed;}
+.second_content {
+    background-color: #373f42;
+    overflow: auto;
+    margin: 114px auto 50px;
+    position: relative;
+    color: #f2f2f2;
+}
+.second_content h1 { line-height: 40px; background: #373f42; text-indent: 30px; font-size: 18px; padding-top: 10px;}
+.second_content .close {
+    font-size: 28px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    line-height: 15px;
+    position: absolute;
+    right: 12px;
+    top: 5px;
+    cursor: pointer;
+}
+.second_content p { position: relative;}
+.second_content p .close { display: none;}
+.second_content p:hover .close { display: block;}
+.second_content p { line-height: 36px;}
+.second_content p label { display: inline-block; width: 120px; text-align: right;}
+.second_content p input[type="text"] { padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
+.second_content p input[type="radio"] { margin-left: 10px; width: 35px; }
+.scdBoxAct { margin: 10px 0; text-align: center; }
+
+.second_content p span { padding: 3px; margin-left: 10px;}
+.second_content p .check {
+    background: #FFFFFF;
+    float: right;
+    height: 20px;
+    width: 20px;
+    margin: 5px 57px 0 0;
+}
+.second_content p .check .checkPoint { display: block; width: 12px; height: 12px; padding: 0; margin: 4px; background: #fff;}
+.second_content p .check.checked .checkPoint { background: #F9651B;}
+
+/* app */
+.appNewWarn { float: right; line-height: 80px; padding: 0 10px;}
+.appNewWarn button { height: 34px;}
+.appNewWarn button:hover { box-shadow: 0 0 2px #000;}
+
+.itemBox2 { margin: 5px 0;}
+.itemBox2 label { float: left; text-align: right; width: 120px; line-height: 36px; margin-right: 10px;}
+.labRight { overflow: hidden;}
+.radioBox1 { position: relative; height: 36px;}
+.radioBox1 input[type="radio"] { width: 30px;}
+.radioBox1 input[type="text"] { height: 20px; padding: 3px; width: 250px;}
+.radioSpan { display: inline-block; width: 20px; height: 20px; background: url(../assets/radio_icon.png) no-repeat -5px -3px; position: absolute; left: 0; top: 11px;}
+.radioSpan:hover { background-position: -5px -33px;}
+.check .radioSpan { background-position: -5px -63px;}
+.txtSpan { display: inline-block; line-height: 36px; margin: 0 10px;}
+.radioBox2 { float: left;}
+.warnArea { width: 400px; height: 125px;}
+.warnTit { background: #7f7f7f; height: 40px; position: relative;}
+.warnTit .time { display: block; width: 25px; height: 25px; background: url(../assets/warnArea.png) no-repeat -3px -1px; position: absolute; left: 10px; top: 9px; cursor: pointer;}
+.warnTit .cont { display: block; width: 25px; height: 25px; background: url(../assets/warnArea.png) no-repeat -36px -2px; position: absolute; left: 45px; top: 9px; cursor: pointer;}
+.warnTit .space { display: block; width: 30px; height: 25px; background: url(../assets/warnArea.png) no-repeat -67px -2px; position: absolute; left: 80px; top: 9px; cursor: pointer;}
+.warnTxt textarea { width: 390px; height: 85px; resize: none; border: 0; padding: 5px;}
+.addcontarea { margin: 30px 20px 0; border: 1px solid #ccc; background: #fff; width: 245px; height: 75px; padding: 5px; resize: none;}
+.addrpick { padding: 5px; cursor: pointer;}
+.addrpick.check,.addrpick:hover { background: #c2c2c2; color: #fff;}
+
+.third_bg { width:100%; height:100%; z-index:100; position: fixed; top:0; background: #fff; opacity: 0.3; filter: alpha(opacity=30); display: none;}
+.third_box { z-index:101; }
+
