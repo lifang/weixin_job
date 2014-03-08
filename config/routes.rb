@@ -47,6 +47,12 @@ WeixinJob::Application.routes.draw do
       end
     end
     resources :menus
+
+    resources :exports do
+      collection do
+        get :create_xsl_table,:down_zip_file
+      end
+    end
   end
 
   resources :weixins

@@ -51,4 +51,12 @@ class Company < ActiveRecord::Base
     menu_hash = menu_hash.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
     menu_hash
   end
+
+  def self.get_client_infos_by company_id
+    sql = "select clf.id,clf.client_id,clf.hash_content,clf.created_at,clf.updated_at from companies c
+           right join clients cl on c.id=cl.company_id
+           right join client_html_infos clf on cl.id = clf.client_id
+           where c.id = ?"
+    Company.find_by_sql([sql,company_id])
+  end
 end

@@ -1,0 +1,23 @@
+
+<div class="main_con2">
+			<div>
+				<div class="resumeDownloadTit">
+					<div class="timer">
+						<label>开始时间</label>
+						<input type="text" class="start" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
+						<label>结束时间</label>
+						<input type="text" class="end" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
+						<button onclick="create_xsl_table(this,<%=@company.id%>)">导出</button>
+					</div>
+				</div>
+
+				<div class="resumeDownloadDtl">
+					<div class="resumeDownload">
+						<button class="zipBtn">zip</button>
+						<button class="downloadBtn"><%=link_to 'DOWNLOAD',down_zip_file_company_exports_path(@company)%></button>
+					</div>
+				</div>
+			</div>
+</div>
+<script src="/assets/My97DatePicker/WdatePicker.js" >
+</script>

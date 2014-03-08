@@ -4,9 +4,11 @@ gem 'rails', '3.2.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+#加压
+gem 'rubyzip', '1.1.0'
+gem 'zip-zip'
 gem 'mysql2' , '0.3.10'
-
+gem 'spreadsheet', '0.9.7'
 gem "will_paginate", '3.0.3'
 gem 'remotipart', '~> 1.0' #ajax upload file
 gem "mini_magick", "3.5.0" #handle image

@@ -224,3 +224,15 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .menuMakerDtl li {}
 .menuMakerDtl li span { display: block; line-height: 50px; width: 160px; background: #ff8d00; color: #fff; margin: 5px; text-align: center;}
 .menuMakerDtl li ul { margin-top: -55px; margin-left: 200px;}
+
+
+/* 导出简历 */
+.resumeDownloadTit { height: 84px; background: #7d9199;}
+.resumeDownloadTit .timer { height: 54px; padding: 15px 100px;}
+.resumeDownloadTit .timer label { line-height: 54px; font-size: 16px; margin-right: 10px;}
+.resumeDownloadTit .timer input { padding: 5px; margin-right: 10px;}
+.resumeDownloadTit .timer button { padding: 5px 50px; background: #fff; border: 0; color: #828282;}
+.resumeDownloadDtl { background: #fff; overflow: hidden;}
+.resumeDownload { margin: 50px 100px;}
+.zipBtn { background: url( /assets/resumeDownload.png) no-repeat; height: 71px; width: 71px; border: 0; color: #fff; line-height: 100px; float: left;}
+.downloadBtn { margin-left: 10px; height: 71px; line-height: 71px; width: 200px; background: #f6b435; border: 0; color: #fff; font-size: 36px; }
