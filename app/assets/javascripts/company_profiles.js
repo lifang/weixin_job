@@ -48,3 +48,7 @@ function submit_comany_profiles(){
     $("#html_content").val(html);
     $("#company_profiles_id").submit();
 }
+
+function show_tuwen_box(){
+    
+}

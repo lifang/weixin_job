@@ -53,7 +53,7 @@
         <h2>已有模块</h2>
         <div>
           <%@company_profiles.each do |cp|%>
-            <div class="jobTemp checked">
+            <div class="jobTemp checked" onclick="show_tuwen_box()">
               <div class="jobTempCheck"></div>
               <img src="/assets/jobTemp.png" width="85" />
               <span><%= cp.title%></span>

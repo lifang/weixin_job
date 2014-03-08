@@ -67,7 +67,6 @@ class CompanyProfilesController < ApplicationController
     end
   end
   def html_content img_arr,text_arr
-    p 22222222222222222,img_arr,text_arr
     tuwen = ""
     img_arr.each_with_index do |img , index|
       imge = (img=="#" ? "" : "<img src='#{img}' />")
