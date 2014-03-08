@@ -28,6 +28,9 @@ WeixinJob::Application.routes.draw do
       collection do
         post :upload_img
       end
+      member do
+        get :show_tuwen_page
+      end
     end
     resources :position_types
     resources :resumes do

@@ -1,21 +1,21 @@
 <%=form_for(:positions,url:company_positions_path(@company)) do%>
-<input type="hidden" class="id" name="positions[id]" value="" />
+<input type="hidden" class="id" name="positions[id]" value="<%=@position.id if @position%>" />
 <p>
 	<label>职位类型</label>
         <select id="types" name="positions[types]" style="margin-left: 19px;">
            <option value="0">请选择...</option>
            <%@position_types.each do |pt|%>
-           <option value="<%=pt.id%>"><%=pt.name%></option>
+           <option value="<%=pt.id%>" <%= (pt.id==@position.position_type_id ? "selected":"") if @position %>><%=pt.name%></option>
            <%end%>
         </select>
 </p>
 <p>
 	<label>职位名称</label>
-	<input type="text" name="positions[name]"/>
+        <input type="text" name="positions[name]" value="<%=@position.name if @position%>"/>
 </p>
 <p>
 	<label>职位描述</label>
-	<textarea name="positions[description]" ></textarea>
+	<textarea name="positions[description]" ><%=@position.description if @position%></textarea>
 </p>
 <p>
 	<button class="orangeBtn" type="button" onclick="check_position()">

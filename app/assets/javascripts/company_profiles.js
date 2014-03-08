@@ -2,7 +2,7 @@
 
 function close_tuwen(obj){
     if(confirm("是否移除？"))
-    $(obj).parent().remove();
+        $(obj).parent().remove();
 }
 function change_file(obj){
     var index=-1;
@@ -23,24 +23,26 @@ function submit_comany_profiles(){
     $(".text_area").html("");
     var title = $.trim($("#title").val());
     if(title==""){
-            alert("标题不能为空");
-            return false;
+        alert("标题不能为空");
+        return false;
     }
     var file_name = $.trim($("#file_name").val());
     if(file_name==""){
-            alert("文件名不能为空");
-            return false;
+        alert("文件名不能为空");
+        return false;
     }
     var tuwens = $("#tuwen_box").find(".tuwenBox");
     for(var i=0;i<tuwens.length;i++){
         var img =  $(tuwens[i]).find(".tuwenImg").find(".company_image").val();
         var text =  $.trim($(tuwens[i]).children("textarea").val());
-        if(img == "#" && text==""){5
+        if(img == "#" && text==""){
+            5
             alert("图片文字至少要写一个");
             return false;
         }
-        $(".img_area").append("<input type='hidden' name='image[]' value="+img+">");
-        $(".text_area").append("<input type='hidden' name='text[]' value="+text+">");
+        $(tuwens[i]).children("textarea").html( text );
+        $(".img_area").append("<input type='hidden' name='image[]' value='"+img+"'/>");
+        $(".text_area").append("<input type='hidden' name='text[]' value='"+text+"'/>");
     }
     $("#send_title").val(title);
     $("#send_file_name").val(file_name);
@@ -49,6 +51,19 @@ function submit_comany_profiles(){
     $("#company_profiles_id").submit();
 }
 
-function show_tuwen_box(){
+function show_tuwen_box(obj,company_id){
+    var job_temp = $(".jobTemp");
+    for(var j=0;j<job_temp.length;j++){
+        $(job_temp[j]).removeClass("checked");
+    }
+    $(obj).addClass("checked");
+    var id = $(obj).children("#id").val();
+
+    $.ajax({
+        async : true,
+        type : 'get',
+        url:"/companies/"+ company_id +"/company_profiles/"+id +"/show_tuwen_page",
+        dateType:"script"
+    });
     
 }

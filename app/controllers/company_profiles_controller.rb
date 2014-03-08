@@ -9,33 +9,58 @@ class CompanyProfilesController < ApplicationController
   def new
     @company_profiles = @company.company_profiles
   end
+  def edit
+    @company_profiles = @company.company_profiles
+    @company_profile = CompanyProfile.find_by_id(params[:id])
+    render 'new'
+  end
   def create
     @company_profiles = @company.company_profiles
     img_arr = params[:image]
+    p 11111111111111111111111111111,img_arr
     text_arr = params[:text]
     html_content = params[:html_content]
     title = params[:title]
     file_name = params[:file_name]
-    if CompanyProfile.find_by_title(title).blank?
-      @company_profile = @company.company_profiles.build do |c|
-        c.title = title
-        c.html_content = html_content
-        c.file_path=get_relative_path_by @company.name,file_name+".html"
-      end
-      if @company_profile.save
-        save_as_html img_arr,text_arr,file_name
-        flash[:success] = '创建成功！'
-        redirect_to company_company_profiles_path(@company)
+    update_or_create = params[:update_or_create]
+    if update_or_create == "create"
+      if CompanyProfile.find_by_title(title).blank?
+        @company_profile = @company.company_profiles.build do |c|
+          c.title = title
+          c.html_content = html_content
+          c.file_path=get_relative_path_by @company.name,file_name+".html"
+        end
+        if @company_profile.save
+          save_as_html img_arr,text_arr,file_name
+          flash[:success] = '创建成功！'
+          redirect_to company_company_profiles_path(@company)
+        else
+          flash[:error] = "创建失败,#{@company_profile.errors.messages.values.flatten.join("\\n")}"
+          render 'new'
+        end
       else
-        flash[:error] = "创建失败"
+        flash[:error] = "已经存在该title"
         render 'new'
       end
     else
-      flash[:error] = "#{@company_profile.errors.messages.values.flatten.join("\\n")}"
-      render 'new'
+      update_tuwen img_arr,text_arr,html_content,title,file_name
     end
-
   end
+
+  def update_tuwen img_arr,text_arr,html_content,title,file_name
+    id = params[:company_profile_id]
+    file_path =get_relative_path_by @company.name,file_name+".html"
+    @company_profile = CompanyProfile.find_by_id(id)
+    if @company_profile && @company_profile.update_attributes(html_content:html_content,title:title,file_path:file_path)
+          save_as_html img_arr,text_arr,file_name
+          flash[:success] = '更新成功！'
+          redirect_to company_company_profiles_path(@company)
+    else
+          flash[:error] = "更新失败,不存在简介"
+          render 'new'
+    end
+  end
+
   def upload_img
     @image = params[:image]
     @index = params[:index]
@@ -52,16 +77,44 @@ class CompanyProfilesController < ApplicationController
     file1=File.new(@full_path,'wb')
     FileUtils.cp @image.path,file1
   end
+  
+  def show_tuwen_page
+    @company_profile = CompanyProfile.find_by_id(params[:id])
+    @message =""
+    if @company_profile
+    else
+      @message ="不存在该图文！"
+    end
+
+  end
+
+  def destroy
+    @company_profile = CompanyProfile.find_by_id(params[:id])
+    file_path = @company_profile.file_path
+    if @company_profile && @company_profile.destroy
+       destroy_file file_path
+       flash[:success] = '更新成功！'
+       redirect_to company_company_profiles_path(@company)
+    else
+
+    end
+  end
 
   def get_title
     @title = "公司简介"
   end
   private
+  def destroy_file file_path
+    file_absolute_path = Rails.root.to_s + "/public#{file_path}"
+    FileUtils.rm file_absolute_path if File.exists?(file_absolute_path)
+  end
+
   def save_as_html img_arr,text_arr,filename
     content = html_content img_arr,text_arr
     file_path = Rails.root.to_s + "/public/companies/#{@company.name}/#{filename}.html"
     dir_path = get_company_dir_path @company.name
     FileUtils.mkdir_p(dir_path) unless Dir.exists?(dir_path)
+    FileUtils.rm(file_path) if File.exists?(file_path)
     File.open(file_path, "wb") do |f|
       f.write(content.html_safe)
     end
@@ -85,9 +138,9 @@ class CompanyProfilesController < ApplicationController
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-<script src='js/jquery-1.8.3.js' type='text/javascript'></script>
-<script src='js/main2.js' type='text/javascript'></script>
-<link href='style/style2.css' rel='stylesheet' type='text/css' />
+<script src='/companies/js/jquery-1.8.3.js' type='text/javascript'></script>
+<script src='/companies/js/main2.js' type='text/javascript'></script>
+<link href='/companies/style/style2.css' rel='stylesheet' type='text/css' />
 <title>微招聘-公司简介</title>
 <script>
 	$(function(){

@@ -3,7 +3,7 @@
     <div class="toolbar">
       <div class="toolBox">
         <%=link_to new_company_company_profile_path(@company) do%>
-        <button>创建简介</button>
+          <button>创建简介</button>
         <%end%>
       </div>
       <div class="searchTool">
@@ -23,7 +23,12 @@
       <tr>
         <td><%=cp.title%></td>
         <td>
+          <%=link_to  company_company_profile_path(@company,cp.id),method: :delete do%>
           <button class="delete" title="删除"></button>
+          <%end%>
+          <%=link_to edit_company_company_profile_path(@company,cp.id) do%>
+          <button class="edit" title="编辑"></button>
+          <%end%>
           <a href="<%=cp.file_path%>" target="_blank" >
           <button class="edit" title="浏览"></button>
           </a>

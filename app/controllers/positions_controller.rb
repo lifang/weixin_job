@@ -19,6 +19,14 @@ class PositionsController < ApplicationController   #招聘职位
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
   end
 
+  def edit
+    @position_types = @company.position_types || []
+    @position = Position.find_by_id(params[:id])
+    p 111111111111111111,@position
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
+    render 'new'
+  end
+
   def create
     id = params[:positions][:id]
     if id == ""
@@ -29,7 +37,7 @@ class PositionsController < ApplicationController   #招聘职位
       @position.position_type_id = types
       @position.name = name
       @position.description = description
-      @position.status = Position::STATU[:UNRELEASE]
+      @position.status = Position::STATUS[:UNRELEASE]
       @position.company_id = @company.id
       if @position.save
         flash[:success] = "新建成功！"
@@ -66,7 +74,7 @@ class PositionsController < ApplicationController   #招聘职位
 
   def release   #发布
     @position = Position.find_by_id(params[:id])
-    if @position && @position.update_attribute(:status,Position::STATU[:RELEASED])
+    if @position && @position.update_attribute(:status,Position::STATUS[:RELEASED])
       flash[:success] = '发布成功'
       redirect_to company_positions_path(@company)
     else

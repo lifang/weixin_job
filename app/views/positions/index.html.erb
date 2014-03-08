@@ -27,22 +27,25 @@
             <td><%= find_name_from  @position_types,position.position_type_id %></td>
             <td><%= position.description %></td>
             <td>
-              <%=link_to "",company_position_path(@company,position),method: :delete,confirm:'是否确认删除？',class:"delete" %>
-              <%if position.status == 1%>
-                <%=link_to release_company_position_path(@company,position) do%>
-                  <button class="publish" title="发布职位"></button>
-                <%end%>
-              <%elsif position.status == 2%>
-                 已经发布
+              <%=link_to edit_company_position_path(@company,position.id) do%>
+                <button class="edit" title="编辑"></button>
               <%end%>
-            </td>
-          </tr>
-        <%end%>
-        <%if @positions.blank? %>
-          <tr><td colspan="3">暂无招聘哦~~</td></tr>
-        <%end%>
-      </table>
+              <%=link_to "",company_position_path(@company,position),method: :delete,confirm:'是否确认删除？',class:"delete" %>
+                <%if position.status == 1%>
+                  <%=link_to release_company_position_path(@company,position) do%>
+                    <button class="publish" title="发布职位"></button>
+                  <%end%>
+                <%elsif position.status == 2%>
+                  已经发布
+                <%end%>
+              </td>
+            </tr>
+          <%end%>
+          <%if @positions.blank? %>
+            <tr><td colspan="3">暂无招聘哦~~</td></tr>
+          <%end%>
+        </table>
+      </div>
     </div>
-  </div>
 
 

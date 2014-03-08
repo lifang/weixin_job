@@ -19,7 +19,13 @@
   <div>
     <div class="toolbar">
       <div class="toolBox">
-        <button>创建简介</button>
+        <button>
+          <%if @company_profile.nil?%>
+            创建简介
+          <%else%>
+            更新简介
+          <%end%>
+        </button>
       </div>
       <div class="searchTool">
         <div class="searchBox">
@@ -29,20 +35,26 @@
     <div>
 
       <p class="profile_title">
-        标题：<input type="text" name="title" id="title" />
-        文件名：<input type="text" name="file_name" id="file_name" />.html
+        标题： <input type="text" name="title" id="title" value="<%=@company_profile.title if @company_profile %>" />
+        文件名：<input type="text" name="file_name" id="file_name" value="<%=@company_profile.title.split("/")[-1].split(".")[0] if @company_profile %>"  />.html
       </p>
       <div class="jobInfo">
         <div id="tuwen_box">
-          <%=render 'tuwen_box'%>
+          <%if @company_profile.nil?%>
+            <%=render 'tuwen_box'%>
+          <%else%>
+            <%=raw @company_profile.html_content%>
+          <%end%>
         </div>
         <%=form_for(:company_profiles,url:company_company_profiles_path(@company),html:{id:'company_profiles_id'}) do |f|%>
           <div class="img_area"></div>
           <div class="text_area"></div>
           <p>
-            <input type="hidden" value="" id="send_file_name" name="file_name" />
-            <input type="hidden" value="" id="send_title" name="title" />
-            <input type="hidden" value="" id="html_content" name="html_content" />
+            <input type="hidden"  id="company_profile_id" name="company_profile_id" value="<%=@company_profile.nil? ? "":@company_profile.id%>"/>
+            <input type="hidden"  id="update_or_create" name="update_or_create" value="<%=@company_profile.nil? ? 'create':'update'%>" />
+            <input type="hidden"  id="send_file_name" name="file_name" />
+            <input type="hidden"  id="send_title" name="title" />
+            <input type="hidden"  id="html_content" name="html_content" />
             <button type="button" class="orangeBtn" onclick="add_tuwen()">添加图文块</button>
             <button type="button" class="orangeBtn" onclick="submit_comany_profiles()">确定</button>
           </p>
@@ -53,7 +65,8 @@
         <h2>已有模块</h2>
         <div>
           <%@company_profiles.each do |cp|%>
-            <div class="jobTemp checked" onclick="show_tuwen_box()">
+          <div class="jobTemp <%=cp==@company_profile ? "checked":""%>" onclick="show_tuwen_box(this,<%=@company.id%>)">
+              <input type="hidden" id="id" value="<%=cp.id%>" />
               <div class="jobTempCheck"></div>
               <img src="/assets/jobTemp.png" width="85" />
               <span><%= cp.title%></span>
