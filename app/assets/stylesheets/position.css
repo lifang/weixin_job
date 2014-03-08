@@ -33,3 +33,10 @@
  display: none;
 }
 .JobCategoryBox p:hover .close { display: block; }
+
+.profile_title
+{
+    line-height: 60px;
+margin-bottom: -50px;
+margin-left: 50px;
+}
