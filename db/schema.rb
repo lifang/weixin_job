@@ -143,7 +143,7 @@ ActiveRecord::Schema.define(:version => 20140307071354) do
     t.integer  "company_id",   :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.string   "name",         :null => false
+    t.string   "html_url"
   end
 
 end

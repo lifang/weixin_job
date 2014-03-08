@@ -8,16 +8,20 @@
         <a class="scd_btn" name="companyInfoEdit">编辑</a>
       </li>
       <li>
-        <label>微信公众账号</label>
-        <span><%= @company.cweb %></span>
-      </li>
-      <li>
         <label>公众账号类型</label>
         <span><%= @company.app_type.to_i==0 ? "订阅号" : "服务号" %></span>
       </li>
       <li>
-        <label>token</label>
-        <span><%= @company.has_app ? @company.token : "" %></span>
+        <label>公众号token</label>
+        <span><%= @company.cweb %></span>
+      </li>
+      <li>
+        <label>公众号AppId</label>
+        <span><%= @company.app_id %></span>
+      </li>
+      <li>
+        <label>公众号AppSecret</label>
+        <span><%= @company.app_secret %></span>
       </li>
       <li class="yes">
         <label>是否配置APP</label>
@@ -57,13 +61,25 @@
           <input type="text" name="company_name" id="company_name" value="<%= @company.name %>" />
         </p>
         <p>
-          <label>微信公众账号</label>
+          <label>公众账号类型</label>
+          <input type="radio" name="app_type" value="0" <% if @company.app_type==0 %>checked<% end %> />
+          <span>订阅号</span>
+          <input type="radio" name="app_type" value="1" <% if @company.app_type==1 %>checked<% end %>/>
+          <span>服务号</span>
+        </p>
+        <p>
+          <label>微信公众账号token</label>
           <input type="text" name="company_cweb" id="company_cweb" value="<%= @company.cweb %>"/>
         </p>
         <p>
-          <label>token</label>
-          <input type="text" name="company_token" id="company_token" value="<%= @company.token %>"/>
+          <label>微信公众账号AppId</label>
+          <input type="text" name="company_app_id" id="company_app_id" value="<%= @company.app_id %>"/>
         </p>
+        <p>
+          <label>微信公众账号AppSecret</label>
+          <input type="text" name="company_app_secret" id="company_app_secret" value="<%= @company.app_secret %>"/>
+        </p>
+
       </div>
       <input type="hidden" name="edit_type" value="0"/>
       <input type="hidden" name="company_id" value="<%= @company.id %>"/>
@@ -80,21 +96,28 @@
     <div class="second_content" style="width: 450px;">
       <span class="close" title="关闭">×</span>
       <h1>APP信息修改</h1>
-      <div>
+      <div id="edit_app_div">
+        <% if @company.app_type==0 && @company.has_app %>
+        <p id="edit_app_notice_p">
+          <label>您当前的微信公众账号为订阅号,请在下面输入正确的微信公众平台登陆账号和密码!</label>
+        </p>
+        <% end %>
         <p>
           <label>是否配置APP</label>
-          <input type="radio" name="has_app" value="1" <% if @company.has_app==true %>checked<% end %> />
+          <input type="radio" name="has_app" value="1" <% if @company.has_app==true %>checked<% end %> onclick="edit_has_app(this, <%= @company.app_type %>)"/>
           <span>是</span>
-          <input type="radio" name="has_app" value="0" <% if @company.has_app==false %>checked<% end %>/>
+          <input type="radio" name="has_app" value="0" <% if @company.has_app==false %>checked<% end %> onclick="edit_has_app(this, <%= @company.app_type %>)"/>
           <span>否</span>
         </p>
         <p>
           <label>APP账号</label>
-          <input type="text" name="company_app_account" id="company_app_account" value="<%= @company.has_app ? @company.app_account : '' %>"/>
+          <input type="text" name="company_app_account" id="company_app_account" 
+                 value="<%= @company.has_app ? @company.app_account : '' %>" <% if @company.has_app==false %>disabled<% end %>/>
         </p>
         <p>
           <label>APP密码</label>
-          <input type="text" name="company_app_password" id="company_app_password" value="<%= @company.has_app ? '******' : '' %>"/>
+          <input type="text" name="company_app_password" id="company_app_password" 
+                 value="<%= @company.has_app ? '******' : '' %>" <% if @company.has_app==false %>disabled<% end %>/>
         </p>
       </div>
       <input type="hidden" name="edit_type" value="1"/>
@@ -107,7 +130,4 @@
   </div>
 <% end %>
 
-<% if flash[:notice] %>
-  <p1><%= flash[:notice].html_safe %></p1>
-<% end %>
 

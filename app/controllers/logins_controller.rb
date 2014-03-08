@@ -33,11 +33,16 @@ class LoginsController < ApplicationController
 
   #注册验证
   def create
-    @comp_name = params[:comp_name]
-    @comp_account = params[:comp_account]
-    @comp_password = params[:comp_password]
-    company = Company.new(:name => @comp_name, :status => Company::STATUS[:NORMAL],
-      :company_account => @comp_account, :company_password => Digest::MD5.hexdigest(@comp_password))
+    comp_name = params[:comp_name]
+    comp_account = params[:comp_account]
+    comp_password = params[:comp_password]
+    comp_app_type = params[:comp_app_type].to_i
+    comp_app_token = params[:comp_app_token]
+    comp_app_id = params[:comp_app_id]
+    comp_app_secret = params[:comp_app_secret]
+    company = Company.new(:name => comp_name, :status => Company::STATUS[:NORMAL],:company_account => comp_account, 
+      :company_password => Digest::MD5.hexdigest(comp_password), :app_type => comp_app_type, :cweb => comp_app_token,
+      :app_id => comp_app_id, :app_secret => comp_app_secret)
     if company.save
       flash[:notice] = "注册成功!"
       redirect_to logins_path
@@ -54,4 +59,5 @@ class LoginsController < ApplicationController
     flash[:notice] = "注销成功!"
     redirect_to logins_path
   end
+  
 end

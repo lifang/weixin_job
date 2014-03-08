@@ -4,7 +4,12 @@ class ResumesController < ApplicationController   #简历模板
   before_filter :has_sign?
   def index
     @company = Company.find_by_id(params[:company_id].to_i)
-    @resume_temp = ResumeTemplate.find_by_company_id(@company.id)
+    resume_temp = ResumeTemplate.find_by_company_id(@company.id)
+    if resume_temp
+      @resume_temp = resume_temp
+    else
+      @resume_temp = @company.resume_templates.create
+    end
   end
 
   def add_form_item

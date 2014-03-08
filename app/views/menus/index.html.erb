@@ -1,33 +1,24 @@
-
-
-
-
+<%= javascript_include_tag "menus" %>
 <div class="main_con2">
   <div>
     <div class="menuMakerTit">
       <h1>添加修改控制菜单</h1>
       <img src="/assets/menuMaker.png" />
     </div>
-
     <div class="menuMakerDtl">
       <ul class="menuLv1">
-        <li>
-          <span class="scd_btn" name="menuInfo">1</span>
-          <ul class="menuLv2">
-            <li><span class="scd_btn" name="menuInfo">1-1</span><img src="/assets/menuLv2_1.png" /></li>
-            <li><span>1-2</span><img src="/assets/menuLv2_2.png" /></li>
-            <button class="addMenuItem">+</button>
-          </ul>
-        </li>
-        <li>
-          <span>2</span>
-          <ul class="menuLv2">
-            <li><span>2-1</span><img src="/assets/menuLv2_1.png" /></li>
-            <li><span>2-2</span><img src="/assets/menuLv2_2.png" /></li>
-            <button class="addMenuItem">+</button>
-          </ul>
-        </li>
-        <button class="addMenuItem">+</button>
+        <% @father_menus.each do |fm| %>
+          <li>
+            <a href="javascirpt:viod(0)" onclick="edit_menu(1, 0, <%= fm.temp_id %>, '<%= fm.name %>', <%= fm.types %>, <%= fm.id %>)"><span class="scd_btn_1" name="menuInfo"><%= fm.name %></span></a>
+            <ul class="menuLv2">
+              <% @child_menus[fm.id.to_s].each do |cm| %>
+                <li><a href="javascirpt:viod(0)" onclick="edit_menu(2, <%= fm.id %>, <%=  cm.temp_id %>, '<%= cm.name %>', <%= cm.types %>, <%= cm.id %>)"><span class="scd_btn_1" name="menuInfo"><%= cm.name %></span><img src="/assets/menuLv2_1.png" /></a></li>
+              <% end if @child_menus[fm.id.to_s] %>
+              <button class="addMenuItem" onclick="add_menu(2,<%= fm.id %>, <%= @child_menus[fm.id.to_s].nil? ? 0 : @child_menus[fm.id.to_s].length %>)">+</button>
+            </ul>
+          </li>
+        <% end if @father_menus %>
+        <button class="addMenuItem" onclick="add_menu(1,0,<%= @father_menus.nil? ? 0 : @father_menus.length %>)">+</button>
       </ul>
     </div>
   </div>
@@ -35,35 +26,106 @@
 
 
 <div class="second_bg"></div>
-<div class="second_box menuInfo">
+
+<!--新建菜单-->
+<div class="second_box menuInfo" id="add_menu_div">
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
-    <h1>编辑菜单信息</h1>
+    <h1 name="add_menu_h1"></h1>
     <div>
       <p>
         <label>菜单名称</label>
-        <input type="text" />
+        <input type="text" name="menu_name"/>
       </p>
+      <% if @resume_tmp %>
+        <p>
+          <label>公司简历</label>
+          <span><%= @company.name %>公司简历</span>
+          <span class="check" onclick="add_selected(this)">
+            <span class="checkPoint"></span>
+            <input type="hidden" name="menu_type" value="2"/>
+            <input type="hidden" name="temp_id" value="<%= @resume_tmp.id %>"/>
+          </span>
+        </p>
+      <% end %>
+      <% @positions.each do |p| %>
+        <p>
+          <label>公司职位</label>
+          <span><%= p.name %></span>
+          <span class="check" onclick="add_selected(this)">
+            <span class="checkPoint"></span>
+            <input type="hidden" name="menu_type" value="1"/>
+            <input type="hidden" name="temp_id" value="<%= p.id %>"/>
+          </span>
+        </p>
+      <% end if @positions %>
+      <% @comp_profiles.each do |cp| %>
+        <p>
+          <label>公司简介</label>
+          <span><%= cp.title %></span>
+          <span class="check" onclick="add_selected(this)">
+            <span class="checkPoint"></span>
+            <input type="hidden" name="menu_type" value="0"/>
+            <input type="hidden" name="temp_id" value="<%= cp.id %>"/>
+          </span>
+        </p>
+      <% end if @comp_profiles %>
+    </div>    
+    <div class="scdBoxAct">
+      <button class="orangeBtn" onclick="add_menu_commit(<%= @company.id %>)">确定</button>
+      <button class="orangeBtn" onclick="add_menu_cancel(this)">取消</button>
+    </div>
+  </div>
+</div>
+
+<!--编辑菜单-->
+<div class="second_box menuInfo" id="edit_menu_div">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1 name="edit_menu_h1"></h1>
+    <div>
       <p>
-        <label>链接1</label>
-        <span>sdsd</span>
-        <span class="check checked">
-          <span class="checkPoint"></span>
-        </span>
+        <label>菜单名称</label>
+        <input type="text" name="edit_menu_name"/>
       </p>
-      <p>
-        <label>链接1</label>
-        <span>sdsd</span>
-        <span class="check">
-          <span class="checkPoint"></span>
-        </span>
-      </p>
+      <% if @resume_tmp %>
+        <p>
+          <label>公司简历</label>
+          <span><%= @company.name %>公司简历</span>
+          <span class="check" onclick="add_selected(this)">
+            <span class="checkPoint"></span>
+            <input type="hidden" name="menu_type" value="2"/>
+            <input type="hidden" name="temp_id" value="<%= @resume_tmp.id %>"/>
+          </span>
+        </p>
+      <% end %>
+      <% @positions.each do |p| %>
+        <p>
+          <label>公司职位</label>
+          <span><%= p.name %></span>
+          <span class="check" onclick="add_selected(this)">
+            <span class="checkPoint"></span>
+            <input type="hidden" name="menu_type" value="1"/>
+            <input type="hidden" name="temp_id" value="<%= p.id %>"/>
+          </span>
+        </p>
+      <% end if @positions %>
+      <% @comp_profiles.each do |cp| %>
+        <p>
+          <label>公司简介</label>
+          <span><%= cp.title %></span>
+          <span class="check" onclick="add_selected(this)">
+            <span class="checkPoint"></span>
+            <input type="hidden" name="menu_type" value="0"/>
+            <input type="hidden" name="temp_id" value="<%= cp.id %>"/>
+          </span>
+        </p>
+      <% end if @comp_profiles %>
     </div>
     <div class="scdBoxAct">
-      <button class="orangeBtn">确定</button>
-      <button class="orangeBtn">取消</button>
+      <button class="orangeBtn" onclick="edit_menu_commit(<%= @company.id %>)">确定</button>
+      <button class="orangeBtn" onclick="add_menu_cancel(this)">取消</button>
     </div>
-
   </div>
 </div>
 

@@ -18,26 +18,43 @@
       </div>
     <% end %>
     <%= form_tag logins_path(@company), :method => :post do %>
-    <div class="loginBox">
-      <h1>微招聘注册</h1>
-      <div class="loginForm">
-        <p>
-          <label>公司名称</label>
-          <input type="text" name="comp_name" id="regist_comp_name"/>
-        </p>
-        <p>
-          <label>用户名</label>
-          <input type="text" name="comp_account" id="regist_comp_account"/>
-        </p>
-        <p>
-          <label>密码</label>
-          <input type="password" name="comp_password" id="regist_comp_password"/>
-        </p>
-        <p>
-          <button class="orangeBtn" type="button" onclick="regist_valid(this)">注册</button>
-        </p>
+      <div class="loginBox">
+        <h1>微招聘注册</h1>
+        <div class="loginForm">
+          <p>
+            <label>公司名称</label>
+            <input type="text" name="comp_name" id="regist_comp_name"/>
+          </p>
+          <p>
+            <label>用户名</label>
+            <input type="text" name="comp_account" id="regist_comp_account"/>
+          </p>
+          <p>
+            <label>密码</label>
+            <input type="password" name="comp_password" id="regist_comp_password"/>
+          </p>
+          <p>
+            <label>微信公众帐号类型</label>
+            订阅号<input type="radio" name="comp_app_type" value="0" checked/>&nbsp;&nbsp;&nbsp;&nbsp;
+            服务号<input type="radio" name="comp_app_type" value="1"/>
+          </p>
+          <p>
+            <label>微信公众账号token</label>
+            <input type="text" name="comp_app_token" id="comp_app_token"/>
+          </p>
+          <p>
+            <label>微信公众账号AppId</label>
+            <input type="text" name="comp_app_id" id="comp_app_id"/>
+          </p>
+          <p>
+            <label>微信公众账号AppSecret</label>
+            <input type="text" name="comp_app_secret" id="comp_app_secret"/>
+          </p>
+          <p>
+            <button class="orangeBtn" type="button" onclick="regist_valid(this)">注册</button>
+          </p>
+        </div>
       </div>
-    </div>
     <% end %>
   </body>
 </html>

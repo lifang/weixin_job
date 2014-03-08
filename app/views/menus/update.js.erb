@@ -1,0 +1,6 @@
+<% if @status==1 %>
+  <% flash[:notice] = "编辑成功!" %>
+<% else %>
+  <% flash[:notice] = "编辑失败!" %>
+<% end %>
+window.location.reload();
