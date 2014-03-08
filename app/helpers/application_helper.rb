@@ -20,4 +20,15 @@ module ApplicationHelper
   GET_USER_INFO_ACTION = "/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN" #微信获取用户基本信息action
   ACCESS_TOKEN_ACTION = "/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" #微信获取access_token action
   CREATE_MENU_ACTION = "/cgi-bin/menu/create?access_token=%s"
+
+  def get_absolute_path_by(company_name,file_name)
+    Rails.root.to_s+"/public/companies/#{company_name}/#{file_name}"
+  end
+  def get_relative_path_by(company_name,file_name)
+    "/companies/#{company_name}/#{file_name}"
+  end
+  def get_company_dir_path(company_name)
+    Rails.root.to_s+"/public/companies/#{company_name}"
+  end
+
 end

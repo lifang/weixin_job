@@ -1,14 +1,17 @@
 <script>
   function add_tuwen(){
     var html=" \n\
-         <div class='tuwenBox' ><span class='close' title='关闭' onclick='close_tuwen(this)'>×</span> \n\
-            <div class='tuwenImg'>  \n\
-<form accept-charset='UTF-8' action='/companies/<%=@company.id%>/company_profiles/upload_img' data-remote='true' date-type='script' enctype='multipart/form-data' method='post'> \n\
-                 <span onclick='$(this).next().click()' >请点击上传图片</span> \n\
-                <input type='file' name='image' style='display: none;' onchange='change_file(this)'/> \n\
-</form>  \n\
-            </div><textarea></textarea></div> \n\
-"
+    <div class='tuwenBox' ><span class='close' title='关闭' onclick='close_tuwen(this)'>×</span> \n\
+    <div class='tuwenImg'>  \n\
+    <input type='hidden' class='company_image' value='#' /> \n\
+    <form accept-charset='UTF-8' action='/companies/<%=@company.id%>/company_profiles/upload_img' data-remote='true' date-type='script' enctype='multipart/form-data' method='post'> \n\
+    <span onclick='$(this).next().click()' >请点击上传图片</span> \n\
+    <input type='file' name='image' style='display: none;' onchange='change_file(this)'/> \n\
+    <input type='hidden' id='old_img' name='old_img' value='' /> \n\
+    <input type='hidden' id='index' name='index' value='' />        \n\
+    </form>  \n\
+    </div><textarea></textarea></div> \n\
+    "
     $("#tuwen_box").append(html);
   }
 </script>
@@ -16,63 +19,60 @@
   <div>
     <div class="toolbar">
       <div class="toolBox">
-        <button>创建简介</button>
+        <button>
+          <%if @company_profile.nil?%>
+            创建简介
+          <%else%>
+            更新简介
+          <%end%>
+        </button>
       </div>
       <div class="searchTool">
         <div class="searchBox">
         </div>
       </div>
     </div>
-
     <div>
-      <p>
-        标题：<input type="text" name="title" />
+
+      <p class="profile_title">
+        标题： <input type="text" name="title" id="title" value="<%=@company_profile.title if @company_profile %>" />
+        文件名：<input type="text" name="file_name" id="file_name" value="<%=@company_profile.title.split("/")[-1].split(".")[0] if @company_profile %>"  />.html
       </p>
       <div class="jobInfo">
         <div id="tuwen_box">
-          <input type="hidden" value="" id="html_content" name="html_content" />
-          <div class="tuwenBox">
-            <span class="close" title="关闭" onclick="close_tuwen(this)">×</span>
-            <div class="tuwenImg">
-              <%=form_for(:company_profiles,url:upload_img_company_company_profiles_path(@company),remote:true, :html =>{:multipart => true,'date-type'=>'script'}) do |f|%>
-                <span onclick="$(this).next().click()" >请点击上传图片</span>
-                <input type="file" name="image" style="display: none;" onchange="change_file(this)"/>
-              <%end%>
-            </div>
-            <textarea></textarea>
-          </div>
-          <div class="tuwenBox" >
-            <span class="close" title="关闭" onclick="close_tuwen(this)">×</span>
-            <div class="tuwenImg"onclick="$(this).next().click()">
-              <%=form_for(:company_profiles,url:upload_img_company_company_profiles_path(@company),remote:true, :html =>{:multipart => true,'date-type'=>'script'}) do |f|%>
-                <span onclick="$(this).next().click()" >请点击上传图片</span>
-                <input type="file" name="image" style="display: none;" onchange="change_file(this)"/>
-              <%end%>
-            </div>
-            <textarea></textarea>
-          </div>
+          <%if @company_profile.nil?%>
+            <%=render 'tuwen_box'%>
+          <%else%>
+            <%=raw @company_profile.html_content%>
+          <%end%>
         </div>
-        <p>
-          <button type=" button" class="orangeBtn" onclick="add_tuwen()">添加图文块</button>
-          <button type=" button" class="orangeBtn" onclick="submit_comany_profiles()">确定</button>
-        </p>
+        <%=form_for(:company_profiles,url:company_company_profiles_path(@company),html:{id:'company_profiles_id'}) do |f|%>
+          <div class="img_area"></div>
+          <div class="text_area"></div>
+          <p>
+            <input type="hidden"  id="company_profile_id" name="company_profile_id" value="<%=@company_profile.nil? ? "":@company_profile.id%>"/>
+            <input type="hidden"  id="update_or_create" name="update_or_create" value="<%=@company_profile.nil? ? 'create':'update'%>" />
+            <input type="hidden"  id="send_file_name" name="file_name" />
+            <input type="hidden"  id="send_title" name="title" />
+            <input type="hidden"  id="html_content" name="html_content" />
+            <button type="button" class="orangeBtn" onclick="add_tuwen()">添加图文块</button>
+            <button type="button" class="orangeBtn" onclick="submit_comany_profiles()">确定</button>
+          </p>
+        <%end%>
       </div>
+
       <div class="jobInfoTemp">
         <h2>已有模块</h2>
         <div>
-          <div class="jobTemp checked">
-            <div class="jobTempCheck"></div>
-            <img src="images/jobTemp.png" width="85" />
-            <span>公司说明</span>
-          </div>
-          <div class="jobTemp">
-            <img src="/assets/jobTemp.png" width="85" />
-            <span>公司动态</span>
-          </div>
-          <div class="jobTemp">
-            <img src="/assets/jobTemp.png" width="85" />
-            <span>公司理念</span>
-          </div>
+          <%@company_profiles.each do |cp|%>
+          <div class="jobTemp <%=cp==@company_profile ? "checked":""%>" onclick="show_tuwen_box(this,<%=@company.id%>)">
+              <input type="hidden" id="id" value="<%=cp.id%>" />
+              <div class="jobTempCheck"></div>
+              <img src="/assets/jobTemp.png" width="85" />
+              <span><%= cp.title%></span>
+            </div>
+          <%end%>
+
         </div>
       </div>
     </div>

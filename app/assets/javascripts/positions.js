@@ -1,9 +1,7 @@
 function position_edit(obj){
-     var id = $(obj).find(".id").val() ;
      var types_id = $(obj).find(".types_id").val() ;
      var description = $(obj).find(".description").val() ;
      var name = $(obj).find(".name").val() ;
-     ($(".jobInfo").find('.id').val(id));
      ($(".jobInfo").find('input[type=text]').val(name));
      ($(".jobInfo").find('textarea').val(description));
      ($(".jobInfo").find('#types').val(types_id));
