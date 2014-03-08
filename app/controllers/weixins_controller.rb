@@ -13,21 +13,27 @@ class WeixinsController < ApplicationController
     signature, timestamp, nonce, echostr, cweb = params[:signature], params[:timestamp], params[:nonce], params[:echostr], params[:cweb]
     tmp_encrypted_str = get_signature(cweb, timestamp, nonce)
     if request.request_method == "POST" && tmp_encrypted_str == signature
-      if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
-        return_app_regist_link
-        create_menu #创建自定义菜单
-      elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
-        return_app_regist_link
-        #存储消息并推送到ios端
-        get_client_message
-      elsif params[:xml][:MsgType] == "image" #用户发送图片
-        save_image_or_voice_from_wx(cweb, "image")
-        render :text => "ok"
-      elsif params[:xml][:MsgType] == "voice" #用户发送语音
-        save_image_or_voice_from_wx(cweb, "voice")
-        render :text => "ok"
-      else
-        render :text => "ok"
+      if @company.present?
+        if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
+          return_app_regist_link  #返回app登记链接
+        
+          open_id = params[:xml][:FromUserName]
+          Client.save_client_info(open_id, @company) #新建client记录，保存头像，faker_id, open_id
+        
+          create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
+        elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
+          return_app_regist_link if @company.has_app #返回app登记链接
+          #存储消息并推送到ios端
+          get_client_message
+        elsif params[:xml][:MsgType] == "image" #用户发送图片
+          save_image_or_voice_from_wx("image")
+          render :text => "ok"
+        elsif params[:xml][:MsgType] == "voice" #用户发送语音
+          save_image_or_voice_from_wx("voice")
+          render :text => "ok"
+        else
+          render :text => "ok"
+        end
       end
     elsif request.request_method == "GET" && tmp_encrypted_str == signature  #配置服务器token时是get请求
       render :text => tmp_encrypted_str == signature ? echostr :  false
@@ -115,11 +121,56 @@ Text
 
   #创建自定义菜单
   def create_menu
-    access_token = get_access_token
+    access_token = get_access_token(@company)
     if access_token and access_token["access_token"]
       menu_str = @company.get_menu_by_website
       c_menu_action = CREATE_MENU_ACTION % access_token["access_token"]
       response = create_post_http(WEIXIN_OPEN_URL ,c_menu_action ,menu_str)
+    end
+  end
+
+  #保存图片，语音进public目录下
+  def save_image_or_voice_from_wx(flag)
+    msg_id = params[:xml][:MsgId]
+    open_id = params[:xml][:FromUserName]
+    client = Client.find_by_open_id_and_status(open_id, Client::STATUS[:valid])  #查询有效用户
+    if client
+      if flag == "image"
+        file_extension = ".jpg"
+        remote_resource_url = params[:xml][:PicUrl]
+
+        save_file(remote_resource_url, file_extension, msg_id)
+      else
+        access_token = get_access_token(@company)
+        if access_token and access_token["access_token"]
+          media_id = params[:xml][:MediaId]
+          download_action = DOWNLOAD_RESOURCE_ACTION % [access_token["access_token"], media_id]
+          remote_resource_url = (WEIXIN_DOWNLOAD_URL + download_action)
+          file_extension = ".amr"
+
+          http = set_http(WEIXIN_DOWNLOAD_URL)
+          request= Net::HTTP::Get.new(download_action)
+          back_res = http.request(request)
+
+          if back_res && !back_res[:errmsg].present?
+            save_file(remote_resource_url, file_extension, msg_id)
+          end
+        end
+      end
+    end
+  end
+
+  def save_file(remote_resource_url, file_extension, msg_id)
+    tmp_file = open(remote_resource_url) #打开直接下载链接
+    filename = msg_id + file_extension  #临时文件不能取到扩展名
+    weixin_resource = SITE_PATH % @company.root_path + "weixin_resource/"
+    wx_full_resource = Rails.root.to_s + weixin_resource
+    new_file_name = wx_full_resource + filename
+    FileUtils.mkdir_p(wx_full_resource) unless Dir.exists?(wx_full_resource)
+    File.open(new_file_name, "wb")  {|f| f.write tmp_file.read }
+    if File.exist?(new_file_name)
+      message_path = "/allsites/%s/" % @company.root_path + "weixin_resource/" + filename #保存进数据库的路径
+      get_client_message(message_path)
     end
   end
 

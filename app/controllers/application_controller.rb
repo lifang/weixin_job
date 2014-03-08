@@ -61,9 +61,9 @@ class ApplicationController < ActionController::Base
   end
 
   #根据app_id 和app_secret获取帐号token
-  def get_access_token
-    app_id = @company.app_id
-    app_secret = @company.app_secret
+  def get_access_token(company)
+    app_id = company.app_id
+    app_secret = company.app_secret
     token_action = ACCESS_TOKEN_ACTION % [app_id, app_secret]
     token_info = create_get_http(WEIXIN_OPEN_URL ,token_action)
     return token_info
@@ -96,4 +96,17 @@ class ApplicationController < ActionController::Base
     http
   end
 
+  #根据open_id和token，保存用户的头像信息
+  def get_user_basic_info(open_id, company)
+    access_token = get_access_token(company)
+    user_avatar_url = nil
+    if access_token and access_token["access_token"]
+      action = GET_USER_INFO_ACTION % [access_token["access_token"], open_id]
+      user_info = create_get_http(WEIXIN_OPEN_URL, action)
+      if user_info && user_info["subscribe"]==1
+        user_avatar_url = user_info["headimgurl"]
+      end
+    end
+    user_avatar_url
+  end
 end

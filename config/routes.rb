@@ -53,6 +53,9 @@ WeixinJob::Application.routes.draw do
         get :create_xsl_table,:down_zip_file
       end
     end
+
+    resources :app_managements
+
   end
 
   resources :weixins

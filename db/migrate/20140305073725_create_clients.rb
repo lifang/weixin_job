@@ -9,8 +9,8 @@ class CreateClients < ActiveRecord::Migration
       t.string :password
       t.string :username
       t.string :avatar_url
-      t.boolean :has_new_message
-      t.boolean :has_new_record
+      t.boolean :has_new_message, :default => false
+      t.boolean :has_new_record, :default => false
       t.string :open_id
       t.boolean :status, :default => false
       t.string :remark

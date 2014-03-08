@@ -17,6 +17,14 @@ class Company < ActiveRecord::Base
   HAS_APP = {:NO => false, :YES => true} #是否有APP
   APP_TYPE = {:SUBSCRIPTION => 0, :SERVICE => 1} #公众号类型0订阅号，1服务号
 
+  def subscribed_account?
+    self.app_type == APP_TYPE[:SUBSCRIPTION]
+  end
+
+  def service_account?
+    self.app_type == APP_TYPE[:SERVICE]
+  end
+
 
   #根据company获取自定义菜单
   def get_menu_by_website
