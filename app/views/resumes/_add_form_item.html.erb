@@ -13,7 +13,24 @@
     </div>
   </div>
 </div>
-<div class="second_box second_box_fixed addImageItem">
+
+<div class="second_box second_box_fixed addHeadImageItem">    <!--添加头像-->
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>添加头像</h1>
+    <div>
+      <p>
+        <label>标题名称</label>
+        <input type="text" name="add_item_title"/>
+      </p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn" onclick="add_form_item('head_image_div',this, <%= @company.id %>)">确定</button>
+    </div>
+  </div>
+</div>
+
+<div class="second_box second_box_fixed addFileItem">    <!--添加附件-->
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
     <h1>添加图片</h1>
@@ -24,10 +41,11 @@
       </p>
     </div>
     <div class="scdBoxAct">
-      <button class="orangeBtn" onclick="add_form_item('image_div',this, <%= @company.id %>)">确定</button>
+      <button class="orangeBtn" onclick="add_form_item('file_div',this, <%= @company.id %>)">确定</button>
     </div>
   </div>
 </div>
+
 <div class="second_box second_box_fixed addTxtItem">
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
@@ -40,15 +58,16 @@
     </div>
   </div>
 </div>
-<div class="second_box addItem addRdoItem">
+
+<div class="second_box second_box_fixed addItem addRdoItem">
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
     <h1>增加单选框</h1>
     <div class="insetBox">
       <p><label>单选框问题：</label><input type="text" name="add_item_title" /></p>
-      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
+      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
+      <p class="optBox"><label>单选框选项：</label><input type="text" name="add_radion_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
     </div>
     <div class="scdBoxAct">
       <button class="orangeBtn addOptBox" onclick="add_tag_p('radio_div',this)">增加选项</button>
@@ -56,15 +75,16 @@
     </div>
   </div>
 </div>
-<div class="second_box addItem addChekItem">
+
+<div class="second_box second_box_fixed addItem addChekItem">
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
     <h1>增加复选框</h1>
     <div class="insetBox">
       <p><label>复选框问题：</label><input type="text" name="add_item_title"/></p>
-      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
+      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
+      <p class="optBox"><label>复选框选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
     </div>
     <div class="scdBoxAct">
       <button class="orangeBtn addOptBox" onclick="add_tag_p('checkbox_div',this)">增加选项</button>
@@ -72,15 +92,16 @@
     </div>
   </div>
 </div>
-<div class="second_box addItem addSelItem">
+
+<div class="second_box second_box_fixed addItem addSelItem">
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
     <h1>增加下拉框</h1>
     <div class="insetBox">
       <p><label>下拉框问题：</label><input type="text" name="add_item_title"/></p>
-      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
+      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
+      <p class="optBox"><label>下拉框选项：</label><input type="text" name="add_select_option"/><span class="close_1" onclick="del_tag_p(this)" style="cursor: pointer;">×</span></p>
     </div>
     <div class="scdBoxAct">
       <button class="orangeBtn addOptBox" onclick="add_tag_p('select_div',this)">增加选项</button>
@@ -88,7 +109,8 @@
     </div>
   </div>
 </div>
-<div class="second_box addSuccess">
+
+<div class="second_box second_box_fixed addSuccess">
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
     <h1>提交成功页面</h1>

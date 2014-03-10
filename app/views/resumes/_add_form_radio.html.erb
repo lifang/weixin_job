@@ -1,10 +1,13 @@
 <div class="radioItem itemBox radio_div">
-  <span class="close" onclick="remove_form_item(this)">×</span>
+  <span class="close" onclick="remove_form_item(this, 'radio_div')">×</span>
   <p><label><%= @item_tile %></label></p>
   <input type="hidden" name="k_name" value="<%= @title_name %>"/>
   <input type="hidden" name="tags[<%= @title_name %>][<%= :name %>]" value="<%= @item_tile %>"/>
-  <% @options.each do |opt| %>
+
+  <div><input type="radio" name="<%= @item_tile %>" checked/><span><%= @options[0] %></span></div>
+  <input type="hidden" name="tags[<%= @title_name %>][<%= :options %>][]" value="<%= @options[0] %>"/>
+  <% @options[1..@options.length-1].each do |opt| %>
     <div><input type="radio" name="<%= @item_tile %>" /><span><%= opt %></span></div>
     <input type="hidden" name="tags[<%= @title_name %>][<%= :options %>][]" value="<%= opt %>"/>
-  <% end %>
+  <% end if @options[1..@options.length-1] %>
 </div>

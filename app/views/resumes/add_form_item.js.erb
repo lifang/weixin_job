@@ -2,10 +2,14 @@
 $("#form_div").append("<%= j(render :partial => "add_form_message") %>");
 $(".second_bg").hide();
 $(".addInfoItem").hide();
-<% elsif @name == "image_div" %>
-$("#form_div").append("<%= j(render :partial => "add_form_image") %>");
+<% elsif @name == "head_image_div" %>
+$("#form_div").append("<%= j(render :partial => "add_form_head_image") %>");
 $(".second_bg").hide();
-$(".addImageItem").hide();
+$(".addHeadImageItem").hide();
+<% elsif @name == "file_div" %>
+$("#form_div").append("<%= j(render :partial => "add_form_file") %>");
+$(".second_bg").hide();
+$(".addFileItem").hide();
 <% elsif @name == "text_div" %>
 $("#form_div").append("<%= j(render :partial => "add_form_text") %>");
 $(".second_bg").hide();

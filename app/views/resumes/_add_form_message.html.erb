@@ -1,5 +1,5 @@
 <div class="infoItem itemBox message_div">
-  <span class="close" onclick="remove_form_item(this)">×</span>
+  <span class="close" onclick="remove_form_item(this, 'message_div')">×</span>
   <p><label><%= @item_tile %></label><input type="text"/></p>
   <input type="hidden" name="k_name" value="<%= @title_name %>"/>
   <input type="hidden" name="tags[<%= @title_name %>][<%= :name %>]" value="<%= @item_tile %>"/>

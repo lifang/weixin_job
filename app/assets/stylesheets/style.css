@@ -17,9 +17,10 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .loginBox { width: 400px; margin: 100px auto 0;}
 .loginBox h1 { height: 84px; line-height: 84px; color: #f2f2f2; font-size: 40px; text-shadow: 1px 1px 2px #f2f2f2; text-align: center;}
 .loginForm { background: #fff; border-radius: 5px; padding: 10px;}
-.loginForm p { line-height: 40px; padding: 5px; overflow: hidden; text-align: center;}
-.loginForm p label { width: 80px; text-align: right; display: inline-block; font-size: 18px; color: #a8a8a8;}
-.loginForm p input { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 210px; background: #f2f2f2; font-size: 20px; border: 1px solid #c2c2c2; color: #a8a8a8;}
+.loginForm p { line-height: 40px; padding: 5px; overflow: hidden;}
+.loginForm p label { width: 120px; text-align: right; display: inline-block; font-size: 18px; color: #a8a8a8; margin-right: 10px;}
+.loginForm p input { border: 0; padding: 5px; width: 180px; background: #f2f2f2; font-size: 20px; border: 1px solid #c2c2c2; color: #a8a8a8;}
+.loginForm .warn { color: #a8a8a8; text-align: center; display: block;}
 .loginBtn { margin-right: 10px;}
 
 /* header */
@@ -139,7 +140,9 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .addItemBtnBar li[name="addSuccess"] { background-position: -505px 0px;}
 .addItemBtnBar li[name="addImgItem"] { background-position: -606px 0px;}
 .addItemBtnBar li span { color: #a3a3a3; display: block; text-align: center; margin-top: 55px; }
-
+.addItemBtnBar .userHead { background-position: -606px 0px;}
+.addItemBtnBar .annex { background-position: -707px 0px;}
+.annexItem a { display: block; margin: 20px; text-align: center;}
 
 .phoneVirtual { width: 400px; min-height: 500px; margin: 20px; background: #e3e3e3;}
 
@@ -193,22 +196,18 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .menuMakerTit img { position: absolute; bottom: 0; left: 297px; padding: 5px;}
 .menuMakerDtl { background: #fff; padding-left: 175px;}
 .menuMakerDtl ul { position: relative}
-.menuMakerDtl .menuLv1 { background: url(../assets/menuLv1.png) 116px 0px repeat-y; padding: 50px 50px 0 50px;}
+.menuMakerDtl .menuLv1 { background: url(../assets/menuLv1.png) 116px 0px repeat-y; padding: 50px;}
 .menuMakerDtl .menuLv2 { padding-bottom: 50px; }
 .menuLv2 li { position: relative;}
 .menuLv2 li img { position: absolute; top: 22px; left: -33px;}
 .addMenuItem {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    background: #fff;
-    border: none;
-    color: #d3d3d3;
-    font-size: 80px;
-    font-weight: bold;
+    background: url(../assets/menuAdd.png) no-repeat;
+    width: 36px;
+    height: 50px;
+    border: 0;
 }
-.menuMakerDtl .menuLv1 button { position: absolute; left: 111px; bottom: 0;}
-.menuMakerDtl .menuLv2 button { position: absolute; left: -39px;}
+.menuMakerDtl .menuLv1 button { position: absolute; left: 111px; font-size: 0;}
+.menuMakerDtl .menuLv2 button { position: absolute; left: -35px; font-size: 0;}
 .menuMakerDtl li {}
 .menuMakerDtl li span { display: block; line-height: 50px; width: 160px; background: #ff8d00; color: #fff; margin: 5px; text-align: center;}
 .menuMakerDtl li ul { margin-top: -55px; margin-left: 200px;}

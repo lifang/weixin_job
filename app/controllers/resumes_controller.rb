@@ -37,9 +37,9 @@ class ResumesController < ApplicationController   #简历模板
     ResumeTemplate.transaction do
       resume_temp.update_attribute("html_content", tags_hash)
       flash[:notice] = "模板编辑成功!"
+      ResumeTemplate.get_html(resume_temp)
       redirect_to company_resumes_path(company)
     end
-
   end
 
   def get_title

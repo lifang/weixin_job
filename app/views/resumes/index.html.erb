@@ -9,34 +9,39 @@
         <li class="scd_btn" name="addSelItem"><span>下拉框</span></li>
         <li class="scd_btn" name="addTxtItem"><span>纯文本</span></li>
         <li class="scd_btn" name="addSuccess"><span>提交成功页</span></li>
-        <li class="scd_btn" name="addImageItem"><span>图片</span></li>
+        <li class="userHead" name="addHeadImageItem"><span>头像</span></li>
+        <li class="annex" name="addFileItem"><span>附件</span></li>
       </ul>
     </div>
     <div class="phoneVirtual">
       <%= form_tag company_resume_path(@company, @resume_temp), :method => :put do %>
         <div id="form_div">
+          <%= @resume_temp.html_content %>
           <% @resume_temp.html_content.each do |k,v| %>
             <% if k.to_s.split("_")[0]=="message" %>
               <div class="infoItem itemBox message_div">
-                <span class="close" onclick="remove_form_item(this)">×</span>
+                <span class="close" onclick="remove_form_item(this, 'message_idv')">×</span>
                 <p><label><%= v[:name] %></label><input type="text"/></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
               </div>
             <% elsif k.to_s.split("_")[0]=="radio" %>
               <div class="radioItem itemBox radio_div">
-                <span class="close" onclick="remove_form_item(this)">×</span>
+                <span class="close" onclick="remove_form_item(this, 'radio_div')">×</span>
                 <p><label><%= v[:name] %></label></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
-                <% v[:options].each do |opt| %>
+
+                <div><input type="radio" name="<%= v[:name] %>" checked/><span><%= v[:options][0] %></span></div>
+                <input type="hidden" name="tags[<%= k %>][<%= :options %>][]" value="<%= v[:options][0] %>"/>
+                <% v[:options][1..v[:options].length-1].each do |opt| %>
                   <div><input type="radio" name="<%= v[:name] %>" /><span><%= opt %></span></div>
                   <input type="hidden" name="tags[<%= k %>][<%= :options %>][]" value="<%= opt %>"/>
-                <% end %>
+                <% end if v[:options][1..v[:options].length-1] %>
               </div>
             <% elsif k.to_s.split("_")[0]=="checkbox" %>
               <div class="checkItem itemBox check_box_div">
-                <span class="close" onclick="remove_form_item(this)">×</span>
+                <span class="close" onclick="remove_form_item(this, 'check_box_div')">×</span>
                 <p><label><%= v[:name] %></label></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
@@ -47,7 +52,7 @@
               </div>
             <% elsif  k.to_s.split("_")[0]=="select" %>
               <div class="selectItem itemBox select_div">
-                <span class="close" onclick="remove_form_item(this)">×</span>
+                <span class="close" onclick="remove_form_item(this, 'select_div')">×</span>
                 <label><%= v[:name] %></label>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
@@ -60,9 +65,17 @@
                   <input type="hidden" name="tags[<%= k %>][<%= :options %>][]" value="<%= opt %>"/>
                 <% end %>
               </div>
-            <% elsif k.to_s.split("_")[0]=="image" %>
-              <div class="imgItem itemBox image_div">
-                <span class="close" onclick="remove_form_item(this)">×</span>
+            <% elsif k.to_s.split("_")[0]=="headimage" %>
+              <div class="imgItem itemBox image_div head_image_div">
+                <span class="close" onclick="remove_form_item(this, 'headimage_div')">×</span>
+                <a href="javasctipt:void(0)"><%= v[:name] %></a>
+                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :url %>]" value=""/>
+              </div>
+            <% elsif k.to_s.split("_")[0]=="file" %>
+              <div class="imgItem itemBox image_div file_div">
+                <span class="close" onclick="remove_form_item(this, 'file_div')">×</span>
                 <a href="javasctipt:void(0)"><%= v[:name] %></a>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
@@ -70,14 +83,14 @@
               </div>
             <% elsif k.to_s.split("_")[0]=="text" %>
               <div class="txtItem itemBox text_div">
-                <span class="close" onclick="remove_form_item(this)">×</span>
+                <span class="close" onclick="remove_form_item(this, 'text_div')">×</span>
                 <p><%= v[:text] %></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :text %>]" value="<%= v[:text] %>"/>
               </div>
             <% elsif k.to_s.split("_")[0]=="success" %>
               <div class="infoItem itemBox success_div">
-                <span class="close" onclick="remove_form_item(this)">×</span>
+                <span class="close" onclick="remove_form_item(this, 'success_div')">×</span>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <p><label>提交成功页</label>   </p>
                 <p>
@@ -100,7 +113,7 @@
           <% end if @resume_temp.html_content %>
         </div>
         <div class="scdBoxAct">
-          <button class="orangeBtn" type="submit">确定</button>
+          <button class="orangeBtn" type="button" onclick="create_resume_valid(this)">确定</button>
         </div>
 
       <% end %>

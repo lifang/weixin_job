@@ -47,6 +47,7 @@ WeixinJob::Application.routes.draw do
       end
     end
     resources :menus
+    resources :client_resumes
   end
 
   resources :weixins
