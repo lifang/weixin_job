@@ -6,12 +6,12 @@ class ExportsController < ApplicationController   #导出简历
     
   end
   def down_zip_file
-    directory = get_company_dir_path @company.id+"/excel/"
+    directory = get_company_dir_path @company.id.to_s+"/excel/"
  
     FileUtils.mkdir_p directory unless Dir.exists?(directory)
     zipfile_name =""
     if Dir.exists?(directory)
-      zipfile_name = (get_company_dir_path @company.id)+"/excel/export.zip"
+      zipfile_name = (get_company_dir_path @company.id.to_s)+"/excel/export.zip"
       if File.exists?(zipfile_name)
         FileUtils.rm_f zipfile_name
       end
@@ -26,7 +26,7 @@ class ExportsController < ApplicationController   #导出简历
   def create_xsl_table
     start_time = params[:start_time]
     end_time = params[:end_time]
-    @client_infos = (Company.get_client_infos_by @company.id) || []
+    @client_infos = (Company.get_client_infos_by @company.id.to_s,start_time,end_time) || []
     p @client_infos
     if @client_infos.length>0
       xls_content_for @client_infos
@@ -36,17 +36,18 @@ class ExportsController < ApplicationController   #导出简历
       render text:2
     end
   end
+
   def xls_content_fors
     p 21312312312
     book = Spreadsheet::Excel::Workbook.new
     sheet1 = book.create_worksheet :name => "form_datas_#{1312}"
     sheet1[0, 0]="<a href='http://www.baidu.com'>haah</a>"
-    p 2222222222222,sheet1.class
-    sheet1.row(0)[0] = Spreadsheet::Link.new 'http://www.baidu.com', "sdfsdf"
-    file_path = (get_company_dir_path @company.name)+"/excel/export.xls"
+    sheet1.row(0)[0] = Spreadsheet::Link.new './images/1.jpg', "wwwwwwwwwwww"
+    file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     book.write file_path
   end
+  
   def xls_content_for(objs)
     xls_report = StringIO.new
     book = Spreadsheet::Workbook.new
@@ -68,7 +69,7 @@ class ExportsController < ApplicationController   #导出简历
         count_row += 1
       end
     end
-    file_path = (get_company_dir_path @company.id)+"/excel/export.xls"
+    file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     book.write file_path
   end

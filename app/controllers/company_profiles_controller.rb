@@ -27,7 +27,7 @@ class CompanyProfilesController < ApplicationController
         @company_profile = @company.company_profiles.build do |c|
           c.title = title
           c.html_content = html_content
-          c.file_path=get_relative_path_by @company.id,file_name+".html"
+          c.file_path=get_relative_path_by @company.id.to_s,file_name+".html"
         end
         if @company_profile.save
           save_as_html img_arr,text_arr,file_name
@@ -72,7 +72,7 @@ class CompanyProfilesController < ApplicationController
     end
     FileUtils.mkdir_p @root_path unless Dir.exist?(@root_path)
     @full_path = @root_path +"/"+ @image.original_filename
-    @img_path = "/companies/"+@company.id+"/company_profiles/"+ @image.original_filename
+    @img_path = "/companies/"+@company.id.to_s+"/company_profiles/"+ @image.original_filename
     file1=File.new(@full_path,'wb')
     FileUtils.cp @image.path,file1
   end
@@ -110,8 +110,8 @@ class CompanyProfilesController < ApplicationController
 
   def save_as_html img_arr,text_arr,filename
     content = html_content img_arr,text_arr
-    file_path = Rails.root.to_s + "/public/companies/#{@company.id}/#{filename}.html"
-    dir_path = get_company_dir_path @company.id
+    file_path = Rails.root.to_s + "/public/companies/#{@company.id.to_s}/#{filename}.html"
+    dir_path = get_company_dir_path @company.id.to_s
     FileUtils.mkdir_p(dir_path) unless Dir.exists?(dir_path)
     FileUtils.rm(file_path) if File.exists?(file_path)
     File.open(file_path, "wb") do |f|
