@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>微招聘-<%= @title %></title>
-    <%= stylesheet_link_tag    "application", "style" %>
-    <%= javascript_include_tag "application","main" %>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
   </head>
@@ -47,8 +47,12 @@
           <%= link_to company_menus_path(@company) do %>
           <li class="leftMenuItem <%= is_hover?("menus")%>">菜单</li>
           <% end %>
+          <%= link_to company_exports_path(@company) do %>
           <li class="leftMenuItem">导出简历</li>
-          <li class="leftMenuItem">APP管理</li>
+          <%end%>
+          <%= link_to company_app_managements_path(@company) do %>
+          <li class="leftMenuItem <%= is_hover?("app_managements")%>">APP管理</li>
+          <% end %>
           <a href="/logins/sign_out">
           <li class="leftMenuItem">注销</li>
           </a>

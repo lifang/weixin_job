@@ -17,6 +17,14 @@ class Company < ActiveRecord::Base
   HAS_APP = {:NO => false, :YES => true} #是否有APP
   APP_TYPE = {:SUBSCRIPTION => 0, :SERVICE => 1} #公众号类型0订阅号，1服务号
 
+  def subscribed_account?
+    self.app_type == APP_TYPE[:SUBSCRIPTION]
+  end
+
+  def service_account?
+    self.app_type == APP_TYPE[:SERVICE]
+  end
+
 
   #根据company获取自定义菜单
   def get_menu_by_website
@@ -50,5 +58,13 @@ class Company < ActiveRecord::Base
     end
     menu_hash = menu_hash.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
     menu_hash
+  end
+
+  def self.get_client_infos_by company_id,start_time,end_time
+    sql = "select clf.id,clf.client_id,clf.hash_content,clf.created_at,clf.updated_at from companies c
+           right join clients cl on c.id=cl.company_id
+           right join client_html_infos clf on cl.id = clf.client_id
+           where c.id = ? and clf.created_at >=? and clf.created_at <=?"
+    Company.find_by_sql([sql,company_id,start_time,end_time])
   end
 end

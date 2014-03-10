@@ -48,10 +48,32 @@ WeixinJob::Application.routes.draw do
     end
     resources :menus
     resources :client_resumes
+    resources :exports do
+      collection do
+        get :create_xsl_table,:down_zip_file
+      end
+    end
+
+    resources :app_managements
+
   end
 
   resources :weixins
 
+
+  namespace :api do
+    resources :clients do
+      collection do
+        post :login, :message_detail, :refresh, :del_recent_client, :get_token
+        post :edit_client, :set_receive, :set_undisturbed
+      end
+    end
+    resources :messages do
+      collection do
+        post :make_record, :edit_record, :send_message_to_user
+      end
+    end
+  end
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
