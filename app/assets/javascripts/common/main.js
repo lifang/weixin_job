@@ -37,4 +37,11 @@ $(function(){
 			$(this).css("background","#dcdada");
 		}
 	});
+        $("#close_flash").click(function() {
+		$("#flash_field").hide();
+		$(".tab_alert").hide();
+	});
+	$("#flash_field").fadeOut(2000);
+
+
 })

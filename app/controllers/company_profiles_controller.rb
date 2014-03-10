@@ -64,7 +64,7 @@ class CompanyProfilesController < ApplicationController
     @image = params[:image]
     @index = params[:index]
     old_img_url = params[:old_img][4...-1]
-    @root_path = Rails.root.to_s + "/public/companies/"+@company.name+"/company_profiles"
+    @root_path = Rails.root.to_s + "/public/companies/"+@company.id.to_s+"/company_profiles"
     unless old_img_url.blank?
       file_name = old_img_url.split("/")[-1]
       file_path = @root_path +"/"+file_name

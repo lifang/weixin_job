@@ -54,6 +54,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .toolbar { background: #868686; height: 80px;}
 .toolBox { display: inline-block;}
 .toolBox button { background: #fff; border: 0 none; height: 30px; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
+.white_btn_for_a { display: block;line-height: 25px; background: #fff; border: 0 none; height: 30px; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
 .searchTool { width: 250px; float: right; height: 100%; background: #a8a7a7;}
 .searchBox { margin: 22px auto; width: 180px; position: relative;}
 .searchBox input { width: 180px; height: 36px; border: 0; border-radius: 18px; line-height: 36px; text-indent: 20px; background: #e4e8e9; color: #888;}
@@ -91,7 +92,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .jobInfo p label { width: 80px; text-align: right; display: inline-block;}
 .jobInfo p input { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 210px;}
 .jobInfo p select { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 220px;}
-.jobInfo p textarea { margin: 0px 56px 0px 20px; border: 0; padding: 5px; width: 210px; float: right; resize: none;}
+.jobInfo p textarea { height: 200px;margin: 0px 56px 0px 20px; border: 0; padding: 5px; width: 210px; float: right; resize: none;}
 .jobInfo p button { display: block; margin: 5px auto; width: 159px;}
 .jobInfoTemp { border: 1px dashed #a8a7a7; float: left; margin: 50px; min-height: 280px; width: 430px; padding: 10px;}
 .jobInfoTemp h2 { line-height: 40px; font-size: 18px; }
