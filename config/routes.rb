@@ -14,7 +14,8 @@ WeixinJob::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-
+match "/get_token", :to => "app_managements#get_token", :as => "get_token", via: 'get'
+match '/submit_redirect' => 'app_managements#submit_redirect', :as => :submit_redirect, :via => :get
   resources :logins do
     collection do
       post :valid
@@ -54,7 +55,14 @@ WeixinJob::Application.routes.draw do
       end
     end
 
-    resources :app_managements
+    resources :app_managements do
+      collection do
+        post :create_client_info_model, :get_form_date
+      end
+    end
+
+    resources :reminds
+    resources :records
 
   end
 

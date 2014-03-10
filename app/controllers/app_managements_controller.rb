@@ -1,243 +1,269 @@
 #encoding:utf-8
 class AppManagementsController < ApplicationController
-  layout 'sites'
-  before_filter :get_site,:exist_app?
-  skip_before_filter :authenticate_user!,:get_site,:exist_app? ,only:[:get_form_date, :submit_redirect]
+  before_filter :has_sign?
+  before_filter  :get_company
+  skip_before_filter :has_sign?, :only => [:get_token, :submit_redirect]
+  
   def index
-    @client = Client.where("site_id=? and types = 0" , @site.id)[0]
+    @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
     @chi =ClientHtmlInfo.find_by_client_id(@client.id) if @client
-    @record = Record.find_by_site_id(@site.id)
-    @remind = Remind.find_by_site_id(@site.id)
+    @record = Record.find_by_company_id(@company.id)
+    @record = Record.new unless @record
+    @remind = Remind.find_by_company_id(@company.id)
+    @remind = Remind.new unless @remind
   end
 
   def submit_redirect
     render :layout => false
   end
 
+  #get form authenticity_token  hack of CSRF
+  def get_token
+    render :text => form_authenticity_token
+  end
+  
   def create_client_info_model
-    @client = Client.where("site_id=? and types = 0" , @site.id)[0]
-    @chi=ClientHtmlInfo.find_by_client_id(@client.id)
-    form = params[:form]
-    if @chi
-      if @chi.update_attribute(:hash_content,params[:html_content])
-        save_tags form
-        content = html_content_app form
-        save_as_app_form content
-        flash[:success]="保存成功"
-        redirect_to site_app_managements_path(@site)
+    @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
+    @chi = ClientHtmlInfo.find_by_client_id(@client.id)
+    tags = params[:tags].select {|k, v| k.include?("tag")} #标签
+    optional_fields = params[:tags]  #"tags"=>{"message_1"=>{"name"=>"ree"}, "radio_1"=>{"name"=>"浜屼綅", "options"=>["鐑?, "璇烽棶", "浜?]}, "checkbox_1"=>{"name"=>"浜?璁╀粬", "options"=>["绐佺劧", "涓?, "濂?]}, "select_1"=>{"name"=>"钀ㄨ揪", "options"=>["椋?, "濂藉嚑涓?, "鐟炵壒"]}}}
+    Client.transaction do
+      if @chi
+        if @chi.update_attributes({html_content:params[:html_content], hash_content: optional_fields})
+          save_tags tags
+          content = html_content_app(optional_fields)
+          save_as_app_form content
+          flash[:success]="保存成功"
+          redirect_to company_app_managements_path(@company)
+        else
+          render 'index'
+        end
       else
-        render 'index'
-      end
-    else
-      ClientHtmlInfo.create(client_id:@client.id , hash_content:params[:html_content])
-      save_tags form
-      redirect_to site_app_managements_path(@site)
-    end
-  end
-  #保存标签
-  def save_tags form
-    form.each_with_index do |f,index|
-      if f[0][1..-1]=="label"
-        value =f[1][:value]
-        value.each do |v|
-          val=Tag.find_by_content(v)
-          if val.nil?
-            Tag.create(content:v)
-          end
-        end
-      end
-    end
-  end
-  #得到表单数据
-  def get_form_date
-    form = params[:form]
-    form_hash ="{"
-    form.each_with_index do |f,index|
-      if index>2
-        value =f[1][:value]
-        if f[1][:value].class.eql?(Array)
-          value = f[1][:value].join("、")
-        end
-       
-        form_hash +="'#{f[1][:name]}'=>'#{value}',"
-        
-      end
-    end
-    form_hash = form_hash[0...-1]+"}"
-    @client = Client.find_by_open_id(params[:open_id])
-    open_id = params[:open_id]
-    @site = Site.find_by_id(params[:site_id].to_i)
-    cweb = @site.cweb if @site
-    if @client
-      user_head_image_url = get_user_basic_info(open_id, cweb) if cweb.present? && open_id.present?
-      @client.update_attributes(name:params[:username] , mobiephone:params[:phone],remark:params[:remark],site_id:params[:site_id] , html_content:form_hash, avatar_url: user_head_image_url )
-      save_labels @client,params[:site_id] ,form
-      render text:2      
-    else
-      user_head_image_url = get_user_basic_info(open_id, cweb) if cweb.present? && open_id.present?
-      client = Client.create(name:params[:username], mobiephone:params[:phone] ,site_id:params[:site_id], html_content:form_hash ,types:Client::TYPES[:CONCERNED],open_id:open_id,
-        has_new_record:false, has_new_message:false, avatar_url: user_head_image_url)
-        save_labels client,params[:site_id],form
-      render text:1
-    end
-  end
-  #将用户有的信息存入labels里面
-  def save_labels client,site_id,form
-    
-    Label.where("client_id = ? and site_id= ?" , client.id , site_id).destroy_all
-    form.each_with_index do |f,index|
-      if f[0][1..-1]=="label"
-        value =f[1][:value]
-        unless value.nil?
-        value.each do |v|
-          tag =Tag.find_by_content(v)
-          label = Label.where("client_id = ? and site_id= ? and tag_id=?" , client.id , site_id , tag.id)[0]
-          if label.nil?
-            Label.create(site_id:site_id,client_id:client.id,tag_id:tag.id)
-          end
-        end
-        end
+        ClientHtmlInfo.create(client_id:@client.id , html_content:params[:html_content], hash_content: optional_fields)
+        save_tags tags
+        redirect_to company_app_managements_path(@company)
       end
     end
   end
   
+  #保存标签
+  def save_tags tags
+    tags.each  do |tag_key, name_and_options|
+      name_and_options[:options].each do |tag_name|
+        tag = Tag.find_by_content_and_company_id(tag_name, @company.id)
+        @company.tags.create(:content => tag_name) unless tag
+      end
+    end
+  end
+
+  #得到表单数据
+  def get_form_date
+    app_client = params[:app_client]
+    gzh_client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
+    client_html_info = gzh_client.client_html_info if gzh_client
+    new_hash = {}
+    app_client.each do |k, v|
+      new_key = get_actual_name(k, client_html_info)
+      new_hash[new_key] = v if new_key.present?
+    end if app_client.present? && client_html_info
+    open_id = params[:open_id]
+    Client.transaction do
+      if open_id.present?
+        @client = Client.find_by_open_id(open_id)
+        @company = Company.find_by_id(params[:company_id].to_i)
+        if @client
+          @client.update_attributes(params[:client].merge(html_content:new_hash))
+          save_labels @client,@company.id ,params[:tags] if params[:tags].present?
+          render text:2
+        else
+          client = Client.create(params[:client].merge(company_id:params[:company_id], html_content:new_hash ,types:Client::TYPES[:CONCERNED],open_id:open_id,
+              has_new_record:false, has_new_message:false))
+          save_labels client,@company.id, params[:tags] if params[:tags].present?
+          render text:1
+        end
+      else
+        render text:3
+      end
+    end
+  end
+
+  #根据表单元素name，获取对应的实际元素名称
+  def get_actual_name(key, client_html_info)
+    name = ""
+    client_html_info.hash_content.each do |k, v|
+      if k == key
+        name = v["name"]
+        break
+      end
+    end
+    name
+  end
+  
+  #将用户有的信息存入labels里面
+  def save_labels client, company_id, tags
+    all_tags = tags.values.flatten
+    tags = Tag.where(:company_id => company_id, :content => all_tags)
+    client.tags = tags
+  end
+
+  #保存app登记 文件
   def save_as_app_form content
-    site_path = Rails.root.to_s + "/public/allsites/#{@site.root_path}"
-    path = Rails.root.to_s + "/public/allsites/#{@site.root_path}/this_site_app.html"
-    FileUtils.mkdir_p(site_path) unless Dir.exists?(site_path)
+    company_path = Rails.root.to_s + "/public/companies/#{@company.id}"
+    path = Rails.root.to_s + "/public/companies/#{@company.id}/app_regist.html"
+    FileUtils.mkdir_p(company_path) unless Dir.exists?(company_path)
     FileUtils.rm path if File::exist?(path)
     File.open(path, "wb") do |f|
       f.write(content.html_safe)
     end
   end
-  def html_content_app form
-    li=""
-    form.each_with_index do |element,index|
-      ele = element[0][1..-1]
-      if ele.eql?("text")
-        li += "<li><label>" + ((index==0 || index==1) ? "<span class='mark'>*</span>" : "") + "#{element[1][:name]}：<input name='form[t#{index}][name]' type='hidden' value='#{element[1][:name]}' /> </label><input name='form[t#{index}][value]' type='text'></li>"
-        
+
+  #提交成功后跳转页面
+  def submit_redirect
+    render :layout => false
+  end
+
+  #生成html页面string
+  def html_content_app(optional_fields)
+    ele = ""
+    optional_fields.each do |ele_type_name, label_and_options|
+      ele_type_name
+
+      # input
+      if ele_type_name.include?("message")
+        ele += "<div class='infoItem itemBox'>
+                        <div><label>#{label_and_options[:name]}</label><input type='text' name='app_client[#{ele_type_name}]'/></div>
+                </div>"
         #单选
-      elsif ele.eql?("radio")
+      elsif ele_type_name.include?("radio")
         radio=""
-        element[1][:value].each do |value|
-          radio +="<li><input name='form[r#{index}][value]' type='radio' value='#{value}'/><p>#{value}</p></li>
-          "
+        label_and_options[:options].each do |value|
+          radio += "<div><input type='radio' name='app_client[#{ele_type_name}]' value=#{value} /><span>#{value}</span></div>"
         end
-        li += "<li><label>#{element[1][:name]}<input name='form[r#{index}][name]' type='hidden' value='#{element[1][:name]}' /></label> </li>#{radio}
-        "
+        ele += "<div class='radioItem itemBox'>
+                    <div><span>#{label_and_options[:name]}</span></div>
+                      #{radio}
+                </div>"
         
         #多选~~~
-      elsif ele.eql?("checkbox")
-        checkbox=""
-        element[1][:value].each do |value|
-          checkbox +="<li><input name='form[c#{index}][value][]' type='checkbox' value='#{value}' /><p>#{value}</p></li>
-          "
+      elsif ele_type_name.include?("checkbox")
+        checkbox = ""
+        label_and_options[:options].each do |value|
+          checkbox += "<div><input type='checkbox' name='app_client[#{ele_type_name}][]' value=#{value} /><span>#{value}</span></div>"
         end
-        li += "<li><label>#{element[1][:name]}<input name='form[c#{index}][name]' type='hidden' value='#{element[1][:name]}' /></label></li>#{checkbox}
-        "
-      elsif ele.eql?("label")
-        checkbox=""
-        element[1][:value].each do |value|
-          checkbox +="<li><input name='form[#{index}label][value][]' type='checkbox' value='#{value}' /><p>#{value}</p></li>
-          "
+        ele += " <div class='checkItem itemBox'>
+                    <div><span>#{label_and_options[:name]}</span></div>
+                        #{checkbox}
+                </div>"
+        #标签
+      elsif ele_type_name.include?("tag")
+        checkbox = ""
+        label_and_options[:options].each do |value|
+          checkbox += "<div><input type='checkbox' name='tags[#{ele_type_name}][]' value=#{value} /><span>#{value}</span></div>"
         end
-        li += "<li><label>#{element[1][:name]}<input name='form[#{index}label][name]' type='hidden' value='#{element[1][:name]}' /></label></li>#{checkbox}
-        "
-      elsif ele.eql?("select")  
-        select =""
-        element[1][:value].each do |value|
-          select +="<option  value='#{value}'>#{value}</option>
-          "
+        ele += "<div class='checkItem itemBox'>
+                    <div><span>#{label_and_options[:name]}</span></div>
+                        #{checkbox}
+                </div>"
+        #下拉框
+      elsif ele_type_name.include?("select")
+        select = ""
+        label_and_options[:options].each do |value|
+          select += "<option value='#{value}'>#{value}</option>"
         end
-        li += "<li><label>#{element[1][:name]}：<input name='form[s#{index}][name]' type='hidden' value='#{element[1][:name]}' /></label><select name='form[s#{index}][value]'>#{select}</select>
+
+        ele += "<div class='selectItem itemBox'>
+                  <label>#{label_and_options[:name]}</label>
+                 <select name=app_client['#{ele_type_name}']>#{select}</select>
         "
       end
     end
+
     html="
-     <!doctype html>
-<html>
-<head>
-<meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'>
-<title>客户表单</title>
-<script type='text/javascript' src='/allsites/js/jQuery-v1.9.0.js'></script>
-<script src='http://malsup.github.com/jquery.form.js'></script> 
-<link href='/allsites/style/template_style.css' rel='stylesheet' type='text/css'>
+     <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <script src='/companies/js/jquery-1.8.3.js' type='text/javascript'></script>
+        <link href='/companies/style/style2.css' rel='stylesheet' type='text/css' />
+        <title>用户登记</title>
+    </head>
+    <body>
+        <div class='form_list'>
+               <form action='/companies/#{@company.id}/app_managements/get_form_date'  method='post'>
+                  <div style='margin:0;padding:0;display:inline'>
+                  <input name='utf8' type='hidden' value='&#x2713;' />
+                  <input class='authenticity_token' name='authenticity_token' type='hidden' value='' /></div>
+                    <div class='infoItem itemBox'>
+                        <div><label><span class='mark'>*</span>姓名：</label><input type='text' data-name='姓名' class='client_required' name='client[name]'/></div>
+                    </div>
+                    <div class='infoItem itemBox'>
+                        <div><label><span class='mark'>*</span>手机号码：</label><input type='text' data-name='手机号码' class='client_required' name='client[mobiephone]' /></div>
+                    </div>
+                    <div class='infoItem itemBox'>
+                        <div><label>备注：</label><input type='text' name='client[remark]'/></div>
+                    </div>
+                    #{ele}
+               </form>
+              <p class='warn'>带*内容爲必填项目，请你务必完成填写。对于你所填写的所有信息，我们将严格保密。</p>
+              <div class='form_btn'><button type='button' onclick='submit_form(this)'>确认提交</button></div>
+        </div>
 
-
-</head>
-
-<body>
-  <article>
-        <section class='app_form'>
-        <form action='/sites/#{@site.id}/app_managements/get_form_date' data-remote='true' data-type='script' method='post'>
-          <div style='margin:0;padding:0;display:inline'>
-          <input name='utf8' type='hidden' value='&#x2713;' />
-          <input class='authenticity_token' name='authenticity_token' type='hidden' value='' /></div>
-          <ul>
-               #{li}
-            </ul>
-     <p class='warn'>带*内容爲必填项目，请你务必完成填写。对于你所填写的所有信息，我们将严格保密。</p>
-            <div class='form_btn'><button type='button' onclick='submit_form(this)'>确认提交</button></div>
-        </form>
-        </section>
-    </article>
-<script type='text/javascript' src='/allsites/js/template_main.js'></script>
-    <script>
-      function submit_form(value){
-        var input =$('.app_form').find('input[type=text]');
-        name = $.trim($(input[0]).val());
-        if(name==''){
-          alert('请输入姓名');
-          return false;
-        }
-        phone = $.trim($(input[1]).val());
-        if(phone==''){
-          alert('请输入电话');
-          return false;
-        }
-        remark = $.trim($(input[2]).val());
-        var href = window.location.href;
-        var arr = href.split('?open_id=');
-        var open_id = arr[1];
-        var str = $(value).parent().parent().serialize();
-        $.ajax({
-    async : true,
-    type : 'post',
-    url : '/sites/#{@site.id}/app_managements/get_form_date',
-    dataType : 'text',
-    data :'form = ' + str+'&username='+name+'&phone='+phone+'&remark='+remark+'&open_id='+open_id,
-    success : function(data) {
-      if(data==1)
-        window.location.replace('/submit_redirect');
-      else if(data==2)
-        window.location.replace('/submit_redirect');
-      else
-        alert('error');
-    }
-  });
-    
-      }
-    </script>
-    <script language='javascript' type='text/javascript'>
-        $.ajax({
-
-            url: '/get_token',
-            type: 'get',
-            dataType: 'text',
-            success:function(data){
-var a = $('.authenticity_token');
-a.each(function(){
-  $(this).val(data);
-});
-            },
-            error:function(data){
-//alert('error')
+       <script>
+          function submit_form(obj){
+            var input =$(obj).parents('form').find('input.client_required');
+            name = $.trim(input.val());
+            label = input.attr('data-name')
+            if(name==''){
+              alert(label + '不能为空！');
+              return false;
             }
-        })
-</script>
-</body>
+
+            var href = window.location.href;
+            var arr = href.split('?secret_key=');
+            var secret_key = arr[1];
+
+            var str = $(obj).parents('form').serialize();
+            if(secret_key != 'undefined' && $.trim(secret_key) != ''){
+              str = str + '&open_id='+secret_key;
+            }
+            $.ajax({
+                async : true,
+                type : 'post',
+                url : '/companies/#{@company.id}/app_managements/get_form_date',
+                dataType : 'text',
+                  data : str,
+                  success : function(data) {
+                  if(data==1)
+                    window.location.replace('/submit_redirect');
+                  else if(data==2)
+                      window.location.replace('/submit_redirect');
+                  else if(data==3)
+                    alert('缺少参数!')
+                    else
+                      alert('error');
+                    }
+                  });
+
+              }
+         </script>
+          <script language='javascript' type='text/javascript'>
+              $.ajax({
+
+                  url: '/get_token',
+                  type: 'get',
+                  dataType: 'text',
+                  success:function(data){
+                      var a = $('.authenticity_token');
+                      a.each(function(){
+                        $(this).val(data);
+                      });
+                  },
+                  error:function(data){
+                      //alert('error')
+                  }
+             })
+        </script>
+  </body>
 </html>
 
     "

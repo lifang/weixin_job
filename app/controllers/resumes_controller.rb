@@ -17,7 +17,7 @@ class ResumesController < ApplicationController   #简历模板
     @title_name = params[:title_name] #message_24
     if @name != "success_div"
       @item_tile = params[:item_title]
-      if @name == "radio_div" || @name=="check_box_div" || @name=="select_div"
+      if @name == "radio_div" || @name=="check_box_div" || @name=="select_div" || @name=="add_tag_div"
         @options = params[:options]
       end
     else

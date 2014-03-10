@@ -6,6 +6,8 @@ class Company < ActiveRecord::Base
   has_many :delivery_resume_records
   has_many :company_profiles
   has_many :clients
+  has_many :tags
+  has_many :labels
   #scope  :clients, -> { where("types = #{Client::TYPES[:CONCERNED]}") }
   #scope  :client, -> { where("types = #{Client::TYPES[:ADMIN]}") }
   has_many :menus
