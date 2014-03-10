@@ -19,10 +19,10 @@
           <% @resume_temp.html_content.each do |k,v| %>
             <% if k.to_s.split("_")[0]=="message" %>
               <div class="infoItem itemBox message_div">
-                <span class="close" onclick="remove_form_item(this, 'message_idv')">×</span>
-                <p><label><%= v[:name] %></label><input type="text"/></p>
+                <span class="close" onclick="remove_form_item(this, 'message_div')">×</span>
+                <p><label><%= v["name"] %></label><input type="text"/></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
-                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%=  "name" %>]" value="<%= v["name"] %>"/>
               </div>
             <% elsif k.to_s.split("_")[0]=="radio" %>
               <div class="radioItem itemBox radio_div">
@@ -67,9 +67,9 @@
             <% elsif k.to_s.split("_")[0]=="headimage" %>
               <div class="imgItem itemBox image_div head_image_div">
                 <span class="close" onclick="remove_form_item(this, 'headimage_div')">×</span>
-                <a href="javasctipt:void(0)"><%= v[:name] %></a>
+                <a href="javasctipt:void(0)"><%= v["name"] %></a>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
-                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v["name"] %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :url %>]" value=""/>
               </div>
             <% elsif k.to_s.split("_")[0]=="file" %>

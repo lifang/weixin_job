@@ -1,5 +1,36 @@
 #encoding: utf-8
 class ClientResume < ActiveRecord::Base
+  require 'mini_magick'
+  serialize :html_content_datas
   belongs_to :resume_template
   has_many :delivery_resume_records
+  img_size  = [148,154,50,800]
+
+
+  def self.upload_headimg img_url, company_id, open_id, size    #上传头像
+    root_path = "#{Rails.root}/public/"   #头像路径 headimages/company_id/open_id/*
+    dirs = ["/headimages", "/#{company_id}", "/#{open_id}"]
+    dirs.each_with_index {|d, index| Dir.mkdir(root_path + dirs[0..index].join) unless File.directory?(root_path + dirs[0..index].join)}
+    img = img_url.original_filename
+    img_name = "#{dirs.join}/#{open_id}."+ img.split(".").reverse[0]
+    File.open(root_path+ img_name, "wb") { |i| i.write(img_url.read) }    #存入原图
+    img2 = MiniMagick::Image.open(root_path + img_name, "rb")   #切图并保存
+    size.each do |s|
+      new_img = "#{dirs.join}/#{open_id}_#{s}." + img.split(".").reverse[0]
+      resize = s > img2["width"] ? img2["width"] : s
+      img2.run_command("convert #{root_path + img_name} -resize #{resize}x#{resize} #{root_path + new_img}")
+    end
+    return img_name
+  end
+
+  def self.upload_file  file_url, company_id, open_id   #上传文件
+    root_path = "#{Rails.root}/public/"   #头像路径 files/company_id/open_id/*
+    dirs = ["/files", "/#{company_id}", "/#{open_id}"]
+    dirs.each_with_index {|d, index| Dir.mkdir(root_path + dirs[0..index].join) unless File.directory?(root_path + dirs[0..index].join)}
+    file = file_url.original_filename
+    file_name = "#{dirs.join}/#{file.split(".").reverse[1]}."+ file.split(".").reverse[0]
+    File.open(root_path+ file_name, "wb") { |i| i.write(file_url.read) }    #存入原图
+    return file_name
+  end
+
 end

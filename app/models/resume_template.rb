@@ -18,7 +18,8 @@ class ResumeTemplate < ActiveRecord::Base
     <div class='form_list'>
     <form id='create_client_resume_form' action='/companies/#{resume.company_id}/client_resumes' accept-charset='UTF-8' method='post' enctype='multipart/form-data'>
     <input name='utf8' type='hidden' value='✓'/>
-    <input class='authenticity_token' name='authenticity_token' type='hidden' value=''/>"
+    <input class='authenticity_token' name='authenticity_token' type='hidden' value=''/>
+    <input type='hidden' name='resume_id' value='#{resume.id}'/>"
 
     resume.html_content.each do |k, v|
       if k.to_s.include?("message")
@@ -61,14 +62,15 @@ class ResumeTemplate < ActiveRecord::Base
 
     html_head << "<div class='form_btn'><button type='button' onclick='client_resume_valid(this)'>提交</button></div></form>"
     html_head << "</div></body></html>"
-    root_path = Rails.root.to_s + "/public/companies/#{resume.company_id}/resumes/"
-    FileUtils.mkdir_p(root_path) unless Dir.exists?(root_path)
+    root_path = "#{Rails.root.to_s}/public/"
+    resume_path =  "/companies/#{resume.company_id}/resumes/"
+    FileUtils.mkdir_p(root_path + resume_path) unless Dir.exists?(root_path + resume_path)
     file_name = "resume.html"
-    File.delete root_path + file_name if File.exists?( root_path + file_name)
-    File.open(root_path + file_name, "wb") do |f|
+    File.delete root_path + resume_path + file_name if File.exists?( root_path + resume_path + file_name)
+    File.open(root_path + resume_path + file_name, "wb") do |f|
       f.write(html_head.html_safe)
     end
-    url = root_path + file_name
+    url = resume_path + file_name
     resume.update_attribute("html_url", url)
   end
 

@@ -36,19 +36,34 @@ class LoginsController < ApplicationController
     comp_name = params[:comp_name]
     comp_account = params[:comp_account]
     comp_password = params[:comp_password]
-    comp_app_type = params[:comp_app_type].to_i
-    comp_app_token = params[:comp_app_token]
-    comp_app_id = params[:comp_app_id]
-    comp_app_secret = params[:comp_app_secret]
-    company = Company.new(:name => comp_name, :status => Company::STATUS[:NORMAL],:company_account => comp_account, 
-      :company_password => Digest::MD5.hexdigest(comp_password), :app_type => comp_app_type, :cweb => comp_app_token,
-      :app_id => comp_app_id, :app_secret => comp_app_secret)
-    if company.save
-      flash[:notice] = "注册成功!"
-      redirect_to logins_path
-    else
-      flash[:notice] = company.errors.messages.values.flatten.join("\\n")
+    valid_comp = Company.find_by_name(comp_name)
+    if valid_comp
+      flash[:notice] = "注册失败,已有同名的公司!"
       render "logins/regist"
+    else
+      valid_comp_account = Company.find_by_company_account(comp_account)
+      if valid_comp_account
+        flash[:notice] = "注册失败,已有同名的账号!"
+        render "logins/regist"
+      else
+        Company.transaction do
+          company = Company.new(:name => comp_name, :status => Company::STATUS[:NORMAL],:company_account => comp_account,
+            :company_password => Digest::MD5.hexdigest(comp_password))
+          if company.save
+            resume_hash = {"message_1" => {"name" => "姓名"}, "message_2" => {"name" => "联系电话"}, "message_3" => {"name" => "地址"},
+              "headimage" => {"name" => "上传头像", "url" => ""}}
+            resume = ResumeTemplate.new(:html_content => resume_hash, :company_id => company.id)
+            if resume.save
+              ResumeTemplate.get_html(resume)
+            end
+            flash[:notice] = "注册成功!"
+            redirect_to logins_path
+          else
+            flash[:notice] = company.errors.messages.values.flatten.join("\\n")
+            render "logins/regist"
+          end
+        end
+      end
     end
   end
 
