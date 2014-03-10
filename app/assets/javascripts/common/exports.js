@@ -16,9 +16,9 @@ function create_xsl_table(obj,company_id){
             date:"start_time="+date_time+"&end_time="+date_time1,
             success: function(data) {
                 if(data=="1"){
-                    alert("导出成功！");
+                    alert("导出成功！请下载");
                 }else{
-                    alert("到处失败，暂无用户！");
+                    alert("暂无数据！");
                 }
 
             }

@@ -21,7 +21,7 @@
       <tr>
         <td><%=cp.title%></td>
         <td>
-          <%=link_to  company_company_profile_path(@company,cp.id),method: :delete do%>
+          <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？" do%>
           <button class="delete" title="删除"></button>
           <%end%>
           <%=link_to edit_company_company_profile_path(@company,cp.id) do%>

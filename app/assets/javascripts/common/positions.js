@@ -6,6 +6,13 @@ function position_edit(obj){
      ($(".jobInfo").find('textarea').val(description));
      ($(".jobInfo").find('#types').val(types_id));
 }
+function character_limit(obj,num){
+    if($(obj).val().length>num){
+        $(obj).val($(obj).val().substring(0,num));
+        alert("字数达上限");
+    }
+}
+
 function check_position(){
     if($("#types").val()==0 || $("#types").val()== null ){
         alert('请选择职位类型！');

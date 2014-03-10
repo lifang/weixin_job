@@ -49,24 +49,31 @@ class ExportsController < ApplicationController   #导出简历
   end
   
   def xls_content_for(objs)
-    xls_report = StringIO.new
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet :name => "form_datas_#{page}"
-    arr=[]
-    objs[0].each do |ob|
-      arr << ob.key
+    arr =[]
+    objs[0].hash_content.each do |ob|
+      ob[1].each do |a|
+        if a[1].class == Hash
+          arr << a[1].keys[0]
+        else
+          arr << a[0]
+        end
+      end
     end
-    sheet1.row(0).concat page.element_relation.values
+    p arr
+    sheet1.row(0).concat arr
     count_row = 1
     objs.each do |obj|
-      data_hash = obj.data_hash
-      if data_hash.present?
-        label_names = data_hash.keys.select{|key| !key.include?("value")}
-        label_names.length.times {|i|
-          data_value = data_hash[label_names[i]]
-          sheet1[count_row, i] = (data_value.is_a?(Array) ? data_value.join(",") : data_value) if data_value
-        }
-        count_row += 1
+      i=0
+      obj.hash_content.each do |ob|
+        ob[1].each do |a|
+          if a[1].class == Hash
+            sheet1[count_row, i]= (a[1].keys[0].is_a?(Array) ? a[1].keys[0].join(",") : a[1].keys[0]) if data_value
+          elsif a[0]=="headimage"
+            sheet1.row(count_row)[i] = Spreadsheet::Link.new "./#{a[1]}", "他的头像"
+          end
+        end
       end
     end
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
