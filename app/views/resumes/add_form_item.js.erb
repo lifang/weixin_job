@@ -30,4 +30,8 @@ $(".addChekItem").hide();
 $("#form_div").append("<%= j(render :partial => "add_form_select") %>");
 $(".second_bg").hide();
 $(".addSelItem").hide();
+<% elsif @name == "add_tag_div" %>
+$("#form_div").append("<%= j(render :partial => "add_app_tag") %>");
+$(".second_bg").hide();
+$(".addTagItem").hide();
 <% end %>

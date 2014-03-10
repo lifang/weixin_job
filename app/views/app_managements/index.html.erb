@@ -1,0 +1,172 @@
+<script src="/assets/My97DatePicker/WdatePicker.js" >
+</script>
+<div class="main_con2">
+  <div>
+    <div class="addItemBtnBar">
+      <ul>
+        <li class="scd_btn" name="addInfoItem"><span>信息栏</span></li>
+        <li class="scd_btn" name="addRdoItem"><span>单选框</span></li>
+        <li class="scd_btn" name="addChekItem"><span>复选框</span></li>
+        <li class="scd_btn" name="addSelItem"><span>下拉框</span></li>
+        <li class="scd_btn" name="addTagItem"><span>标签栏</span></li>
+      </ul>
+      <div class="appNewWarn">
+        <button class="orangeBtn scd_btn" name="newWarn">新建提醒</button>
+        <button class="orangeBtn scd_btn" name="newRecord">新建记录</button>
+      </div>
+    </div>
+
+    <%= form_for :client_app_form, :url => create_client_info_model_company_app_managements_path(@company), :method => "post"  do |f| %>
+      <div class="phoneVirtual" id="form_div">
+        <% if @chi && @chi.html_content.present? %>
+          <%= raw @chi.html_content %>
+        <% else %>
+          <input type='hidden' id="html_content" name="html_content" value=""/>  <!-- 隐藏域存放app登记表单html数据 -->
+          <div class="infoItem itemBox">
+            <p><label>姓名</label>
+              <input type="text" /></p>
+          </div>
+          <div class="infoItem itemBox">
+            <p><label>手机号</label><input type="text" /></p>
+          </div>
+          <div class="infoItem itemBox">
+            <p><label>备注</label><input type="text" /></p>
+          </div>
+
+        <% end %>
+      </div>
+
+      <div class="scdBoxAct">
+        <button class="orangeBtn" type="button" onclick="saveHtml(this)">确定</button>
+        <% if @chi && @chi.html_content.present? %>
+          <%= link_to  "/companies/#{@company.id}/app_regist.html", :target => "_blank" do%>
+            <button class="orangeBtn" type="button">预览</button>
+          <% end %>
+        <% end %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<!--增加表单元素 -->
+<%= render "/resumes/add_form_item" %>
+
+
+<!--增加标签元素 -->
+<div class="second_box addItem addTagItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>增加标签栏</h1>
+    <div class="insetBox">
+      <p><label>标签问题：</label><input type="text" name="add_item_title"/></p>
+      <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn addOptBox" onclick="add_tag_p('checkbox_div',this)">增加标签</button>
+      <button class="orangeBtn addItemSub" onclick="add_form_item('add_tag_div',this, <%= @company.id %>)">确认</button>
+    </div>
+  </div>
+</div>
+
+<!--新建提醒 -->
+<div class="second_box second_box_fixed newWarn">
+  <div class="second_content" style="width: 650px;">
+    <span class="close" title="关闭">×</span>
+    <h1>新建提醒</h1>
+    <%= form_for [@company,@remind] do |f| %>
+      <div>
+        <p><label>名称：</label>
+          <%= f.text_field :title %>
+        </p>
+        <div class="itemBox2">
+          <label>发送时间：</label>
+          <div class="labRight">
+            <div class="radioBox1 first">
+              <input type="radio" name="time_or_day" class="time_or_day" checked ="checked"/>
+              <%= f.text_field :reseve_time, :readonly => true, :class =>"Wdate", :style => "width: 215px;", :onclick => "WdatePicker();" %>
+            </div>
+            <div class="radioBox1 second">
+              <input type="radio" name="time_or_day" class="time_or_day"/>
+              <%= f.text_field :days, :style => "width: 215px;", :disabled => true %><span class="txtSpan">天后</span>
+            </div>
+          </div>
+        </div>
+        <div class="itemBox2">
+          <label>发送范围：</label>
+          <div class="labRight">
+            <div class="radioBox1 radioBox2 check">
+              <%= f.radio_button :range, 0, :checked => @remind.new_record? ? true : false %>
+              <span class="txtSpan">所有人</span>
+            </div>
+            <div class="radioBox1 radioBox2">
+              <%= f.radio_button :range, 1 %>
+              <span class="txtSpan">当前用户</span>
+            </div>
+          </div>
+        </div>
+        <div class="itemBox2">
+          <label>内容：</label>
+          <div class="warnArea labRight">
+            <div class="warnTit">
+              <span class="time"></span>
+              <span class="cont thd_btn" name="addcont"></span>
+              <span class="space"></span>
+            </div>
+            <div class="warnTxt">
+              <%= f.text_area :content %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scdBoxAct">
+        <button class="orangeBtn" onclick="return check_remind_nonempty(this)">保存</button>
+        <button type="button" class="orangeBtn cancel">放弃</button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!--新建提醒 -->
+<div class="second_box second_box_fixed newRecord">
+  <div class="second_content" style="width: 650px;">
+    <span class="close" title="关闭">×</span>
+    <h1>新建记录</h1>
+    <div>
+      <p><label>名称：</label><input type="text" /></p>
+
+      <div class="itemBox2">
+        <label>内容：</label>
+        <div class="warnArea labRight">
+          <div class="warnTit">
+            <span class="time"></span>
+            <span class="cont thd_btn" name="addcont"></span>
+            <span class="space"></span>
+          </div>
+          <div class="warnTxt">
+            <textarea>[时间]222</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn">保存</button>
+      <button class="orangeBtn cancel">放弃</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="third_bg"></div>
+<div class="third_box second_box second_box_fixed addcont">
+  <div class="third_content second_content" style="width: 300px;">
+    <span class="close" title="关闭">×</span>
+    <textarea class="addcontarea">
+    </textarea>
+    <div class="scdBoxAct">
+      <button class="orangeBtn">保存</button>
+    </div>
+  </div>
+</div>

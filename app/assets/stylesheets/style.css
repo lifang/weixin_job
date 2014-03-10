@@ -136,7 +136,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .addItemBtnBar li:hover span,.addItemBtnBar li.hover span { color: #fff;}
 .addItemBtnBar li[name="addInfoItem"] { background-position: 0px 0px;}
 .addItemBtnBar li[name="addRdoItem"] { background-position: -101px 0px;}
-.addItemBtnBar li[name="addChekItem"] { background-position: -202px 0px;}
+.addItemBtnBar li[name="addChekItem"], .addItemBtnBar li[name="addTagItem"] { background-position: -202px 0px;}
 .addItemBtnBar li[name="addSelItem"] { background-position: -303px 0px;}
 .addItemBtnBar li[name="addTxtItem"] { background-position: -404px 0px;}
 .addItemBtnBar li[name="addSuccess"] { background-position: -505px 0px;}

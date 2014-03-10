@@ -73,6 +73,8 @@ function add_form_item(name,obj,company_id){
         title_name = "select_"+index;
     }else if(name=="success_div"){
         title_name = "success_"+index;
+    }else if(name == "add_tag_div"){
+        title_name = "tag_"+index;
     }
     var item_title = $(obj).parents(".second_content").find("input[name='add_item_title']").first().val();  //:name => 'xxx''
     if (name!="success_div" && $.trim(item_title)==""){
@@ -158,7 +160,7 @@ function add_form_item(name,obj,company_id){
             }else{
                 alert("选项名称不能为空!");
             }
-        }else if(name=="check_box_div"){
+        }else if(name=="check_box_div" || name=="add_tag_div"){
             var checkbox_ops = new Array;
             var flag = true;
             $(obj).parents(".second_content").find("input[name='add_checkbox_option']").each(function(){

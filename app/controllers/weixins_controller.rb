@@ -96,7 +96,7 @@ class WeixinsController < ApplicationController
     client = Client.find_by_open_id_and_status(params[:xml][:FromUserName], Client::TYPES[:CONCERNED])
     if client
       message = "app_regist_link" #TODO
-      message = "&lt;a href='#{MW_URL + message}?open_id=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
+      message = "&lt;a href='#{MW_URL + message}?secret_key=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
       xml = teplate_xml(message)
       render :xml => xml        #回复登记app的链接
     end
@@ -163,13 +163,13 @@ Text
   def save_file(remote_resource_url, file_extension, msg_id)
     tmp_file = open(remote_resource_url) #打开直接下载链接
     filename = msg_id + file_extension  #临时文件不能取到扩展名
-    weixin_resource = SITE_PATH % @company.root_path + "weixin_resource/"
+    weixin_resource = "/companies/%d/" % @company.root_path + "weixin_resource/"
     wx_full_resource = Rails.root.to_s + weixin_resource
     new_file_name = wx_full_resource + filename
     FileUtils.mkdir_p(wx_full_resource) unless Dir.exists?(wx_full_resource)
     File.open(new_file_name, "wb")  {|f| f.write tmp_file.read }
     if File.exist?(new_file_name)
-      message_path = "/allsites/%s/" % @company.root_path + "weixin_resource/" + filename #保存进数据库的路径
+      message_path = "/companies/%d/" % @company.id + "weixin_resource/" + filename #保存进数据库的路径
       get_client_message(message_path)
     end
   end

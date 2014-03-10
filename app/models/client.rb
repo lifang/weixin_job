@@ -1,6 +1,9 @@
 class Client < ActiveRecord::Base
   require "json"
   belongs_to :company
+  has_one :client_html_info
+  has_many :labels
+  has_many :tags, :through => :labels
   attr_protected :authenticate
   TYPES = {:ADMIN => 0, :CONCERNED => 1}  #0 管理员(从IOS设备上登陆的人)，1关注的用户
   HAS_NEW_MESSAGE = {:NO => 0, :YES => 1} #是否有新消息
@@ -117,13 +120,13 @@ class Client < ActiveRecord::Base
     avatar_path = ""
     http.request_get(avatar_url_action,{"Cookie" => wx_cookie} ) {|response|
       filename = friend_faker_id.to_s + ".jpg"  #临时文件不能取到扩展名
-      weixin_avatar = "/public/companies/%s/" % @company.root_path + "weixin_avatar/"
+      weixin_avatar = "/public/companies/%d/" % @company.id + "weixin_avatar/"
       wx_full_avatar = Rails.root.to_s + weixin_avatar
       new_file_name = wx_full_avatar + filename
       FileUtils.mkdir_p(wx_full_avatar) unless Dir.exists?(wx_full_avatar)
       File.open(new_file_name, "wb")  {|f| f.write response.body }
       if File.exist?(new_file_name)
-        avatar_path = "/allsites/%s/" % @company.root_path + "weixin_avatar/" + filename #保存进数据库的路径
+        avatar_path = "/companies/%d/" % @company.id + "weixin_avatar/" + filename #保存进数据库的路径
       end
     }
     avatar_path
