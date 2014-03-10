@@ -7,7 +7,6 @@ class ExportsController < ApplicationController   #导出简历
   end
   def down_zip_file
     directory = get_company_dir_path @company.id.to_s+"/excel/"
- 
     FileUtils.mkdir_p directory unless Dir.exists?(directory)
     zipfile_name =""
     if Dir.exists?(directory)
@@ -42,7 +41,7 @@ class ExportsController < ApplicationController   #导出简历
     book = Spreadsheet::Excel::Workbook.new
     sheet1 = book.create_worksheet :name => "form_datas_#{1312}"
     sheet1[0, 0]="<a href='http://www.baidu.com'>haah</a>"
-    sheet1.row(0)[0] = Spreadsheet::Link.new './images/1.jpg', "wwwwwwwwwwww"
+    sheet1.row(0)[0] = Spreadsheet::Link.new './images/1.jpg', "test"
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     book.write file_path
@@ -57,11 +56,10 @@ class ExportsController < ApplicationController   #导出简历
         if a[1].class == Hash
           arr << a[1].keys[0]
         else
-          arr << a[0]
+          arr << "头像链接"
         end
       end
     end
-    p arr
     sheet1.row(0).concat arr
     count_row = 1
     objs.each do |obj|
@@ -69,10 +67,11 @@ class ExportsController < ApplicationController   #导出简历
       obj.hash_content.each do |ob|
         ob[1].each do |a|
           if a[1].class == Hash
-            sheet1[count_row, i]= (a[1].keys[0].is_a?(Array) ? a[1].keys[0].join(",") : a[1].keys[0]) if data_value
+            sheet1[count_row, i]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
           elsif a[0]=="headimage"
-            sheet1.row(count_row)[i] = Spreadsheet::Link.new "./#{a[1]}", "他的头像"
+            sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{a[1]}", "他的头像"
           end
+          i+=1
         end
       end
     end
@@ -82,6 +81,5 @@ class ExportsController < ApplicationController   #导出简历
   end
   def get_company
     @company = Company.find_by_id(params[:company_id])
-
   end
 end
