@@ -13,6 +13,17 @@ class ClientResumesController < ApplicationController
       end
       hash[k] = hash1
     end
-    render :json => {:a => hash.merge(:headimage => "ddd.jpg")}
+    secret_id = params[:secret_id]
+    if secret_id.nil?
+      msg = "数据错误!"
+    else
+      cr = ClientResume.find_by_open_id(secret_id)
+      if cr
+        
+      else
+
+      end
+    end
+    
   end
 end

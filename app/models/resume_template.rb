@@ -16,7 +16,7 @@ class ResumeTemplate < ActiveRecord::Base
   </head>
   <body>
     <div class='form_list'>
-    <form action='/companies/#{resume.company_id}/client_resumes' accept-charset='UTF-8' method='post' enctype='multipart/form-data'>
+    <form id='create_client_resume_form' action='/companies/#{resume.company_id}/client_resumes' accept-charset='UTF-8' method='post' enctype='multipart/form-data'>
     <input name='utf8' type='hidden' value='✓'/>
     <input class='authenticity_token' name='authenticity_token' type='hidden' value=''/>"
 
@@ -48,7 +48,11 @@ class ResumeTemplate < ActiveRecord::Base
         html_head << "<p>#{v[:text]}</p>"
         html_head << "<input type='hidden' name='[form_p][#{k.to_s}][#{:text}]' value='#{v[:text]}'/>"
         html_head << "</div>"
-      elsif k.to_s.include?("image")
+      elsif k.to_s.include?("headimage")
+        html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
+        html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
+        html_head << "</div>"
+      elsif k.to_s.include?("file")
         html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
         html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
         html_head << "</div>"
@@ -61,7 +65,7 @@ class ResumeTemplate < ActiveRecord::Base
     FileUtils.mkdir_p(root_path) unless Dir.exists?(root_path)
     file_name = "resume.html"
     File.delete root_path + file_name if File.exists?( root_path + file_name)
-     File.open(root_path + file_name, "wb") do |f|
+    File.open(root_path + file_name, "wb") do |f|
       f.write(html_head.html_safe)
     end
     url = root_path + file_name
@@ -69,15 +73,15 @@ class ResumeTemplate < ActiveRecord::Base
   end
 
   
-#  def save_html comp_id, content
-#    root_path = Rails.root.to_s + "/public/companies/#{comp_id}/resumes/"
-#    FileUtils.mkdir_p(root_path) unless Dir.exists?(root_path)
-#    file_name = "resume.html"
-#    File.delete root_path + file_name if File.exists?( root_path + file_name)
-#     File.open(root_path + file_name, "wb") do |f|
-#      f.write(content.html_safe)
-#    end
-#    return root_path + file_name
-#  end
+  #  def save_html comp_id, content
+  #    root_path = Rails.root.to_s + "/public/companies/#{comp_id}/resumes/"
+  #    FileUtils.mkdir_p(root_path) unless Dir.exists?(root_path)
+  #    file_name = "resume.html"
+  #    File.delete root_path + file_name if File.exists?( root_path + file_name)
+  #     File.open(root_path + file_name, "wb") do |f|
+  #      f.write(content.html_safe)
+  #    end
+  #    return root_path + file_name
+  #  end
 
 end
