@@ -92,10 +92,11 @@ class CompanyProfilesController < ApplicationController
     file_path = @company_profile.file_path
     if @company_profile && @company_profile.destroy
        destroy_file file_path
-       flash[:success] = '更新成功！'
+       flash[:success] = '删除成功！'
        redirect_to company_company_profiles_path(@company)
     else
-
+       flash[:success] = '删除失败！公司简介不存在！'
+       render 'index'
     end
   end
 

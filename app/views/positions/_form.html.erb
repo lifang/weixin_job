@@ -15,7 +15,8 @@
 </p>
 <p>
 	<label>职位描述</label>
-	<textarea name="positions[description]" ><%=@position.description if @position%></textarea>
+        <textarea name="positions[description]"  onkeydown='character_limit(this,250)' onkeyup='character_limit(this,250)' ><%=@position.description if @position%></textarea>
+        
 </p>
 <p>
 	<button class="orangeBtn" type="button" onclick="check_position()">

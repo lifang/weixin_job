@@ -48,7 +48,7 @@
           <li class="leftMenuItem <%= is_hover?("menus")%>">菜单</li>
           <% end %>
           <%= link_to company_exports_path(@company) do %>
-          <li class="leftMenuItem">导出简历</li>
+          <li class="leftMenuItem <%= is_hover?("exports")%>">导出简历</li>
           <%end%>
           <%= link_to company_app_managements_path(@company) do %>
           <li class="leftMenuItem <%= is_hover?("app_managements")%>">APP管理</li>
