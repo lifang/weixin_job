@@ -1,6 +1,6 @@
 <div class="imgItem itemBox image_div file_div">
   <span class="close" onclick="remove_form_item(this, 'file_div')">×</span>
-  <a href="javasctipt:void(0)"><%= @item_tile %></a>
+  <a href="javascript:void(0)"><%= @item_tile %></a>
   <input type="hidden" name="k_name" value="<%= @title_name %>"/>
   <input type="hidden" name="tags[<%= @title_name %>][<%= :name %>]" value="<%= @item_tile %>"/>
   <input type="hidden" name="tags[<%= @title_name %>][<%= :url %>]" value=""/>

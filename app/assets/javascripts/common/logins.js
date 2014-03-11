@@ -19,7 +19,3 @@ function regist_valid(obj){
        $(obj).parents("form").submit();
     }
 }
-
-function regist_valid_cancel(){
-    window.location.href="/"
-}
