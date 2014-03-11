@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140307071354) do
+ActiveRecord::Schema.define(:version => 20140310101218) do
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"
     t.text     "hash_content"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.text     "html_content"
   end
 
   create_table "client_resumes", :force => true do |t|
@@ -31,41 +32,46 @@ ActiveRecord::Schema.define(:version => 20140307071354) do
 
   create_table "clients", :force => true do |t|
     t.string   "name"
-    t.integer  "mobiephone"
+    t.string   "mobiephone",      :limit => 45
     t.integer  "company_id"
     t.text     "html_content"
     t.integer  "types"
     t.string   "password"
     t.string   "username"
     t.string   "avatar_url"
-    t.boolean  "has_new_message"
-    t.boolean  "has_new_record"
+    t.boolean  "has_new_message",               :default => false
+    t.boolean  "has_new_record",                :default => false
     t.string   "open_id"
-    t.boolean  "status",          :default => false
+    t.boolean  "status",                        :default => false
     t.string   "remark"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.string   "faker_id"
+    t.string   "token"
+    t.string   "wx_cookie"
+    t.string   "wx_login_token"
   end
 
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.string   "root_path"
-    t.integer  "status",           :default => 1
+    t.integer  "status",               :default => 1
     t.string   "cweb"
-    t.boolean  "has_app",          :default => false
+    t.boolean  "has_app",              :default => false
     t.string   "app_account"
     t.string   "app_password"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
-    t.string   "company_account",                     :null => false
-    t.string   "company_password",                    :null => false
-    t.string   "token"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.string   "company_account",                         :null => false
+    t.string   "company_password",                        :null => false
     t.integer  "app_type"
     t.string   "app_id"
     t.string   "app_secret"
+    t.boolean  "is_send_app_msg"
+    t.boolean  "receive_status",       :default => false
+    t.datetime "not_receive_start_at"
+    t.datetime "not_receive_end_at"
   end
-
-  add_index "companies", ["token"], :name => "index_companies_on_token"
 
   create_table "company_profiles", :force => true do |t|
     t.integer  "company_id",   :null => false
@@ -83,6 +89,18 @@ ActiveRecord::Schema.define(:version => 20140307071354) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end
+
+  create_table "labels", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "tag_id"
+    t.integer  "client_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "labels", ["client_id"], :name => "index_labels_on_client_id"
+  add_index "labels", ["company_id"], :name => "index_labels_on_company_id"
+  add_index "labels", ["tag_id"], :name => "index_labels_on_tag_id"
 
   create_table "menus", :force => true do |t|
     t.string   "name"
@@ -138,12 +156,42 @@ ActiveRecord::Schema.define(:version => 20140307071354) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "records", :force => true do |t|
+    t.integer  "company_id"
+    t.text     "content"
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "records", ["company_id"], :name => "index_records_on_company_id"
+
+  create_table "reminds", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "content"
+    t.date     "reseve_time"
+    t.string   "title"
+    t.boolean  "range"
+    t.integer  "days"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "reminds", ["company_id"], :name => "index_reminds_on_company_id"
+
   create_table "resume_templates", :force => true do |t|
     t.text     "html_content"
     t.integer  "company_id",   :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.string   "html_url"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "company_id"
   end
 
 end
