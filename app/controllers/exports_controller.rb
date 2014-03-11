@@ -26,7 +26,7 @@ class ExportsController < ApplicationController   #导出简历
     start_time = params[:start_time]
     end_time = params[:end_time]
     @client_infos = (Company.get_client_infos_by @company.id.to_s,start_time,end_time) || []
-    p @client_infos
+    p "client_infos are-------------->",@client_infos
     if @client_infos.length>0
       xls_content_for @client_infos
       render text:1
@@ -54,9 +54,13 @@ class ExportsController < ApplicationController   #导出简历
     objs[0].hash_content.each do |ob|
       ob[1].each do |a|
         if a[1].class == Hash
-          arr << a[1].keys[0]
-        else
-          arr << "头像链接"
+          if a[1]=="headimage"
+            arr << "头像链接"
+          elsif a[1]=~ /file/i
+            arr << "附件"
+          else
+            arr << a[1].keys[0]
+          end
         end
       end
     end
@@ -67,9 +71,13 @@ class ExportsController < ApplicationController   #导出简历
       obj.hash_content.each do |ob|
         ob[1].each do |a|
           if a[1].class == Hash
-            sheet1[count_row, i]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
-          elsif a[0]=="headimage"
-            sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{a[1]}", "他的头像"
+            if a[1]=="headimage"
+              sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{get_upload_file_path a[1]}", "他的头像"
+            elsif a[1]=~ /file/i
+              sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{get_upload_file_path a[1]}", "附件链接"
+            else
+              sheet1[count_row, i]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
+            end
           end
           i+=1
         end
@@ -78,6 +86,10 @@ class ExportsController < ApplicationController   #导出简历
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     book.write file_path
+  end
+
+  def get_upload_file_path(file_path)
+    file_path.split("/")[3..-1].join("/")
   end
   def get_company
     @company = Company.find_by_id(params[:company_id])
