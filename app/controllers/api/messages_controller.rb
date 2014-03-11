@@ -10,7 +10,7 @@ class Api::MessagesController < ApplicationController
       to_user = params[:to_user].to_i
       content = params[:content]
       types = params[:types].to_i
-      company_id = params[:company_id].to_i
+      company_id = params[:site_id].to_i
       message = Message.new(:company_id => company_id, :from_user => from_user, :to_user => to_user, :types => types,
         :content => content, :status => Message::STATUS[:READ], :msg_id => nil)
       if message.save
@@ -116,9 +116,9 @@ class Api::MessagesController < ApplicationController
 
   #公众号 主动发消息 给用户  现在只支持文本
   def send_message_to_user
-    #params[:company_id], params[:msg_type], params[:content], params[:client_id],站点名称，发送消息的类型(text,image,voice)，发送的内容(类型是text时)， 接收信息的open_id
+    #params[:site_id], params[:msg_type], params[:content], params[:client_id],站点名称，发送消息的类型(text,image,voice)，发送的内容(类型是text时)， 接收信息的open_id
     status, msg = [1, ""]
-    company_id, msg_type, content, receive_client_id = params[:company_id], params[:msg_type], params[:content], params[:client_id]
+    company_id, msg_type, content, receive_client_id = params[:site_id], params[:msg_type], params[:content], params[:client_id]
     current_client =  Client.where("company_id=#{company_id} and types = #{Client::TYPES[:ADMIN]}")[0] if company_id  #后台登陆人员
     receive_client = Client.find_by_id_and_status(receive_client_id, Client::STATUS[:valid]) if receive_client_id   #查询有效用户
     open_id = receive_client.open_id if receive_client  

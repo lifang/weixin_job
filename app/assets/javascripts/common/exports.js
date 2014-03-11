@@ -19,7 +19,7 @@ function create_xsl_table(obj,company_id){
             type:'get',
             url:"/companies/"+company_id+"/exports/create_xsl_table.xls",
             dateType: 'text',
-            date:"start_time="+date_time+"&end_time="+date_time1,
+            data:"start_time="+date_time+"&end_time="+date_time1,
             success: function(data) {
                 if(data=="1"){
                     alert("导出成功！请下载");
