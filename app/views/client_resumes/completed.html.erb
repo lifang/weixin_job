@@ -1,0 +1,6 @@
+<h3><%= @err_msg %></h3>
+<% if @succ_msg.any? %>
+<h3><%= @succ_msg[:msg] %></h3>
+<h3><%= @succ_msg[:phone] %></h3>
+<h3><%= @succ_msg[:address] %></h3>
+<% end %>

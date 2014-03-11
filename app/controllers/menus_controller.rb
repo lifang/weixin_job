@@ -4,7 +4,7 @@ class MenusController < ApplicationController   #菜单
   before_filter :get_title
   def index
     @resume_tmp = ResumeTemplate.find_by_id(@company.id)
-    @positions = Position.select("id,name").where(["company_id =? and status = ?", @company.id, Position::STATUS[:RELEASED]])
+    @positions = PositionType.select("id,name").where(["company_id =?", @company.id])
     @comp_profiles = CompanyProfile.select("id,title").where(["company_id = ?", @company.id])
     menus = Menu.where(["company_id = ?", @company.id]).group_by{|m|m.parent_id.to_s}
     @father_menus = menus["0"]

@@ -5,7 +5,7 @@ class ResumesController < ApplicationController   #简历模板
   def index
     @company = Company.find_by_id(params[:company_id].to_i)
     resume_temp = ResumeTemplate.find_by_company_id(@company.id)
-    @cr = ClientResume.find_by_id(1)
+    @cr = ClientResume.find_by_id(6)
     if resume_temp
       @resume_temp = resume_temp
     else

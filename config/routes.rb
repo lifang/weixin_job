@@ -48,7 +48,6 @@ match '/submit_redirect' => 'app_managements#submit_redirect', :as => :submit_re
       end
     end
     resources :menus
-    resources :client_resumes
     resources :exports do
       collection do
         get :create_xsl_table,:down_zip_file
@@ -65,6 +64,7 @@ match '/submit_redirect' => 'app_managements#submit_redirect', :as => :submit_re
     resources :records
 
   end
+  resources :client_resumes
 
   resources :weixins
 
