@@ -52,9 +52,7 @@ class ClientResumesController < ApplicationController
               end
               if status == 0
                 break
-              end
-            elsif k.to_s.include?("success")
-              succ_msg = {:msg => v["alert"], :phone => v["phone"], :address => v["address"]}
+              end            
             end
           end
 
@@ -94,9 +92,7 @@ class ClientResumesController < ApplicationController
               end
               if status == 0
                 break
-              end
-            elsif k.to_s.include?("success")
-              succ_msg = {:msg => v["alert"], :phone => v["phone"], :address => v["address"]}
+              end          
             end
           end
         
@@ -113,7 +109,6 @@ class ClientResumesController < ApplicationController
           end
         end
       end
-      @succ_msg = succ_msg
       render "completed"
     end
   end

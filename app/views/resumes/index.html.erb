@@ -7,7 +7,7 @@
         <li class="scd_btn" name="addChekItem"><span>复选框</span></li>
         <li class="scd_btn" name="addSelItem"><span>下拉框</span></li>
         <li class="scd_btn" name="addTxtItem"><span>纯文本</span></li>
-        <li class="scd_btn" name="addSuccess"><span>提交成功页</span></li>
+
         <li class="userHead" name="addHeadImageItem"><span>头像</span></li>
         <li class="annex" name="addFileItem"><span>附件</span></li>
       </ul>
@@ -85,35 +85,13 @@
                 <p><%= v[:text] %></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :text %>]" value="<%= v[:text] %>"/>
-              </div>
-            <% elsif k.to_s.split("_")[0]=="success" %>
-              <div class="infoItem itemBox success_div">
-                <span class="close" onclick="remove_form_item(this, 'success_div')">×</span>
-                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
-                <p><label>提交成功页</label>   </p>
-                <p>
-                  <label>提示信息</label>
-                  <label><%= v[:alert] %></label>
-                  <input type="hidden" name="tags[<%= k %>][<%= :alert %>]" value="<%= v[:alert] %>"/>
-                </p>
-                <p>
-                  <label>联系电话</label>
-                  <label><%= v[:phone] %></label>
-                  <input type="hidden" name="tags[<%= k %>][<%= :phone %>]" value="<%= v[:phone] %>"/>
-                </p>
-                <p>
-                  <label>地址</label>
-                  <label><%= v[:address] %></label>
-                  <input type="hidden" name="tags[<%= k %>][<%= :address %>]" value="<%= v[:address] %>"/>
-                </p>
-              </div>
+              </div>             
             <% end %>
           <% end if @resume_temp.html_content %>
         </div>
         <div class="scdBoxAct">
           <button class="orangeBtn" type="button" onclick="create_resume_valid(this)">确定</button>
         </div>
-
       <% end %>
     </div>
   </div>

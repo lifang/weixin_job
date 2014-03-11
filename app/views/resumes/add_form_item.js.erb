@@ -14,10 +14,6 @@ $(".addFileItem").hide();
 $("#form_div").append("<%= j(render :partial => "add_form_text") %>");
 $(".second_bg").hide();
 $(".addTxtItem").hide();
-<% elsif @name == "success_div" %>
-$("#form_div").append("<%= j(render :partial => "add_form_success") %>");
-$(".second_bg").hide();
-$(".addSuccess").hide();
 <% elsif @name == "radio_div" %>
 $("#form_div").append("<%= j(render :partial => "add_form_radio") %>");
 $(".second_bg").hide();

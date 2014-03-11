@@ -1,19 +1,11 @@
 function remove_form_item(obj, name){     //删除简历模板中的某个元素
-    if(name=="success_div" || name == "headimage_div"){
+    if(name == "headimage_div"){
         var msg;
         var flag = true;
-        if(name=="success_div"){
-            var len = $(obj).parents("div .phoneVirtual").find(".success_div").length;
-            if(len<=1){
-                msg = "至少保留一个注册成功后跳转的信息!";
-                flag = false;
-            }
-        }else{
-            var len = $(obj).parents("div .phoneVirtual").find(".head_image_div").length;
-            if(len<=1){
-                msg = "至少有一个上传头像!";
-                flag = false;
-            }           
+        var len = $(obj).parents("div .phoneVirtual").find(".head_image_div").length;
+        if(len<=1){
+            msg = "至少有一个上传头像!";
+            flag = false;
         };
         if(flag){
             $(obj).parent("div .itemBox").remove();
@@ -71,13 +63,11 @@ function add_form_item(name,obj,company_id){
         title_name = "checkbox_"+index;
     }else if(name=="select_div"){
         title_name = "select_"+index;
-    }else if(name=="success_div"){
-        title_name = "success_"+index;
     }else if(name == "add_tag_div"){
         title_name = "tag_"+index;
     }
     var item_title = $(obj).parents(".second_content").find("input[name='add_item_title']").first().val();  //:name => 'xxx''
-    if (name!="success_div" && $.trim(item_title)==""){
+    if ($.trim(item_title)==""){
         alert("标题不能为空!");
     }else{
         if(name=="message_div" || name=="head_image_div" || name=="file_div" || name=="text_div"){   //图片、填空、文本只需传标题值
@@ -110,30 +100,6 @@ function add_form_item(name,obj,company_id){
                 })
             }
 
-        }else if(name=="success_div"){
-            var al = $(obj).parents(".second_content").find("input[name='add_item_alert']").first().val();
-            var phone = $(obj).parents(".second_content").find("input[name='add_item_phone']").first().val();
-            var address = $(obj).parents(".second_content").find("input[name='add_item_address']").first().val();
-            if(al==""){
-                alert("提示信息不能为空!");
-            }else if(phone==""){
-                alert("联系电话不能为空!");
-            }else if(address==""){
-                alert("地址不能为空!");
-            }else{                     
-                $.ajax({
-                    type: "get",
-                    url: "/companies/"+company_id+"/resumes/add_form_item",
-                    dataType: "script",
-                    data: {
-                        name : name,
-                        title_name : title_name,
-                        al : al,
-                        phone : phone,
-                        address : address
-                    }
-                })
-            }
         }else if(name=="radio_div"){
             var radio_ops = new Array;
             var flag = true;
@@ -221,11 +187,8 @@ function sortNumber(a,b){
 }
 
 function create_resume_valid(obj){
-    var succ_len = $(".phoneVirtual").find(".success_div").length;
     var headimg_len = $(".phoneVirtual").find(".head_image_div").length;
-    if(succ_len<=0){
-        alert("至少有一个注册成功后跳转的信息!");
-    }else if(headimg_len < 1){
+    if(headimg_len < 1){
         alert("至少有一个上传头像!");
     }else if(headimg_len > 1){
         alert("最多有一个上传头像!");

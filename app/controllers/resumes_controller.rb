@@ -16,15 +16,9 @@ class ResumesController < ApplicationController   #简历模板
   def add_form_item
     @name = params[:name] #message_div
     @title_name = params[:title_name] #message_24
-    if @name != "success_div"
-      @item_tile = params[:item_title]
-      if @name == "radio_div" || @name=="check_box_div" || @name=="select_div" || @name=="add_tag_div"
-        @options = params[:options]
-      end
-    else
-      @alert = params[:al]
-      @phone = params[:phone]
-      @address = params[:address]
+    @item_tile = params[:item_title]
+    if @name == "radio_div" || @name=="check_box_div" || @name=="select_div" || @name=="add_tag_div"
+      @options = params[:options]
     end
     respond_to do |f|
       f.js
