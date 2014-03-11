@@ -17,35 +17,98 @@ class ClientResumesController < ApplicationController
     end
     secret_id = params[:secret_id]
     company_id = params[:company_id].to_i
+    status = 1
+    @err_msg = ""
     if secret_id.nil?
+      status = 0
       @err_msg = "数据错误!"
     else
       cr = ClientResume.find_by_open_id(secret_id)      
       if cr
-       
-      else
         hash.each do |k, v|
           if k.to_s.include?("headimage")
             v.each do |name, img|
-              img_url = ClientResume.upload_headimg(img, company_id, secret_id, [148,154,50,800])
-              hash[k][name] = img_url
+              status, img_url, @err_msg = ClientResume.upload_headimg(img, company_id, secret_id)
+              if status == 1
+                hash[k][name] = img_url
+              else
+                hash[k][name] = ""
+                break
+              end
+            end
+            if status == 0
+              break
             end
           elsif k.to_s.include?("file")
             v.each do |name, file|
-              file_url = ClientResume.upload_file(file, company_id, secret_id)
-              hash[k][name] = file_url
+              status, file_url, @err_msg = ClientResume.upload_file(file, company_id, secret_id)
+              if status == 1
+                hash[k][name] = file_url
+              else
+                hash[k][name] = ""
+                break
+              end
+            end
+            if status == 0
+              break
             end
           end
         end
-        cr = ClientResume.new(:html_content_datas => hash, :resume_template_id => params[:resume_id], :has_completed => true,
-          :open_id => secret_id)
-        if cr.save
-          @msg = "简历填写成功!"
+
+        if status == 1
+          if cr.update_attribute("html_content_datas", hash)
+            @err_msg = "简历填写成功!"
+          else
+            @err_msg = "简历填写失败!"
+          end
         end
-        @err_msg = "简历填写失败!"
-      end
-      render :json => {:a => hash}
+
+      else
+
+        hash.each do |k, v|
+          if k.to_s.include?("headimage")
+            v.each do |name, img|
+              status, img_url, @err_msg = ClientResume.upload_headimg(img, company_id, secret_id)
+              if status == 1
+                hash[k][name] = img_url
+              else
+                hash[k][name] = ""
+                break
+              end
+            end
+            if status == 0
+              break
+            end
+          elsif k.to_s.include?("file")
+            v.each do |name, file|
+              status, file_url, @err_msg = ClientResume.upload_file(file, company_id, secret_id)
+              if status == 1
+                hash[k][name] = file_url
+              else
+                hash[k][name] = ""
+                break
+              end
+            end
+            if status == 0
+              break
+            end
+          end
+        end
+        
+        if status == 1
+          cr = ClientResume.new(:html_content_datas => hash, :resume_template_id => params[:resume_id], :has_completed => true,
+            :open_id => secret_id)
+          if cr.save
+            @err_msg = "简历填写成功!"
+          else
+            status = 0
+            @err_msg = "简历填写失败!"
+          end
+          
+        end
+      end    
     end
+    render :json => {:status => status, :msg => @err_msg}
   end
 
 
