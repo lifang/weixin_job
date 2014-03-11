@@ -43,14 +43,5 @@ class AddLabelsTagsRecordsRemindsTables < ActiveRecord::Migration
 
     add_index :records, :company_id
 
-    #创建保存表单数据表
-    create_table :form_datas do |t|
-      t.integer :client_resume_id
-      t.text :data_hash  #表单数据
-
-      t.timestamps
-    end
-
-    add_index :form_datas, :client_resume_id
   end
 end

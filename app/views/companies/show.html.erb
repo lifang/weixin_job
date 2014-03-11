@@ -92,13 +92,13 @@
 
 <%= form_tag company_path(@company), :method => :put do %>
   <div class="second_box second_box_fixed appInfoEdit">
-    <div class="second_content" style="width: 450px;">
+    <div class="second_content" style="width: 500px;">
       <span class="close" title="关闭">×</span>
       <h1>APP信息修改</h1>
       <div id="edit_app_div">
         <% if @company.app_type==0 && @company.has_app %>
-        <p id="edit_app_notice_p">
-          <label>您当前的微信公众账号为订阅号,请在下面输入正确的微信公众平台登陆账号和密码!</label>
+        <p id="edit_app_notice_p" class="setting_notice">
+          您当前的微信公众账号为订阅号,请在下面输入正确的微信公众平台登陆账号和密码!
         </p>
         <% end %>
         <p>

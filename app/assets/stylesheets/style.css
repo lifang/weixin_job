@@ -42,14 +42,14 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 /* 招聘职位 */
 .companyInfo { padding-bottom: 10px; border-bottom: 1px solid #ddd;}
 .companyInfo li { padding: 5px 0;}
-.companyInfo li label { display: inline-block; width: 80px; text-align: right; color: #828282;}
+.companyInfo li label { display: inline-block; width: 120px; text-align: right; color: #828282;}
 .companyInfo li span { display: inline-block; width: 180px; margin-left: 10px;}
 .companyInfo li a { color: #828282;}
 
 .appInfo { position: relative;}
 .appInfo .angle { color: #a4a2a2; position: absolute; left: 80px; top: -13px;}
 .appInfo ul { margin-top: 10px;}
-.appInfo li { background: #a4a2a2; width: 275px;}
+.appInfo li { background: #a4a2a2; width: 350px;}
 .appInfo li label { color: #eee;}
 
 .toolbar { background: #868686; height: 80px;}
@@ -254,7 +254,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .second_content p .close { display: none;}
 .second_content p:hover .close { display: block;}
 .second_content p { line-height: 36px;}
-.second_content p label { display: inline-block; width: 120px; text-align: right;}
+.second_content p label { display: inline-block; width: 150px; text-align: right;}
 .second_content p input[type="text"] { padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
 .second_content p input[type="radio"] { margin-left: 10px; width: 35px; }
 .scdBoxAct { margin: 10px 0; text-align: center; }
@@ -269,6 +269,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 }
 .second_content p .check .checkPoint { display: block; width: 12px; height: 12px; padding: 0; margin: 4px; background: #fff;}
 .second_content p .check.checked .checkPoint { background: #F9651B;}
+.second_content .setting_notice { padding:  0 50px;}
 
 /* app */
 .appNewWarn { float: right; line-height: 80px; padding: 0 10px;}

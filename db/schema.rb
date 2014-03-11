@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20140310101218) do
     t.datetime "updated_at",       :null => false
   end
 
+
   create_table "form_datas", :force => true do |t|
     t.integer  "client_resume_id"
     t.text     "data_hash"
@@ -98,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20140310101218) do
   end
 
   add_index "form_datas", ["client_resume_id"], :name => "index_form_datas_on_client_resume_id"
+
 
   create_table "labels", :force => true do |t|
     t.integer  "company_id"

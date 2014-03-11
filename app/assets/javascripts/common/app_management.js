@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 
-
 Date.prototype.format = function(format) {
     var o = {
         "M+" : this.getMonth() + 1, //month
@@ -20,6 +19,34 @@ Date.prototype.format = function(format) {
         if (new RegExp("(" + k + ")").test(format))
             format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
     return format;
+}
+//提醒，js处理列表栏提醒
+function interception_wrap(button) {
+    var s = $(button).parents(".third_content").find("textarea").val();
+    var array_s = s.split("\n");
+    var activity = null;
+    var long_size = true;
+    $.each(array_s, function(index, value) {
+        value = $.trim(value);
+        if (value.length >= 17) {
+            alert('单行字符过长！')
+            long_size = false;
+            return false;
+        }
+        if (activity == null) {
+            activity = value;
+        } else {
+            activity += "||" + value;
+        }
+    });
+    if (long_size) {
+        var diaplay = $("div.newWarn").css("display");
+        var class_name = diaplay == "block" ? "newWarn" : "newRecord"
+        var txtArea = $("div."+ class_name).find(".warnTxt textarea");
+        txtArea.val(txtArea.val() + "[[选项-" + activity + "]]")
+        $(button).parents(".third_box").hide();
+        $(".third_bg").hide();
+    }
 }
 
 
@@ -69,11 +96,12 @@ function check_remind_nonempty(obj) {
 }
 
 function check_record_nonempty(obj) {
-    if ($.trim($("input[name='records_title']").val()).length == 0) {
-        tishi_alert('提示:\n\n名称不能为空');
+    var form = $(obj).parents("form");
+    if ($.trim(form.find("#record_title").val()) == "") {
+        alert('提示:\n\n名称不能为空');
         return false;
-    } else if ($.trim($("textarea[name='records_content']").val()).length == 0) {
-        tishi_alert('提示:\n\n内容不能为空');
+    } else if (form.find($("#record_content").val()) == "") {
+        alert('提示:\n\n内容不能为空');
         return false;
     }
 }
