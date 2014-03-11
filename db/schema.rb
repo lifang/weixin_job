@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140308100524) do
+ActiveRecord::Schema.define(:version => 20140311065625) do
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"
     t.text     "hash_content"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.text     "html_content"
   end
 
   create_table "client_resumes", :force => true do |t|
@@ -27,24 +28,25 @@ ActiveRecord::Schema.define(:version => 20140308100524) do
     t.string   "open_id"
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
+    t.integer  "company_id"
   end
 
   create_table "clients", :force => true do |t|
     t.string   "name"
-    t.integer  "mobiephone"
+    t.string   "mobiephone",      :limit => 45
     t.integer  "company_id"
     t.text     "html_content"
     t.integer  "types"
     t.string   "password"
     t.string   "username"
     t.string   "avatar_url"
-    t.boolean  "has_new_message", :default => false
-    t.boolean  "has_new_record",  :default => false
+    t.boolean  "has_new_message",               :default => false
+    t.boolean  "has_new_record",                :default => false
     t.string   "open_id"
-    t.boolean  "status",          :default => false
+    t.boolean  "status",                        :default => false
     t.string   "remark"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
     t.string   "faker_id"
     t.string   "token"
     t.string   "wx_cookie"
@@ -199,6 +201,7 @@ ActiveRecord::Schema.define(:version => 20140308100524) do
     t.string   "content"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "company_id"
   end
 
 end
