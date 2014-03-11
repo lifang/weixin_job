@@ -102,30 +102,6 @@ function add_form_item(name,obj,company_id){
                 })
             }
 
-        }else if(name=="success_div"){
-            var al = $(obj).parents(".second_content").find("input[name='add_item_alert']").first().val();
-            var phone = $(obj).parents(".second_content").find("input[name='add_item_phone']").first().val();
-            var address = $(obj).parents(".second_content").find("input[name='add_item_address']").first().val();
-            if(al==""){
-                tishi_alert("提示信息不能为空!");
-            }else if(phone==""){
-                tishi_alert("联系电话不能为空!");
-            }else if(address==""){
-                tishi_alert("地址不能为空!");
-            }else{                     
-                $.ajax({
-                    type: "get",
-                    url: "/companies/"+company_id+"/resumes/add_form_item",
-                    dataType: "script",
-                    data: {
-                        name : name,
-                        title_name : title_name,
-                        al : al,
-                        phone : phone,
-                        address : address
-                    }
-                })
-            }
         }else if(name=="radio_div"){
             var radio_ops = new Array;
             var flag = true;
