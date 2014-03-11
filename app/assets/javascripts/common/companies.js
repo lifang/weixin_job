@@ -19,10 +19,6 @@ function edit_company_valid(obj, type){
             alert("公司名称不能为空!");
         }else if($.trim($("#company_cweb").val())==""){
             alert("公众号token不能为空!")
-        }else if($.trim($("#company_app_id").val())==""){
-            alert("AppId不能为空!")
-        }else if($.trim($("#company_app_secret").val())==""){
-            alert("AppSecret不能为空!")
         }else{
             $(obj).parents("form").submit();
         }

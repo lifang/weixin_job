@@ -48,7 +48,7 @@ class ClientResume < ActiveRecord::Base
       size = File.size?(root_path+ file_name)
       if size > 512000
         status = 0
-        msg = "附件最大不能超过500KB"
+        msg = "附件上传失败,文件最大不能超过500KB"
         File.delete(root_path+ file_name)
       end
     rescue
