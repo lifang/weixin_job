@@ -76,14 +76,10 @@ class AppManagementsController < ApplicationController
     gzh_client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
     client_html_info = gzh_client.client_html_info if gzh_client
     new_hash = {}
-    p 3333
-    p app_client
     app_client.each do |k, v|
       new_key = get_actual_name(k, client_html_info)
       new_hash[new_key] = v if new_key.present?
     end if app_client.present? && client_html_info
-    p 1111111111111111111111111111111111111111
-    p new_hash
     open_id = params[:open_id]
     Client.transaction do
       if open_id.present?
@@ -108,10 +104,7 @@ class AppManagementsController < ApplicationController
   #根据表单元素name，获取对应的实际元素名称
   def get_actual_name(key, client_html_info)
     name = ""
-    p "+++++++++++++++++++++++++++++"
-    p key
     client_html_info.hash_content.each do |k, v|
-      p k
       if k == key
         name = v["name"]
         break
@@ -127,7 +120,7 @@ class AppManagementsController < ApplicationController
     client.tags = tags
   end
 
-  #保存app登记 文件
+  #保存app登记 文件   # 已不用
   def save_as_app_form content
     company_path = Rails.root.to_s + "/public/companies/#{@company.id}"
     path = Rails.root.to_s + "/public/companies/#{@company.id}/app_regist.html"
@@ -143,7 +136,7 @@ class AppManagementsController < ApplicationController
     render :layout => false
   end
 
-  #生成html页面string
+  #生成html页面string  # 已不用
   def html_content_app(optional_fields)
     ele = ""
     optional_fields.each do |ele_type_name, label_and_options|
