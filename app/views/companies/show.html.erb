@@ -103,9 +103,9 @@
         <% end %>
         <p>
           <label>是否配置APP</label>
-          <input type="radio" name="has_app" value="1" <% if @company.has_app==true %>checked<% end %> onclick="edit_has_app(this, <%= @company.app_type %>)"/>
+          <input type="radio" name="has_app" value="1" <% if @company.has_app==true %>checked<% end %> onclick="edit_has_app(this, <%= @company.app_type.to_i %>)"/>
           <span>是</span>
-          <input type="radio" name="has_app" value="0" <% if @company.has_app==false %>checked<% end %> onclick="edit_has_app(this, <%= @company.app_type %>)"/>
+          <input type="radio" name="has_app" value="0" <% if @company.has_app==false %>checked<% end %> onclick="edit_has_app(this, <%= @company.app_type.to_i %>)"/>
           <span>否</span>
         </p>
         <p>
