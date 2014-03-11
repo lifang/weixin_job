@@ -74,7 +74,7 @@ class Api::ClientsController < ApplicationController
       page = params[:page].to_i
       page_status = 1
       user_id = params[:user_id].to_i
-      company_id = params[:company_id].to_i
+      company_id = params[:site_id].to_i
       person_id = params[:person_id].to_i
       arr = [user_id, person_id]
       messages = Message.paginate_by_sql(["select m.id, m.from_user, m.to_user, m.types, m.content, m.status,
@@ -113,7 +113,7 @@ class Api::ClientsController < ApplicationController
   #刷新通讯录和最近联系人
   def refresh
     type = params[:type].to_i
-    company_id = params[:company_id].to_i
+    company_id = params[:site_id].to_i
     h = {}
     status = 1
     msg = ""
@@ -156,7 +156,7 @@ class Api::ClientsController < ApplicationController
     RecentlyClients.transaction do
       status = 1
       msg = ""
-      company_id = params[:company_id].to_i
+      company_id = params[:site_id].to_i
       person_id = params[:person_id].to_i
       recent_person = RecentlyClients.find_by_company_id_and_client_id(company_id, person_id)
       if recent_person.nil?
@@ -175,7 +175,7 @@ class Api::ClientsController < ApplicationController
     Client.transaction do
       status = 1
       msg = ""
-      company_id = params[:company_id].to_i
+      company_id = params[:site_id].to_i
       person_id = params[:person_id].to_i
       person_type = params[:person_type]
       person_info = params[:person_info]
@@ -239,7 +239,7 @@ class Api::ClientsController < ApplicationController
       status = 1
       msg = ""
       person_id = params[:person_id].to_i
-      company_id = params[:company_id].to_i
+      company_id = params[:site_id].to_i
       isShield = params[:isShield].to_i
       client = Client.find_by_id_and_company_id(person_id, company_id)
       if client.nil?
@@ -270,7 +270,7 @@ class Api::ClientsController < ApplicationController
     Site.transaction do
       status = 1
       msg = ""
-      company_id = params[:company_id].to_i
+      company_id = params[:site_id].to_i
       #type = params[:type].to_i
       company = Company.find_by_id(company_id)
       receive_status = params[:receive_status].to_i
