@@ -39,8 +39,7 @@ class ExportsController < ApplicationController   #导出简历
   def xls_content_for(objs)
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet :name => "form_datas"
-    p 111111111111,objs
-    sheet1.row(0).concat  init_zero_line objs[0]
+    sheet1.row(0).concat  init_zero_line objs[-1]
     count_row = 1
     objs.each do |obj|
       obj.html_content_datas.each_with_index do |a,i|
@@ -76,7 +75,7 @@ class ExportsController < ApplicationController   #导出简历
     arr
   end
   def get_upload_file_path(file_path)
-    file_path.split("/")[3..-1].join("/")
+    file_path.split("/")[4..-1].join("/")
   end
   def get_company
     @company = Company.find_by_id(params[:company_id])
