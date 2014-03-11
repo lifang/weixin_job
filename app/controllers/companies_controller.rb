@@ -1,7 +1,7 @@
 #encoding: utf-8
 class CompaniesController < ApplicationController
   before_filter :has_sign?
-    before_filter :get_title
+  before_filter :get_title
   def show
     @company = Company.find_by_id(params[:company_id].to_i)
   end
@@ -24,6 +24,17 @@ class CompaniesController < ApplicationController
           :app_password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip)
         }
         if @company.update_attributes(hash)
+          #创建client 开始
+          client = @company.clients.where("types = #{Client::TYPES[:ADMIN]}")[0]
+          if client
+            client.update_attributes(:app_account => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
+              :app_password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip))
+          else
+             @company.clients.create(:username => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
+              :password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip),
+               :types => Client::TYPES[:ADMIN])
+          end
+          #创建client 结束
           flash[:notice] = "设置成功!"
         else
           flash[:notice] = @company.errors.messages.values.flatten.join("\\n")
