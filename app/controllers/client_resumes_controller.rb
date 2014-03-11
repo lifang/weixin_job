@@ -24,7 +24,7 @@ class ClientResumesController < ApplicationController
         status = 0
         @err_msg = "数据错误!"
       else
-        cr = ClientResume.find_by_open_id(secret_id)
+        cr = ClientResume.find_by_open_id_and_company_id(secret_id, company_id)
         if cr
           hash.each do |k, v|
             if k.to_s.include?("headimage")
@@ -102,7 +102,7 @@ class ClientResumesController < ApplicationController
         
           if status == 1
             cr = ClientResume.new(:html_content_datas => hash, :resume_template_id => params[:resume_id], :has_completed => true,
-              :open_id => secret_id)
+              :open_id => secret_id, :company_id => company_id)
             if cr.save
               @err_msg = "简历填写成功!"
             else
