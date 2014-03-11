@@ -13,6 +13,7 @@ class AppManagementsController < ApplicationController
     @remind = Remind.new unless @remind
   end
 
+  #登记后调转页
   def submit_redirect
     render :layout => false
   end
@@ -31,8 +32,8 @@ class AppManagementsController < ApplicationController
       if @chi
         if @chi.update_attributes({html_content:params[:html_content], hash_content: optional_fields})
           save_tags tags
-          content = html_content_app(optional_fields)
-          save_as_app_form content
+          #          content = html_content_app(optional_fields)
+          #          save_as_app_form content
           flash[:success]="保存成功"
           redirect_to company_app_managements_path(@company)
         else
@@ -44,6 +45,19 @@ class AppManagementsController < ApplicationController
         redirect_to company_app_managements_path(@company)
       end
     end
+  end
+
+  #用户登记页面
+  def app_regist
+    gzh_client =  @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
+    @client = Client.find_by_open_id(params[:secret_key])
+    if @client
+      @chi = ClientHtmlInfo.find_by_client_id(gzh_client.id)
+      optional_fields = @chi.hash_content if @chi
+      @tags = @client.tags
+      @ele = get_element_html(@client.html_content, optional_fields, @tags.map(&:content)) if @chi
+    end
+    render :layout => false
   end
   
   #保存标签
@@ -106,7 +120,7 @@ class AppManagementsController < ApplicationController
     client.tags = tags
   end
 
-  #保存app登记 文件
+  #保存app登记 文件   # 已不用
   def save_as_app_form content
     company_path = Rails.root.to_s + "/public/companies/#{@company.id}"
     path = Rails.root.to_s + "/public/companies/#{@company.id}/app_regist.html"
@@ -122,7 +136,7 @@ class AppManagementsController < ApplicationController
     render :layout => false
   end
 
-  #生成html页面string
+  #生成html页面string  # 已不用
   def html_content_app(optional_fields)
     ele = ""
     optional_fields.each do |ele_type_name, label_and_options|
@@ -209,7 +223,12 @@ class AppManagementsController < ApplicationController
         </div>
 
        <script>
-          function submit_form(obj){
+
+            var href = window.location.href;
+            var arr = href.split('?secret_key=');
+            var secret_key = arr[1];
+
+        function submit_form(obj){
             var input =$(obj).parents('form').find('input.client_required');
             name = $.trim(input.val());
             label = input.attr('data-name')
@@ -217,10 +236,6 @@ class AppManagementsController < ApplicationController
               alert(label + '不能为空！');
               return false;
             }
-
-            var href = window.location.href;
-            var arr = href.split('?secret_key=');
-            var secret_key = arr[1];
 
             var str = $(obj).parents('form').serialize();
             if(secret_key != 'undefined' && $.trim(secret_key) != ''){
@@ -242,13 +257,12 @@ class AppManagementsController < ApplicationController
                     else
                       alert('error');
                     }
-                  });
+            });
 
-              }
+         }
          </script>
           <script language='javascript' type='text/javascript'>
               $.ajax({
-
                   url: '/get_token',
                   type: 'get',
                   dataType: 'text',

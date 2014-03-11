@@ -8,6 +8,8 @@ class Company < ActiveRecord::Base
   has_many :clients
   has_many :tags
   has_many :labels
+  has_many :reminds
+  has_many :records
   #scope  :clients, -> { where("types = #{Client::TYPES[:CONCERNED]}") }
   #scope  :client, -> { where("types = #{Client::TYPES[:ADMIN]}") }
   has_many :menus
