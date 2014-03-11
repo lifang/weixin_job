@@ -26,68 +26,55 @@ class ExportsController < ApplicationController   #导出简历
     start_time = params[:start_time]
     end_time = params[:end_time]
     @client_infos = (Company.get_client_infos_by @company.id.to_s,start_time,end_time) || []
-    p "client_infos are-------------->",@client_infos
-    if @client_infos.length>0
-      xls_content_for @client_infos
+    @client_infs = ClientResume.where(["id in (?)",@client_infos.map(&:id)])
+    if @client_infs.length>0
+      xls_content_for @client_infs
       render text:1
     else
-      xls_content_fors
       render text:2
     end
   end
 
-  def xls_content_fors
-    p 21312312312
-    book = Spreadsheet::Excel::Workbook.new
-    sheet1 = book.create_worksheet :name => "form_datas_#{1312}"
-    sheet1[0, 0]="<a href='http://www.baidu.com'>haah</a>"
-    sheet1.row(0)[0] = Spreadsheet::Link.new './images/1.jpg', "test"
+  
+  def xls_content_for(objs)
+    book = Spreadsheet::Workbook.new
+    sheet1 = book.create_worksheet :name => "form_datas"
+    p 111111111111,objs
+    sheet1.row(0).concat  init_zero_line objs[0]
+    count_row = 1
+    objs.each do |obj|
+      obj.html_content_datas.each_with_index do |a,i|
+          if a[1].class == Hash
+            if a[0]=="headimage"
+              sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{get_upload_file_path a[1].values[0]}",a[1].keys[0]
+            elsif a[0]=~ /file/i
+              sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{get_upload_file_path a[1].values[0]}", a[1].keys[0]
+            else
+              sheet1[count_row, i]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
+            end
+          end
+        end
+        count_row+=1
+    end
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     book.write file_path
   end
-  
-  def xls_content_for(objs)
-    book = Spreadsheet::Workbook.new
-    sheet1 = book.create_worksheet :name => "form_datas_#{page}"
-    arr =[]
-    objs[0].hash_content.each do |ob|
-      ob[1].each do |a|
+  def init_zero_line(obj)
+   arr =[]
+    obj.html_content_datas.each do |a|
         if a[1].class == Hash
-          if a[1]=="headimage"
+          if a[0]=="headimage"
             arr << "头像链接"
-          elsif a[1]=~ /file/i
+          elsif a[0]=~ /file/i
             arr << "附件"
           else
             arr << a[1].keys[0]
           end
         end
-      end
     end
-    sheet1.row(0).concat arr
-    count_row = 1
-    objs.each do |obj|
-      i=0
-      obj.hash_content.each do |ob|
-        ob[1].each do |a|
-          if a[1].class == Hash
-            if a[1]=="headimage"
-              sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{get_upload_file_path a[1]}", "他的头像"
-            elsif a[1]=~ /file/i
-              sheet1.row(count_row)[i] = Spreadsheet::Link.new "file://./#{get_upload_file_path a[1]}", "附件链接"
-            else
-              sheet1[count_row, i]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
-            end
-          end
-          i+=1
-        end
-      end
-    end
-    file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
-    FileUtils.rm file_path if File.exists?(file_path)
-    book.write file_path
+    arr
   end
-
   def get_upload_file_path(file_path)
     file_path.split("/")[3..-1].join("/")
   end
