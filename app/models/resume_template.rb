@@ -57,11 +57,7 @@ class ResumeTemplate < ActiveRecord::Base
       elsif k.to_s.include?("file")
         html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
         html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
-        html_head << "</div>"
-      elsif k.to_s.include?("success")
-        html_head << "<input type='hidden' name='[form_p][#{k.to_s}][alert]' value='#{v[:alert]}'/>"
-        html_head << "<input type='hidden' name='[form_p][#{k.to_s}][phone]' value='#{v[:phone]}'/>"
-        html_head << "<input type='hidden' name='[form_p][#{k.to_s}][address]' value='#{v[:address]}'/>"
+        html_head << "</div>"     
       end
     end if resume.html_content
 

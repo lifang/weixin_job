@@ -50,8 +50,9 @@ class LoginsController < ApplicationController
           company = Company.new(:name => comp_name, :status => Company::STATUS[:NORMAL],:company_account => comp_account,
             :company_password => Digest::MD5.hexdigest(comp_password))
           if company.save
-            resume_hash = {"message_1" => {"name" => "姓名"}, "message_2" => {"name" => "联系电话"}, "message_3" => {"name" => "地址"},
-              "headimage" => {"name" => "上传头像", "url" => ""}}
+            resume_hash = {"headimage" => {"name" => "上传头像", "url" => ""},
+              "message_1" => {"name" => "姓名"}, "message_2" => {"name" => "联系电话"}, "message_3" => {"name" => "邮箱"},
+              "message_3" => {"name" => "地址"}}
             resume = ResumeTemplate.new(:html_content => resume_hash, :company_id => company.id)
             if resume.save
               ResumeTemplate.get_html(resume)
