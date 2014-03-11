@@ -18,28 +18,28 @@
         <th>操作</th>
       </tr>
       <%@company_profiles.each do |cp|%>
-      <tr>
-        <td><%=cp.title%></td>
-        <td>
-          <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？" do%>
-          <button class="delete" title="删除"></button>
-          <%end%>
-          <%=link_to edit_company_company_profile_path(@company,cp.id) do%>
-          <button class="edit" title="编辑"></button>
-          <%end%>
-          <a href="<%=cp.file_path%>" target="_blank" >
-          <button class="edit" title="浏览"></button>
-          </a>
-        </td>
-      </tr>
-      <%end%>
-      <%if @company_profiles.blank?%>
         <tr>
-        <td colspan="4" style="text-align:center; font-size: 20px;">暂无数据</td>
+          <td><%=cp.title%></td>
+          <td>
+            <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？" do%>
+              <button class="delete" title="删除"></button>
+            <%end%>
+            <%=link_to edit_company_company_profile_path(@company,cp.id) do%>
+              <button class="edit" title="编辑"></button>
+            <%end%>
+            <a href="<%=cp.file_path%>" target="_blank" >
+              <button class="edit" title="浏览"></button>
+            </a>
+          </td>
         </tr>
-      <%end%>
+      </table>
+    <%end%>
+    <%if @company_profiles.blank?%>
+      <div style="text-align:center; font-size: 14px;"> 暂无数据
+      </div>
+    <%end%>
 
-       
-    </table>
+
+
   </div>
 </div>
