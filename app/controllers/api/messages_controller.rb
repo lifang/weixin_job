@@ -169,7 +169,7 @@ class Api::MessagesController < ApplicationController
           end
         else   #公众号是订阅号
 
-         Client.send_single_message(company, content, receive_client_id )
+         send_single_message(company, content, receive_client_id )
 
         end
       else
