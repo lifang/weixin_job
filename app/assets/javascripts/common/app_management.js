@@ -29,7 +29,7 @@ function interception_wrap(button) {
     $.each(array_s, function(index, value) {
         value = $.trim(value);
         if (value.length >= 17) {
-            alert('单行字符过长！')
+           tishi_alert('单行字符过长！')
             long_size = false;
             return false;
         }
@@ -81,16 +81,16 @@ function check_remind_nonempty(obj) {
     var todays = new Date().format('yyyy-MM-dd')
     var form = $(obj).parents("form");
     if ($.trim(form.find("#remind_title").val()) == "") {
-        alert('提示:\n\n名称不能为空');
+       tishi_alert('提示:\n\n名称不能为空');
         return false;
     } else if ($.trim(form.find("#remind_reseve_time").val()) == "" && $.trim(form.find("#remind_days").val()) == 0) {
-        alert('提示:\n\n请选择发送时间');
+       tishi_alert('提示:\n\n请选择发送时间');
         return false;
     } else if ($.trim(form.find("#remind_content").val()) == "") {
-        alert('提示:\n\n内容不能为空');
+       tishi_alert('提示:\n\n内容不能为空');
         return false;
     } else if ($.trim(form.find("#remind_reseve_time").val()) <= todays && $.trim(form.find("#remind_days").val()) <= 0) {
-        alert('提示:\n\n请选择正确时间');
+       tishi_alert('提示:\n\n请选择正确时间');
         return false;
     }
 }
@@ -98,10 +98,10 @@ function check_remind_nonempty(obj) {
 function check_record_nonempty(obj) {
     var form = $(obj).parents("form");
     if ($.trim(form.find("#record_title").val()) == "") {
-        alert('提示:\n\n名称不能为空');
+       tishi_alert('提示:\n\n名称不能为空');
         return false;
     } else if (form.find($("#record_content").val()) == "") {
-        alert('提示:\n\n内容不能为空');
+       tishi_alert('提示:\n\n内容不能为空');
         return false;
     }
 }

@@ -18,7 +18,7 @@ function remove_form_item(obj, name){     //删除简历模板中的某个元素
         if(flag){
             $(obj).parent("div .itemBox").remove();
         }else{
-            alert(msg);
+           tishi_alert(msg);
         }
     }else{
         $(obj).parent("div .itemBox").remove();
@@ -28,7 +28,7 @@ function remove_form_item(obj, name){     //删除简历模板中的某个元素
 function del_tag_p(obj){
     var len = $(obj).parents(".insetBox").find(".optBox").length;
     if(len <=1){
-        alert("至少保留一个选项!");
+       tishi_alert("至少保留一个选项!");
     }else{
         $(obj).parents("p").remove();
     }
@@ -78,13 +78,13 @@ function add_form_item(name,obj,company_id){
     }
     var item_title = $(obj).parents(".second_content").find("input[name='add_item_title']").first().val();  //:name => 'xxx''
     if (name!="success_div" && $.trim(item_title)==""){
-        alert("标题不能为空!");
+       tishi_alert("标题不能为空!");
     }else{
         if(name=="message_div" || name=="head_image_div" || name=="file_div" || name=="text_div"){   //图片、填空、文本只需传标题值
             if(name=="head_image_div"){
                 var len = $(".head_image_div").length;
                 if(len>=1){
-                    alert("头像最多只有一个!");
+                   tishi_alert("头像最多只有一个!");
                 }else{
                     $.ajax({
                         type: "get",
@@ -115,11 +115,11 @@ function add_form_item(name,obj,company_id){
             var phone = $(obj).parents(".second_content").find("input[name='add_item_phone']").first().val();
             var address = $(obj).parents(".second_content").find("input[name='add_item_address']").first().val();
             if(al==""){
-                alert("提示信息不能为空!");
+               tishi_alert("提示信息不能为空!");
             }else if(phone==""){
-                alert("联系电话不能为空!");
+               tishi_alert("联系电话不能为空!");
             }else if(address==""){
-                alert("地址不能为空!");
+               tishi_alert("地址不能为空!");
             }else{                     
                 $.ajax({
                     type: "get",
@@ -158,7 +158,7 @@ function add_form_item(name,obj,company_id){
                     }
                 })
             }else{
-                alert("选项名称不能为空!");
+               tishi_alert("选项名称不能为空!");
             }
         }else if(name=="check_box_div" || name=="add_tag_div"){
             var checkbox_ops = new Array;
@@ -184,7 +184,7 @@ function add_form_item(name,obj,company_id){
                     }
                 })
             }else{
-                alert("选项名称不能为空!");
+               tishi_alert("选项名称不能为空!");
             }
         }else if(name=="select_div"){
             var select_ops = new Array;
@@ -210,7 +210,7 @@ function add_form_item(name,obj,company_id){
                     }
                 })
             }else{
-                alert("选项名称不能为空!");
+               tishi_alert("选项名称不能为空!");
             }
         }
     }
@@ -224,11 +224,11 @@ function create_resume_valid(obj){
     var succ_len = $(".phoneVirtual").find(".success_div").length;
     var headimg_len = $(".phoneVirtual").find(".head_image_div").length;
     if(succ_len<=0){
-        alert("至少有一个注册成功后跳转的信息!");
+       tishi_alert("至少有一个注册成功后跳转的信息!");
     }else if(headimg_len < 1){
-        alert("至少有一个上传头像!");
+       tishi_alert("至少有一个上传头像!");
     }else if(headimg_len > 1){
-        alert("最多有一个上传头像!");
+       tishi_alert("最多有一个上传头像!");
     }else{
         $(obj).parents("form").submit();
     }

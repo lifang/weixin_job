@@ -9,23 +9,23 @@ function position_edit(obj){
 function character_limit(obj,num){
     if($(obj).val().length>num){
         $(obj).val($(obj).val().substring(0,num));
-        alert("字数达上限");
+        tishi_alert("字数达上限");
     }
 }
 
 function check_position(){
     if($("#types").val()==0 || $("#types").val()== null ){
-        alert('请选择职位类型！');
+        tishi_alert('请选择职位类型！');
         return false;
     }
    var name = $.trim( $(".jobInfo").find('input[type=text]').val())
    if(name == ""){
-       alert("名称不能为空！");
+       tishi_alert("名称不能为空！");
        return false;
    }
    var description = $.trim( $(".jobInfo").find('textarea').val())
    if(description == ""){
-       alert("描述不能为空！");
+       tishi_alert("描述不能为空！");
        return false;
    }
    $(".jobInfo").children("form").submit();
@@ -40,7 +40,7 @@ function search_position(obj,url){
 function submit_position_types(obj){
     
     if($.trim($("#name").val())==""){
-        alert('名称不能为空！');
+        tishi_alert('名称不能为空！');
         return false;
     }
     $(obj).parent().parent().submit();
