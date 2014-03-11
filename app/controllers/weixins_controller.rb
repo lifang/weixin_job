@@ -31,6 +31,8 @@ class WeixinsController < ApplicationController
         elsif params[:xml][:MsgType] == "voice" #用户发送语音
           save_image_or_voice_from_wx("voice")
           render :text => "ok"
+        elsif params[:xml][:MsgType] == "click"  #自定义菜单点击事件
+          
         else
           render :text => "ok"
         end
@@ -95,7 +97,7 @@ class WeixinsController < ApplicationController
   def return_app_regist_link
     client = Client.find_by_open_id_and_status(params[:xml][:FromUserName], Client::TYPES[:CONCERNED])
     if client
-      message = "app_regist_link" #TODO
+      message = "/companies/#{@company.id}/app_managements/app_regist"
       message = "&lt;a href='#{MW_URL + message}?secret_key=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
       xml = teplate_xml(message)
       render :xml => xml        #回复登记app的链接

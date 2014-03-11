@@ -1,3 +1,4 @@
 class Record < ActiveRecord::Base
-  attr_accessible :content, :site_id, :title
+  belongs_to :company
+  attr_accessible :content, :company_id, :title
 end
