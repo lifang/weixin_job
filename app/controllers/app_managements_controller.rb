@@ -5,12 +5,18 @@ class AppManagementsController < ApplicationController
   skip_before_filter :has_sign?, :only => [:get_token, :submit_redirect]
   
   def index
-    @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
-    @chi =ClientHtmlInfo.find_by_client_id(@client.id) if @client
-    @record = Record.find_by_company_id(@company.id)
-    @record = Record.new unless @record
-    @remind = Remind.find_by_company_id(@company.id)
-    @remind = Remind.new unless @remind
+    if @company.has_app
+      @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
+      @chi =ClientHtmlInfo.find_by_client_id(@client.id) if @client
+      @record = Record.find_by_company_id(@company.id)
+      @record = Record.new unless @record
+      @remind = Remind.find_by_company_id(@company.id)
+      @remind = Remind.new unless @remind
+    else
+      flash[:notice] = "请先配置app"
+      redirect_to "/companies/show?company_id=#{@company.id}"
+    end
+    
   end
 
   #登记后调转页
@@ -25,24 +31,26 @@ class AppManagementsController < ApplicationController
   
   def create_client_info_model
     @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
-    @chi = ClientHtmlInfo.find_by_client_id(@client.id)
-    tags = params[:tags].select {|k, v| k.include?("tag")} #标签
+    @chi = ClientHtmlInfo.find_by_client_id(@client.id) if @client
+    tags = params[:tags].select {|k, v| k.include?("tag")} if params[:tags] #标签
     optional_fields = params[:tags]  #"tags"=>{"message_1"=>{"name"=>"ree"}, "radio_1"=>{"name"=>"浜屼綅", "options"=>["鐑?, "璇烽棶", "浜?]}, "checkbox_1"=>{"name"=>"浜?璁╀粬", "options"=>["绐佺劧", "涓?, "濂?]}, "select_1"=>{"name"=>"钀ㄨ揪", "options"=>["椋?, "濂藉嚑涓?, "鐟炵壒"]}}}
-    Client.transaction do
-      if @chi
-        if @chi.update_attributes({html_content:params[:html_content], hash_content: optional_fields})
-          save_tags tags
-          #          content = html_content_app(optional_fields)
-          #          save_as_app_form content
-          flash[:success]="保存成功"
-          redirect_to company_app_managements_path(@company)
+    if @client
+      Client.transaction do
+        if @chi
+          if @chi.update_attributes({html_content:params[:html_content], hash_content: optional_fields})
+            save_tags tags if tags
+            #          content = html_content_app(optional_fields)
+            #          save_as_app_form content
+            flash[:success]="保存成功"
+            redirect_to company_app_managements_path(@company)
+          else
+            render 'index'
+          end
         else
-          render 'index'
+          ClientHtmlInfo.create(client_id:@client.id , html_content:params[:html_content], hash_content: optional_fields)
+          save_tags tags  if tags
+          redirect_to company_app_managements_path(@company)
         end
-      else
-        ClientHtmlInfo.create(client_id:@client.id , html_content:params[:html_content], hash_content: optional_fields)
-        save_tags tags
-        redirect_to company_app_managements_path(@company)
       end
     end
   end

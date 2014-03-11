@@ -16,13 +16,13 @@ function edit_has_app(obj, app_type){
 function edit_company_valid(obj, type){
     if(type==0){
         if($.trim($("#company_name").val())==""){
-            alert("公司名称不能为空!");
+           tishi_alert("公司名称不能为空!");
         }else if($.trim($("#company_cweb").val())==""){
-            alert("公众号token不能为空!")
+           tishi_alert("公众号token不能为空!")
         }else if($.trim($("#company_app_id").val())==""){
-            alert("AppId不能为空!")
+           tishi_alert("AppId不能为空!")
         }else if($.trim($("#company_app_secret").val())==""){
-            alert("AppSecret不能为空!")
+           tishi_alert("AppSecret不能为空!")
         }else{
             $(obj).parents("form").submit();
         }
@@ -31,10 +31,10 @@ function edit_company_valid(obj, type){
         var flag = true;
         if(has_app==1){
             if($.trim($("#company_app_account").val())==""){
-                alert("app账号不能为空!");
+               tishi_alert("app账号不能为空!");
                 flag = false;
             }else if($.trim($("#company_app_password").val())==""){
-                alert("app密码不能为空!");
+               tishi_alert("app密码不能为空!");
                 flag = false;
             }
         }

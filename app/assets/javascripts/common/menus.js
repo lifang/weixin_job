@@ -1,7 +1,7 @@
 function add_menu(level, parent_id, menu_length){
     if(level==1){
         if(menu_length >= 3){
-            alert("每个一级菜单最多只能保持3个!");
+           tishi_alert("每个一级菜单最多只能保持3个!");
         }else{
             $("#add_menu_div").find("h1[name='add_menu_h1']").first().text("新建一级菜单");
             $("#add_menu_div").find("input[name='parent_id']").remove();
@@ -11,7 +11,7 @@ function add_menu(level, parent_id, menu_length){
         }
     }else{
         if(menu_length >= 5){
-            alert("每个一级菜单的二级菜单最多只能保持5个!");
+           tishi_alert("每个一级菜单的二级菜单最多只能保持5个!");
         }else{
             $("#add_menu_div").find("h1[name='add_menu_h1']").first().text("新建二级菜单");
             $("#add_menu_div").find("input[name='parent_id']").remove();
@@ -38,7 +38,7 @@ function add_menu_commit(company_id){
     var parent_id = $("#add_menu_div").find("input[name='parent_id']").first().val();
     var menu_name = $("#add_menu_div").find("input[name='menu_name']").first().val();
     if($.trim(menu_name)=="" ){
-        alert("请输入菜单名称!");
+       tishi_alert("请输入菜单名称!");
     }else{
         var menu_type = $("#add_menu_div").find("span[class='check checked']").first().find("input[name='menu_type']").val();
         var temp_id = $("#add_menu_div").find("span[class='check checked']").first().find("input[name='temp_id']").val();
@@ -89,7 +89,7 @@ function edit_menu_commit(company_id){
     var menu_name = $("#edit_menu_div").find("input[name='edit_menu_name']").first().val();
     var menu_id = $("#edit_menu_div").find("input[name='edit_menu_id']").first().val();
     if($.trim(menu_name)=="" ){
-        alert("请输入菜单名称!");
+       tishi_alert("请输入菜单名称!");
     }else{
         var menu_type = $("#edit_menu_div").find("span[class='check checked']").first().find("input[name='menu_type']").val();
         var temp_id = $("#edit_menu_div").find("span[class='check checked']").first().find("input[name='temp_id']").val();

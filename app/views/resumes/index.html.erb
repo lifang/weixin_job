@@ -66,7 +66,7 @@
             <% elsif k.to_s.split("_")[0]=="headimage" %>
               <div class="imgItem itemBox image_div head_image_div">
                 <span class="close" onclick="remove_form_item(this, 'headimage_div')">×</span>
-                <a href="javasctipt:void(0)"><%= v["name"] %></a>
+                <a href="javascript:void(0)"><%= v["name"] %></a>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v["name"] %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :url %>]" value=""/>
@@ -74,7 +74,7 @@
             <% elsif k.to_s.split("_")[0]=="file" %>
               <div class="imgItem itemBox image_div file_div">
                 <span class="close" onclick="remove_form_item(this, 'file_div')">×</span>
-                <a href="javasctipt:void(0)"><%= v[:name] %></a>
+                <a href="javascript:void(0)"><%= v[:name] %></a>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :url %>]" value=""/>

@@ -23,12 +23,12 @@ function submit_comany_profiles(){
     $(".text_area").html("");
     var title = $.trim($("#title").val());
     if(title==""){
-        alert("标题不能为空");
+       tishi_alert("标题不能为空");
         return false;
     }
     var file_name = $.trim($("#file_name").val());
     if(file_name==""){
-        alert("文件名不能为空");
+       tishi_alert("文件名不能为空");
         return false;
     }
     var tuwens = $("#tuwen_box").find(".tuwenBox");
@@ -37,7 +37,7 @@ function submit_comany_profiles(){
         var text =  $.trim($(tuwens[i]).children("textarea").val());
         if(img == "#" && text==""){
             5
-            alert("图片文字至少要写一个");
+           tishi_alert("图片文字至少要写一个");
             return false;
         }
         $(tuwens[i]).children("textarea").html( text );

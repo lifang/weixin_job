@@ -52,7 +52,7 @@ class LoginsController < ApplicationController
           if company.save
             resume_hash = {"headimage" => {"name" => "上传头像", "url" => ""},
               "message_1" => {"name" => "姓名"}, "message_2" => {"name" => "联系电话"}, "message_3" => {"name" => "邮箱"},
-              "message_3" => {"name" => "地址"}}
+              "message_4" => {"name" => "地址"}}
             resume = ResumeTemplate.new(:html_content => resume_hash, :company_id => company.id)
             if resume.save
               ResumeTemplate.get_html(resume)
