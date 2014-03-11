@@ -16,10 +16,11 @@ class ResumeTemplate < ActiveRecord::Base
   </head>
   <body>
     <div class='form_list'>
-    <form id='create_client_resume_form' action='/companies/#{resume.company_id}/client_resumes' accept-charset='UTF-8' method='post' enctype='multipart/form-data'>
+    <form id='create_client_resume_form' action='/client_resumes' accept-charset='UTF-8' method='post' enctype='multipart/form-data'>
     <input name='utf8' type='hidden' value='✓'/>
     <input class='authenticity_token' name='authenticity_token' type='hidden' value=''/>
-    <input type='hidden' name='resume_id' value='#{resume.id}'/>"
+    <input type='hidden' name='resume_id' value='#{resume.id}'/>
+    <input type='hidden' name='company_id' value='#{resume.company_id}'/>"
 
     resume.html_content.each do |k, v|
       if k.to_s.include?("message")
@@ -57,6 +58,10 @@ class ResumeTemplate < ActiveRecord::Base
         html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
         html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
         html_head << "</div>"
+      elsif k.to_s.include?("success")
+        html_head << "<input type='hidden' name='[form_p][#{k.to_s}][alert]' value='#{v[:alert]}'/>"
+        html_head << "<input type='hidden' name='[form_p][#{k.to_s}][phone]' value='#{v[:phone]}'/>"
+        html_head << "<input type='hidden' name='[form_p][#{k.to_s}][address]' value='#{v[:address]}'/>"
       end
     end if resume.html_content
 
