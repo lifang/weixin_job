@@ -22,7 +22,7 @@ class WeixinsController < ApplicationController
         
           create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
         elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
-          return_app_regist_link if @company.has_app #返回app登记链接
+          #return_app_regist_link if @company.has_app #返回app登记链接
           #存储消息并推送到ios端
           get_client_message
         elsif params[:xml][:MsgType] == "image" #用户发送图片
@@ -98,12 +98,12 @@ class WeixinsController < ApplicationController
   #是否恢复app登记信息
   def return_app_regist_link
     client = Client.find_by_open_id_and_status(params[:xml][:FromUserName], Client::TYPES[:CONCERNED])
-    if client
-      message = "/companies/#{@company.id}/app_managements/app_regist"
-      message = "&lt;a href='#{MW_URL + message}?secret_key=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
-      xml = teplate_xml(message)
-      render :xml => xml        #回复登记app的链接
-    end
+    #unless client
+    message = "/companies/#{@company.id}/app_managements/app_regist"
+    message = "&lt;a href='#{MW_URL + message}?secret_key=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
+    xml = teplate_xml(message)
+    render :xml => xml        #回复登记app的链接
+    #end
   end
 
   #文本回复模板
@@ -196,7 +196,7 @@ Text
         friend_faker_id = get_new_friend_fakeid(wx_cookie, wx_token) #获取最新好友的faker_id
 
         gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
-        gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
+        gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_login_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
         avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id) #订阅号，获取头像
         if client
           client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url

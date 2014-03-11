@@ -241,7 +241,7 @@ class ApplicationController < ActionController::Base
         if login_info.present?
           wx_token, wx_cookie = login_info
 
-          gzh_client.update_attributes(:wx_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
+          gzh_client.update_attributes(:wx_login_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
           while i < 1
             send_message_request(company, content, gzh_client, to_faker_id, wx_token, wx_cookie)
             i += 1
