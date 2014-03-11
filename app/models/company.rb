@@ -63,9 +63,9 @@ class Company < ActiveRecord::Base
   end
 
   def self.get_client_infos_by company_id,start_time,end_time
-    sql = "select clf.id,clf.client_id,clf.hash_content,clf.created_at,clf.updated_at from companies c
-           right join clients cl on c.id=cl.company_id
-           right join client_html_infos clf on cl.id = clf.client_id
+    sql = "select clf.id,clf.resume_template_id,clf.html_content_datas,clf.has_completed,clf.created_at,clf.updated_at from companies c
+           right join resume_templates cl on c.id=cl.company_id
+           right join client_resumes clf  on cl.id = clf.resume_template_id
            where c.id = ? and clf.created_at >=? and clf.created_at <=?"
     Company.find_by_sql([sql,company_id,start_time,end_time])
   end
