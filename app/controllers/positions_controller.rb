@@ -1,11 +1,10 @@
 #encoding: utf-8
 class PositionsController < ApplicationController   #招聘职位
   before_filter :has_sign?
-  before_filter :get_title
+  before_filter :get_title,:get_position_type,:get_positions
   PerPage = 8
 
   def index
-    @position_types = @company.position_types || []
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
   end
 
@@ -14,15 +13,12 @@ class PositionsController < ApplicationController   #招聘职位
   end
   
   def new
-    @position_types = @company.position_types || []
     @position = Position.new
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
   end
 
   def edit
-    @position_types = @company.position_types || []
     @position = Position.find_by_id(params[:id])
-    p 111111111111111111,@position
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
     render 'new'
   end
@@ -39,7 +35,7 @@ class PositionsController < ApplicationController   #招聘职位
       @position.description = description
       @position.status = Position::STATUS[:UNRELEASE]
       @position.company_id = @company.id
-      if @position.save
+      if Position.find_by_name(name).blank? && @position.save
         flash[:success] = "新建成功！"
         redirect_to company_positions_path(@company)
       else
@@ -66,7 +62,6 @@ class PositionsController < ApplicationController   #招聘职位
   end
 
   def search_position
-    @position_types = @company.position_types || []
     p = params[:position]
     @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%")||[]
     render 'index'
@@ -93,9 +88,14 @@ class PositionsController < ApplicationController   #招聘职位
       render 'index'
     end
   end
-
-
-    def get_title
+  def get_positions
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
+  end
+  def get_position_type
+    @position_types = @company.position_types || []
+  end
+  def get_title
     @title = "招聘职位"
   end
+
 end

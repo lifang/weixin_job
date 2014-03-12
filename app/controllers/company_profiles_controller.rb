@@ -22,6 +22,7 @@ class CompanyProfilesController < ApplicationController
     title = params[:title]
     file_name = params[:file_name]
     update_or_create = params[:update_or_create]
+    
     if update_or_create == "create"
       if CompanyProfile.find_by_title(title).blank?
         @company_profile = @company.company_profiles.build do |c|
@@ -63,6 +64,7 @@ class CompanyProfilesController < ApplicationController
   def upload_img
     @image = params[:image]
     @index = params[:index]
+    time_str = Time.now.usec
     old_img_url = params[:old_img][4...-1]
     @root_path = Rails.root.to_s + "/public/companies/"+@company.id.to_s+"/company_profiles"
     unless old_img_url.blank?
@@ -71,8 +73,8 @@ class CompanyProfilesController < ApplicationController
       FileUtils.rm file_path
     end
     FileUtils.mkdir_p @root_path unless Dir.exist?(@root_path)
-    @full_path = @root_path +"/"+ @image.original_filename
-    @img_path = "/companies/"+@company.id.to_s+"/company_profiles/"+ @image.original_filename
+    @full_path = @root_path +"/#{time_str}"+ @image.original_filename
+    @img_path = "/companies/"+@company.id.to_s+"/company_profiles/#{time_str}"+ @image.original_filename
     file1=File.new(@full_path,'wb')
     FileUtils.cp @image.path,file1
   end
