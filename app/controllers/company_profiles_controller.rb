@@ -22,7 +22,6 @@ class CompanyProfilesController < ApplicationController
     title = params[:title]
     file_name = params[:file_name]
     update_or_create = params[:update_or_create]
-    
     if update_or_create == "create"
       if CompanyProfile.find_by_title(title).blank?
         @company_profile = @company.company_profiles.build do |c|
@@ -49,7 +48,7 @@ class CompanyProfilesController < ApplicationController
 
   def update_tuwen img_arr,text_arr,html_content,title,file_name
     id = params[:company_profile_id]
-    file_path =get_relative_path_by @company.name,file_name+".html"
+    file_path =get_relative_path_by @company.id.to_s,file_name+".html"
     @company_profile = CompanyProfile.find_by_id(id)
     if @company_profile && @company_profile.update_attributes(html_content:html_content,title:title,file_path:file_path)
           save_as_html img_arr,text_arr,file_name

@@ -44,6 +44,7 @@ match "/weixins/accept_token" => "weixins#accept_token"
     resources :positions do
       collection do
         get :search_position
+        post :send_resume
       end
       member do
         get :release

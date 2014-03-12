@@ -1,7 +1,10 @@
 #encoding: utf-8
 class PositionsController < ApplicationController   #招聘职位
   before_filter :has_sign?
+  before_filter :get_company,only:[:show,:send_resume]
+  skip_before_filter :has_sign? ,only:[:show,:send_resume]
   before_filter :get_title,:get_position_type,:get_positions
+  
   PerPage = 8
 
   def index
@@ -46,6 +49,7 @@ class PositionsController < ApplicationController   #招聘职位
       update
     end
   end
+  
   def update
     id = params[:positions][:id]
     name = params[:positions][:name]
@@ -66,6 +70,31 @@ class PositionsController < ApplicationController   #招聘职位
     end
   end
 
+  def show
+    
+    @position_types = @company.position_types || []
+    @position = Position.find_by_id(params[:id])
+    @client_resume = ClientResume.find_by_open_id_and_company_id(params[:secret_key],@company.id)
+    if @position.blank?
+      render 'public/404'
+    else
+      render layout:false
+    end
+    
+  end
+  def send_resume
+    if params[:client_resume_id].blank?
+      @message = "投递失败！"
+    else
+       @delivery_resume_record = DeliveryResumeRecord.create(company_id:@company.id,
+      position_id:params[:position_id],
+      client_resume_id:params[:client_resume_id])
+    @message = "投递成功！"
+    end
+   
+    render 'success',layout:false
+  end
+  
   def search_position
     p = params[:position]
     @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%")||[]
@@ -93,6 +122,9 @@ class PositionsController < ApplicationController   #招聘职位
       render 'index'
     end
   end
+  def send_resumn
+
+  end
   def get_positions
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
   end
@@ -101,6 +133,9 @@ class PositionsController < ApplicationController   #招聘职位
   end
   def get_title
     @title = "招聘职位"
+  end
+  def get_company
+    @company = Company.find_by_id(params[:company_id])
   end
 
 end
