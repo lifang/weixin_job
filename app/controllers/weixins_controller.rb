@@ -24,6 +24,7 @@ class WeixinsController < ApplicationController
           #return_app_regist_link if @company.has_app #返回app登记链接
           #存储消息并推送到ios端
           get_client_message
+          render :text => "ok"
         elsif params[:xml][:MsgType] == "image" #用户发送图片
           save_image_or_voice_from_wx("image")
           render :text => "ok"
