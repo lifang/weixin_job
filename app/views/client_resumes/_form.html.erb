@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>微招聘-编辑简历</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="/companies/js/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="/companies/js/main2.js" type="text/javascript"></script>
+    <link href="/companies/style/style2.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+
+    <div class="form_list">
+      <%= @html_content %>
+      **********
+      <%= @html_content_datas %>
+      <% @html_content.each do |k, v| %>
+        <% if k.to_s == "headimage" %>
+          <div class="imgItem itemBox">
+            <label onclick="$(this).next().click()" style="cursor:pointer;"><%= v["name"] %></label>
+            <input type="file" style="display:none;" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
+            <% if @html_content_datas["headimage"][v["name"]] %>
+              <img src="<%= @html_content_datas["headimage"][v["name"]] %>"/>
+            <% end %>
+          </div>
+        <% elsif  k.to_s.include?("message") %>
+          <div class="infoItem itemBox">
+            <div>
+              <label><%= v["name"] %></label>
+              <input type="text" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" <% if @html_content_datas[k.to_s] %>value="<%= @html_content_datas[k.to_s][v["name"]] %>"<% end %>/>
+            </div>
+          </div>
+        <% elsif k.to_s.include?("select") %>
+          <div class="selectItem itemBox">
+            <label><%= v["name"] %></label>
+            <select name="[form_p][<%= k.to_s %>][<%= v["name"] %>]">
+              <% v["options"].each do |o| %>
+                <option value="<%= o %>" <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s][v["name"]] == o %>selected<% end %>><%= o %></option>
+              <% end if v["options"] %>
+            </select>
+          </div>
+        <% elsif  k.to_s.include?("radio") %>
+          <div class="radioItem itemBox">
+            <div><span><%= v["name"] %></span></div>
+            <% v["options"].each do |o| %>
+              <div><input type="radio" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" value="<%= o %>" <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s][v["name"]] == o %>checked<% end %>/><span><%= o %></span></div>
+            <% end if v["options"] %>
+          </div>
+        <% elsif k.to_s.include?("checkbox") %>
+          <div class="checkItem itemBox">
+            <div><span><%= v["name"] %></span></div>
+            <% v["options"].each do |o| %>
+              <div><input type="checkbox" name="[form_p][<%= k.to_s %>][<%= v["name"] %>][]" value="<%= o %>" <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s][v["name"]] %><% @html_content_datas[k.to_s][v["name"]].each do |co| %><% if co==o %>checked<% end %><% end %><% end %>/><span><%= o %></span></div>
+            <% end if v["options"] %>
+          </div>
+        <% elsif k.to_s.include?("text") %>
+          <div class="txtItem itemBox">
+            <p><%= v["text"] %></p>
+            <input type="hidden" name="[form_p][<%= k.to_s %>][text]" value="<%= v["text"] %>"/>
+          </div>
+      <% elsif k.to_s.include?("file") %>
+      
+        <% end %>
+
+      <% end if @html_content %>
+
+
+
+
+      <div class="form_btn">
+        <button>提交</button>
+      </div>
+    </div>
+
+  </body>
+</html>

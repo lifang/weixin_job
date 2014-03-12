@@ -5,7 +5,7 @@ class MenusController < ApplicationController   #菜单
   def index
     @resume_tmp = ResumeTemplate.find_by_id(@company.id)
     @positions = PositionType.select("id,name").where(["company_id =?", @company.id])
-    @comp_profiles = CompanyProfile.select("id,title").where(["company_id = ?", @company.id])
+    @comp_profiles = CompanyProfile.select("id,title,file_path").where(["company_id = ?", @company.id])
     menus = Menu.where(["company_id = ?", @company.id]).group_by{|m|m.parent_id.to_s}
     @father_menus = menus["0"]
     @child_menus = menus.except("0")
@@ -21,7 +21,8 @@ class MenusController < ApplicationController   #菜单
           flash[:notice] = "每个一级菜单最多只能保持3个!"
         else
           menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
-            :company_id => params[:company_id].to_i, :types => types)
+            :company_id => params[:company_id].to_i, :types => types,
+            :file_path => params[:file_path].nil? || params[:file_path]=="" ? nil : params[:file_path])
           if menu.save
             flash[:notice] = "创建成功!"
           else
@@ -34,7 +35,8 @@ class MenusController < ApplicationController   #菜单
           flash[:notice] = "每个一级菜单的二级菜单最多只能保持3个!"
         else
           menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
-            :company_id => params[:company_id].to_i, :types => types)
+            :company_id => params[:company_id].to_i, :types => types,
+          :file_path => params[:file_path].nil? || params[:file_path]=="" ? nil : params[:file_path])
           if menu.save
             flash[:notice] = "创建成功!"
           else
@@ -50,7 +52,8 @@ class MenusController < ApplicationController   #菜单
       menu = Menu.find_by_id(params[:id].to_i)
       temp_id = params[:temp_id].nil? || params[:temp_id]=="" ? Menu::NO_TEMP : params[:temp_id].to_i
       types = params[:menu_type].nil? || params[:menu_type]=="" ? Menu::TYPES[:no_type] : params[:menu_type].to_i
-      hash = {:parent_id => params[:parent_id].to_i, :name => params[:menu_name], :temp_id => temp_id, :types => types}
+      hash = {:parent_id => params[:parent_id].to_i, :name => params[:menu_name], :temp_id => temp_id, :types => types,
+        :file_path => params[:file_path].nil? || params[:file_path] == "" ? nil : params[:file_path]}
       if menu.update_attributes(hash)
         @status = 1
       else

@@ -3,7 +3,7 @@ class Api::ClientsController < ApplicationController
   skip_before_filter :authenticate_user!
   #登陆
   def login
-    username = params[:username]
+    username = params[:mphone]
     pwd = params[:password]
     token = params[:token]
     status = 1
@@ -32,7 +32,7 @@ class Api::ClientsController < ApplicationController
               :has_new_message => p.has_new_message, :has_new_record => p.has_new_record, :html_content => p.html_content,
               :remark => p.remark, :status => p.status}
             person_tags =  Label.find_by_sql(["select t.content from labels l inner join tags t on l.tag_id=t.id
-                where l.company_id=? and l.client_id=?", company.id, p.id]).map(&:content).uniq
+                where t.company_id=? and l.client_id=?", company.id, p.id]).map(&:content).uniq
             hash[:tags] = person_tags
             a << hash;
             a

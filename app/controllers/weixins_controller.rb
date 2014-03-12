@@ -14,10 +14,9 @@ class WeixinsController < ApplicationController
     tmp_encrypted_str = get_signature(cweb, timestamp, nonce)
     if request.request_method == "POST" && tmp_encrypted_str == signature
       if @company.present?
+        open_id = params[:xml][:FromUserName]
         if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
           return_app_regist_link  #返回app登记链接
-        
-          open_id = params[:xml][:FromUserName]
           save_client_info(open_id, @company) #新建client记录，保存头像，faker_id, open_id
         
           create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
@@ -31,8 +30,10 @@ class WeixinsController < ApplicationController
         elsif params[:xml][:MsgType] == "voice" #用户发送语音
           save_image_or_voice_from_wx("voice")
           render :text => "ok"
-        elsif params[:xml][:MsgType] == "click"  #自定义菜单点击事件
-          
+        elsif params[:xml][:MsgType] == "event" && params[:xml][:Event] == "CLICK"  #自定义菜单点击事件
+          message = get_link_by_event_key(params[:xml][:EventKey], open_id)  #resume_5
+          xml = teplate_xml(message)
+          render :xml => xml        #回复登记app的链接
         else
           render :text => "ok"
         end
@@ -164,6 +165,7 @@ Text
     end
   end
 
+  #保存用户发送的图片，语音
   def save_file(remote_resource_url, file_extension, msg_id)
     tmp_file = open(remote_resource_url) #打开直接下载链接
     filename = msg_id + file_extension  #临时文件不能取到扩展名
@@ -205,6 +207,30 @@ Text
         end
       end
     end
+  end
+
+  #自定义菜单，点击事件，返回对应链接
+  def get_link_by_event_key(event_key, open_id)  #resume_5
+    menu_type, temp_id = event_key.split("_")
+    link = ""
+    if menu_type == "resume"
+      rt = ResumeTemplate.find_by_id(temp_id) if temp_id
+      if rt
+        message = rt.html_url
+        link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
+      end
+    elsif menu_type == "positions"
+      position_type = PositionType.find_by_id(temp_id) if temp_id
+      positions = position_type.positions.where(:status => Position::STATUS[:RELEASED]) if position_type
+      all_positions = "点击查看职位详情\n"
+      positions.each do |position|
+        message = "/companies/#{@company.id}/positions/#{position.id}"
+        message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+        all_positions += message
+      end if positions
+      link = all_positions
+    end
+    link
   end
 
 end
