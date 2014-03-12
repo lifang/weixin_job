@@ -219,14 +219,13 @@ Text
         message = rt.html_url
         link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
       end
-    elsif menu_type == "position"
+    elsif menu_type == "positions"
       position_type = PositionType.find_by_id(temp_id) if temp_id
       positions = position_type.positions.where(:status => Position::STATUS[:RELEASED]) if position_type
-      all_positions = ""
+      all_positions = "点击查看职位详情\n"
       positions.each do |position|
         message = "/companies/#{@company.id}/positions/#{position.id}"
-        message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击  #{position.try(:name)} 查看职位详情 &lt;/a&gt;
-        "  #单个职位url
+        message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
         all_positions += message
       end if positions
       link = all_positions
