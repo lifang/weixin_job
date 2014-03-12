@@ -58,13 +58,13 @@ class AppManagementsController < ApplicationController
   #用户登记页面
   def app_regist
     gzh_client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
-    @client = Client.find_by_open_id(params[:secret_key])
-    if @client
-      @chi = ClientHtmlInfo.find_by_client_id(gzh_client.id)
-      optional_fields = @chi.hash_content if @chi
-      @tags = @client.tags
-      @ele = get_element_html(@client.html_content, optional_fields, @tags.map(&:content)) if @chi
-    end
+    @client = Client.find_by_open_id_and_types(params[:secret_key], Client::TYPES[:CONCERNED])
+    @chi = ClientHtmlInfo.find_by_client_id(gzh_client.id)
+    optional_fields = @chi.hash_content if @chi
+    @tags = @client.tags if @client
+    p "==================="
+    p optional_fields
+    @ele = get_element_html(@client.try(:html_content), optional_fields, @tags ? @tags.map(&:content) : []) if @chi
     render :layout => false
   end
   
@@ -86,8 +86,6 @@ class AppManagementsController < ApplicationController
     new_hash ="{"
     app_client.each do |k, v|
       new_key = get_actual_name(k, client_html_info)
-      p "11111111111111111111111"
-      p v
       new_hash +="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'," if new_key.present?
     end
     new_hash = new_hash[0...-1]+"}"
