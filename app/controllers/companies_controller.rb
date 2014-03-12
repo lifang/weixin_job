@@ -27,8 +27,8 @@ class CompaniesController < ApplicationController
           #创建client 开始
           client = @company.clients.where("types = #{Client::TYPES[:ADMIN]}")[0]
           if client
-            client.update_attributes(:app_account => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
-              :app_password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip))
+            client.update_attributes(:username => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
+              :password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip))
           else
              @company.clients.create(:username => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
               :password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip),
