@@ -23,7 +23,8 @@ class CompanyProfilesController < ApplicationController
     file_name = params[:file_name].strip
     update_or_create = params[:update_or_create]
     if update_or_create == "create"
-      if CompanyProfile.find_by_title_and_company_id(title,@company.id).blank?
+      if CompanyProfile.find_by_title_and_company_id(title,@company.id).blank? &&
+         CompanyProfile.find_by_title_and_company_id((get_relative_path_by @company.id.to_s,file_name+".html"),@company.id).blank?
         @company_profile = @company.company_profiles.build do |c|
           c.title = title
           c.html_content = html_content
@@ -38,7 +39,7 @@ class CompanyProfilesController < ApplicationController
           redirect_to new_company_company_profile_path(@company)
         end
       else
-        flash[:error] = "已经存在该title"
+        flash[:error] = "已经存在该标题或文件名"
         redirect_to new_company_company_profile_path(@company)
       end
     else
