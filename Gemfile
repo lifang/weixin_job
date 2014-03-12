@@ -12,7 +12,7 @@ gem 'spreadsheet', '0.9.7'
 gem "will_paginate", '3.0.3'
 gem 'remotipart', '~> 1.0' #ajax upload file
 gem "mini_magick", "3.5.0" #handle image
-
+gem 'apns'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -41,3 +41,5 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
+#gem 'execjs','2.0.2'
+#gem 'therubyracer','0.10.2'
