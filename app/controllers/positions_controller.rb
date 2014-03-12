@@ -84,7 +84,7 @@ class PositionsController < ApplicationController   #招聘职位
   end
   def send_resume
     if params[:client_resume_id].blank?
-      @message = "投递失败！"
+      @message = "投递失败！请登记简历"
     else
        @delivery_resume_record = DeliveryResumeRecord.create(company_id:@company.id,
       position_id:params[:position_id],
