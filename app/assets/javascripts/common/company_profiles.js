@@ -1,9 +1,16 @@
 
 
 function close_tuwen(obj){
-    if(confirm("是否移除？"))
-        $(obj).parent().remove();
+    if(confirm("是否移除？")){
+        var length =$("#tuwen_box").children().length;
+        if(length == 1){
+            tishi_alert("至少保证一块图文！");
+        }else{
+            $(obj).parent().remove();
+        }
+    }
 }
+
 function change_file(obj){
     var index=-1;
     var this_tuwen = $(obj).parents(".tuwenBox")[0];
@@ -23,12 +30,12 @@ function submit_comany_profiles(){
     $(".text_area").html("");
     var title = $.trim($("#title").val());
     if(title==""){
-       tishi_alert("标题不能为空");
+        tishi_alert("标题不能为空");
         return false;
     }
     var file_name = $.trim($("#file_name").val());
     if(file_name==""){
-       tishi_alert("文件名不能为空");
+        tishi_alert("文件名不能为空");
         return false;
     }
     var tuwens = $("#tuwen_box").find(".tuwenBox");
@@ -37,7 +44,7 @@ function submit_comany_profiles(){
         var text =  $.trim($(tuwens[i]).children("textarea").val());
         if(img == "#" && text==""){
             5
-           tishi_alert("图片文字至少要写一个");
+            tishi_alert("图片文字至少要写一个");
             return false;
         }
         $(tuwens[i]).children("textarea").html( text );

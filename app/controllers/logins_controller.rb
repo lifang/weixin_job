@@ -48,7 +48,7 @@ class LoginsController < ApplicationController
       else
         Company.transaction do
           company = Company.new(:name => comp_name, :status => Company::STATUS[:NORMAL],:company_account => comp_account,
-            :company_password => Digest::MD5.hexdigest(comp_password))
+            :company_password => Digest::MD5.hexdigest(comp_password), :app_type => Company::APP_TYPE[:SUBSCRIPTION])
           if company.save
             resume_hash = {"headimage" => {"name" => "上传头像", "url" => ""},
               "message_1" => {"name" => "姓名"}, "message_2" => {"name" => "联系电话"}, "message_3" => {"name" => "邮箱"},

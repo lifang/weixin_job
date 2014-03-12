@@ -1,7 +1,7 @@
 #encoding:utf-8
 module ApplicationHelper
 
-  MW_URL = "http://58.240.210.42" #服务器地址
+  MW_URL = "http://wzpapp.gankao.co" #服务器地址
 
   WEIXIN_OPEN_URL = "https://api.weixin.qq.com"  #微信api地址
   WEIXIN_DOWNLOAD_URL = "http://file.api.weixin.qq.com"  #微信文件地址

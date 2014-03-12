@@ -16,6 +16,7 @@ WeixinJob::Application.routes.draw do
   #   resources :products
 match "/get_token", :to => "app_managements#get_token", :as => "get_token", via: 'get'
 match '/submit_redirect' => 'app_managements#submit_redirect', :as => :submit_redirect, :via => :get
+match "/weixins/accept_token" => "weixins#accept_token"
 
   resources :logins do
     collection do
@@ -43,6 +44,7 @@ match '/submit_redirect' => 'app_managements#submit_redirect', :as => :submit_re
     resources :positions do
       collection do
         get :search_position
+        post :send_resume
       end
       member do
         get :release

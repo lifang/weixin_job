@@ -14,28 +14,32 @@ class WeixinsController < ApplicationController
     tmp_encrypted_str = get_signature(cweb, timestamp, nonce)
     if request.request_method == "POST" && tmp_encrypted_str == signature
       if @company.present?
+        open_id = params[:xml][:FromUserName]
         if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
           return_app_regist_link  #返回app登记链接
-        
-          open_id = params[:xml][:FromUserName]
-          Client.save_client_info(open_id, @company) #新建client记录，保存头像，faker_id, open_id
+          save_client_info(open_id, @company) #新建client记录，保存头像，faker_id, open_id
         
           create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
         elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
-          return_app_regist_link if @company.has_app #返回app登记链接
+          #return_app_regist_link if @company.has_app #返回app登记链接
           #存储消息并推送到ios端
           get_client_message
+          render :text => "ok"
         elsif params[:xml][:MsgType] == "image" #用户发送图片
           save_image_or_voice_from_wx("image")
           render :text => "ok"
         elsif params[:xml][:MsgType] == "voice" #用户发送语音
           save_image_or_voice_from_wx("voice")
           render :text => "ok"
-        elsif params[:xml][:MsgType] == "click"  #自定义菜单点击事件
-          
+        elsif params[:xml][:MsgType] == "event" && params[:xml][:Event] == "CLICK"  #自定义菜单点击事件
+          message = get_link_by_event_key(params[:xml][:EventKey], open_id)  #resume_5
+          xml = teplate_xml(message)
+          render :xml => xml        #回复登记app的链接
         else
           render :text => "ok"
         end
+      else
+        render :text => "ok"
       end
     elsif request.request_method == "GET" && tmp_encrypted_str == signature  #配置服务器token时是get请求
       render :text => tmp_encrypted_str == signature ? echostr :  false
@@ -96,12 +100,12 @@ class WeixinsController < ApplicationController
   #是否恢复app登记信息
   def return_app_regist_link
     client = Client.find_by_open_id_and_status(params[:xml][:FromUserName], Client::TYPES[:CONCERNED])
-    if client
-      message = "/companies/#{@company.id}/app_managements/app_regist"
-      message = "&lt;a href='#{MW_URL + message}?secret_key=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
-      xml = teplate_xml(message)
-      render :xml => xml        #回复登记app的链接
-    end
+    #unless client
+    message = "/companies/#{@company.id}/app_managements/app_regist"
+    message = "&lt;a href='#{MW_URL + message}?secret_key=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"  #登记信息url
+    xml = teplate_xml(message)
+    render :xml => xml        #回复登记app的链接
+    #end
   end
 
   #文本回复模板
@@ -162,6 +166,7 @@ Text
     end
   end
 
+  #保存用户发送的图片，语音
   def save_file(remote_resource_url, file_extension, msg_id)
     tmp_file = open(remote_resource_url) #打开直接下载链接
     filename = msg_id + file_extension  #临时文件不能取到扩展名
@@ -174,6 +179,59 @@ Text
       message_path = "/companies/%d/" % @company.id + "weixin_resource/" + filename #保存进数据库的路径
       get_client_message(message_path)
     end
+  end
+
+  #保存关注者信息
+  def save_client_info(open_id, company)
+    client = Client.find_by_open_id_and_company_id(open_id, company.id) #先查找是否存在当前关注者的信息
+    if company.service_account?
+      avatar_url = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息
+      if client
+        client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
+      else
+        company.clients.create(:types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url)
+      end
+    else
+      login_info = login_to_weixin(company)
+      if login_info.present?
+        wx_token, wx_cookie = login_info
+        user_faker_id = get_self_fakeid(wx_cookie, wx_token) #获取自身faker_id
+        friend_faker_id = get_new_friend_fakeid(wx_cookie, wx_token) #获取最新好友的faker_id
+
+        gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
+        gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_login_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
+        avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id) #订阅号，获取头像
+        if client
+          client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
+        else
+          company.clients.create(:types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+        end
+      end
+    end
+  end
+
+  #自定义菜单，点击事件，返回对应链接
+  def get_link_by_event_key(event_key, open_id)  #resume_5
+    menu_type, temp_id = event_key.split("_")
+    link = ""
+    if menu_type == "resume"
+      rt = ResumeTemplate.find_by_id(temp_id) if temp_id
+      if rt
+        message = rt.html_url
+        link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
+      end
+    elsif menu_type == "positions"
+      position_type = PositionType.find_by_id(temp_id) if temp_id
+      positions = position_type.positions.where(:status => Position::STATUS[:RELEASED]) if position_type
+      all_positions = "点击查看职位详情\n"
+      positions.each do |position|
+        message = "/companies/#{@company.id}/positions/#{position.id}"
+        message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+        all_positions += message
+      end if positions
+      link = all_positions
+    end
+    link
   end
 
 end

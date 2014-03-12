@@ -23,7 +23,7 @@ class CompanyProfilesController < ApplicationController
     file_name = params[:file_name]
     update_or_create = params[:update_or_create]
     if update_or_create == "create"
-      if CompanyProfile.find_by_title(title).blank?
+      if CompanyProfile.find_by_title_and_company_id(title,@company.id).blank?
         @company_profile = @company.company_profiles.build do |c|
           c.title = title
           c.html_content = html_content
@@ -35,11 +35,11 @@ class CompanyProfilesController < ApplicationController
           redirect_to company_company_profiles_path(@company)
         else
           flash[:error] = "创建失败,#{@company_profile.errors.messages.values.flatten.join("\\n")}"
-          render 'new'
+          redirect_to new_company_company_profile_path(@company)
         end
       else
         flash[:error] = "已经存在该title"
-        render 'new'
+        redirect_to new_company_company_profile_path(@company)
       end
     else
       update_tuwen img_arr,text_arr,html_content,title,file_name
@@ -48,7 +48,7 @@ class CompanyProfilesController < ApplicationController
 
   def update_tuwen img_arr,text_arr,html_content,title,file_name
     id = params[:company_profile_id]
-    file_path =get_relative_path_by @company.name,file_name+".html"
+    file_path =get_relative_path_by @company.id.to_s,file_name+".html"
     @company_profile = CompanyProfile.find_by_id(id)
     if @company_profile && @company_profile.update_attributes(html_content:html_content,title:title,file_path:file_path)
           save_as_html img_arr,text_arr,file_name
@@ -63,6 +63,7 @@ class CompanyProfilesController < ApplicationController
   def upload_img
     @image = params[:image]
     @index = params[:index]
+    time_str = Time.now.usec
     old_img_url = params[:old_img][4...-1]
     @root_path = Rails.root.to_s + "/public/companies/"+@company.id.to_s+"/company_profiles"
     unless old_img_url.blank?
@@ -71,8 +72,8 @@ class CompanyProfilesController < ApplicationController
       FileUtils.rm file_path
     end
     FileUtils.mkdir_p @root_path unless Dir.exist?(@root_path)
-    @full_path = @root_path +"/"+ @image.original_filename
-    @img_path = "/companies/"+@company.id.to_s+"/company_profiles/"+ @image.original_filename
+    @full_path = @root_path +"/#{time_str}"+ @image.original_filename
+    @img_path = "/companies/"+@company.id.to_s+"/company_profiles/#{time_str}"+ @image.original_filename
     file1=File.new(@full_path,'wb')
     FileUtils.cp @image.path,file1
   end
@@ -138,6 +139,7 @@ class CompanyProfilesController < ApplicationController
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'>
 <script src='/companies/js/jquery-1.8.3.js' type='text/javascript'></script>
 <script src='/companies/js/main2.js' type='text/javascript'></script>
 <link href='/companies/style/style2.css' rel='stylesheet' type='text/css' />

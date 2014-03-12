@@ -2,7 +2,7 @@
 class AppManagementsController < ApplicationController
   before_filter :has_sign?
   before_filter  :get_company
-  skip_before_filter :has_sign?, :only => [:get_token, :submit_redirect]
+  skip_before_filter :has_sign?, :only => [:get_token, :submit_redirect, :app_regist, :get_form_date]
   
   def index
     if @company.has_app

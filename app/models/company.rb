@@ -41,7 +41,7 @@ class Company < ActiveRecord::Base
         this_second_menus.each do |sm|
           template_name = Menu::TYPE_NAMES[sm.types]
           second_level_menu << (template_name == "company_profile" ?
-              {:type => "view", :name => sm.name, :url => ApplicationHelper::MW_URL + sm.file_path}:
+              {:type => "view", :name => sm.name, :url => ApplicationHelper::MW_URL + sm.file_path.to_s}:
               {:type => "click", :name => sm.name, :key => "#{template_name}_#{sm.temp_id}" })
         end
         #一级菜单

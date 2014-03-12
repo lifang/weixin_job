@@ -9,7 +9,7 @@ function position_edit(obj){
 function character_limit(obj,num){
     if($(obj).val().length>num){
         $(obj).val($(obj).val().substring(0,num));
-        tishi_alert("字数达上限");
+        tishi_alert("字数不能超过250");
     }
 }
 
@@ -23,6 +23,10 @@ function check_position(){
        tishi_alert("名称不能为空！");
        return false;
    }
+   if(name.length > 15){
+       tishi_alert("名称不能超过15个字！");
+       return false;
+   }
    var description = $.trim( $(".jobInfo").find('textarea').val())
    if(description == ""){
        tishi_alert("描述不能为空！");
@@ -33,7 +37,7 @@ function check_position(){
 
 function search_position(obj,url){
     var position = $(obj).parent().children("input").val();
-    location.href=url+"/search_position?position=" + position;
+    location.href=url+"/search_position?position=" + $.trim(position);
 
 }
 
@@ -43,6 +47,11 @@ function submit_position_types(obj){
         tishi_alert('名称不能为空！');
         return false;
     }
+    if($.trim($("#name").val()).length > 8){
+        tishi_alert('名称不能超过8个字！');
+        return false;
+    }
+
     $(obj).parent().parent().submit();
 }
 
