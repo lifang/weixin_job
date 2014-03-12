@@ -57,7 +57,7 @@ class AppManagementsController < ApplicationController
 
   #用户登记页面
   def app_regist
-    gzh_client =  @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
+    gzh_client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
     @client = Client.find_by_open_id(params[:secret_key])
     if @client
       @chi = ClientHtmlInfo.find_by_client_id(gzh_client.id)
@@ -83,11 +83,20 @@ class AppManagementsController < ApplicationController
     app_client = params[:app_client]
     gzh_client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
     client_html_info = gzh_client.client_html_info if gzh_client
-    new_hash = {}
+    new_hash ="{"
     app_client.each do |k, v|
       new_key = get_actual_name(k, client_html_info)
-      new_hash[new_key] = v if new_key.present?
-    end if app_client.present? && client_html_info
+      p "11111111111111111111111"
+      p v
+      new_hash +="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'," if new_key.present?
+    end
+    new_hash = new_hash[0...-1]+"}"
+    #    new_hash = {}
+    #    app_client.each do |k, v|
+    #      new_key = get_actual_name(k, client_html_info)
+    #      new_hash[new_key] = v if new_key.present?
+    #    end if app_client.present? && client_html_info
+    #    new_hash = new_hash.to_json #转换成json 数据 为了方便客户端解析
     open_id = params[:open_id]
     Client.transaction do
       if open_id.present?

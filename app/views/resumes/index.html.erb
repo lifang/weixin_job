@@ -91,6 +91,7 @@
         <div class="scdBoxAct">
           <button class="orangeBtn" type="button" onclick="create_resume_valid(this)">确定</button>
         </div>
+      <a href="<%= @resume_temp.html_url.nil? ? 'javascript:viod(0)' : @resume_temp.html_url %>" target="_blank;">预览</a>
       <% end %>
     </div>
   </div>

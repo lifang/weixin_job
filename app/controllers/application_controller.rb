@@ -207,9 +207,6 @@ class ApplicationController < ActionController::Base
     avatar_path
   end
 
-
-
-
   #订阅号主动发消息
   def send_single_message(company, content, receive_client_id)
     client = Client.find_by_id(receive_client_id)
@@ -217,7 +214,7 @@ class ApplicationController < ActionController::Base
     gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
     wx_token = gzh_client.wx_login_token
     wx_cookie = gzh_client.wx_cookie
-    send_message_request(content, gzh_client, to_faker_id, wx_token,wx_cookie)
+    send_message_request(company,content, gzh_client, to_faker_id, wx_token,wx_cookie)
   end
 
   #取数据库里面的
@@ -250,5 +247,41 @@ class ApplicationController < ActionController::Base
       end
     }
     msg
+  end
+
+  #公众号发消息给用户的模板
+  def get_content_hash_by_type(open_id, msg_type, content, media_id=nil)
+    content_hash = {}
+    case msg_type
+    when "text"
+      content_hash = {
+        :touser =>"#{open_id}",
+        :msgtype => msg_type,
+        :text =>
+          {
+          :content => content
+        }
+      }
+    when "image"
+      content_hash = {
+        :touser =>"#{open_id}",
+        :msgtype => msg_type,
+        :image =>
+          {
+          :media_id => media_id
+        }
+      }
+    when "voice"
+      content_hash = {
+        :touser =>"#{open_id}",
+        :msgtype => msg_type,
+        :voice =>
+          {
+          :media_id => media_id
+        }
+      }
+    end
+    content_hash = content_hash.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
+    content_hash
   end
 end
