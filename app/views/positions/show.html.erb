@@ -16,28 +16,25 @@
   </head>
 
   <body>
-    <div class="jobInfo">
-      <div class="tuwenBox">
-        <div class="tuwenImg">
-				职位名称：<%=@position.name%>
-        </div>
-        <p>职位描述：<%=@position.description%></p>
-      </div>
-
-    </div>
     <div >
       <div>
-        <table style="margin: auto;background: aliceblue;">
+        <table style="margin: auto;background: aliceblue;width:100%;padding: 10px;">
           <tr>
             <td>职位名称：</td>
-            <td><%=@position.name%></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;<%=@position.name%></td>
           </tr>
           <tr>
             <td>职位描述：</td>
-            <td style="max-width: 280px;word-break:break-all;word-wrap:break-word;"><%=@position.description%>sdfrfgwyhieydfasvgdfjhbfbasjdfgvbawevfascjvbaskfvyavfjvasdghgdfghfhdfdddddfgsdfgsdfgsdfgdfgvcxvsdgsdf</td>
           </tr>
           <tr>
-            <td></td><td>
+            <td style="max-width: 280px;word-break:break-all;word-wrap:break-word;">
+              &nbsp;&nbsp;<%=@position.description%>
+            </td>
+          </tr>
+          <tr>
+            <td>
               <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
                 <input type="hidden" name="client_resume_id" value="<%=@client_resume.id if @client_resume%>"/>
                 <input type="hidden" name="position_id" value="<%=@position.id%>"/>
