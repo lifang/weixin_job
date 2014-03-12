@@ -185,7 +185,13 @@ class ClientResumesController < ApplicationController
         end
       end
       old_hash = cr.html_content_datas
-      old_hash.each do |k,v|
+      oh2 = {}
+      old_hash.each do |k, v|
+        if k == "headimage" || k.include?("file")
+          oh2[k] = v
+        end
+      end
+      oh2.each do |k,v|
         if hash[k].nil?
           hash.merge!({k => v})
         end

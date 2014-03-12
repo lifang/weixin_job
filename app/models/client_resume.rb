@@ -16,11 +16,8 @@ class ClientResume < ActiveRecord::Base
       dirs.each_with_index {|d, index| Dir.mkdir(root_path + dirs[0..index].join) unless File.directory?(root_path + dirs[0..index].join)}
       img = img_url.original_filename
       img_name = "#{dirs.join}/#{open_id}."+ img.split(".").reverse[0]
-      File.open(root_path+ img_name, "wb") { |i| i.write(img_url.read) }    #存入原图
-      img2 = MiniMagick::Image.open(root_path + img_name, "rb")
-       size = img2[:size]
-       #width = img2[:width]
-       #height = img2[:height]
+      File.open(root_path+ img_name, "wb") { |i| i.write(img_url.read) }    #存入原图     
+      size = File.size?(root_path+ img_name)
       if size > 204800
         status = 0
         msg = "头像上传失败,图片最大不能超过200KB"
