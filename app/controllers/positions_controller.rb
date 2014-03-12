@@ -30,7 +30,7 @@ class PositionsController < ApplicationController   #招聘职位
     id = params[:positions][:id]
     if id == ""
       types = params[:positions][:types]
-      name = params[:positions][:name]
+      name = params[:positions][:name].strip
       description = params[:positions][:description]
       @position = Position.new
       @position.position_type_id = types
@@ -38,7 +38,7 @@ class PositionsController < ApplicationController   #招聘职位
       @position.description = description
       @position.status = Position::STATUS[:UNRELEASE]
       @position.company_id = @company.id
-      if Position.find_by_name(name).blank? && @position.save
+      if Position.find_by_name_and_company_id(name,@company.id).blank? && @position.save
         flash[:success] = "新建成功！"
         redirect_to company_positions_path(@company)
       else
@@ -52,22 +52,18 @@ class PositionsController < ApplicationController   #招聘职位
   
   def update
     id = params[:positions][:id]
-    name = params[:positions][:name]
+    name = params[:positions][:name].strip
     description = params[:positions][:description]
     types = params[:positions][:types]
     @position = Position.find_by_id(id)
-    if  Position.find_by_name(name).blank?
-      if @position&& @position.update_attributes(name:name,description:description,position_type_id:types)
-        flash[:success] = "更新成功！"
-        redirect_to company_positions_path(@company)
-      else
-        flash[:error] = "更新失败！职位不存在！"
-        render 'new'
-      end
+    if @position&& @position.update_attributes(name:name,description:description,position_type_id:types)
+      flash[:success] = "更新成功！"
+      redirect_to company_positions_path(@company)
     else
-      flash[:error] = "更新失败！职位名已经存在！"
+      flash[:error] = "更新失败！职位不存在！"
       render 'new'
     end
+
   end
 
   def show
@@ -86,10 +82,10 @@ class PositionsController < ApplicationController   #招聘职位
     if params[:client_resume_id].blank?
       @message = "投递失败！请登记简历"
     else
-       @delivery_resume_record = DeliveryResumeRecord.create(company_id:@company.id,
-      position_id:params[:position_id],
-      client_resume_id:params[:client_resume_id])
-    @message = "投递成功！"
+      @delivery_resume_record = DeliveryResumeRecord.create(company_id:@company.id,
+        position_id:params[:position_id],
+        client_resume_id:params[:client_resume_id])
+      @message = "投递成功！"
     end
    
     render 'success',layout:false

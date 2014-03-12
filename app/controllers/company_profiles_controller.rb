@@ -1,6 +1,6 @@
 #encoding:utf-8
 class CompanyProfilesController < ApplicationController
-  before_filter :get_company
+
   before_filter :has_sign?
   before_filter :get_title
   def index
@@ -19,8 +19,8 @@ class CompanyProfilesController < ApplicationController
     img_arr = params[:image]
     text_arr = params[:text]
     html_content = params[:html_content]
-    title = params[:title]
-    file_name = params[:file_name]
+    title = params[:title].strip
+    file_name = params[:file_name].strip
     update_or_create = params[:update_or_create]
     if update_or_create == "create"
       if CompanyProfile.find_by_title_and_company_id(title,@company.id).blank?
