@@ -6,7 +6,7 @@ class PositionTypesController < ApplicationController
     @position_types = @company.position_types
   end
   def create
-    name = params[:name]
+    name = params[:name].strip
     @position_types = @company.position_types
     if PositionType.find_by_name_and_company_id(name,@company.id).blank?
       @position_type = @company.position_types.build
