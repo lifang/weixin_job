@@ -26,7 +26,7 @@ class ExportsController < ApplicationController   #导出简历
     end_time = params[:end_time]
     #@client_infos = (Company.get_client_infos_by @company.id.to_s,start_time,end_time) || []
     @client_infs = ClientResume.
-      where(["d.company_id = ?",@company.id]).
+      where(["d.company_id = ? and client_resumes.created_at>=? and client_resumes.created_at <= ?",@company.id,start_time,end_time]).
       joins("left join delivery_resume_records d on client_resumes.id=d.client_resume_id").
       joins("left join positions p on d.position_id = p.id").
       select("client_resumes.id,
@@ -38,7 +38,6 @@ class ExportsController < ApplicationController   #导出简历
       client_resumes.updated_at,
       p.name position_name")
     
-    p 22222222222222222,@client_infs,@client_infs[0].position_name
     if @client_infs.length>0
       xls_content_for @client_infs
       render text:1
