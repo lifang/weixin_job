@@ -76,7 +76,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .table1 { width: 100%; font-size: 16px; color: #939393;}
 .table1 tr { background: #d3d2d2;}
 .table1 th { background: #e6e4e4;}
-.table1 th,.table1 td { text-align: left; height: 40px; padding: 5px; padding-left: 60px;}
+.table1 th,.table1 td { text-align: left; height: 40px; padding: 5px; padding-left: 60px;word-break:break-all; word-wrap:break-word;}
 
 .delete { display: inline-block; width: 33px; height: 33px; background: url(../assets/delete.png) no-repeat; background-position: -4px -1px; border: 0;}
 .delete:visited { background-position: -4px -41px;}

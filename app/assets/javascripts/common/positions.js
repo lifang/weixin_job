@@ -43,6 +43,11 @@ function submit_position_types(obj){
         tishi_alert('名称不能为空！');
         return false;
     }
+    if($("#name").length<8){
+        tishi_alert('名称不能为空！');
+        return false;
+    }
+
     $(obj).parent().parent().submit();
 }
 

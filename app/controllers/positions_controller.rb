@@ -52,11 +52,16 @@ class PositionsController < ApplicationController   #招聘职位
     description = params[:positions][:description]
     types = params[:positions][:types]
     @position = Position.find_by_id(id)
-    if @position && @position.update_attributes(name:name,description:description,position_type_id:types)
-      flash[:success] = "更新成功！"
-      redirect_to company_positions_path(@company)
+    if  Position.find_by_name(name).blank?
+      if @position&& @position.update_attributes(name:name,description:description,position_type_id:types)
+        flash[:success] = "更新成功！"
+        redirect_to company_positions_path(@company)
+      else
+        flash[:error] = "更新失败！职位不存在！"
+        render 'new'
+      end
     else
-      flash[:error] = "更新失败！职位不存在！"
+      flash[:error] = "更新失败！职位名已经存在！"
       render 'new'
     end
   end
