@@ -42,6 +42,8 @@ function add_menu_commit(company_id){
     }else{
         var menu_type = $("#add_menu_div").find("span[class='check checked']").first().find("input[name='menu_type']").val();
         var temp_id = $("#add_menu_div").find("span[class='check checked']").first().find("input[name='temp_id']").val();
+        var file_path = $("#add_menu_div").find("span[class='check checked']").first().find("input[name='file_path']").val();
+        var file_path2 = file_path==undefined ? "" : file_path;
         $.ajax({
             type: "post",
             url: "/companies/"+company_id+"/menus",
@@ -50,7 +52,8 @@ function add_menu_commit(company_id){
                 parent_id : parent_id,
                 menu_name : menu_name,
                 menu_type : menu_type,
-                temp_id : temp_id
+                temp_id : temp_id,
+                file_path : file_path2
             }
         })
     }
@@ -93,6 +96,8 @@ function edit_menu_commit(company_id){
     }else{
         var menu_type = $("#edit_menu_div").find("span[class='check checked']").first().find("input[name='menu_type']").val();
         var temp_id = $("#edit_menu_div").find("span[class='check checked']").first().find("input[name='temp_id']").val();
+        var file_path = $("#edit_menu_div").find("span[class='check checked']").first().find("input[name='file_path']").val();
+        var file_path2 = file_path==undefined ? "" : file_path;
         $.ajax({
             type: "put",
             url: "/companies/"+company_id+"/menus/"+menu_id,
@@ -101,7 +106,8 @@ function edit_menu_commit(company_id){
                 parent_id : parent_id,
                 menu_name : menu_name,
                 menu_type : menu_type,
-                temp_id : temp_id
+                temp_id : temp_id,
+                file_path : file_path2
             }
         })
     }

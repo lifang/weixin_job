@@ -113,6 +113,23 @@ class ClientResumesController < ApplicationController
     end
   end
 
+  def edit
+    @company_id = params[:company_id].to_i
+    @open_id = params[:secret_id]
+    @cr = ClientResume.find_by_open_id_and_company_id(@open_id, @company_id)
+    if @cr.nil? || @cr.html_content_datas.nil?
+      @err_msg = "数据错误!"
+    else
+      @resume_temp = ResumeTemplate.find_by_id(@cr.resume_template_id)
+      if @resume_temp.nil? || @resume_temp.html_content.nil?
+        @err_msg = "简历模板丢失!"
+      else
+        @html_content_datas = @cr.html_content_datas
+        @html_content = @resume_temp.html_content
+      end
+    end
+  end
+  
   def completed
     
   end
