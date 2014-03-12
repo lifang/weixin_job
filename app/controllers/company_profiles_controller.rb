@@ -23,7 +23,7 @@ class CompanyProfilesController < ApplicationController
     file_name = params[:file_name]
     update_or_create = params[:update_or_create]
     if update_or_create == "create"
-      if CompanyProfile.find_by_title(title).blank?
+      if CompanyProfile.find_by_title_and_company_id(title,@company.id).blank?
         @company_profile = @company.company_profiles.build do |c|
           c.title = title
           c.html_content = html_content
@@ -35,11 +35,11 @@ class CompanyProfilesController < ApplicationController
           redirect_to company_company_profiles_path(@company)
         else
           flash[:error] = "创建失败,#{@company_profile.errors.messages.values.flatten.join("\\n")}"
-          render 'new'
+          redirect_to new_company_company_profile_path(@company)
         end
       else
         flash[:error] = "已经存在该title"
-        render 'new'
+        redirect_to new_company_company_profile_path(@company)
       end
     else
       update_tuwen img_arr,text_arr,html_content,title,file_name
