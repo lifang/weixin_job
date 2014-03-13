@@ -18,9 +18,9 @@ class ClientResume < ActiveRecord::Base
       img_name = "#{dirs.join}/#{open_id}."+ img.split(".").reverse[0]
       File.open(root_path+ img_name, "wb") { |i| i.write(img_url.read) }    #存入原图     
       size = File.size?(root_path+ img_name)
-      if size > 204800
+      if size > 1048576
         status = 0
-        msg = "头像上传失败,图片最大不能超过200KB"
+        msg = "头像上传失败,图片最大不能超过1MB"
       end
       if status == 0
         File.delete(root_path+ img_name)
@@ -43,9 +43,9 @@ class ClientResume < ActiveRecord::Base
       file_name = "#{dirs.join}/#{file.split(".").reverse[1]}."+ file.split(".").reverse[0]
       File.open(root_path+ file_name, "wb") { |i| i.write(file_url.read) }    #存入文件
       size = File.size?(root_path+ file_name)
-      if size > 512000
+      if size > 2097152
         status = 0
-        msg = "附件上传失败,文件最大不能超过500KB"
+        msg = "附件上传失败,文件最大不能超过2MB"
         File.delete(root_path+ file_name)
       end
     rescue
