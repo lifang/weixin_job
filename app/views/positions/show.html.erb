@@ -2,11 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <script src="/companies/js/jquery-1.8.3.js" type="text/javascript"></script>
-    <script src="/companies/js/main2.js" type="text/javascript"></script>
+    <script src="js/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="js/main2.js" type="text/javascript"></script>
     <link href="/companies/style/style2.css" rel="stylesheet" type="text/css" />
-    <title>微招聘-公司简介</title>
+    <title>微招聘-简历前端</title>
     <script>
       $(function(){
 
@@ -16,33 +15,23 @@
   </head>
 
   <body>
-    <div >
-      <div>
-        <table style="margin: auto;background: aliceblue;width:100%;padding: 10px;">
-          <tr>
-            <td>职位名称：</td>
-          </tr>
-          <tr>
-            <td>&nbsp;&nbsp;<%=@position.name%></td>
-          </tr>
-          <tr>
-            <td>职位描述：</td>
-          </tr>
-          <tr>
-            <td style="max-width: 280px;word-break:break-all;word-wrap:break-word;">
-              &nbsp;&nbsp;<%=@position.description%>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
-                <input type="hidden" name="client_resume_id" value="<%=@client_resume.id if @client_resume%>"/>
-                <input type="hidden" name="position_id" value="<%=@position.id%>"/>
-                <button >投递简历</button>            
-              </form>
-            </td>
-          </tr>
-        </table>
+
+    <div class="form_list">
+      <div class="itemBox">
+        <label>职位名称</label>
+        <p><%=@position.name%></p>
+      </div>
+      <div class="itemBox">
+        <label>职位描述</label>
+        <p><%=@position.description%></p>
+      </div>
+
+      <div class="form_btn">
+        <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
+          <input type="hidden" name="client_resume_id" value="<%=@client_resume.id if @client_resume%>"/>
+          <input type="hidden" name="position_id" value="<%=@position.id%>"/>
+          <button >投递简历</button>
+        </form>
       </div>
     </div>
 
