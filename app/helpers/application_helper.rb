@@ -101,8 +101,6 @@ module ApplicationHelper
     tmp_client_html_arr = tmp_client_html_content.split(",")
     client_html_hash = {}
     tmp_client_html_arr.each do |ele|
-      p 1111111111111111
-      p ele
       ele_k, ele_v = ele.split("=>")
       ele_k = ele_k.delete("'")
       ele_v = ele_v.delete("'")
