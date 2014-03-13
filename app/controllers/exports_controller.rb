@@ -58,9 +58,9 @@ class ExportsController < ApplicationController   #导出简历
       obj.html_content_datas.each_with_index do |a,i|
         if a[1].class == Hash
           if a[0]=="headimage"
-            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}",a[1].keys[0]
+            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}","#{get_upload_file_path a[1].values[0]}"
           elsif a[0]=~ /file/i
-            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}", a[1].keys[0]
+            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}", "#{get_upload_file_path a[1].values[0]}"
           else
             sheet1[count_row, i+1]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
           end
