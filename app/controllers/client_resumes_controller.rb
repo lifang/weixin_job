@@ -114,7 +114,7 @@ class ClientResumesController < ApplicationController
 
   def edit
     @company_id = params[:company_id].nil? ? nil : params[:company_id].to_i
-    @open_id = params[:secret_id]
+    @open_id = params[:secret_key]
     @cr = ClientResume.find_by_open_id_and_company_id(@open_id, @company_id)
     if @company_id.nil? || @open_id.nil? || @cr.nil? || @cr.html_content_datas.nil?
       @err_msg = "数据错误!"
