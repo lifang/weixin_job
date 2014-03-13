@@ -17,7 +17,7 @@ function client_resume_valid(obj){
     $(".itemBox").find("input[type='file']").each(function(){
         var name = $(this).prev("label").text();
         if($.trim($(this).val())==""){
-            flag = false;          
+            flag = false;
             msg += name+"不能为空!\r\n";
         }else{
             var input_name = $(this).attr("name");
@@ -41,8 +41,41 @@ function client_resume_valid(obj){
             flag = false;
             var name = $(this).find("span").first().text();
             msg += name+"至少选择一个!\r\n";
-        }        
+        }
     })
+    var key = $("input[name='secret_id']").first().val();
+    if(key=="" || key=="null"){
+        msg +="缺少secret_key";
+        flag = false;
+    }
+    if(flag){
+        $(obj).parents("form").submit();
+    }else{
+        alert(msg);
+    }
+}
+
+function edit_client_resume_valid(obj){
+    var flag = true;
+    var msg = ""
+    $("#edit_resume_div").find("input[type='text']").each(function(){
+        if($.trim($(this).val())==""){
+            flag = false;
+            var name = $(this).prev("label").text();
+            msg += name+"不能为空!\r\n";
+        }
+    });
+    $(".checkItem").each(function(){
+        var i = 0;
+        $(this).find("input[type='checkbox']:checked").each(function(){
+            i += 1;
+        });
+        if(i==0){
+            flag = false;
+            var name = $(this).find("span").first().text();
+            msg += name+"至少选择一个!\r\n";
+        }
+    });
     if(flag){
         $(obj).parents("form").submit();
     }else{
