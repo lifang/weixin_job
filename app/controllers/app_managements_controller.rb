@@ -82,12 +82,17 @@ class AppManagementsController < ApplicationController
     app_client = params[:app_client]
     gzh_client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
     client_html_info = gzh_client.client_html_info if gzh_client
-    new_hash ="{"
-    app_client.each do |k, v|
-      new_key = get_actual_name(k, client_html_info)
-      new_hash +="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'," if new_key.present?
-    end if app_client.present?
-    new_hash = new_hash[0...-1]+"}"
+    new_hash = nil
+    if app_client
+      new_hash ="{"
+      tmp_arr = []
+      app_client.each do |k, v|
+        new_key = get_actual_name(k, client_html_info)
+        new_hash +="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'" if new_key.present?
+        tmp_arr << new_hash
+      end if app_client.present?
+      new_hash = tmp_arr.join(",")+"}"
+    end
     #    new_hash = {}
     #    app_client.each do |k, v|
     #      new_key = get_actual_name(k, client_html_info)
