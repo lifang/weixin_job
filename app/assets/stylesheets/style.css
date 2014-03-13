@@ -176,7 +176,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .itemBox span { font-size: 14px; line-height: 30px;}
 .itemBox input[type="radio"],.itemBox input[type="checkbox"] { width: 40px;}
 
-.imgItem { min-height: 150px; text-align: center;}
+.imgItem { min-height: 150px;}
 .imgItem a { display: block; margin-top: 70px; text-align: center;}
 
 /* 公司简介 */
