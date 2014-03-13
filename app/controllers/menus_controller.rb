@@ -36,7 +36,7 @@ class MenusController < ApplicationController   #菜单
         else
           menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
             :company_id => params[:company_id].to_i, :types => types,
-          :file_path => params[:file_path].nil? || params[:file_path]=="" ? nil : params[:file_path])
+            :file_path => params[:file_path].nil? || params[:file_path]=="" ? nil : params[:file_path])
           if menu.save
             flash[:notice] = "创建成功!"
           else
@@ -61,6 +61,26 @@ class MenusController < ApplicationController   #菜单
       end
     end
   end
+
+  def destroy
+    Menu.transaction do
+      menu = Menu.find_by_id(params[:id].to_i)
+      if menu
+        if menu.parent_id != 0
+          menu.destroy
+          flash[:notice] = "删除成功!"
+        else
+          Menu.delete_all(["parent_id = ?", menu.id])
+          menu.destroy
+          flash[:notice] = "删除成功!"
+        end
+      else
+        flash[:notice] = "数据错误!"
+      end
+      redirect_to company_menus_path(@company)
+    end
+  end
+
   def get_title
     @title = "菜单"
   end

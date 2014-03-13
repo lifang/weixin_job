@@ -1,20 +1,5 @@
 function remove_form_item(obj, name){     //删除简历模板中的某个元素
-    if(name == "headimage_div"){
-        var msg;
-        var flag = true;
-        var len = $(obj).parents("div .phoneVirtual").find(".head_image_div").length;
-        if(len<=1){
-            msg = "至少有一个上传头像!";
-            flag = false;
-        };
-        if(flag){
-            $(obj).parent("div .itemBox").remove();
-        }else{
-            tishi_alert(msg);
-        }
-    }else{
-        $(obj).parent("div .itemBox").remove();
-    }
+    $(obj).parent("div .itemBox").remove();
 }
 
 function del_tag_p(obj){
@@ -190,9 +175,7 @@ function sortNumber(a,b){
 
 function create_resume_valid(obj){
     var headimg_len = $(".phoneVirtual").find(".head_image_div").length;
-    if(headimg_len < 1){
-        tishi_alert("至少有一个上传头像!");
-    }else if(headimg_len > 1){
+    if(headimg_len > 1){
         tishi_alert("最多有一个上传头像!");
     }else{
         $(obj).parents("form").submit();

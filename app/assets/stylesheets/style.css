@@ -178,8 +178,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .itemBox span { font-size: 14px; line-height: 30px;}
 .itemBox input[type="radio"],.itemBox input[type="checkbox"] { width: 40px;}
 
-.imgItem { min-height: 150px;}
-.imgItem a { display: block; margin-top: 70px; text-align: center;}
+.imgItem input[type="file"] { color: #6E6E6E;width: 200px;}
 
 /* 公司简介 */
 .tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto;}
@@ -216,10 +215,26 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     border: 0;
 }
 .menuMakerDtl .menuLv1 button { position: absolute; left: 111px; font-size: 0;}
-.menuMakerDtl .menuLv2 button { position: absolute; left: -35px; font-size: 0;}
+.menuMakerDtl .menuLv2 button { position: absolute; left: -35px; font-size: 0; bottom: -13px;}
 .menuMakerDtl li {}
-.menuMakerDtl li span { display: block; line-height: 50px; width: 160px; background: #ff8d00; color: #fff; margin: 5px; text-align: center;}
+
 .menuMakerDtl li ul { margin-top: -55px; margin-left: 200px;}
+.menuMakerDtl li span { display: block; line-height: 45px; width: 160px; background: #ff8d00; color: #fff; margin: 5px; text-align: center; position: relative;}
+.menuMakerDtl li a.close_1 {
+    color: #f2f2f2;
+    font-size: 24px;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    position: absolute;
+    right: 1px;
+    top: 3px;
+    display: none;
+    cursor: pointer;
+}
+.menuMakerDtl .menu_item:hover  a.close_1 { display: block;}
+.menu_item { display: inline-block; position: relative;}
 
 /* 导出简历 */
 .resumeDownloadTit { height: 84px; background: #7d9199;}
@@ -237,6 +252,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .second_bg { width:100%; height:100%; z-index:98; position: fixed; top:0; opacity: 0.3; filter: alpha(opacity=30); background: #fff; display: none;}
 .second_box { width:100%; height:100%; z-index:99; position: absolute; top:0; display: none; }
 .second_box.second_box_fixed { position: fixed;}
+.second_box_fixed .second_content .largeCon { max-height: 200px; overflow: auto;}
 .second_content {
     background-color: #373f42;
     overflow: auto;
@@ -307,3 +323,10 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .third_box { z-index:101; }
 
 .itemBox p { text-indent: 20px;}
+.pagination{
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 3px;
+    width: 430px;
+}

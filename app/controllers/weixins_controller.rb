@@ -193,7 +193,7 @@ Text
       if client
         client.update_attribute(:avatar_url, avatar_url) if avatar_url && avatar_url != client.avatar_url
       else
-        company.clients.create(:types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url)
+        company.clients.create(:name => "游客", :mobilephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url)
       end
     else
       login_info = login_to_weixin(company)
@@ -208,7 +208,7 @@ Text
         if client
           client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
         else
-          company.clients.create(:types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+          company.clients.create(:name => "游客", :mobilephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
         end
       end
     end

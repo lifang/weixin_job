@@ -1,10 +1,10 @@
 $(function(){
 	
-    $(".leftMenu").css("height",$(document).height() - 84 +"px");
-	
-    $(".menuMakerDtl").css("height",$(document).height() - 168 +"px");
-	
-    $(".resumeDownloadDtl").css("height",$(document).height() - 168 +"px");
+    $(".leftMenu").css("height",document.body.scrollHeight - 84 +"px");
+
+    $(".menuMakerDtl").css("height",document.body.scrollHeight - 168 +"px");
+
+    $(".resumeDownloadDtl").css("height",document.body.scrollHeight - 168 +"px");
 	
     $(".third_box .close").click(function(){
         $(this).parents(".third_box").hide();
