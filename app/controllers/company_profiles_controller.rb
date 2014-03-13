@@ -20,6 +20,7 @@ class CompanyProfilesController < ApplicationController
     text_arr = params[:text]
     html_content = params[:html_content]
     title = params[:title].strip
+    @title_1 = title
     file_name = params[:file_name].strip
     update_or_create = params[:update_or_create]
     if update_or_create == "create"
@@ -144,7 +145,7 @@ class CompanyProfilesController < ApplicationController
 <script src='/companies/js/jquery-1.8.3.js' type='text/javascript'></script>
 <script src='/companies/js/main2.js' type='text/javascript'></script>
 <link href='/companies/style/style2.css' rel='stylesheet' type='text/css' />
-<title>微招聘-公司简介</title>
+<title>微招聘-#{@title_1}</title>
 <script>
 	$(function(){
 	})
