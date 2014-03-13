@@ -33,8 +33,12 @@ class WeixinsController < ApplicationController
           render :text => "ok"
         elsif params[:xml][:MsgType] == "event" && params[:xml][:Event] == "CLICK"  #自定义菜单点击事件
           message = get_link_by_event_key(params[:xml][:EventKey], open_id)  #resume_5
-          xml = teplate_xml(message)
-          render :xml => xml        #回复登记app的链接
+          if link.present?
+            xml = teplate_xml(message)
+            render :xml => xml        #回复登记app的链接
+          else
+            render :text => "ok"
+          end
         else
           render :text => "ok"
         end
@@ -217,7 +221,12 @@ Text
     if menu_type == "resume"
       rt = ResumeTemplate.find_by_id(temp_id) if temp_id
       if rt
-        message = rt.html_url
+        cr = ClientResume.where(:resume_template_id => rt.id, :open_id => open_id, :company_id => @company.id)
+        if cr
+          message = "/client_resumes/#{cr.id}/edit"
+        else
+          message = rt.html_url
+        end
         link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
       end
     elsif menu_type == "positions"
@@ -229,7 +238,7 @@ Text
         message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
         all_positions += message
       end if positions
-      link = all_positions
+      link = positions.present? ? all_positions : ""
     end
     link
   end

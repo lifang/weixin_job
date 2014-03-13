@@ -73,7 +73,7 @@ $(function(){
 
 //保存app登记页面html
 function saveHtml(obj){
-    $("#html_content").val($(".phoneVirtual").html());
+    $("#html_content").val($(".phoneVirtual #form_div").html());
     $(obj).parents("form").submit();
 }
 
@@ -90,7 +90,7 @@ function check_remind_nonempty(obj) {
        tishi_alert('提示:\n\n内容不能为空');
         return false;
     } else if ($.trim(form.find("#remind_reseve_time").val()) <= todays && $.trim(form.find("#remind_days").val()) <= 0) {
-       tishi_alert('提示:\n\n请选择正确时间');
+       tishi_alert('提示:\n\n发送时间请选择在今天之后');
         return false;
     }
 }

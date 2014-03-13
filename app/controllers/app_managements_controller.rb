@@ -5,6 +5,7 @@ class AppManagementsController < ApplicationController
   skip_before_filter :has_sign?, :only => [:get_token, :submit_redirect, :app_regist, :get_form_date]
   
   def index
+    @title = "APP管理"
     if @company.has_app
       @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
       @chi =ClientHtmlInfo.find_by_client_id(@client.id) if @client
@@ -62,8 +63,6 @@ class AppManagementsController < ApplicationController
     @chi = ClientHtmlInfo.find_by_client_id(gzh_client.id)
     optional_fields = @chi.hash_content if @chi
     @tags = @client.tags if @client
-    p "==================="
-    p optional_fields
     @ele = get_element_html(@client.try(:html_content), optional_fields, @tags ? @tags.map(&:content) : []) if @chi
     render :layout => false
   end
@@ -87,7 +86,7 @@ class AppManagementsController < ApplicationController
     app_client.each do |k, v|
       new_key = get_actual_name(k, client_html_info)
       new_hash +="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'," if new_key.present?
-    end
+    end if app_client.present?
     new_hash = new_hash[0...-1]+"}"
     #    new_hash = {}
     #    app_client.each do |k, v|
