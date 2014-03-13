@@ -1,7 +1,7 @@
 #encoding: utf-8
 class ExportsController < ApplicationController   #导出简历
   before_filter :has_sign?,only:[:index]
-  before_filter  :get_company
+  before_filter  :get_company,:get_title
   def index
     
   end
@@ -9,7 +9,6 @@ class ExportsController < ApplicationController   #导出简历
     directory = get_company_dir_path @company.id.to_s+"/excel/"
     FileUtils.mkdir_p directory unless Dir.exists?(directory)
     zipfile_name =""
-    FileUtils.mkdir_p directory if Dir.exists?(directory)
     zipfile_name = (get_company_dir_path @company.id.to_s)+"/excel/export.zip"
     if File.exists?(zipfile_name)
       FileUtils.rm_f zipfile_name
@@ -91,5 +90,8 @@ class ExportsController < ApplicationController   #导出简历
   end
   def get_company
     @company = Company.find_by_id(params[:company_id])
+  end
+  def get_title
+    @title = "导出简历"
   end
 end
