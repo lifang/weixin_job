@@ -125,7 +125,7 @@ class Api::ClientsController < ApplicationController
           :has_new_message => p.has_new_message, :has_new_record => p.has_new_record, :html_content => p.html_content,
           :remark => p.remark, :status => p.status}
         person_tags =  Label.find_by_sql(["select t.content from labels l inner join tags t on l.tag_id=t.id
-                where l.company_id=? and l.client_id=?", company_id, p.id]).map(&:content).uniq
+                where t.company_id=? and l.client_id=?", company_id, p.id]).map(&:content).uniq
         hash[:tags] = person_tags
         a << hash;
         a
@@ -268,7 +268,7 @@ class Api::ClientsController < ApplicationController
 
   #设置免打扰
   def set_undisturbed
-    Site.transaction do
+    Company.transaction do
       status = 1
       msg = ""
       company_id = params[:site_id].to_i
