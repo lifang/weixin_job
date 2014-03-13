@@ -84,6 +84,8 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .edit { display: inline-block; width: 33px; height: 33px; background: url(../assets/edit.png) no-repeat; background-position: -4px -1px; border: 0;}
 .edit:visited { background-position: -4px -41px;}
 .edit:hover { background-position: -4px -81px;}
+.show { display: inline-block; width: 35px; height: 35px; background: url(../assets/w3.png) no-repeat; border: 0;}
+.show:hover {display: inline-block; width: 35px; height: 35px; background: url(../assets/w2.png) no-repeat; border: 0;}
 .publish { display: inline-block; width: 33px; height: 33px; background: url(../assets/publish.png) no-repeat; background-position: -4px -1px; border: 0;}
 .publish:visited { background-position: -4px -41px;}
 .publish:hover { background-position: -4px -81px;}

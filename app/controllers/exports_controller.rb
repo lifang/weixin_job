@@ -2,6 +2,8 @@
 class ExportsController < ApplicationController   #导出简历
   before_filter :has_sign?,only:[:index]
   before_filter  :get_company,:get_title
+  require 'rubygems'
+  require 'zip'
   def index
     
   end
