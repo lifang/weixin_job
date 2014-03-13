@@ -109,7 +109,6 @@ class ClientResumesController < ApplicationController
           end
         end
       end
-      @err_msg = cr.html_content_datas
       render "completed"
     end
   end

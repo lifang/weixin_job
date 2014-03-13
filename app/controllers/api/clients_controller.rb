@@ -178,7 +178,7 @@ class Api::ClientsController < ApplicationController
       person_type = params[:person_type]
       person_info = params[:person_info]
       client = Client.find_by_id_and_company_id(person_id, company_id)
-      if client.nil? || client.html_content.nil?
+      if client.nil?
         status = 0
         msg = "数据错误!"
       else
@@ -197,20 +197,23 @@ class Api::ClientsController < ApplicationController
             msg = "更新失败!"
           end
         else
-          content = []
-          client_arr = client.html_content.gsub(/[{}]/,"").split(",")
-          client_arr.each do |ca| #"'年龄'=>'sdfs','性别'=>'sdf','爱好'=>'女'"
-            ele_arr = ca.gsub(/['"]/,"").split("=>")
-            if ele_arr[0].eql?(person_type)
-              content << "'#{ele_arr[0]}'=>'#{person_info}'"
-            else
-              content << ca
+          if client.html_content.present?
+            content = []
+            client_arr = client.html_content.gsub(/[{}]/,"").split(",")
+            client_arr.each do |ca| #"'年龄'=>'sdfs','性别'=>'sdf','爱好'=>'女'"
+              ele_arr = ca.gsub(/['"]/,"").split("=>")
+              if ele_arr[0].eql?(person_type)
+                content << "'#{ele_arr[0]}'=>'#{person_info}'"
+              else
+                content << ca
+              end
             end
+            new_str = "{"
+            new_str = content.join(",")
+            # new_str.prepend("{")
+            new_str += "}"
           end
-          new_str = content.join(",")
-          new_str.prepend("{")
-          new_str += "}"
-          if client.update_attribute("html_content", new_str)
+          if new_str.present? && client.update_attribute("html_content", new_str)
             msg = "更新成功!"
           else
             status = 0
