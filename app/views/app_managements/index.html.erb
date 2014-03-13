@@ -38,11 +38,9 @@
         </div>
         <div class="scdBoxAct">
           <button class="orangeBtn" type="button" onclick="saveHtml(this)">确定</button>
-  <%# if @chi && @chi.html_content.present? %>
           <%= link_to  "/companies/#{@company.id}/app_managements/app_regist", :target => "_blank" do%>
             <button class="orangeBtn" type="button">预览</button>
           <% end %>
-  <%# end %>
         </div>
 
       </div>

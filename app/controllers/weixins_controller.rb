@@ -205,6 +205,7 @@ Text
         gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
         gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_login_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
         avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id) #订阅号，获取头像
+        avatar_url = MW_URL + avatar_url
         if client
           client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
         else
