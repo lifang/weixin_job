@@ -285,9 +285,6 @@ class ApplicationController < ActionController::Base
     content_hash
   end
   #<>
-  def encoding_character(str)
-    arr={"<"=>"&lt;",">"=>"&gt;"}
-    str.gsub(/<|>/){|s| arr[s]}
-  end
+
 
 end

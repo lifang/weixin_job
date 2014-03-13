@@ -6,15 +6,16 @@ class ClientResumesController < ApplicationController
     ClientResume.transaction do
       ic = Iconv.new("GBK", "utf-8")    #GBK转码utf-8
       tags = params[:form_p]
-      hash = {}
-      tags.each do |k, v|   #message_1"=>{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
-        hash1 = {}
-        v.each do |k1, v1|  #{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
-          k1 = ic.iconv(k1)
-          hash1[k1] = v1    #{"姓名" => "wadawd"}
-        end
-        hash[k] = hash1
-      end
+      hash = tags
+#      tags.each do |k, v|   #message_1"=>{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
+#        hash1 = {}
+#        v.each do |k1, v1|  #{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
+#          k1 = ic.iconv(k1)
+#          hash1[k1] = v1    #{"姓名" => "wadawd"}
+#        end
+#        hash[k] = hash1
+#      end
+
       secret_id = params[:secret_id]
       company_id = params[:company_id].to_i
       status = 1
@@ -51,7 +52,7 @@ class ClientResumesController < ApplicationController
               end
               if status == 0
                 break
-              end            
+              end
             end
           end
 
@@ -91,10 +92,10 @@ class ClientResumesController < ApplicationController
               end
               if status == 0
                 break
-              end          
+              end
             end
           end
-        
+
           if status == 1
             cr = ClientResume.new(:html_content_datas => hash, :resume_template_id => params[:resume_id], :has_completed => true,
               :open_id => secret_id, :company_id => company_id)
@@ -104,10 +105,11 @@ class ClientResumesController < ApplicationController
               status = 0
               @err_msg = "简历填写失败!"
             end
-          
+
           end
         end
       end
+      @err_msg = cr.html_content_datas
       render "completed"
     end
   end
@@ -141,15 +143,15 @@ class ClientResumesController < ApplicationController
     ClientResume.transaction do      
       ic = Iconv.new("GBK", "utf-8")    #GBK转码utf-8
       tags = params[:form_p]
-      hash = {}
-      tags.each do |k, v|   #message_1"=>{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
-        hash1 = {}
-        v.each do |k1, v1|  #{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
-          k1 = ic.iconv(k1)
-          hash1[k1] = v1    #{"姓名" => "wadawd"}
-        end
-        hash[k] = hash1
-      end
+      hash = tags
+#      tags.each do |k, v|   #message_1"=>{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
+#        hash1 = {}
+#        v.each do |k1, v1|  #{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
+#          k1 = ic.iconv(k1)
+#          hash1[k1] = v1    #{"姓名" => "wadawd"}
+#        end
+#        hash[k] = hash1
+#      end
       cr = ClientResume.find_by_id(params[:id])
       company_id = params[:company_id]
       secret_id = params[:open_id]
