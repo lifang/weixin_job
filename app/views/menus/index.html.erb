@@ -8,12 +8,18 @@
       <ul class="menuLv1">
         <% @father_menus.each do |fm| %>
           <li>
+            <div class="menu_item">
               <span class="scd_btn_1" name="menuInfo" onclick="edit_menu(1, 0, <%= fm.temp_id %>, '<%= fm.name %>', <%= fm.types %>, <%= fm.id %>)" style="cursor: pointer;"><%= fm.name %></span>
+              <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= fm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
+            </div>
             <ul class="menuLv2">
               <% @child_menus[fm.id.to_s].each do |cm| %>
                 <li>
+                  <div class="menu_item">
                     <span class="scd_btn_1" name="menuInfo" onclick="edit_menu(2, <%= fm.id %>, <%=  cm.temp_id %>, '<%= cm.name %>', <%= cm.types %>, <%= cm.id %>)" style="cursor: pointer;"><%= cm.name %></span><img src="/assets/menuLv2_1.png" />
-                </li>
+                      <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
+                  </div>
+                  </li>
               <% end if @child_menus[fm.id.to_s] %>
               <button class="addMenuItem" onclick="add_menu(2,<%= fm.id %>, <%= @child_menus[fm.id.to_s].nil? ? 0 : @child_menus[fm.id.to_s].length %>)">+</button>
             </ul>
@@ -33,7 +39,7 @@
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
     <h1 name="add_menu_h1"></h1>
-    <div>
+    <div class="largeCon">
       <p>
         <label>菜单名称</label>
         <input type="text" name="menu_name"/>
@@ -85,7 +91,7 @@
   <div class="second_content" style="width: 450px;">
     <span class="close" title="关闭">×</span>
     <h1 name="edit_menu_h1"></h1>
-    <div>
+    <div class="largeCon">
       <p>
         <label>菜单名称</label>
         <input type="text" name="edit_menu_name"/>
