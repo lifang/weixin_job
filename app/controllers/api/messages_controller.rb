@@ -169,8 +169,15 @@ class Api::MessagesController < ApplicationController
           end
         else   #公众号是订阅号
 
-         send_single_message(company, content, receive_client_id )
-
+          send_single_message(company, content, receive_client_id )
+          mess = Message.create!(:company_id => company_id, :from_user => current_client.id ,:to_user => receive_client.id ,
+            :types => Message::TYPES[:weixin], :content => content,
+            :status => Message::STATUS[:READ], :msg_id => nil,
+            :message_type => msg_type_value)
+          message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
+            :content => mess.content, :status => mess.status ? 0 : 1,
+            :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
+            :message_path => mess.message_path}
         end
       else
         status = 0

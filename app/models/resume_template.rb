@@ -52,12 +52,12 @@ class ResumeTemplate < ActiveRecord::Base
         html_head << "<input type='hidden' name='[form_p][#{k.to_s}][#{:text}]' value='#{v[:text]}'/>"
         html_head << "</div>"
       elsif k.to_s.include?("headimage")
-        html_head << "<div class='imgItem itemBox'><label onclick='$(this).next().click()' style='cursor:pointer;'>#{v[:name]}</label>"
-        html_head << "<input type='file' style='display:none;' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
+        html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
+        html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
         html_head << "</div>"
       elsif k.to_s.include?("file")
-        html_head << "<div class='imgItem itemBox'><label onclick='$(this).next().click()' style='cursor:pointer;'>#{v[:name]}</label>"
-        html_head << "<input type='file' style='display:none;' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
+        html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
+        html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
         html_head << "</div>"     
       end
     end if resume.html_content

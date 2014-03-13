@@ -57,7 +57,7 @@ class Api::ClientsController < ApplicationController
       end
     end
     render :json => {:status => status, :msg => msg, 
-      :return_object => {:user_id => status == 0 ? nil : user.id, :company_id => status == 0 ? nil : company.id,
+      :return_object => {:user_id => status == 0 ? nil : user.id, :site_id => status == 0 ? nil : company.id,
         :receive_status => status == 0 ? nil : company.receive_status,
         :receive_start => status == 0 || company.not_receive_start_at.nil? ? nil : company.not_receive_start_at.strftime("%H:%M"),
         :receive_end => status == 0 || company.not_receive_end_at.nil? ? nil : company.not_receive_end_at.strftime("%H:%M"),

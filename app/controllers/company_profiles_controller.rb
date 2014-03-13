@@ -20,6 +20,7 @@ class CompanyProfilesController < ApplicationController
     text_arr = params[:text]
     html_content = params[:html_content]
     title = params[:title].strip
+    @title_1 = title
     file_name = params[:file_name].strip
     update_or_create = params[:update_or_create]
     if update_or_create == "create"
@@ -70,7 +71,7 @@ class CompanyProfilesController < ApplicationController
     unless old_img_url.blank?
       file_name = old_img_url.split("/")[-1]
       file_path = @root_path +"/"+file_name
-      FileUtils.rm file_path
+      FileUtils.rm file_path if File.exists?(file_path)
     end
     FileUtils.mkdir_p @root_path unless Dir.exist?(@root_path)
     @full_path = @root_path +"/#{time_str}"+ @image.original_filename
@@ -144,7 +145,7 @@ class CompanyProfilesController < ApplicationController
 <script src='/companies/js/jquery-1.8.3.js' type='text/javascript'></script>
 <script src='/companies/js/main2.js' type='text/javascript'></script>
 <link href='/companies/style/style2.css' rel='stylesheet' type='text/css' />
-<title>微招聘-公司简介</title>
+<title>微招聘-#{@title_1}</title>
 <script>
 	$(function(){
 	})

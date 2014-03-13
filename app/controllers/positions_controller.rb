@@ -56,12 +56,19 @@ class PositionsController < ApplicationController   #招聘职位
     description = params[:positions][:description]
     types = params[:positions][:types]
     @position = Position.find_by_id(id)
-    if @position&& @position.update_attributes(name:name,description:description,position_type_id:types)
-      flash[:success] = "更新成功！"
-      redirect_to company_positions_path(@company)
+    positions = Position.where(["name=? and company_id = ? and name !=?",name,@company.id,@position.name])
+    p 1111111111111,positions
+    if positions.length<1 
+      if @position&& @position.update_attributes(name:name,description:description,position_type_id:types)
+        flash[:success] = "更新成功！"
+        redirect_to company_positions_path(@company)
+      else
+        flash[:error] = "更新失败！职位不存在！"
+        render 'new'
+      end
     else
-      flash[:error] = "更新失败！职位不存在！"
-      render 'new'
+        flash[:error] = "更新失败！不能跟其他职位名称相同！"
+        render 'new'
     end
 
   end
@@ -80,7 +87,7 @@ class PositionsController < ApplicationController   #招聘职位
   end
   def send_resume
     if params[:client_resume_id].blank?
-      @message = "投递失败！请登记简历"
+      @message = "投递失败</br>请先登记简历!"
     else
       @delivery_resume_record = DeliveryResumeRecord.create(company_id:@company.id,
         position_id:params[:position_id],

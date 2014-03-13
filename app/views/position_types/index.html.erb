@@ -6,7 +6,7 @@
     <div class="JobCategoryBox">
       <%@position_types.each do |p_t|%>
         <p><%=p_t.name%>
-          <%=link_to company_position_type_path(@company,p_t),method:'delete' do%>
+          <%=link_to company_position_type_path(@company,p_t),confirm:"确定删除？",method:'delete' do%>
           <span class="close" title="关闭">×</span>
           <%end%>
         </p>

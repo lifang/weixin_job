@@ -1,6 +1,6 @@
 #encoding:utf-8
 module ApplicationHelper
-
+  require "json"
   MW_URL = "http://wzpapp.gankao.co" #服务器地址
 
   WEIXIN_OPEN_URL = "https://api.weixin.qq.com"  #微信api地址
@@ -34,6 +34,7 @@ module ApplicationHelper
 
   def get_element_html(client_html_content, optional_fileds, tag_names)
     ele = ""
+    client_html_content = change_string_to_hash(client_html_content) if client_html_content
     optional_fileds.each do |ele_type_name, label_and_options|
       label_name = label_and_options["name"]
       options = label_and_options["options"]
@@ -89,8 +90,24 @@ module ApplicationHelper
                  <select name=app_client[#{ele_type_name}]>#{select}</select>
         "
       end
-    end
+    end if optional_fileds
     ele
+  end
+
+#{'年龄'=>'24','性别'=>'女','喜欢的季节'=>'春、夏','喜欢的城市'=>'苏州'}
+  def change_string_to_hash client_html_content
+    tmp_client_html_content = client_html_content.delete("{").delete("}")
+    tmp_client_html_arr = tmp_client_html_content.split(",")
+    client_html_hash = {}
+    tmp_client_html_arr.each do |ele|
+      p 1111111111111111
+      p ele
+      ele_k, ele_v = ele.split("=>")
+      ele_k = ele_k.delete("'")
+      ele_v = ele_v.delete("'")
+      client_html_hash[ele_k] = ele_v.include?("、") ? ele_v.split("、") : ele_v
+    end
+    client_html_hash
   end
 
 end
