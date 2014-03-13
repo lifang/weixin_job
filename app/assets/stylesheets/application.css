@@ -9,12 +9,6 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
+ *= require position
+ *= require style
  */
- .pagination{
-     position: absolute;
-bottom: 0;
-text-align: center;
-padding: 3px;
-width: 430px;
-}

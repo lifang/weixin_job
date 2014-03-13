@@ -1,0 +1,75 @@
+@charset "utf-8";
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #333333;
+    font-family: "微软雅黑","宋体",Arial;
+    font-size: 14px;
+}
+img {
+    border: medium none;
+}
+li {
+    list-style: none outside none;
+}
+a {
+    color: #333333;
+    text-decoration: none;
+}
+input, button, select, textarea, img {
+    outline: medium none;
+}
+button {
+    border: medium none;
+    cursor: pointer;
+    font-family: "微软雅黑";
+}
+article {
+    overflow: hidden;
+    position: relative;
+}
+article:after, .clearAfter:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+
+.form_list {
+    font-size: 16px;
+    margin: 10px;
+}
+.itemBox { line-height: 32px; margin: 5px 0; padding: 5px; background: #f2f2f2; border-radius: 5px;}
+.itemBox label { display: block;}
+.itemBox input[type="text"] { padding: 3px; width: 230px; margin-left: 10px; border: 1px solid #c2c2c2;}
+.itemBox select { padding: 3px; width: 240px; margin-left: 10px; border: 1px solid #c2c2c2;}
+.itemBox input[type="radio"],.itemBox input[type="checkbox"] { margin: 0 10px;}
+.itemBox p { text-indent: 10px; font-size: 14px;}
+
+.txtItem p { text-indent: 10px; font-size: 14px;}
+.imgItem { min-height: 120px; text-align: center;}
+.imgItem img { width: 100%;}
+
+.form_btn { padding: 10px 0; text-align: center;}
+.form_btn button {
+	padding: 6px;
+	width: 100%;
+	border-radius: 3px;
+	border: 1px solid #c3c3c3;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#c2c2c2));
+	background: -moz-linear-gradient(top, #fff,#c2c2c2);
+	background: -ms-linear-gradient(top,  #fff 0%,#c2c2c2 100%);
+	background: linear-gradient(top,  #fff 0%,#c2c2c2 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff",endColorstr="#c2c2c2",GradientType=0);
+}
+
+.jobInfo {}
+.tuwenBox { margin-bottom: 10px;}
+.tuwenImg img { width: 100%;}
+.tuwenBox p { text-indent: 10px; font-size: 14px; line-height: 24px; padding: 5px;}

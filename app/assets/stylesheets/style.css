@@ -323,3 +323,10 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .third_box { z-index:101; }
 
 .itemBox p { text-indent: 20px;}
+.pagination{
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 3px;
+    width: 430px;
+}
