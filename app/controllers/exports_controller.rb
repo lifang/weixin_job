@@ -70,13 +70,8 @@ class ExportsController < ApplicationController   #导出简历
     end
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
-    begin (book.write file_path)
-    rescue Encoding::UndefinedConversionError
-      p $!.source_encoding              #=> #<Encoding:UTF-8>
-      p $!.destination_encoding         #=> #<Encoding:EUC-JP>
-      p $!.source_encoding_name         #=> "UTF-8"
-      p $!.destination_encoding_name    #=> "EUC-JP"
-    end
+    (book.write file_path)
+    
   end
  
   def init_zero_line(obj)
