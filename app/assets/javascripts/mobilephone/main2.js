@@ -23,7 +23,7 @@ function client_resume_valid(obj){
             var input_name = $(this).attr("name");
             if(input_name.indexOf("headimage")>0){
                 var img = $.trim($(this).val());
-                var img_format =["png","gif","jpg","bmp"];
+                var img_format =["png","gif","jpg","bmp","jpeg","JPG","PNG","BMP","JPEG","GIF"];
                 var img_type = img.substring(img.lastIndexOf(".")).toLowerCase();
                 if(img_format.indexOf(img_type.substring(1,img_type.length))==-1){
                     flag = false;
@@ -82,7 +82,7 @@ function edit_client_resume_valid(obj){
         if($(this).val()!="" && input_name.indexOf("headimage")>0){
             var name = $(this).prev("label").text();
             var img = $.trim($(this).val());
-            var img_format =["png","gif","jpg","bmp"];
+            var img_format =["png","gif","jpg","bmp","jpeg","JPG","PNG","BMP","JPEG","GIF"];
             var img_type = img.substring(img.lastIndexOf(".")).toLowerCase();
             if(img_format.indexOf(img_type.substring(1,img_type.length))==-1){
                 flag = false;
