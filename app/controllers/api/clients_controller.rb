@@ -268,7 +268,7 @@ class Api::ClientsController < ApplicationController
 
   #设置免打扰
   def set_undisturbed
-    Site.transaction do
+    Company.transaction do
       status = 1
       msg = ""
       company_id = params[:site_id].to_i
