@@ -223,7 +223,7 @@ Text
       if rt
         cr = ClientResume.where(:resume_template_id => rt.id, :open_id => open_id, :company_id => @company.id)[0]
         if cr
-          message = "/client_resumes/#{cr.id}/edit?company_id=#{@company.id}&secret_key=#{open_id}"
+          message = "/client_resumes/#{cr.id}/edit?company_id=#{@company.id}&amp;secret_key=#{open_id}"
           link = "&lt;a href='#{MW_URL + message}' &gt; 点击查看简历 &lt;/a&gt;"  #简历url
         else
           message = rt.html_url

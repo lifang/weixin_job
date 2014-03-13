@@ -1,4 +1,5 @@
 #encoding:utf-8
+require 'iconv'
 module ApplicationHelper
   require "json"
   MW_URL = "http://wzpapp.gankao.co" #服务器地址
@@ -94,7 +95,7 @@ module ApplicationHelper
     ele
   end
 
-#{'年龄'=>'24','性别'=>'女','喜欢的季节'=>'春、夏','喜欢的城市'=>'苏州'}
+  #{'年龄'=>'24','性别'=>'女','喜欢的季节'=>'春、夏','喜欢的城市'=>'苏州'}
   def change_string_to_hash client_html_content
     tmp_client_html_content = client_html_content.delete("{").delete("}")
     tmp_client_html_arr = tmp_client_html_content.split(",")
@@ -110,4 +111,22 @@ module ApplicationHelper
     client_html_hash
   end
 
+  def encoding_character(str)
+    arr={"<"=>"&lt;",">"=>"&gt;"}
+    str.gsub(/<|>/){|s| arr[s]}
+  end
+
+  def set_charset hash
+    ic = Iconv.new("GBK", "utf-8")    #GBK转码utf-8
+    hash2 = {}
+    hash.each do |k, v|   #message_1"=>{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
+      hash1 = {}
+      v.each do |k1, v1|  #{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
+        k1 = ic.iconv(k1)
+        hash1[k1] = v1    #{"姓名" => "wadawd"}
+      end
+      hash2[k] = hash1
+    end
+    return hash2
+  end
 end

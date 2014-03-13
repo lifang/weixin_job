@@ -284,4 +284,7 @@ class ApplicationController < ActionController::Base
     content_hash = content_hash.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
     content_hash
   end
+  #<>
+
+
 end
