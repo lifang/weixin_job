@@ -25,10 +25,9 @@ class Api::ClientsController < ApplicationController
           user.update_attribute("token", token) if token && token.strip != ""
           msg = "登陆成功"
           tags = Tag.all.map(&:content).uniq
-          person_list = Client.find_by_sql(["select c.id, c.name, c.mobiephone, c.avatar_url, c.has_new_message, c.has_new_record,
-            c.html_content, c.remark, c.status from clients c where c.company_id=? and c.types=?", user.company_id, Client::TYPES[:CONCERNED]])
+          person_list = Client.where(["company_id=? and types=?", user.company_id, Client::TYPES[:CONCERNED]])
           pl = person_list.inject([]){|a,p|
-            hash = {:id => p.id, :name => p.name, :mobiephone => p.mobiephone, :avatar_url => p.avatar_url, 
+            hash = {:id => p.id, :name => p.name, :mobiephone => p.mobiephone, :avatar_url => p.client_avatar_url,
               :has_new_message => p.has_new_message, :has_new_record => p.has_new_record, :html_content => p.html_content,
               :remark => p.remark, :status => p.status}
             person_tags =  Label.find_by_sql(["select t.content from labels l inner join tags t on l.tag_id=t.id
@@ -61,7 +60,7 @@ class Api::ClientsController < ApplicationController
         :receive_status => status == 0 ? nil : company.receive_status,
         :receive_start => status == 0 || company.not_receive_start_at.nil? ? nil : company.not_receive_start_at.strftime("%H:%M"),
         :receive_end => status == 0 || company.not_receive_end_at.nil? ? nil : company.not_receive_end_at.strftime("%H:%M"),
-        :user_avatar => status == 0 ? nil : user.avatar_url,
+        :user_avatar => status == 0 ? nil : user.client_avatar_url,
         :person_list => pl, :recent_list => rl, :remind => re_content, :record => rec_content, :tags => tags,
         :site_auth => status == 0 ? nil : company.is_send_app_msg}}
   end
@@ -120,10 +119,9 @@ class Api::ClientsController < ApplicationController
     tags = Tag.all.map(&:content).uniq
     h[:tags] = tags
     if type == 0  #刷新通讯录
-      person_list = Client.find_by_sql(["select c.id, c.name, c.mobiephone, c.avatar_url, c.has_new_message, c.has_new_record,
-            c.html_content, c.remark, c.status from clients c where c.company_id=? and c.types=?", company_id, Client::TYPES[:CONCERNED]])
+      person_list = Client.where(["company_id=? and types=?", company_id, Client::TYPES[:CONCERNED]])
       pl = person_list.inject([]){|a,p|
-        hash = {:id => p.id, :name => p.name, :mobiephone => p.mobiephone, :avatar_url => p.avatar_url,
+        hash = {:id => p.id, :name => p.name, :mobiephone => p.mobiephone, :avatar_url => p.client_avatar_url,
           :has_new_message => p.has_new_message, :has_new_record => p.has_new_record, :html_content => p.html_content,
           :remark => p.remark, :status => p.status}
         person_tags =  Label.find_by_sql(["select t.content from labels l inner join tags t on l.tag_id=t.id
@@ -223,7 +221,7 @@ class Api::ClientsController < ApplicationController
         if status == 0
           c = nil
         else
-          c = {:id => client.id, :name => client.name, :mobiephone => client.mobiephone, :avatar_url => client.avatar_url,
+          c = {:id => client.id, :name => client.name, :mobiephone => client.mobiephone, :avatar_url => client.client_avatar_url,
             :has_new_message => client.has_new_message, :has_new_record => client.has_new_record, :remark => client.remark,
             :html_content => client.html_content, :status => client.status
           }
@@ -256,7 +254,7 @@ class Api::ClientsController < ApplicationController
       if status == 0
         c = nil
       else
-        c = {:id => client.id, :name => client.name, :mobiephone => client.mobiephone, :avatar_url => client.avatar_url,
+        c = {:id => client.id, :name => client.name, :mobiephone => client.mobiephone, :avatar_url => client.client_avatar_url,
           :has_new_message => client.has_new_message, :has_new_record => client.has_new_record, :remark => client.remark,
           :html_content => client.html_content, :status => client.status
         }
