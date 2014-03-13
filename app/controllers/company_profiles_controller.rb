@@ -70,7 +70,7 @@ class CompanyProfilesController < ApplicationController
     unless old_img_url.blank?
       file_name = old_img_url.split("/")[-1]
       file_path = @root_path +"/"+file_name
-      FileUtils.rm file_path
+      FileUtils.rm file_path if File.exists?(file_path)
     end
     FileUtils.mkdir_p @root_path unless Dir.exist?(@root_path)
     @full_path = @root_path +"/#{time_str}"+ @image.original_filename
