@@ -193,7 +193,7 @@ Text
       if client
         client.update_attribute(:avatar_url, avatar_url) if avatar_url && avatar_url != client.avatar_url
       else
-        company.clients.create(:name => "游客", :mobilephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url)
+        company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url)
       end
     else
       login_info = login_to_weixin(company)
@@ -208,7 +208,7 @@ Text
         if client
           client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
         else
-          company.clients.create(:name => "游客", :mobilephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+          company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
         end
       end
     end
@@ -223,11 +223,12 @@ Text
       if rt
         cr = ClientResume.where(:resume_template_id => rt.id, :open_id => open_id, :company_id => @company.id)[0]
         if cr
-          message = "/client_resumes/#{cr.id}/edit"
+          message = "/client_resumes/#{cr.id}/edit?company_id=#{@company.id}&secret_key=#{open_id}"
+          link = "&lt;a href='#{MW_URL + message}' &gt; 点击查看简历 &lt;/a&gt;"  #简历url
         else
           message = rt.html_url
+          link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
         end
-        link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
       end
     elsif menu_type == "positions"
       position_type = PositionType.find_by_id(temp_id) if temp_id

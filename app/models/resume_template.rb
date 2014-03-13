@@ -48,7 +48,7 @@ class ResumeTemplate < ActiveRecord::Base
         html_head << "</select></div>"
       elsif k.to_s.include?("text")
         html_head << "<div class='txtItem itemBox'>"
-        html_head << "<p>#{v[:text]}</p>"
+        html_head << "<p>#{v[:text].to_s}</p>"
         html_head << "<input type='hidden' name='[form_p][#{k.to_s}][#{:text}]' value='#{v[:text]}'/>"
         html_head << "</div>"
       elsif k.to_s.include?("headimage")
