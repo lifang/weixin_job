@@ -126,7 +126,7 @@ class CompanyProfilesController < ApplicationController
     tuwen = ""
     img_arr.each_with_index do |img , index|
       imge = (img=="#" ? "" : "<img src='#{img}' />")
-      txt = (text_arr[index].nil? ? "":"<p>#{text_arr[index]}</p>")
+      txt = (text_arr[index].nil? ? "":"<p>#{ encoding_character text_arr[index]}</p>")
       tuwen += "
       <div class='tuwenBox'>
 			<div class='tuwenImg'>
@@ -159,4 +159,10 @@ class CompanyProfilesController < ApplicationController
 </html>
     "
   end
+
+  def encoding_character(str)
+    arr={"<"=>"&lt;",">"=>"&gt;"}
+    str.gsub(/<|>/){|s| arr[s]}
+  end
+
 end
