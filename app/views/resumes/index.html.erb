@@ -84,15 +84,19 @@
                 <p><%= v[:text] %></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :text %>]" value="<%= v[:text] %>"/>
-              </div>             
+              </div>
             <% end %>
           <% end if @resume_temp.html_content %>
         </div>
         <div class="scdBoxAct">
           <button class="orangeBtn" type="button" onclick="create_resume_valid(this)">确定</button>
         </div>
-      <a href="<%= @resume_temp.html_url.nil? ? 'javascript:viod(0)' : @resume_temp.html_url %>" target="_blank;">预览</a>
       <% end %>
+    </div>
+    <div class="profileTemp jobTemp checked">
+      <div class="jobTempCheck"></div>
+      <a title="预览" href="<%= @resume_temp.html_url.nil? ? 'javascript:viod(0)' : @resume_temp.html_url %>" target="_blank;"><img src="/assets/jobTemp.png" width="85" /></a>
+      <span>预览</span>
     </div>
   </div>
 </div>

@@ -16,8 +16,8 @@
       <% @html_content.each do |k, v| %>
         <% if k.to_s == "headimage" %>
           <div class="imgItem itemBox">
-            <label onclick="$(this).next().click()" style="cursor:pointer;"><%= v["name"] %></label>
-            <input type="file" style="display:none;" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
+            <label><%= v["name"] %></label>
+            <input type="file" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
             <img <% if @html_content_datas["headimage"] && @html_content_datas["headimage"][v["name"]] %> src="<%= @html_content_datas["headimage"][v["name"]] %>" <% end %>/>
           </div>
         <% elsif  k.to_s.include?("message") %>
@@ -57,8 +57,8 @@
           </div>
         <% elsif k.to_s.include?("file") %>
           <div class="imgItem itemBox">
-            <label onclick="$(this).next().click()" style="cursor:pointer;"><%= v["name"] %></label>
-            <input type="file" style="display:none;" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
+            <label><%= v["name"] %></label>
+            <input type="file" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
             <p><label><% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s][v["name"]] %><%= @html_content_datas[k.to_s][v["name"]].split("/")[-1] %><% end %></label></p>
           </div>
         <% end %>

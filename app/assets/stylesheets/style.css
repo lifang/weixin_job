@@ -37,7 +37,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 .main_box { background: #f68b0e; overflow: hidden; padding: 100px 0 0 100px;}
 .main_con { background: #f5f4f4; box-shadow: 0 0 15px rgba(0,0,0,0.5); padding: 30px; color: #2c2c2c; overflow: hidden;}
-.main_con2 { background: #e6e4e4; color: #2c2c2c; overflow: hidden;}
+.main_con2 { background: #e6e4e4; color: #2c2c2c; overflow: hidden; position: relative;}
 
 /* 招聘职位 */
 .companyInfo { padding-bottom: 10px; border-bottom: 1px solid #ddd;}
@@ -149,11 +149,15 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .annexItem a { display: block; margin: 20px; text-align: center;}
 
 .phoneVirtual { width: 400px; min-height: 500px; margin: 20px; background: #e3e3e3;}
-
+.profileTemp {
+    left: 600px;
+    position: absolute;
+    top: 100px;
+}
 .itemBox { padding: 10px; color: #6E6E6E; position: relative; margin-bottom: 5px; background: #ccc;}
 .itemBox:hover { box-shadow: 0 0 3px rgba(0,0,0,0.3) inset;}
 .itemBox .close {
-/*    background: #7f7e7e;*/
+    /*    background: #7f7e7e;*/
     color: #f2f2f2;
     display: block;
     font-size: 24px;
@@ -174,7 +178,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .itemBox span { font-size: 14px; line-height: 30px;}
 .itemBox input[type="radio"],.itemBox input[type="checkbox"] { width: 40px;}
 
-.imgItem { min-height: 150px; text-align: center;}
+.imgItem { min-height: 150px;}
 .imgItem a { display: block; margin-top: 70px; text-align: center;}
 
 /* 公司简介 */
