@@ -14,6 +14,7 @@
     <div class="phoneVirtual">
       <%= form_tag company_resume_path(@company, @resume_temp), :method => :put do %>
         <div id="form_div">
+          <%= @resume_temp.html_content %>
           <% @resume_temp.html_content.each do |k,v| %>
             <% if k.to_s.split("_")[0]=="message" %>
               <div class="infoItem itemBox message_div">

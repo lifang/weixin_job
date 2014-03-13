@@ -10,9 +10,9 @@ class ResumeTemplate < ActiveRecord::Base
   <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
-    <script src='/companies/js/jquery-1.8.3.js' type='text/javascript'></script>
-    <script src='/companies/js/main2.js' type='text/javascript'></script>
-    <link href='/companies/style/style2.css' rel='stylesheet' type='text/css' />
+    <script src='/assets/mobilephone/jquery-1.8.3.js' type='text/javascript'></script>
+    <script src='/assets/mobilephone/main2.js' type='text/javascript'></script>
+    <link href='/assets/style2.css' rel='stylesheet' type='text/css' />
     <title>微招聘-客户简历</title>
   </head>
   <body>
@@ -48,7 +48,7 @@ class ResumeTemplate < ActiveRecord::Base
         html_head << "</select></div>"
       elsif k.to_s.include?("text")
         html_head << "<div class='txtItem itemBox'>"
-        html_head << "<p>#{v[:text]}</p>"
+        html_head << "<p>#{v[:text].to_s}</p>"
         html_head << "<input type='hidden' name='[form_p][#{k.to_s}][#{:text}]' value='#{v[:text]}'/>"
         html_head << "</div>"
       elsif k.to_s.include?("headimage")

@@ -126,7 +126,7 @@ class CompanyProfilesController < ApplicationController
     tuwen = ""
     img_arr.each_with_index do |img , index|
       imge = (img=="#" ? "" : "<img src='#{img}' />")
-      txt = (text_arr[index].nil? ? "":"<p>#{text_arr[index]}</p>")
+      txt = (text_arr[index].nil? ? "":"<p>#{ encoding_character text_arr[index]}</p>")
       tuwen += "
       <div class='tuwenBox'>
 			<div class='tuwenImg'>
@@ -142,9 +142,9 @@ class CompanyProfilesController < ApplicationController
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'>
-<script src='/companies/js/jquery-1.8.3.js' type='text/javascript'></script>
-<script src='/companies/js/main2.js' type='text/javascript'></script>
-<link href='/companies/style/style2.css' rel='stylesheet' type='text/css' />
+<script src='/assets/mobilephone/jquery-1.8.3.js' type='text/javascript'></script>
+<script src='/assets/mobilephone/main2.js' type='text/javascript'></script>
+<link href='/assets/style2.css' rel='stylesheet' type='text/css' />
 <title>微招聘-#{@title_1}</title>
 <script>
 	$(function(){
@@ -159,4 +159,10 @@ class CompanyProfilesController < ApplicationController
 </html>
     "
   end
+
+  def encoding_character(str)
+    arr={"<"=>"&lt;",">"=>"&gt;"}
+    str.gsub(/<|>/){|s| arr[s]}
+  end
+
 end
