@@ -160,9 +160,6 @@ class CompanyProfilesController < ApplicationController
     "
   end
 
-  def encoding_character(str)
-    arr={"<"=>"&lt;",">"=>"&gt;"}
-    str.gsub(/<|>/){|s| arr[s]}
-  end
+  
 
 end
