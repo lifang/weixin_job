@@ -33,7 +33,7 @@ class WeixinsController < ApplicationController
           render :text => "ok"
         elsif params[:xml][:MsgType] == "event" && params[:xml][:Event] == "CLICK"  #自定义菜单点击事件
           message = get_link_by_event_key(params[:xml][:EventKey], open_id)  #resume_5
-          if link.present?
+          if message.present?
             xml = teplate_xml(message)
             render :xml => xml        #回复登记app的链接
           else
@@ -191,7 +191,7 @@ Text
     if company.service_account?
       avatar_url = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息
       if client
-        client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
+        client.update_attribute(:avatar_url, avatar_url) if avatar_url && avatar_url != client.avatar_url
       else
         company.clients.create(:types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url)
       end
@@ -205,7 +205,6 @@ Text
         gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
         gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_login_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
         avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id) #订阅号，获取头像
-        avatar_url = MW_URL + avatar_url
         if client
           client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
         else
@@ -220,9 +219,9 @@ Text
     menu_type, temp_id = event_key.split("_")
     link = ""
     if menu_type == "resume"
-      rt = ResumeTemplate.find_by_id(temp_id) if temp_id
+      rt = ResumeTemplate.find_by_company_id(@company.id)
       if rt
-        cr = ClientResume.where(:resume_template_id => rt.id, :open_id => open_id, :company_id => @company.id)
+        cr = ClientResume.where(:resume_template_id => rt.id, :open_id => open_id, :company_id => @company.id)[0]
         if cr
           message = "/client_resumes/#{cr.id}/edit"
         else
