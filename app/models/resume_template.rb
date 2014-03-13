@@ -47,8 +47,9 @@ class ResumeTemplate < ActiveRecord::Base
         end
         html_head << "</select></div>"
       elsif k.to_s.include?("text")
+        str = ResumeTemplate.encoding_character(v[:text])
         html_head << "<div class='txtItem itemBox'>"
-        html_head << "<p>#{v[:text].to_s}</p>"
+        html_head << "<p>#{str}</p>"
         html_head << "<input type='hidden' name='[form_p][#{k.to_s}][#{:text}]' value='#{v[:text]}'/>"
         html_head << "</div>"
       elsif k.to_s.include?("headimage")
@@ -77,15 +78,9 @@ class ResumeTemplate < ActiveRecord::Base
   end
 
   
-  #  def save_html comp_id, content
-  #    root_path = Rails.root.to_s + "/public/companies/#{comp_id}/resumes/"
-  #    FileUtils.mkdir_p(root_path) unless Dir.exists?(root_path)
-  #    file_name = "resume.html"
-  #    File.delete root_path + file_name if File.exists?( root_path + file_name)
-  #     File.open(root_path + file_name, "wb") do |f|
-  #      f.write(content.html_safe)
-  #    end
-  #    return root_path + file_name
-  #  end
+  def self.encoding_character(str)
+    arr={"<"=>"&lt;",">"=>"&gt;"}
+    str.gsub(/<|>/){|s| arr[s]}
+  end
 
 end
