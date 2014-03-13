@@ -88,8 +88,8 @@ class AppManagementsController < ApplicationController
       tmp_arr = []
       app_client.each do |k, v|
         new_key = get_actual_name(k, client_html_info)
-        new_hash +="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'" if new_key.present?
-        tmp_arr << new_hash
+        tmp_str ="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'" if new_key.present?
+        tmp_arr << tmp_str
       end if app_client.present?
       new_hash = tmp_arr.join(",")+"}"
     end
