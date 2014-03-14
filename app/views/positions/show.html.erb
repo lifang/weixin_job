@@ -31,6 +31,7 @@
         <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
           <input type="hidden" name="client_resume_id" value="<%=@client_resume.id if @client_resume%>"/>
           <input type="hidden" name="position_id" value="<%=@position.id%>"/>
+          <input type="hidden" name="open_id" value="<%=@open_id%>"/>
           <button >投递简历</button>
         </form>
       </div>

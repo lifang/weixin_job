@@ -53,31 +53,32 @@ class ExportsController < ApplicationController   #导出简历
     sheet1 = book.create_worksheet :name => "form_datas"
     sheet1.row(0).concat  init_zero_line objs[-1]
     count_row = 1
+   
     objs.each do |obj|
       sheet1.row(count_row)[0] = obj.position_name
       obj.html_content_datas.each_with_index do |a,i|
-        if a[1].class == Hash
+         p 1111,a[1].class
+        #if a[1].class == Hash
           if a[0]=="headimage"
             sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}","#{get_upload_file_path a[1].values[0]}"
           elsif a[0]=~ /file/i
-            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}", "#{get_upload_file_path a[1].values[0]}"
+            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}","#{get_upload_file_path a[1].values[0]}"
           else
             sheet1[count_row, i+1]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
           end
-        end
+       # end
       end
       count_row+=1
     end
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     (book.write file_path)
-    
+   
   end
  
   def init_zero_line(obj)
     arr =["所求职位"]
     obj.html_content_datas.each do |a|
-      if a[1].class == Hash
         if a[0]=="headimage"
           arr << "头像链接"
         elsif a[0]=~ /file/i
@@ -85,7 +86,6 @@ class ExportsController < ApplicationController   #导出简历
         else
           arr << a[1].keys[0]
         end
-      end
     end
     arr
   end

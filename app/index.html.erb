@@ -1,0 +1,53 @@
+<div class="main_con2">
+  <div>
+    <div class="toolbar">
+      <div class="toolBox">
+        <%=link_to  '创建职位', new_company_position_path(@company),class:"white_btn_for_a" %>
+        </div>
+        <div class="searchTool">
+          <div class="searchBox">
+            <input type="text" placeholder="搜索职位" />
+            <button class="search_btn" onclick="search_position(this,'<%=company_positions_url(@company)%>')"></button>
+          </div>
+        </div>
+      </div>
+      <%if @positions.blank? %>
+        <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+        </div>
+      <%else%>
+        <table class="table1">
+          <tr>
+            <th>职位名称</th>
+            <th>职位类型</th>
+            <th>职位描述</th>
+            <th>操作</th>
+          </tr>
+          <%@positions.each do |position|%>
+            <tr>
+              <td><%=position.name%></td>
+              <td><%= find_name_from  @position_types,position.position_type_id %></td>
+              <td><%= position.description %></td>
+              <td>
+                <%=link_to edit_company_position_path(@company,position.id) do%>
+                  <button class="edit" title="编辑"></button>
+                <%end%>
+                <%=link_to "",company_position_path(@company,position),method: :delete,confirm:'是否确认删除？',class:"delete" %>
+                  <%if position.status == 1%>
+                    <%=link_to release_company_position_path(@company,position) do%>
+                      <button class="publish" title="发布职位"></button>
+                    <%end%>
+                  <%elsif position.status == 2%>
+                    <button class="publish fabu" title="已经发布" ></button>
+                  <%end%>
+                  <%=link_to company_position_path(@company,position.id),tabget:"_blank" do%>
+                    <button class="show" title="预览"></button>
+                    <%end%>
+                  </td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+
+
