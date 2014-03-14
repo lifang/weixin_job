@@ -174,16 +174,12 @@ Text
   def save_file(remote_resource_url, file_extension, msg_id)
     tmp_file = open(remote_resource_url) #打开直接下载链接
     filename = msg_id + file_extension  #临时文件不能取到扩展名
-    weixin_resource = "/companies/%d/" % @company.id + "weixin_resource/"
-    wx_full_resource = Rails.root.to_s + "/public" + weixin_resource
-    p 11111111111111111111
-    p wx_full_resource
+    weixin_resource = "/public/companies/%d/" % @company.id + "weixin_resource/"
+    wx_full_resource = Rails.root.to_s + weixin_resource
     new_file_name = wx_full_resource + filename
-    p Dir.exists?(wx_full_resource)
     FileUtils.mkdir_p(wx_full_resource) unless Dir.exists?(wx_full_resource)
     File.open(new_file_name, "wb")  {|f| f.write tmp_file.read }
     if File.exist?(new_file_name)
-      p 2222222222222
       message_path = "/companies/%d/" % @company.id + "weixin_resource/" + filename #保存进数据库的路径
       get_client_message(message_path)
     end
@@ -201,7 +197,7 @@ Text
       avatar_url, friend_faker_id = get_avatar_hack(company)  #订阅号
     end
     if client
-      client.update_attributes(:avatar_url => avatar_url, :faker_id => friend_faker_id) if avatar_url != client.avatar_url
+      client.update_attributes(:avatar_url => avatar_url, :faker_id => friend_faker_id)
     else
       company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
     end
