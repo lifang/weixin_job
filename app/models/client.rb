@@ -16,7 +16,7 @@ class Client < ActiveRecord::Base
     if self.company.app_type == Company::APP_TYPE[:SUBSCRIPTION]  #订阅号
       avatar_url = ApplicationHelper::MW_URL + self.avatar_url.to_s
     else
-      avatar_url = self.avatar_url
+      avatar_url = (self.avatar_url && self.avatar_url.include?("http:")) ? self.avatar_url : ApplicationHelper::MW_URL + self.avatar_url.to_s
     end
     avatar_url
   end
