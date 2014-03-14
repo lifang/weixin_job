@@ -5,6 +5,9 @@ class ResumeTemplate < ActiveRecord::Base
   has_many :client_resumes
 
   def self.get_html resume
+
+    company = Company.find_by_id(resume.company_id)
+    
     html_head = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
     <html xmlns='http://www.w3.org/1999/xhtml'>
   <head>
@@ -13,7 +16,7 @@ class ResumeTemplate < ActiveRecord::Base
     <script src='/assets/mobilephone/jquery-1.8.3.js' type='text/javascript'></script>
     <script src='/assets/mobilephone/main2.js' type='text/javascript'></script>
     <link href='/assets/style2.css' rel='stylesheet' type='text/css' />
-    <title>微招聘-客户简历</title>
+    <title>#{company.name}-客户简历</title>
   </head>
   <body>
     <div class='form_list'>

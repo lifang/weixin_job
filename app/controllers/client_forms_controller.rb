@@ -2,7 +2,6 @@
 class ClientFormsController < ApplicationController
   layout:'client_form'
   def get_form_date
-    p 12312312312312
     form = params[:form]
     form_hash ="{"
     form.each do |f|

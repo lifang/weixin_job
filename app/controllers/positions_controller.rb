@@ -98,6 +98,7 @@ class PositionsController < ApplicationController   #招聘职位
             position_id:params[:position_id],
             client_resume_id:params[:client_resume_id])
           @message = "投递成功！"
+          send_noti_to_ios @company.id
         else
           @message = "您已经成功投递简历!"
         end
