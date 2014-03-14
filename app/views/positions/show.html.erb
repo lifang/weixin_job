@@ -8,34 +8,63 @@
     <link href="/assets/style2.css" rel="stylesheet" type="text/css" />
     <title>微招聘-职位</title>
     <script>
-      $(function(){
+      
+      function getQueryString(name)
+      {
+        // 如果链接没有参数，或者链接中不存在我们要获取的参数，直接返回空
+        if(location.href.indexOf("?")==-1 || location.href.indexOf(name+'=')==-1)
+        {
+          return '';
+        }
 
-      })
+        // 获取链接中参数部分
+        var queryString = location.href.substring(location.href.indexOf("?")+1);
+
+        // 分离参数对 ?key=value&key2=value2
+        var parameters = queryString.split("&");
+
+        var pos, paraName, paraValue;
+        for(var i=0; i<parameters.length; i++)
+        {
+          // 获取等号位置
+          pos = parameters[i].indexOf('=');
+          if(pos == -1) { continue; }
+
+          // 获取name 和 value
+          paraName = parameters[i].substring(0, pos);
+          paraValue = parameters[i].substring(pos + 1);
+
+          // 如果查询的name等于当前name，就返回当前值，同时，将链接中的+号还原成空格
+          if(paraName == name)
+          {
+            return unescape(paraValue.replace(/\+/g, " "));
+          }
+        }
+        return '';
+      };
     </script>
 
   </head>
 
   <body>
-
     <div class="form_list">
-      <div class="itemBox">
-        <label>职位名称</label>
-        <p><%=@position.name%></p>
+      <div class="jobInfo">
+        <h1><%=@position.name%></h1>
+        <div class="itemBox"><p><%=@position.description%></p></div>
       </div>
-      <div class="itemBox">
-        <label>职位描述</label>
-        <p><%=@position.description%></p>
-      </div>
-
       <div class="form_btn">
         <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
           <input type="hidden" name="client_resume_id" value="<%=@client_resume.id if @client_resume%>"/>
           <input type="hidden" name="position_id" value="<%=@position.id%>"/>
+          <input type="hidden" name="from" id="from" value=""/>
           <input type="hidden" name="open_id" value="<%=@open_id%>"/>
           <button >投递简历</button>
         </form>
       </div>
     </div>
-
+    <script>
+      var from = getQueryString("from")
+      $("#from").val(from);
+    </script>
   </body>
 </html>
