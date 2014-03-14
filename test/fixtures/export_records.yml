@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  begin_time: 2014-03-14 13:39:53
+  end_time: 2014-03-14 13:39:53
+  company_id: 1
+
+two:
+  begin_time: 2014-03-14 13:39:53
+  end_time: 2014-03-14 13:39:53
+  company_id: 1

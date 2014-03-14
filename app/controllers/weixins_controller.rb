@@ -174,7 +174,7 @@ Text
   def save_file(remote_resource_url, file_extension, msg_id)
     tmp_file = open(remote_resource_url) #打开直接下载链接
     filename = msg_id + file_extension  #临时文件不能取到扩展名
-    weixin_resource = "/companies/%d/" % @company.id + "weixin_resource/"
+    weixin_resource = "/public/companies/%d/" % @company.id + "weixin_resource/"
     wx_full_resource = Rails.root.to_s + weixin_resource
     new_file_name = wx_full_resource + filename
     FileUtils.mkdir_p(wx_full_resource) unless Dir.exists?(wx_full_resource)
@@ -197,7 +197,7 @@ Text
       avatar_url, friend_faker_id = get_avatar_hack(company)  #订阅号
     end
     if client
-      client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
+      client.update_attributes(:avatar_url => avatar_url, :faker_id => friend_faker_id)
     else
       company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
     end

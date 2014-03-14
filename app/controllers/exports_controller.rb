@@ -4,9 +4,11 @@ class ExportsController < ApplicationController   #导出简历
   before_filter  :get_company,:get_title
   require 'rubygems'
   require 'zip'
+  PerPage = 8
   def index
-    
+    @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ?",@company.id])
   end
+  
   def down_zip_file
     directory = get_company_dir_path @company.id.to_s+"/excel/"
     FileUtils.mkdir_p directory unless Dir.exists?(directory)
@@ -22,6 +24,7 @@ class ExportsController < ApplicationController   #导出简历
     end
     send_file zipfile_name
   end
+  
   def create_xsl_table
     start_time = params[:start_time]
     end_time = params[:end_time]
@@ -40,10 +43,12 @@ class ExportsController < ApplicationController   #导出简历
       p.name position_name")
     
     if @client_infs.length>0
+      ExportRecord.create(begin_time:start_time,end_time:end_time,company_id:@company.id)
       xls_content_for @client_infs
-      render text:1
+      @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ?",@company.id])
+      @text = 1
     else
-      render text:2
+      @text = 2
     end
   end
 
@@ -73,7 +78,6 @@ class ExportsController < ApplicationController   #导出简历
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     (book.write file_path)
-   
   end
  
   def init_zero_line(obj)

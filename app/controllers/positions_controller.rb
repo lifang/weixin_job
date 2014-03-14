@@ -86,7 +86,7 @@ class PositionsController < ApplicationController   #招聘职位
     
   end
   def send_resume
-    if params.length == 3
+    if params[:from].blank?
       delivery_resume_record = DeliveryResumeRecord.find_by_company_id_and_position_id_and_client_resume_id(@company.id,
         params[:position_id],
         params[:client_resume_id])
@@ -103,7 +103,7 @@ class PositionsController < ApplicationController   #招聘职位
         end
       end
       render 'success',layout:false
-    else
+    else  
       @recomender_id = params[:open_id]
       @position_id =  params[:position_id]
       redirect_to "/client_resumes/create_friend_resume?company_id=#{@company.id}&recomender_id=#{@recomender_id}&position_id=#{@position_id}"
