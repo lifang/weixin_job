@@ -128,7 +128,7 @@ module ApplicationHelper
     return hash2
   end
 
-  def send_noti_to_ios company_id
+  def send_noti_to_ios company_id   #新用户填写简历后推送到ios终端上
     client = Client.find_by_company_id_and_types(company_id, Client::TYPES[:ADMIN])
     token = client.token if client
     if token
