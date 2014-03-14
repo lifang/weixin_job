@@ -16,7 +16,7 @@ class ResumeTemplate < ActiveRecord::Base
     <script src='/assets/mobilephone/jquery-1.8.3.js' type='text/javascript'></script>
     <script src='/assets/mobilephone/main2.js' type='text/javascript'></script>
     <link href='/assets/style2.css' rel='stylesheet' type='text/css' />
-    <title>#{company.name}-客户简历</title>
+    <title>#{company.name}-我的简历</title>
   </head>
   <body>
     <div class='form_list'>

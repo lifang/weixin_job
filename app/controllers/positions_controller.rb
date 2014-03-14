@@ -86,7 +86,7 @@ class PositionsController < ApplicationController   #招聘职位
     
   end
   def send_resume
-    if params[:from].blank?
+    if params[:from] != "singlemessage" && params[:from] != "timeline"
       delivery_resume_record = DeliveryResumeRecord.find_by_company_id_and_position_id_and_client_resume_id(@company.id,
         params[:position_id],
         params[:client_resume_id])
