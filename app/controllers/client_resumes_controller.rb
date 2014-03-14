@@ -63,7 +63,6 @@ class ClientResumesController < ApplicationController
           if status == 1
             if cr.update_attribute("html_content_datas", hash)
               @err_msg = "简历填写成功!"
-              send_noti_to_ios(company_id)
             else
               @err_msg = "简历填写失败!"
             end
@@ -107,7 +106,6 @@ class ClientResumesController < ApplicationController
               :open_id => secret_id, :company_id => company_id)
             if cr.save
               @err_msg = "简历填写成功!"
-              send_noti_to_ios(company_id)
             else
               status = 0
               @err_msg = "简历填写失败!"
@@ -121,6 +119,7 @@ class ClientResumesController < ApplicationController
   end
 
   def edit
+    @company = Company.find_by_id(params[:company_id])
     @company_id = params[:company_id].nil? ? nil : params[:company_id].to_i
     @open_id = params[:secret_key]
     @cr = ClientResume.find_by_open_id_and_company_id(@open_id, @company_id)
