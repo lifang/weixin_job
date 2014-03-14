@@ -286,6 +286,7 @@ class ClientResumesController < ApplicationController
           :recomender_id => recomender_id)
         if drr.save
           @err_msg = "投递成功!"
+          send_noti_to_ios(company_id)
         else
           status = 0
           @err_msg = "投递失败!"
