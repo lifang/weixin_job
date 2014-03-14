@@ -106,8 +106,7 @@ class PositionsController < ApplicationController   #招聘职位
     else
       @recomender_id = params[:open_id]
       @position_id =  params[:position_id]
-
-      render 'success',layout:false
+      redirect_to "/client_resumes/create_friend_resume?company_id=#{@company.id}&recomender_id=#{@recomender_id}&position_id=#{@position_id}"
     end
   end
   

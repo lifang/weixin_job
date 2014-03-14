@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>微招聘-编辑简历</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="/assets/mobilephone/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="/assets/mobilephone/main2.js" type="text/javascript"></script>
+    <link href="/assets/style2.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <%= form_tag "/client_resumes/create_friend_resume_commit", :method => :post, :multipart => true do %>
+      <div class="form_list" id="edit_resume_div">
+        <input type="hidden" name="company_id" value="<%= @company_id %>"/>
+        <input type="hidden" name="recomender_id" value="<%= @recomender_id %>"/>
+        <input type="hidden" name="position_id" value="<%= @position_id %>"/>
+        <input type="hidden" name="resume_id" value="<%= @resume_temp.id %>"/>
+        <% @resume_temp.html_content.each do |k, v| %>
+          <% if k.to_s == "headimage" %>
+            <div class="imgItem itemBox">
+              <label><%= v["name"] %></label>
+              <input type="file" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>              
+            </div>
+          <% elsif  k.to_s.include?("message") %>
+            <div class="infoItem itemBox">
+              <div>
+                <label><%= v["name"] %></label>
+                <input type="text" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" />
+              </div>
+            </div>
+          <% elsif k.to_s.include?("select") %>
+            <div class="selectItem itemBox">
+              <label><%= v["name"] %></label>
+              <select name="[form_p][<%= k.to_s %>][<%= v["name"] %>]">
+                <% v["options"].each do |o| %>
+                  <option value="<%= o %>"><%= o %></option>
+                <% end if v["options"] %>
+              </select>
+            </div>
+          <% elsif  k.to_s.include?("radio") %>
+            <div class="radioItem itemBox">
+              <div><span><%= v["name"] %></span></div>
+              <% v["options"].each do |o| %>
+                <div><input type="radio" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" value="<%= o %>"/><span><%= o %></span></div>
+              <% end if v["options"] %>
+            </div>
+          <% elsif k.to_s.include?("checkbox") %>
+            <div class="checkItem itemBox">
+              <div><span><%= v["name"] %></span></div>
+              <% v["options"].each do |o| %>
+                <div><input type="checkbox" name="[form_p][<%= k.to_s %>][<%= v["name"] %>][]" value="<%= o %>"/><span><%= o %></span></div>
+              <% end if v["options"] %>
+            </div>
+          <% elsif k.to_s.include?("text") %>
+            <div class="txtItem itemBox">
+              <p><%= encoding_character(v["text"]) %></p>
+              <input type="hidden" name="[form_p][<%= k.to_s %>][text]" value="<%= v["text"] %>"/>
+            </div>
+          <% elsif k.to_s.include?("file") %>
+            <div class="imgItem itemBox">
+              <label><%= v["name"] %></label>
+              <input type="file" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
+            </div>
+          <% end %>
+
+        <% end if @resume_temp %>
+
+        <div class="form_btn">
+          <button type="button" onclick="client_resume_valid(this)">提交</button>
+        </div>
+
+      </div>
+    <% end %>
+  </body>
+</html>
