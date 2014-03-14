@@ -18,14 +18,10 @@ function create_xsl_table(obj,company_id){
         $.ajax({
             type:'get',
             url:"/companies/"+company_id+"/exports/create_xsl_table.xls",
-            dateType: 'text',
+            dateType: 'script',
             data:"start_time="+date_time+"&end_time="+date_time1,
             success: function(data) {
-                if(data=="1"){
-                    tishi_alert("导出成功！请下载");
-                }else{
-                    tishi_alert("暂无数据！");
-                }
+                 
 
             }
         });

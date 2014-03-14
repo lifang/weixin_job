@@ -1,0 +1,6 @@
+<%if @text== 1%>
+  tishi_alert("导出成功！请下载");
+  $("#export_record").html("<%=j(render 'export_record')%>");
+<%elsif @text == 2%>
+  tishi_alert("暂无数据！");
+<%end%>

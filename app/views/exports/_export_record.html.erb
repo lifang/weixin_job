@@ -1,0 +1,23 @@
+<%if @exports.blank? %>
+  <div style="text-align:center; font-size: 14px;margin-top: 50px;">
+    暂无数据
+  </div>
+<%else%>
+  <table class="table1">
+    <tr>
+      <th>导出时间</th>
+      <th>起始时间</th>
+      <th>结束时间</th>
+    </tr>
+    <%@exports.each do |export|%>
+      <tr>
+        <td><%= export.created_at%></td>
+        <td><%= export.begin_time %></td>
+        <td><%= export.end_time %></td>
+      </tr>
+    <%end%>
+  </table>
+<%end%>
+<div style="padding-left:300px;padding-top:30px;  ">
+<%=will_paginate @export,:previous_label=>'上一页',:next_label=>'下一页'%>
+</div>
