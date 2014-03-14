@@ -96,9 +96,9 @@
       <span class="close" title="关闭">×</span>
       <h1>APP信息修改</h1>
       <div id="edit_app_div">
-        <% if @company.app_type==0 && @company.has_app %>
+        <% if @company.has_app %>
         <p id="edit_app_notice_p" class="setting_notice">
-          您当前的微信公众账号为订阅号,请在下面输入正确的微信公众平台登陆账号和密码!
+          如果您当前的微信公众账号为订阅号或者是未认证的服务号,请一定在下面输入正确的微信公众平台登陆账号和密码!
         </p>
         <% end %>
         <p>
