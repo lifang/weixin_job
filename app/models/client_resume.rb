@@ -32,9 +32,9 @@ class ClientResume < ActiveRecord::Base
             msg = "附件上传失败,文件最大不能超过2MB"
             break
           end
-          if status == 0
-            break
-          end
+        end
+        if status == 0
+          break
         end
       end
 
