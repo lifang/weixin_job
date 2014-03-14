@@ -26,11 +26,11 @@ class ExportsController < ApplicationController   #导出简历
   end
   
   def create_xsl_table
-    start_time = params[:start_time]
-    end_time = params[:end_time]
+    start_time = DateTime.strptime((params[:start_time]), "%Y-%m-%d")
+    end_time = DateTime.strptime((params[:end_time]), "%Y-%m-%d")
     #@client_infos = (Company.get_client_infos_by @company.id.to_s,start_time,end_time) || []
     @client_infs = ClientResume.
-      where(["d.company_id = ? and client_resumes.created_at>=? and client_resumes.created_at <= ?",@company.id,start_time,end_time]).
+      where(["d.company_id = ? and date(d.created_at)>=? and date(d.created_at) <= ?",@company.id,start_time,end_time]).
       joins("left join delivery_resume_records d on client_resumes.id=d.client_resume_id").
       joins("left join positions p on d.position_id = p.id").
       select("client_resumes.id,

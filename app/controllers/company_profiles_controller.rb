@@ -145,7 +145,7 @@ class CompanyProfilesController < ApplicationController
 <script src='/assets/mobilephone/jquery-1.8.3.js' type='text/javascript'></script>
 <script src='/assets/mobilephone/main2.js' type='text/javascript'></script>
 <link href='/assets/style2.css' rel='stylesheet' type='text/css' />
-<title>微招聘-#{@title_1}</title>
+<title>#{@company.name}-#{@title_1}</title>
 <script>
 	$(function(){
 	})
