@@ -4,7 +4,7 @@ class ClientResumesController < ApplicationController
   layout :false
   def create
     ClientResume.transaction do
-      ic = Iconv.new("GBK", "utf-8")    #GBK转码utf-8
+      #ic = Iconv.new("GBK", "utf-8")    #GBK转码utf-8
       tags = params[:form_p]
       hash = tags
 #      tags.each do |k, v|   #message_1"=>{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
@@ -37,6 +37,7 @@ class ClientResumesController < ApplicationController
                   break
                 end
               end
+
               if status == 0
                 break
               end
@@ -50,6 +51,7 @@ class ClientResumesController < ApplicationController
                   break
                 end
               end
+
               if status == 0
                 break
               end
