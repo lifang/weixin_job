@@ -91,7 +91,7 @@ class AppManagementsController < ApplicationController
         tmp_str ="'#{new_key}'=>'#{v.is_a?(Array) ? v.join("、") : v}'" if new_key.present?
         tmp_arr << tmp_str
       end if app_client.present?
-      new_hash = tmp_arr.join(",")+"}"
+      new_hash += tmp_arr.join(",")+"}"
     end
     #    new_hash = {}
     #    app_client.each do |k, v|
