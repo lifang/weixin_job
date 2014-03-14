@@ -219,6 +219,7 @@ class ClientResumesController < ApplicationController
   end
   
   def create_friend_resume
+    @company = Company.find_by_id(params[:company_id])
     @company_id = params[:company_id].nil? ? nil : params[:company_id].to_i
     @recomender_id = params[:recomender_id]
     @position_id = params[:position_id]
@@ -237,6 +238,7 @@ class ClientResumesController < ApplicationController
   end
 
   def create_friend_resume_commit
+   
     company_id = params[:company_id].to_i
     recomender_id = params[:recomender_id]
     position_id = params[:position_id]
