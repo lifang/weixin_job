@@ -52,21 +52,6 @@ class ApplicationController < ActionController::Base
     tmp_encrypted_str
   end
 
-
-  def save_into_file(content, page, old_file_name)
-    site_root = page.site.root_path if page.site
-    site_path = Rails.root.to_s + SITE_PATH % site_root
-    FileUtils.mkdir_p(site_path) unless Dir.exists?(site_path)
-    if old_file_name.present? && old_file_name != page.file_name
-      File.delete site_path + old_file_name if File.exists?(site_path + old_file_name)
-    end
-    File.open(site_path + page.file_name, "wb") do |f|
-      f.write(content.html_safe)
-    end
-    page.path_name = "/" + site_root + "/" + page.file_name
-    page.save
-  end
-
   #根据app_id 和app_secret获取帐号token
   def get_access_token(company)
     app_id = company.app_id
@@ -214,7 +199,8 @@ class ApplicationController < ActionController::Base
     gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
     wx_token = gzh_client.wx_login_token
     wx_cookie = gzh_client.wx_cookie
-    send_message_request(company,content, gzh_client, to_faker_id, wx_token,wx_cookie)
+    msg = send_message_request(company,content, gzh_client, to_faker_id, wx_token,wx_cookie)
+    msg
   end
 
   #取数据库里面的
