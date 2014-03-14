@@ -19,7 +19,7 @@ class Api::MessagesController < ApplicationController
         mess = {:id => message.id, :from_user => message.from_user, :to_user => message.to_user, :types => message.types,
           :content => message.content, :status => message.status ? 0 : 1,
           :date => message.created_at.nil? ? nil : message.created_at.strftime("%Y-%m-%d %H:%M"),
-          :message_type => message.message_type, :message_path => message.message_path }
+          :message_type => message.message_type, :message_path => MW_URL + message.message_path.to_s }
         if types == Message::TYPES[:remind] #如果是提醒，则要将has_new_record设为1
           person = Client.find_by_id(to_user)
           person.update_attribute("has_new_record", true) if person
@@ -90,7 +90,7 @@ class Api::MessagesController < ApplicationController
               :to_user => previous_mess.to_user, :types => previous_mess.types, :content => previous_mess.content,
               :status => previous_mess.status ? 0 : 1, :created_at => previous_mess.created_at,
               :updated_at => previous_mess.updated_at, :msg_id => previous_mess.msg_id, :message_type => previous_mess.message_type,
-              :message_path => previous_mess.message_path
+              :message_path => MW_URL + previous_mess.message_path.to_s
             }
           end
 
@@ -139,7 +139,6 @@ class Api::MessagesController < ApplicationController
             if response
               if response["errcode"] == 0
                 msg = "发送成功"
-                #msg_type_value = Message::MSG_TYPE[params[:xml][:MsgType].to_sym]
                 mess = Message.create!(:company_id => company_id, :from_user => current_client.id ,:to_user => receive_client.id ,
                   :types => Message::TYPES[:weixin], :content => content,
                   :status => Message::STATUS[:READ], :msg_id => nil,
@@ -147,7 +146,7 @@ class Api::MessagesController < ApplicationController
                 message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
                   :content => mess.content, :status => mess.status ? 0 : 1,
                   :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
-                  :message_path => mess.message_path}
+                  :message_path => MW_URL + mess.message_path.to_s}
                 unless mess
                   status = 0
                   msg += "保存失败"
@@ -156,8 +155,13 @@ class Api::MessagesController < ApplicationController
                 status = 0
                 msg = "此用户超过48小时未与您互动，发送消息失败"
               else
-                status = 0
-                msg = "未知错误"
+                #没有发送短信的权限
+                message = send_message_hack(company, content, receive_client_id, current_client, receive_client, msg_type_value)
+                if message
+                  msg = "发送成功"
+                else
+                  msg = "发送失败"
+                end
               end
             else
               status = 0
@@ -168,16 +172,12 @@ class Api::MessagesController < ApplicationController
             msg = "此公众号没有权限主动发送信息，请先认证！"
           end
         else   #公众号是订阅号
-
-          send_single_message(company, content, receive_client_id )
-          mess = Message.create!(:company_id => company_id, :from_user => current_client.id ,:to_user => receive_client.id ,
-            :types => Message::TYPES[:weixin], :content => content,
-            :status => Message::STATUS[:READ], :msg_id => nil,
-            :message_type => msg_type_value)
-          message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
-            :content => mess.content, :status => mess.status ? 0 : 1,
-            :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
-            :message_path => mess.message_path}
+          message = send_message_hack(company, content, receive_client_id, current_client, receive_client, msg_type_value)
+          if message
+            msg = "发送成功"
+          else
+            msg = "发送失败"
+          end
         end
       else
         status = 0
@@ -192,4 +192,19 @@ class Api::MessagesController < ApplicationController
     render :json => {:status => status, :message => msg, :return_object => {:message => status == 0 ? nil : message}}
   end
 
+  #订阅号或者未认证的服务号  发送信息hack
+  def send_message_hack(company, content, receive_client_id, current_client, receive_client, msg_type_value)
+    msg = send_single_message(company, content, receive_client_id)
+    if msg == "success"
+      mess = Message.create!(:company_id => company.id, :from_user => current_client.id ,:to_user => receive_client.id ,
+        :types => Message::TYPES[:weixin], :content => content,
+        :status => Message::STATUS[:READ], :msg_id => nil,
+        :message_type => msg_type_value)
+      message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
+        :content => mess.content, :status => mess.status ? 0 : 1,
+        :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
+        :message_path => MW_URL + mess.message_path.to_s}
+    end
+    message
+  end
 end

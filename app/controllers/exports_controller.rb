@@ -4,9 +4,11 @@ class ExportsController < ApplicationController   #导出简历
   before_filter  :get_company,:get_title
   require 'rubygems'
   require 'zip'
+  PerPage = 8
   def index
-    
+    @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ?",@company.id])
   end
+  
   def down_zip_file
     directory = get_company_dir_path @company.id.to_s+"/excel/"
     FileUtils.mkdir_p directory unless Dir.exists?(directory)
@@ -22,12 +24,13 @@ class ExportsController < ApplicationController   #导出简历
     end
     send_file zipfile_name
   end
+  
   def create_xsl_table
-    start_time = params[:start_time]
-    end_time = params[:end_time]
+    start_time = DateTime.strptime((params[:start_time]), "%Y-%m-%d")
+    end_time = DateTime.strptime((params[:end_time]), "%Y-%m-%d")
     #@client_infos = (Company.get_client_infos_by @company.id.to_s,start_time,end_time) || []
     @client_infs = ClientResume.
-      where(["d.company_id = ? and client_resumes.created_at>=? and client_resumes.created_at <= ?",@company.id,start_time,end_time]).
+      where(["d.company_id = ? and date(d.created_at)>=? and date(d.created_at) <= ?",@company.id,start_time,end_time]).
       joins("left join delivery_resume_records d on client_resumes.id=d.client_resume_id").
       joins("left join positions p on d.position_id = p.id").
       select("client_resumes.id,
@@ -40,10 +43,12 @@ class ExportsController < ApplicationController   #导出简历
       p.name position_name")
     
     if @client_infs.length>0
+      ExportRecord.create(begin_time:start_time,end_time:end_time,company_id:@company.id)
       xls_content_for @client_infs
-      render text:1
+      @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ?",@company.id])
+      @text = 1
     else
-      render text:2
+      @text = 2
     end
   end
 
@@ -53,31 +58,31 @@ class ExportsController < ApplicationController   #导出简历
     sheet1 = book.create_worksheet :name => "form_datas"
     sheet1.row(0).concat  init_zero_line objs[-1]
     count_row = 1
+   
     objs.each do |obj|
       sheet1.row(count_row)[0] = obj.position_name
       obj.html_content_datas.each_with_index do |a,i|
-        if a[1].class == Hash
+         p 1111,a[1].class
+        #if a[1].class == Hash
           if a[0]=="headimage"
             sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}","#{get_upload_file_path a[1].values[0]}"
           elsif a[0]=~ /file/i
-            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}", "#{get_upload_file_path a[1].values[0]}"
+            sheet1.row(count_row)[i+1] = Spreadsheet::Link.new "#{get_upload_file_path a[1].values[0]}","#{get_upload_file_path a[1].values[0]}"
           else
             sheet1[count_row, i+1]= (a[1].values[0].is_a?(Array) ? a[1].values[0].join(",") : a[1].values[0]) if a[1].values[0]
           end
-        end
+       # end
       end
       count_row+=1
     end
     file_path = (get_company_dir_path @company.id.to_s)+"/excel/export.xls"
     FileUtils.rm file_path if File.exists?(file_path)
     (book.write file_path)
-    
   end
  
   def init_zero_line(obj)
     arr =["所求职位"]
     obj.html_content_datas.each do |a|
-      if a[1].class == Hash
         if a[0]=="headimage"
           arr << "头像链接"
         elsif a[0]=~ /file/i
@@ -85,7 +90,6 @@ class ExportsController < ApplicationController   #导出简历
         else
           arr << a[1].keys[0]
         end
-      end
     end
     arr
   end

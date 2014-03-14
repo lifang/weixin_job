@@ -2,10 +2,10 @@ function edit_has_app(obj, app_type){
     if($(obj).val()==1){    //有app
         $("#company_app_account").removeAttr("disabled");
         $("#company_app_password").removeAttr("disabled");
-        if(app_type==0){
-            $("#edit_app_notice_p").remove();
-            $("#edit_app_div").prepend("<p id='edit_app_notice_p' class='setting_notice'>您当前的微信公众账号为订阅号,请在下面输入正确的微信公众平台登陆账号和密码!</p>");
-        }
+        //if(app_type==0){
+          $("#edit_app_notice_p").remove();
+          $("#edit_app_div").prepend("<p id='edit_app_notice_p' class='setting_notice'>如果您当前的微信公众账号为订阅号或者是未认证的服务号,请一定在下面输入正确的微信公众平台登陆账号和密码！</p>");
+       // }
     }else{  //无app
         $("#edit_app_notice_p").remove();
         $("#company_app_account").attr("disabled", "disabled");

@@ -174,7 +174,7 @@ Text
   def save_file(remote_resource_url, file_extension, msg_id)
     tmp_file = open(remote_resource_url) #打开直接下载链接
     filename = msg_id + file_extension  #临时文件不能取到扩展名
-    weixin_resource = "/companies/%d/" % @company.root_path + "weixin_resource/"
+    weixin_resource = "/public/companies/%d/" % @company.id + "weixin_resource/"
     wx_full_resource = Rails.root.to_s + weixin_resource
     new_file_name = wx_full_resource + filename
     FileUtils.mkdir_p(wx_full_resource) unless Dir.exists?(wx_full_resource)
@@ -188,30 +188,34 @@ Text
   #保存关注者信息
   def save_client_info(open_id, company)
     client = Client.find_by_open_id_and_company_id(open_id, company.id) #先查找是否存在当前关注者的信息
-    if company.service_account?
-      avatar_url = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息
-      if client
-        client.update_attribute(:avatar_url, avatar_url) if avatar_url && avatar_url != client.avatar_url
-      else
-        company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url)
+    if company.service_account?  #分认证与未认证
+      avatar_url = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息  #认证
+      unless avatar_url
+        avatar_url, friend_faker_id = get_avatar_hack(company)  #未认证
       end
     else
-      login_info = login_to_weixin(company)
-      if login_info.present?
-        wx_token, wx_cookie = login_info
-        user_faker_id = get_self_fakeid(wx_cookie, wx_token) #获取自身faker_id
-        friend_faker_id = get_new_friend_fakeid(wx_cookie, wx_token) #获取最新好友的faker_id
-
-        gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
-        gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_login_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
-        avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id) #订阅号，获取头像
-        if client
-          client.update_attribute(:avatar_url, avatar_url) if avatar_url != client.avatar_url
-        else
-          company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
-        end
-      end
+      avatar_url, friend_faker_id = get_avatar_hack(company)  #订阅号
     end
+    if client
+      client.update_attributes(:avatar_url => avatar_url, :faker_id => friend_faker_id)
+    else
+      company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+    end
+  end
+
+  #订阅号或者未认证的服务号  获取头像hack
+  def get_avatar_hack(company)
+    login_info = login_to_weixin(company)
+    if login_info.present?
+      wx_token, wx_cookie = login_info
+      user_faker_id = get_self_fakeid(wx_cookie, wx_token) #获取自身faker_id
+      friend_faker_id = get_new_friend_fakeid(wx_cookie, wx_token) #获取最新好友的faker_id
+
+      gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
+      gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_login_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
+      avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id) #订阅号，获取头像
+    end
+    return [avatar_url, friend_faker_id]
   end
 
   #自定义菜单，点击事件，返回对应链接

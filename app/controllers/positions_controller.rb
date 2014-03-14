@@ -51,13 +51,13 @@ class PositionsController < ApplicationController   #招聘职位
   end
   
   def update
+
     id = params[:positions][:id]
     name = params[:positions][:name].strip
     description = params[:positions][:description]
     types = params[:positions][:types]
     @position = Position.find_by_id(id)
     positions = Position.where(["name=? and company_id = ? and name !=?",name,@company.id,@position.name])
-    p 1111111111111,positions
     if positions.length<1 
       if @position&& @position.update_attributes(name:name,description:description,position_type_id:types)
         flash[:success] = "更新成功！"
@@ -67,14 +67,14 @@ class PositionsController < ApplicationController   #招聘职位
         render 'new'
       end
     else
-        flash[:error] = "更新失败！不能跟其他职位名称相同！"
-        render 'new'
+      flash[:error] = "更新失败！不能跟其他职位名称相同！"
+      render 'new'
     end
 
   end
 
   def show
-    
+    @open_id = params[:secret_key]
     @position_types = @company.position_types || []
     @position = Position.find_by_id(params[:id])
     @client_resume = ClientResume.find_by_open_id_and_company_id(params[:secret_key],@company.id)
@@ -86,16 +86,28 @@ class PositionsController < ApplicationController   #招聘职位
     
   end
   def send_resume
-    if params[:client_resume_id].blank?
-      @message = "投递失败</br>请先登记简历!"
-    else
-      @delivery_resume_record = DeliveryResumeRecord.create(company_id:@company.id,
-        position_id:params[:position_id],
-        client_resume_id:params[:client_resume_id])
-      @message = "投递成功！"
+    if params[:from].blank?
+      delivery_resume_record = DeliveryResumeRecord.find_by_company_id_and_position_id_and_client_resume_id(@company.id,
+        params[:position_id],
+        params[:client_resume_id])
+      if params[:client_resume_id].blank?
+        @message = "投递失败</br>请先登记简历!"
+      else
+        if delivery_resume_record.nil?
+          @delivery_resume_record = DeliveryResumeRecord.create(company_id:@company.id,
+            position_id:params[:position_id],
+            client_resume_id:params[:client_resume_id])
+          @message = "投递成功！"
+        else
+          @message = "您已经成功投递简历!"
+        end
+      end
+      render 'success',layout:false
+    else  
+      @recomender_id = params[:open_id]
+      @position_id =  params[:position_id]
+      redirect_to "/client_resumes/create_friend_resume?company_id=#{@company.id}&recomender_id=#{@recomender_id}&position_id=#{@position_id}"
     end
-   
-    render 'success',layout:false
   end
   
   def search_position

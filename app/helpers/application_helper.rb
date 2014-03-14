@@ -127,4 +127,19 @@ module ApplicationHelper
     end
     return hash2
   end
+
+  def send_noti_to_ios company_id   #新用户填写简历后推送到ios终端上
+    client = Client.find_by_company_id_and_types(company_id, Client::TYPES[:ADMIN])
+    token = client.token if client
+    if token
+      content = "有新用户投递简历!"
+      badge = Client.where(["company_id=? and types=? and has_new_message=?", company_id, Client::TYPES[:CONCERNED],
+          Client::HAS_NEW_MESSAGE[:YES]]).length
+      badge = badge + 1
+      APNS.host = 'gateway.sandbox.push.apple.com'
+      APNS.pem  = File.join(Rails.root, 'config', 'CMR_Development.pem')
+      APNS.port = 2195
+      APNS.send_notification(token,:alert => content, :badge => badge, :sound => client.id)
+    end
+  end
 end

@@ -68,7 +68,12 @@ match "/weixins/accept_token" => "weixins#accept_token"
     resources :records
 
   end
-  resources :client_resumes
+  resources :client_resumes do
+    collection do
+      get :create_friend_resume
+      post :create_friend_resume_commit
+    end
+  end
 
   resources :weixins
 
