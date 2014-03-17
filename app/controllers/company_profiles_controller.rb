@@ -133,7 +133,7 @@ class CompanyProfilesController < ApplicationController
     tuwen = ""
     img_arr.each_with_index do |img , index|
       imge = (img=="#" ? "" : "<img src='#{img}' />")
-      txt = (text_arr[index].nil? ? "":"<p>#{ encoding_character (raw text_arr[index])}</p>")
+      txt = (text_arr[index].nil? ? "":"<p>#{  (text_arr[index].html_safe)}</p>")
       tuwen += "
       <div class='tuwenBox'>
 			<div class='tuwenImg'>
