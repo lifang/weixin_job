@@ -79,7 +79,8 @@ class PositionsController < ApplicationController   #招聘职位
     @position = Position.find_by_id(params[:id])
     @client_resume = ClientResume.find_by_open_id_and_company_id(params[:secret_key],@company.id)
     if @position.blank?
-      render 'public/404'
+      @title = "职位不存在，或者已经被删除"
+      render 'public/404', :layout => false
     else
       render layout:false
     end
