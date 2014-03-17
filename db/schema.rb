@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140314022325) do
+ActiveRecord::Schema.define(:version => 20140317054632) do
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"
@@ -94,6 +94,23 @@ ActiveRecord::Schema.define(:version => 20140314022325) do
 
   add_index "delivery_resume_records", ["recomender_id"], :name => "index_delivery_resume_records_on_recomender_id"
 
+  create_table "export_records", :force => true do |t|
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer  "company_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "form_datas", :force => true do |t|
+    t.integer  "client_resume_id"
+    t.text     "data_hash"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "form_datas", ["client_resume_id"], :name => "index_form_datas_on_client_resume_id"
+
   create_table "labels", :force => true do |t|
     t.integer  "company_id"
     t.integer  "tag_id"
@@ -144,7 +161,7 @@ ActiveRecord::Schema.define(:version => 20140314022325) do
     t.string   "name"
     t.integer  "status"
     t.string   "requirement"
-    t.string   "description"
+    t.text     "description"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "menu_id"
