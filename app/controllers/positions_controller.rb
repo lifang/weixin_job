@@ -84,7 +84,6 @@ class PositionsController < ApplicationController   #招聘职位
     else
       render layout:false
     end
-    
   end
   def send_resume
     if params[:from] != "singlemessage" && params[:from] != "timeline"

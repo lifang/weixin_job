@@ -50,7 +50,7 @@
     <div class="form_list">
       <div class="jobInfo">
         <h1><%=@position.name%></h1>
-        <div class="itemBox"><p><%=@position.description%></p></div>
+        <div class="itemBox"><p><%=raw @position.description%></p></div>
       </div>
       <div class="form_btn">
         <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
