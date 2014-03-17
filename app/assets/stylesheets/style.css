@@ -184,9 +184,9 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .profileExplain h1 { border-bottom: 1px solid #ccc; font-size: 18px; font-weight: normal; text-align: center;}
 .profileExplain li { padding: 20px; border-bottom: 1px dashed #7c7c7c; background: url(../assets/explain_close.png) no-repeat 0 23px; background-size: 15px 15px;}
 .profileExplain li h2 { font-size: 16px;}
-.profileExplain li img { display: none;}
+.profileExplain li img, .profileExplain li p { display: none; font-size: 14px}
 .profileExplain li.open { background-image: url(../assets/explain_open.png);}
-.profileExplain li.open img { display: block;}
+.profileExplain li.open img, .profileExplain li.open p { display: block;}
 
 /* 公司简介 */
 .tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto;}
