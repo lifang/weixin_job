@@ -17,9 +17,9 @@
                 <li>
                   <div class="menu_item">
                     <span class="scd_btn_1" name="menuInfo" onclick="edit_menu(2, <%= fm.id %>, <%=  cm.temp_id %>, '<%= cm.name %>', <%= cm.types %>, <%= cm.id %>)" style="cursor: pointer;"><%= cm.name %></span><img src="/assets/menuLv2_1.png" />
-                      <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
+                    <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
                   </div>
-                  </li>
+                </li>
               <% end if @child_menus[fm.id.to_s] %>
               <button class="addMenuItem" onclick="add_menu(2,<%= fm.id %>, <%= @child_menus[fm.id.to_s].nil? ? 0 : @child_menus[fm.id.to_s].length %>)">+</button>
             </ul>
@@ -30,13 +30,18 @@
     </div>
     <div class="profileExplain" style="left: 650px;width: 400px;">
       <h1>功能说明</h1>
-      <p>
-        设定微信公众号自定义菜单<br/><br/>
-        1.最左边的对应着微信的主菜单（最多3个）<br/><br/>
-        <img src="/assets/weixin1.png" /><br/><br/>
-        2.然后每个主菜单的分支对应微信的主菜单的分支（最多5个）<br/><br/>
-        <img src="/assets/weixin2.png" /><br/>
-      </p>
+
+      <ul>
+        设定微信公众号自定义菜单
+        <li>
+          <h2>最左边的对应着微信的主菜单（最多3个）</h2>
+          <img src="/assets/weixin1.png" width="300"/>
+        </li>
+        <li>
+          <h2>然后每个主菜单的分支对应微信的主菜单的分支（最多5个）</h2>
+          <img src="/assets/weixin2.png" width="300" />
+        </li>
+      </ul>
     </div>
   </div>
 </div>
