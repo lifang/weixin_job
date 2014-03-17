@@ -79,14 +79,15 @@ class PositionsController < ApplicationController   #招聘职位
     @position = Position.find_by_id(params[:id])
     @client_resume = ClientResume.find_by_open_id_and_company_id(params[:secret_key],@company.id)
     if @position.blank?
-      render 'public/404'
+      @title = "职位不存在，或者已经被删除"
+      render 'public/404', :layout => false
     else
       render layout:false
     end
     
   end
   def send_resume
-    if params[:from].blank?
+    if params[:from] != "singlemessage" && params[:from] != "timeline"
       delivery_resume_record = DeliveryResumeRecord.find_by_company_id_and_position_id_and_client_resume_id(@company.id,
         params[:position_id],
         params[:client_resume_id])
@@ -98,6 +99,7 @@ class PositionsController < ApplicationController   #招聘职位
             position_id:params[:position_id],
             client_resume_id:params[:client_resume_id])
           @message = "投递成功！"
+          send_noti_to_ios @company.id
         else
           @message = "您已经成功投递简历!"
         end

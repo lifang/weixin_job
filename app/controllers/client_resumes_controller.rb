@@ -119,6 +119,7 @@ class ClientResumesController < ApplicationController
   end
 
   def edit
+    @company = Company.find_by_id(params[:company_id])
     @company_id = params[:company_id].nil? ? nil : params[:company_id].to_i
     @open_id = params[:secret_key]
     @cr = ClientResume.find_by_open_id_and_company_id(@open_id, @company_id)
