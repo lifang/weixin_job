@@ -14,3 +14,4 @@
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require_directory ./common
+//= require_directory ./jquery-ui

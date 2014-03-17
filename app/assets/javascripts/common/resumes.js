@@ -1,3 +1,8 @@
+$(function(){
+    $("#form_div").sortable();
+    //$("#form_div .itemBox").draggable();
+})
+
 function remove_form_item(obj, name){     //删除简历模板中的某个元素
     $(obj).parent("div .itemBox").remove();
 }
@@ -181,3 +186,5 @@ function create_resume_valid(obj){
         $(obj).parents("form").submit();
     }
 }
+
+
