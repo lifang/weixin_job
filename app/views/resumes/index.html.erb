@@ -51,13 +51,13 @@
               <div class="selectItem itemBox select_div">
                 <span class="close" onclick="remove_form_item(this, 'select_div')">×</span>
                 <p><label><%= v[:name] %></label>
-                <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
-                <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
-                <select>
-                  <% v[:options].each do |opt| %>
-                    <option><%= opt %></option>
-                  <% end %>
-                </select>
+                  <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
+                  <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
+                  <select>
+                    <% v[:options].each do |opt| %>
+                      <option><%= opt %></option>
+                    <% end %>
+                  </select>
                 </p>
                 <% v[:options].each do |opt| %>
                   <input type="hidden" name="tags[<%= k %>][<%= :options %>][]" value="<%= opt %>"/>
@@ -103,7 +103,31 @@
         </div>
       <% end %>
     </div>
-
+    <div class="profileExplain">
+      <h1>功能说明</h1>
+      <ul>
+        <li class="">
+          <h2>信息栏</h2>
+          <img src="/assets/explain1.png" />
+        </li>
+        <li class="">
+          <h2>单选、复选框</h2>
+          <img src="/assets/explain2.jpg" />
+        </li>
+        <li class="">
+          <h2>下拉框</h2>
+          <img src="/assets/explain3.jpg" />
+        </li>
+        <li class="hover">
+          <h2>头像</h2>
+          <img src="/assets/explain4.jpg" />
+        </li>
+        <li class="">
+          <h2>附件</h2>
+          <img src="/assets/explain5.jpg" />
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 <div class="second_bg"></div>
