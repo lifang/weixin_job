@@ -1,11 +1,12 @@
 function position_edit(obj){
-     var types_id = $(obj).find(".types_id").val() ;
-     var description = $(obj).find(".description").val() ;
-     var name = $(obj).find(".name").val() ;
-     ($(".jobInfo").find('input[type=text]').val(name));
-     ($(".jobInfo").find('textarea').val(description));
-     ($(".jobInfo").find('#types').val(types_id));
+    var types_id = $(obj).find(".types_id").val() ;
+    var description = $(obj).find(".description").val() ;
+    var name = $(obj).find(".name").val() ;
+    ($(".jobInfo").find('input[type=text]').val(name));
+    ($(".jobInfo").find('#types').val(types_id));
+    window.editor.html(description);
 }
+ 
 function character_limit(obj,num){
     if($(obj).val().length>num){
         $(obj).val($(obj).val().substring(0,num));
@@ -18,21 +19,21 @@ function check_position(){
         tishi_alert('请选择职位类型！');
         return false;
     }
-   var name = $.trim( $(".jobInfo").find('input[type=text]').val())
-   if(name == ""){
-       tishi_alert("名称不能为空！");
-       return false;
-   }
-   if(name.length > 15){
-       tishi_alert("名称不能超过15个字！");
-       return false;
-   }
-   var description = $.trim( $(".jobInfo").find('textarea').val())
-   if(description == ""){
-       tishi_alert("描述不能为空！");
-       return false;
-   }
-   $(".jobInfo").children("form").submit();
+    var name = $.trim( $(".jobInfo").find('input[type=text]').val())
+    if(name == ""){
+        tishi_alert("名称不能为空！");
+        return false;
+    }
+    if(name.length > 15){
+        tishi_alert("名称不能超过15个字！");
+        return false;
+    }
+    var description = $.trim( $(".jobInfo").find('#k_editor_id').val())
+    if(description == ""){
+        tishi_alert("描述不能为空！");
+        return false;
+    }
+    $(".jobInfo").children("form").submit();
 }
 
 function search_position(obj,url){

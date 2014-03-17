@@ -26,7 +26,7 @@
             <tr>
               <td><%=position.name%></td>
               <td><%= find_name_from  @position_types,position.position_type_id %></td>
-              <td><%= position.description %></td>
+              <td><%=raw position.description %></td>
               <td>
                 <%=link_to edit_company_position_path(@company,position.id) do%>
                   <button class="edit" title="编辑"></button>

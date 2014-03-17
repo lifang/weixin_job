@@ -6,7 +6,7 @@ class ExportsController < ApplicationController   #导出简历
   require 'zip'
   PerPage = 8
   def index
-    @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ?",@company.id])
+    @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ? ",@company.id]).order("created_at DESC")
   end
   
   def down_zip_file
@@ -44,8 +44,8 @@ class ExportsController < ApplicationController   #导出简历
     
     if @client_infs.length>0
       ExportRecord.create(begin_time:start_time,end_time:end_time,company_id:@company.id)
-      xls_content_for @client_infs
-
+      xls_content_for @client_in
+fs
       @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ?",@company.id])
       @text = 1
     else

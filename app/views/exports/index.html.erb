@@ -8,7 +8,6 @@
         <label>结束时间</label>
         <input type="text" class="end" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
         <button onclick="create_xsl_table(this,<%=@company.id%>)">导出</button>
-        <button ><%=link_to '下载数据',down_zip_file_company_exports_path(@company),style:"color:#828282"%></button>
       </div>
     </div>
     <div id="export_record">

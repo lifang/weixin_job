@@ -21,8 +21,7 @@ function create_xsl_table(obj,company_id){
             dateType: 'script',
             data:"start_time="+date_time+"&end_time="+date_time1,
             success: function(data) {
-                 
-
+                  location.href = "/companies/"+company_id+"/exports/down_zip_file"
             }
         });
 	

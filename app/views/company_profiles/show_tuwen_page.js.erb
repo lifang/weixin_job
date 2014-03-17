@@ -1,4 +1,25 @@
 <%if @message==""%>
-
   $("#tuwen_box").html('<%=j(render 'temp')%>');
-<%end%>
+  KindEditor.ready(function(K) {
+  window.editor = K.create('.k_editor_id', {
+  width : '370px',
+  minWidth : '370px',
+  items : ['source',
+  'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+  'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
+  afterCreate : function() {
+  this.sync();
+  },
+  afterBlur: function(){
+  this.sync();
+  }//同步KindEditor的值到textarea文本框
+  });
+  });
+  var tuwenbox = $("#tuwen_box").find(".tuwenBox");
+  for(var i=0;i<tuwenbox.length;i++){
+    var tuwens =$(tuwenbox[i]).find(".ke-container.ke-container-default");
+    if(tuwens.length>1){
+    $(tuwens[0]).remove()
+    }
+  }
+  <%end%>

@@ -39,6 +39,7 @@ function submit_comany_profiles(){
         return false;
     }
     var tuwens = $("#tuwen_box").find(".tuwenBox");
+   
     for(var i=0;i<tuwens.length;i++){
         var img =  $(tuwens[i]).find(".tuwenImg").find(".company_image").val();
         var text =  $.trim($(tuwens[i]).children("textarea").val());
@@ -53,6 +54,13 @@ function submit_comany_profiles(){
     }
     $("#send_title").val(title);
     $("#send_file_name").val(file_name);
+    
+    /*移除kindedit*/
+    var tuwenbox = $("#tuwen_box").find(".tuwenBox");
+    for(var i=0;i<tuwenbox.length;i++){
+        var tuwens =$(tuwenbox[i]).find(".ke-container.ke-container-default");
+        $(tuwens[0]).remove()
+    }
     var html = $("#tuwen_box").html();
     $("#html_content").val(html);
     $("#company_profiles_id").submit();
@@ -65,7 +73,6 @@ function show_tuwen_box(obj,company_id){
     }
     $(obj).addClass("checked");
     var id = $(obj).children("#id").val();
-
     $.ajax({
         async : true,
         type : 'get',
