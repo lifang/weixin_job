@@ -118,29 +118,25 @@ class PositionsController < ApplicationController   #招聘职位
   end
 
   def release   #发布
-    @position = Position.find_by_id(params[:id])
-    if @position && @position.update_attribute(:status,Position::STATUS[:RELEASED])
-      flash[:success] = '发布成功'
-      redirect_to company_positions_path(@company)
-    else
-      flash[:error] = '发布失败，不存在职位！'
-      render 'index'
-    end
+    common_update(Position::STATUS[:RELEASED],"发布")
   end
-
+  def dis_release
+    common_update(Position::STATUS[:UNRELEASE],"取消发布")
+  end
   def destroy
+    common_update(Position::STATUS[:DELETED],"删除")
+  end
+  def common_update(status,msg)
     @position = Position.find_by_id(params[:id])
-    if @position && @position.destroy
-      flash[:success] = "删除成功！"
+    if @position && @position.update_attribute(:status,status)
+      flash[:success] = "#{msg}成功！"
       redirect_to company_positions_path(@company)
     else
-      flash[:error] = "删除失败！请刷新页面"
+      flash[:error] = "#{msg}失败，不存在职位，请刷新页面！"
       render 'index'
     end
   end
-  def send_resumn
 
-  end
   def get_positions
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
   end
