@@ -12,7 +12,8 @@ class CompaniesController < ApplicationController
       edit_type = params[:edit_type].to_i
       if edit_type == 0
         hash = {:name => params[:company_name], :cweb => params[:company_cweb], :app_type => params[:app_type].to_i,
-          :app_id => params[:company_app_id], :app_secret => params[:company_app_secret]}
+          :app_id => params[:company_app_id], :app_secret => params[:company_app_secret],
+          :app_service_certificate => params[:app_service_certificate].to_i==0 ? false: true}
         if @company.update_attributes(hash)
           flash[:notice] = "设置成功!"
         else
