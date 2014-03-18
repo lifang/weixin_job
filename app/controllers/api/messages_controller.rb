@@ -19,7 +19,9 @@ class Api::MessagesController < ApplicationController
         mess = {:id => message.id, :from_user => message.from_user, :to_user => message.to_user, :types => message.types,
           :content => message.content, :status => message.status ? 0 : 1,
           :date => message.created_at.nil? ? nil : message.created_at.strftime("%Y-%m-%d %H:%M"),
-          :message_type => message.message_type, :message_path => MW_URL + message.message_path.to_s }
+          :message_type => message.message_type, :message_path => MW_URL + message.message_path.to_s,
+          :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
+        }
         if types == Message::TYPES[:remind] #如果是提醒，则要将has_new_record设为1
           person = Client.find_by_id(to_user)
           person.update_attribute("has_new_record", true) if person
@@ -90,7 +92,8 @@ class Api::MessagesController < ApplicationController
               :to_user => previous_mess.to_user, :types => previous_mess.types, :content => previous_mess.content,
               :status => previous_mess.status ? 0 : 1, :created_at => previous_mess.created_at,
               :updated_at => previous_mess.updated_at, :msg_id => previous_mess.msg_id, :message_type => previous_mess.message_type,
-              :message_path => MW_URL + previous_mess.message_path.to_s
+              :message_path => MW_URL + previous_mess.message_path.to_s,
+              :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
             }
           end
 
@@ -146,7 +149,9 @@ class Api::MessagesController < ApplicationController
                 message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
                   :content => mess.content, :status => mess.status ? 0 : 1,
                   :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
-                  :message_path => MW_URL + mess.message_path.to_s}
+                  :message_path => MW_URL + mess.message_path.to_s,
+                  :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
+                  }
                 unless mess
                   status = 0
                   msg += "保存失败"
@@ -203,7 +208,8 @@ class Api::MessagesController < ApplicationController
       message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
         :content => mess.content, :status => mess.status ? 0 : 1,
         :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
-        :message_path => MW_URL + mess.message_path.to_s}
+        :message_path => MW_URL + mess.message_path.to_s,
+        :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil}
     end
     message
   end

@@ -6,13 +6,18 @@ class ApplicationController < ActionController::Base
   require 'net/http'
   require "uri"
   require 'openssl'
-
+  
+  #订阅号 hack actin
   WEIXIN_URL = 'https://mp.weixin.qq.com' #微信公众号url
   WEIXIN_LOGIN_ACTION = "/cgi-bin/login?lang=zh_CN" #公众号后台登录action
   WEIXIN_USER_SETTING_ACTION = '/cgi-bin/settingpage?t=setting/index&action=index&token=%s&lang=zh_CN' #公众号设置页面action，获取自身faker_id
   WEIXIN_CONTACT_LIST_ACTION = "/cgi-bin/contactmanage?t=user/index&lang=zh_CN&pagesize=10&type=0&groupid=0&token=%s&pageidx=0" #获取关注者列表 action
   WEIXIN_GET_FRIEND_AVATAR_ACTION = "/cgi-bin/getheadimg?fakeid=%s&token=%s&lang=zh_CN" #公众号获得用户头像action
-  WEIXIN_SEND_MESSAGE_ACTION = '/cgi-bin/singlesend?lang=zh_CN'
+  WEIXIN_SEND_MESSAGE_ACTION = '/cgi-bin/singlesend?lang=zh_CN'  #公众号发送消息 action
+  WEIXIN_GET_MESSAGE_ACTION = '/cgi-bin/message?t=message/list&count=5&day=0&token=%s&lang=zh_CN' #公众号获取消息列表 action
+  WEIXIN_DOWNLOAD_VOICE_ACTION = '/cgi-bin/downloadfile?msgid=%d&source=&token=%s'  #公众号下载语音消息 action
+
+  Weixin_resource = "/public/companies/%d/weixin_resource/"
 
   def has_sign?
     if cookies[:company_account].nil? || cookies[:company_id].nil? || cookies[:company_id] != Digest::MD5.hexdigest(params[:company_id])
@@ -113,20 +118,18 @@ class ApplicationController < ActionController::Base
     http.request_post(WEIXIN_LOGIN_ACTION, data_param, {"x-requested-with" => "XMLHttpRequest",
         "referer" => "https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN"}) {|response|
       res_data = JSON response.body   #   {"Ret"=>302, "ErrMsg"=>"/cgi-bin/home?t=home/index&lang=zh_CN&token=155671926", "ShowVerifyCode"=>0,"ErrCode"=>0, "WtloginErrCode"=>0}
-      #p res_data
       if res_data["ErrCode"] == 0
         wx_cookie_str = response['set-cookie']  #获取cookie的值
         #"slave_user=gh_91dc23d9899e; Path=/; Secure; HttpOnly, slave_sid=NjJyWU9CMllLYWNRS0w4Tk05YXk3NlRjR09MZVQzOUFNSGRVR3lEcG1Pc1lYS1BPMEZ5dVduNGdCQnRVYnZHRnpOdlF3UmllRVVRak50ZlZmTWs3TkZ1YmhLQWxJWWR3RXRWMXhxSzRPdkZFSjFLRUNiblFrcHB6c1ZkdHVNWE0=; Path=/; Secure; HttpOnly"
-        p "++++++++++++++++++++++++++++++++"
-        p wx_cookie_str
         slave_user = wx_cookie_str.scan(/slave_user=(\w+);/).flatten[0]  #当前登录用户
-        p slave_user
         slave_sid = wx_cookie_str.scan(/slave_sid=(\w+=)/).flatten[0] #当前登录用户id
-        p slave_sid
 
         wx_cookie = "slave_user=#{slave_user}; slave_sid=#{slave_sid};"
         msg =res_data["ErrMsg"]
         token = msg.scan(/token=(\d+)/).flatten[0] #登录后的token
+
+        gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
+        gzh_client.update_attributes(:wx_login_token => token, :wx_cookie => wx_cookie) #更新公众号faker_id
       else
         message = "login error"
         return false
@@ -146,8 +149,6 @@ class ApplicationController < ActionController::Base
     user_fakeid = nil
     setting_action = WEIXIN_USER_SETTING_ACTION % token
     http.request_get(setting_action,{"Cookie" => wx_cookie} ) {|response|
-      #p "----------------------------------"
-      # p response
       fakeid_arr = response.body.scan(/fakeid=(\w+)/)
       user_fakeid = fakeid_arr.flatten[0]
     }
@@ -160,7 +161,6 @@ class ApplicationController < ActionController::Base
     http = set_http(WEIXIN_URL)
     new_friend_faker_id = nil
     http.request_get(page_contact_action,{"Cookie" => wx_cookie} ) {|response|
-      # p response
       f_id = Regexp.new('"id":([0-9]{4,20})')
       response.read_body do |str|   # read body now
         friend_faker_id = f_id.match(str).to_a[1]
@@ -215,16 +215,15 @@ class ApplicationController < ActionController::Base
     i = 0
     msg = ""
     http.request_post(WEIXIN_SEND_MESSAGE_ACTION, post_data, header) {|response|
-      p "((((((((((((((((((((((((((((((((((((((((((((((((((((((((((("
       res =  JSON response.body
       if res["base_resp"]["ret"]== 0
         msg = "success"
-      else
-        login_info = login_to_weixin(company) #数据库的token超时，重新登录
+      else #数据库的token超时，重新登录
+        login_info = login_to_weixin(company) 
         if login_info.present?
           wx_token, wx_cookie = login_info
 
-          gzh_client.update_attributes(:wx_login_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
+         # gzh_client.update_attributes(:wx_login_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
           while i < 1
             send_message_request(company, content, gzh_client, to_faker_id, wx_token, wx_cookie)
             i += 1
@@ -270,7 +269,5 @@ class ApplicationController < ActionController::Base
     content_hash = content_hash.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
     content_hash
   end
-  #<>
-
 
 end

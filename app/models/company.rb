@@ -21,6 +21,7 @@ class Company < ActiveRecord::Base
   STATUS = {:DELETED => 0, :NORMAL => 1}  #状态0删除，1正常
   HAS_APP = {:NO => false, :YES => true} #是否有APP
   APP_TYPE = {:SUBSCRIPTION => 0, :SERVICE => 1} #公众号类型0订阅号，1服务号
+  APP_CERTIFICATED_TYPE = {:YES => 1, :NO => 0} #公众号类型0订阅号，1服务号
 
   def subscribed_account?
     self.app_type == APP_TYPE[:SUBSCRIPTION]

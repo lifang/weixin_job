@@ -93,7 +93,9 @@ class Api::ClientsController < ApplicationController
       end
       messages2 = messages.reverse.inject([]){|a,m|
         h = {:id => m.id, :from_user => m.from_user, :to_user => m.to_user, :types => m.types, :content => m.content,
-          :date => m.date, :status => m.status ? 0 : 1, :message_type => m.message_type, :message_path => MW_URL + m.message_path.to_s}
+          :date => m.date, :status => m.status ? 0 : 1, :message_type => m.message_type, :message_path => MW_URL + m.message_path.to_s,
+          :voice_type => m.message_type == Message::MSG_TYPE[:voice] ? (m.message_path && m.message_path.include?(".mp3") ? "mp3" : "amr") : nil
+          }
         a << h;
         a
       }
