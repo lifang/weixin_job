@@ -8,6 +8,20 @@ function position_edit(obj){
     var editor = KindEditor.instances;
     editor[0].html(description);
     editor[1].html(requirement);
+    var addrs = $(obj).find(".address_id");
+    var addr_names = $(obj).find(".address_name");
+    var arr=[],add_arr =[]
+    for(var i=0 ;i<addrs.length;i++){
+            arr.push($(addrs[i]).val());
+            add_arr.push($(addr_names[i]).val());
+    }
+    var str=""
+    for(var i=0 ;i<add_arr.length;i++){
+        str += add_arr[i]+"</br>"
+        str += "<input type='hidden' name='address_id[]' value='"+arr[i]+"' />"
+    }
+    var span = $(".jobInfo").find(".place").find("span");
+    span.html(str);
 }
 
 function character_limit(obj,num){
@@ -94,7 +108,7 @@ function add_work_address(obj,company_id){
     }
     str =""
     for(var i=0 ;i<add_arr.length;i++){
-        str += "<p>"+add_arr[i]+"</p>"
+        str += add_arr[i]+"</br>"
         str += "<input type='hidden' name='address_id[]' value='"+arr[i]+"' />"
     }
     var span = $(".jobInfo").find(".place").find("span");

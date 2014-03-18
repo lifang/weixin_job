@@ -21,7 +21,7 @@ class CompanyProfilesController < ApplicationController
     html_content = params[:html_content]
     title = params[:title].strip
     @title_1 = title
-    file_name = params[:file_name].strip
+    file_name = Time.now.to_i.to_s
     update_or_create = params[:update_or_create]
     if update_or_create == "create"
       if CompanyProfile.find_by_title_and_company_id(title,@company.id).blank? &&

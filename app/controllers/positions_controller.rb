@@ -15,7 +15,6 @@ class PositionsController < ApplicationController   #招聘职位
   end
   
   def new
-    
     @position = Position.new
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
   end
@@ -44,7 +43,7 @@ class PositionsController < ApplicationController   #招聘职位
         @position.company_id = @company.id
         if Position.find_by_name_and_company_id(name,@company.id).blank? && @position.save
           address.each do |ad|
-            PositionAddressRelation.create(postion_id:@postion.id,
+            PositionAddressRelation.create(position_id:@position.id,
                                            work_address_id:ad,
                                            company_id:@company.id)
           end
@@ -67,6 +66,7 @@ class PositionsController < ApplicationController   #招聘职位
     description = params[:positions][:description]
     types = params[:positions][:types]
     requirement = params[:positions][:requirement]
+    address = params[:address_id]
     @position = Position.find_by_id(id)
     positions = Position.where(["name=? and company_id = ? and name !=?",name,@company.id,@position.name])
     if positions.length<1 
@@ -75,10 +75,12 @@ class PositionsController < ApplicationController   #招聘职位
                                                  description:description,
                                                  position_type_id:types)
                                                
-        PositionAddressRelation.destroy.where(["postion_id = ?",@position.id])
-        PositionAddressRelation.create(postion_id:@postion.id,
+        PositionAddressRelation.where(["position_id = ?",@position.id]).destroy_all
+        address.each do |ad|
+        PositionAddressRelation.create(position_id:@position.id,
                                            work_address_id:ad,
                                            company_id:@company.id)
+        end
         flash[:success] = "更新成功！"
         redirect_to company_positions_path(@company)
       else
@@ -157,7 +159,7 @@ class PositionsController < ApplicationController   #招聘职位
   end
 
   def get_work_addresses
-    @addr_and_position_relations = PositionAddressRelation.find_by_company_id(@company.id)||[]
+    @addr_and_position_relations = PositionAddressRelation.where(["company_id=?",@company.id])||[]
     @work_addresses = WorkAddress.select("work_addresses.id,work_addresses.address,c2.name province,c1.name city,work_addresses.company_id,work_addresses.created_at,work_addresses.updated_at").
       joins("left join cities c1 on c1.id = city_id").
       joins("left join cities c2 on c1.parent_id = c2.id").

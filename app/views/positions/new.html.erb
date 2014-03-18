@@ -26,11 +26,11 @@
                 <input type="hidden" class="requirement" value="<%=p.requirement%>" />
                 <input type="hidden" class="name" value="<%=p.name%>" />
                 <%@addr_and_position_relations.each do |aapr|%>
-                  <%if aapr.position_id=p.id%>
+                  <%if aapr.position_id==p.id%>
                     <%@work_addresses.each do |wa|%>
                       <%if wa.id == aapr.work_address_id%>
                          <input type="hidden" class="address_id" value="<%=wa.id%>" />
-                         <input type="hidden" class="address_name" value="<%=wa.name%>" />
+                         <input type="hidden" class="address_name" value="<%=get_address_name wa%>" />
                       <%end%>
                     <%end%>
                   <%end%>
@@ -59,27 +59,11 @@
         <p>
           <label>工作地点</label>
         </p>
-        <p>
-          <label>地点：</label>
-          <span>"#{wa.province}#{wa.address}"  </span>
-          <span class="check" onclick="add_selected(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="id" value="1"/>
-          </span>
-        </p>
-        <p>
-          <label>地点：</label>
-          <span>"#{wa.province} #{wa.city} #{wa.address}"  </span>
-          <span class="check" onclick="add_selected1(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="id" value="2"/>
-          </span>
-        </p>
         <%@work_addresses.each do |wa|%>
           <p>
             <label>地点：</label>
             <span><%= "#{wa.province} #{wa.city} #{wa.address}" %> </span>
-            <span class="check" onclick="add_selected(this)">
+            <span class="check" onclick="add_selected1(this)">
               <span class="checkPoint"></span>
               <input type="hidden" name="id" value="<%=wa.id%>"/>
             </span>

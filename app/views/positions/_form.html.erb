@@ -35,7 +35,22 @@
   </p>
   <p class="place">
     <label >工作地点</label>
-    <span class="scd_btn" name="address" style="text-align: center;">请点击选择工作地点</span>
+    <%if @position && !@position.new_record?%>
+      <span class="scd_btn" name="address" style="text-align: center;">
+       <% @addr_and_position_relations.each do |aapr|%>
+          <%if aapr.position_id==@position.id%>
+            <%@work_addresses.each do |wa|%>
+              <%if wa.id == aapr.work_address_id%>
+                <%=get_address_name wa%><br/>
+                <input type="hidden" name="address_id[]" value="<%=wa.id%>" />
+              <%end%>
+            <%end%>
+          <%end%>
+        <%end%>
+      </span>
+    <%else%>
+      <span class="scd_btn" name="address" style="text-align: center;">请点击选择工作地点</span>
+    <%end%>
   </p>
   <p>
     <label>职位描述</label>

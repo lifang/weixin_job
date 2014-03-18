@@ -74,7 +74,6 @@
 
       <p class="profile_title">
         标题： <input type="text" name="title" id="title" value="<%=@company_profile.title if @company_profile %>" />
-        文件名：<input type="text" name="file_name" id="file_name" value="<%=@company_profile.file_path.split("/")[-1].split(".")[0] if @company_profile %>" <%="readonly" if @company_profile%> />.html
       </p>
       <div class="jobInfo">
         <div id="tuwen_box">
@@ -90,7 +89,6 @@
           <p>
             <input type="hidden"  id="company_profile_id" name="company_profile_id" value="<%=@company_profile.nil? ? "":@company_profile.id%>"/>
             <input type="hidden"  id="update_or_create" name="update_or_create" value="<%=@company_profile.nil? ? 'create':'update'%>" />
-            <input type="hidden"  id="send_file_name" name="file_name" />
             <input type="hidden"  id="send_title" name="title" />
             <input type="hidden"  id="html_content" name="html_content" />
             <button type="button" class="orangeBtn" onclick="add_tuwen()">添加图文块</button>
