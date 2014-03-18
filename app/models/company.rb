@@ -78,15 +78,15 @@ class Company < ActiveRecord::Base
 
   #同步旧的关注者的信息
   def synchronize_old_client_data
-    public_client = self.client.where(:types => Client::TYPES[:ADMIN])[0]
+    public_client = self.clients.where(:types => Client::TYPES[:ADMIN])[0]
     if self.app_type && self.app_service_certificate #是服务号并且是认证的
       #请求api
-      access_token = get_access_token(@company)
+      access_token = Company.get_access_token(self)
       if access_token && access_token["access_token"]
         access_token_val = access_token["access_token"]
-        get_user_list_action = GET_USER_LIST_ACTION % access_token_val
-        user_list_info = create_get_http(WEIXIN_OPEN_URL ,get_user_list_action)
-        get_user_basic_info(user_list_info, access_token_val)
+        get_user_list_action = ApplicationHelper::GET_USER_LIST_ACTION % access_token_val
+        user_list_info = Company.create_get_http(ApplicationHelper::WEIXIN_OPEN_URL ,get_user_list_action)
+        Company.get_all_user_info(user_list_info, access_token_val)
       end
     else
       #请求公众号后台用户列表
