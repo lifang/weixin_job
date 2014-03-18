@@ -7,7 +7,7 @@ class AddressSettingsController < ApplicationController
         from cities c1 inner join cities c2 on c1.id=c2.parent_id
         inner join work_addresses wa on c2.id=wa.city_id
         where c1.parent_id=? and wa.company_id=? order by wa.updated_at desc", 0, @company.id],
-      :per_page => 1, :page => params[:page] ||= 1)
+      :per_page => 10, :page => params[:page] ||= 1)
   end
 
   def create
