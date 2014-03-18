@@ -132,7 +132,7 @@ Text
   #创建自定义菜单
   def create_menu
     access_token = get_access_token(@company)
-    if access_token and access_token["access_token"]
+    if access_token && access_token["access_token"]
       menu_str = @company.get_menu_by_website
       c_menu_action = CREATE_MENU_ACTION % access_token["access_token"]
       response = create_post_http(WEIXIN_OPEN_URL ,c_menu_action ,menu_str)
@@ -152,7 +152,7 @@ Text
       else #语音
         if @company.service_account?  #服务号分认证与未认证
           access_token = get_access_token(@company)
-          if access_token and access_token["access_token"]
+          if access_token && access_token["access_token"]
             media_id = params[:xml][:MediaId]
             download_action = DOWNLOAD_RESOURCE_ACTION % [access_token["access_token"], media_id]
             remote_resource_url = (WEIXIN_DOWNLOAD_URL + download_action)

@@ -97,7 +97,7 @@ class ApplicationController < ActionController::Base
   def get_user_basic_info(open_id, company)
     access_token = get_access_token(company)
     user_avatar_url = nil
-    if access_token and access_token["access_token"]
+    if access_token && access_token["access_token"]
       action = GET_USER_INFO_ACTION % [access_token["access_token"], open_id]
       user_info = create_get_http(WEIXIN_OPEN_URL, action)
       if user_info && user_info["subscribe"]==1
@@ -223,7 +223,7 @@ class ApplicationController < ActionController::Base
         if login_info.present?
           wx_token, wx_cookie = login_info
 
-         # gzh_client.update_attributes(:wx_login_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
+          # gzh_client.update_attributes(:wx_login_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
           while i < 1
             send_message_request(company, content, gzh_client, to_faker_id, wx_token, wx_cookie)
             i += 1
@@ -268,6 +268,43 @@ class ApplicationController < ActionController::Base
     end
     content_hash = content_hash.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
     content_hash
+  end
+
+  #根据获得的用户 open_id 列表
+  #  {
+  #  "total":23000,
+  #  "count":10000,
+  #  "data":{"
+  #   openid":[
+  #        "OPENID1",
+  #        "OPENID2",
+  #        ...,
+  #        "OPENID10000"
+  #     ]
+  #   },
+  #   "next_openid":"NEXT_OPENID1"
+  #}
+  def get_user_basic_info(user_list_info, access_token_val)
+    total_count = user_list_info["total"]
+    if total_count > 10000
+      
+    else
+      openid_list = user_list_info["data"]["openid"]
+      openid_list.each do |open_id|
+        action = GET_USER_INFO_ACTION % [access_token_val, open_id]
+        
+        user_info = create_get_http(WEIXIN_OPEN_URL, action)
+        if user_info && user_info["subscribe"] == 1
+          client = Client.find_by_open_id(open_id)
+          client_attributes = {:name => user_info["name"], :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
+          if client
+            client.update_attributes(client_attributes)
+          else
+            client = Client.create(client_attributes)
+          end
+        end
+      end
+    end
   end
 
 end

@@ -8,7 +8,8 @@ module ApplicationHelper
   DOWNLOAD_RESOURCE_ACTION = "/cgi-bin/media/get?access_token=%s&media_id=%s"  #微信下载资源 action
   GET_USER_INFO_ACTION = "/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN" #微信获取用户基本信息action
   ACCESS_TOKEN_ACTION = "/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" #微信获取access_token action
-  CREATE_MENU_ACTION = "/cgi-bin/menu/create?access_token=%s"
+  CREATE_MENU_ACTION = "/cgi-bin/menu/create?access_token=%s" #创建自定义菜单action
+  GET_USER_LIST_ACTION = "/cgi-bin/user/get?access_token=%s" #获取关注者列表action
 
   def is_hover?(*controller_name)
     controller_name.each do |name|
