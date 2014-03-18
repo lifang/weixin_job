@@ -53,6 +53,9 @@ class AppManagementsController < ApplicationController
           redirect_to company_app_managements_path(@company)
         end
       end
+    else
+      flash[:notice] = "请先配置app"
+      redirect_to "/companies/show?company_id=#{@company.id}"
     end
   end
 
@@ -105,12 +108,12 @@ class AppManagementsController < ApplicationController
         @client = Client.find_by_open_id(open_id)
         @company = Company.find_by_id(params[:company_id].to_i)
         if @client
-          @client.update_attributes(params[:client].merge(html_content:new_hash))
+          @client.update_attributes(html_content:new_hash)
           save_labels @client,@company.id ,params[:tags] if params[:tags].present?
           render text:2
         else
-          client = Client.create(params[:client].merge(company_id:params[:company_id], html_content:new_hash ,types:Client::TYPES[:CONCERNED],open_id:open_id,
-              has_new_record:false, has_new_message:false))
+          client = Client.create(company_id:params[:company_id], html_content:new_hash ,types:Client::TYPES[:CONCERNED],open_id:open_id,
+              has_new_record:false, has_new_message:false)
           save_labels client,@company.id, params[:tags] if params[:tags].present?
           render text:1
         end
@@ -148,11 +151,6 @@ class AppManagementsController < ApplicationController
     File.open(path, "wb") do |f|
       f.write(content.html_safe)
     end
-  end
-
-  #提交成功后跳转页面
-  def submit_redirect
-    render :layout => false
   end
 
   #生成html页面string  # 已不用

@@ -145,28 +145,33 @@ Text
     open_id = params[:xml][:FromUserName]
     client = Client.find_by_open_id_and_status(open_id, Client::STATUS[:valid])  #查询有效用户
     if client
-      if flag == "image"
+      if flag == "image" #图片
         file_extension = ".jpg"
         remote_resource_url = params[:xml][:PicUrl]
+        message_path = save_file(remote_resource_url, file_extension, msg_id) #保存图片资源路径
+      else #语音
+        if @company.service_account?  #服务号分认证与未认证
+          access_token = get_access_token(@company)
+          if access_token and access_token["access_token"]
+            media_id = params[:xml][:MediaId]
+            download_action = DOWNLOAD_RESOURCE_ACTION % [access_token["access_token"], media_id]
+            remote_resource_url = (WEIXIN_DOWNLOAD_URL + download_action)
+            file_extension = ".amr"
 
-        save_file(remote_resource_url, file_extension, msg_id)
-      else
-        access_token = get_access_token(@company)
-        if access_token and access_token["access_token"]
-          media_id = params[:xml][:MediaId]
-          download_action = DOWNLOAD_RESOURCE_ACTION % [access_token["access_token"], media_id]
-          remote_resource_url = (WEIXIN_DOWNLOAD_URL + download_action)
-          file_extension = ".amr"
-
-          http = set_http(WEIXIN_DOWNLOAD_URL)
-          request= Net::HTTP::Get.new(download_action)
-          back_res = http.request(request)
-
-          if back_res && !back_res[:errmsg].present?
-            save_file(remote_resource_url, file_extension, msg_id)
+            http = set_http(WEIXIN_DOWNLOAD_URL)
+            request= Net::HTTP::Get.new(download_action)
+            back_res = http.request(request)
+            if back_res && back_res[:errcode]== 0 #认证服务号
+              message_path = save_file(remote_resource_url, file_extension, msg_id) #保存语音资源路径
+            else  #未认证服务号
+              message_path = save_video_from_message_list(@company)
+            end
           end
+        else  #订阅号
+          message_path = save_video_from_message_list(@company)
         end
       end
+      get_client_message(message_path) if message_path
     end
   end
 
@@ -174,24 +179,85 @@ Text
   def save_file(remote_resource_url, file_extension, msg_id)
     tmp_file = open(remote_resource_url) #打开直接下载链接
     filename = msg_id + file_extension  #临时文件不能取到扩展名
-    weixin_resource = "/public/companies/%d/" % @company.id + "weixin_resource/"
+    weixin_resource = Weixin_resource % @company.id
     wx_full_resource = Rails.root.to_s + weixin_resource
     new_file_name = wx_full_resource + filename
     FileUtils.mkdir_p(wx_full_resource) unless Dir.exists?(wx_full_resource)
     File.open(new_file_name, "wb")  {|f| f.write tmp_file.read }
     if File.exist?(new_file_name)
       message_path = "/companies/%d/" % @company.id + "weixin_resource/" + filename #保存进数据库的路径
-      get_client_message(message_path)
     end
+    message_path
+  end
+
+  #保存语音消息 hack
+  def save_video_from_message_list(company)
+    gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
+    wx_token = gzh_client.wx_login_token
+    wx_cookie = gzh_client.wx_cookie
+    newest_msg_id = get_newest_message_id(wx_token, wx_cookie)
+    if !newest_msg_id
+      login_info = login_to_weixin(company)
+      if login_info.present?
+        wx_token, wx_cookie = login_info
+        newest_msg_id = get_newest_message_id(wx_token, wx_cookie)
+        if newest_msg_id.present?
+          #download 语音消息
+          message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
+        end
+      end
+    else
+      #download 语音消息
+      message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
+    end
+    message_path
+  end
+
+  #取最新消息
+  def get_newest_message_id(wx_token, wx_cookie)
+    http = set_http(WEIXIN_URL)
+    action = WEIXIN_GET_MESSAGE_ACTION % wx_token
+    msg_id = nil
+    http.request_get(action,{"Cookie" => wx_cookie} ) {|response|
+      res = response.body
+      m_id = Regexp.new('"id":([0-9]{4,20})')
+      arr = res.scan(m_id)
+      msg_id = arr.flatten[0]
+    }
+    msg_id
+  end
+
+  #下载语音消息
+  def download_voice_message(msg_id,wx_token, wx_cookie)
+    download_action = WEIXIN_DOWNLOAD_VOICE_ACTION % [msg_id, wx_token]
+    http = set_http(WEIXIN_URL)
+    back_res = nil
+    http.request_get(download_action,{"Cookie" => wx_cookie} ) {|response|
+      if response['content-type'] == "audio/mp3"
+        back_res = response.body
+      end
+    }
+    if back_res.present?
+      filename = msg_id.to_s + ".mp3"  #下载下来默认是MP3
+      weixin_resource = Weixin_resource % @company.id
+      wx_full_resource = Rails.root.to_s + weixin_resource
+      new_file_name = wx_full_resource + filename
+      FileUtils.mkdir_p(wx_full_resource) unless Dir.exists?(wx_full_resource)
+      File.open(new_file_name, "wb")  {|f| f.write back_res }
+      if File.exist?(new_file_name)
+        message_path = "/companies/%d/" % @company.id + "weixin_resource/" + filename #保存进数据库的路径
+      end
+    end
+    message_path
   end
 
   #保存关注者信息
   def save_client_info(open_id, company)
     client = Client.find_by_open_id_and_company_id(open_id, company.id) #先查找是否存在当前关注者的信息
-    if company.service_account?  #分认证与未认证
-      avatar_url = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息  #认证
+    if company.service_account?  #服务号 分认证与未认证
+      avatar_url = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息  认证服务号
       unless avatar_url
-        avatar_url, friend_faker_id = get_avatar_hack(company)  #未认证
+        avatar_url, friend_faker_id = get_avatar_hack(company)  #未认证服务号
       end
     else
       avatar_url, friend_faker_id = get_avatar_hack(company)  #订阅号
@@ -212,7 +278,7 @@ Text
       friend_faker_id = get_new_friend_fakeid(wx_cookie, wx_token) #获取最新好友的faker_id
 
       gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
-      gzh_client.update_attributes(:faker_id =>user_faker_id, :wx_login_token => wx_token, :wx_cookie => wx_cookie) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
+      gzh_client.update_attributes(:faker_id =>user_faker_id) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
       avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id) #订阅号，获取头像
     end
     return [avatar_url, friend_faker_id]

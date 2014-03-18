@@ -10,18 +10,7 @@
   <body>
     <div class='form_list'>
       <%= form_tag :url => "/companies/#{@company.id}/app_managements/get_form_date", :method => "post" do |f|%>
-        <div class='infoItem itemBox'>
-          <div><label><span class='mark'>*</span>姓名：</label><input type='text' data-name='姓名' class='client_required' name='client[name]' value="<%= @client.try(:name) %>"/></div>
-        </div>
-        <div class='infoItem itemBox'>
-          <div><label><span class='mark'>*</span>手机号码：</label><input type='text' data-name='手机号码' class='client_required' name='client[mobiephone]' value="<%= @client.try(:mobiephone) %>" /></div>
-        </div>
-        <div class='infoItem itemBox'>
-          <div><label>备注：</label><input type='text' name='client[remark]' value="<%= @client.try(:remark) %>"/></div>
-        </div>
-   
         <%= raw @ele %>
-
         <p class='warn'>带*内容爲必填项目，请你务必完成填写。对于你所填写的所有信息，我们将严格保密。</p>
         <div class='form_btn'><button type='button' onclick='submit_form(this)'>确认提交</button></div>
       <% end %>
