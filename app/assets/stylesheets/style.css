@@ -346,7 +346,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .newWorkplace .sheng,.newWorkplace .shi { font-size: 16px; margin-left: 10px; padding: 3px; width: 122px;}
 
 /*分页样式*/
-.page { text-align: center; line-height: 30px;}
+.page { text-align: center; line-height: 30px; margin-bottom: 10px;}
 .page span { display: none;}
 .page em { padding: 3px 8px; margin: 0 3px; background: #F9651B; border: 1px solid #F9651B; color: #fff;}
 .page a { padding: 3px 8px; margin: 0 3px; background: #fff; border: 1px solid #ccc; color: #3c3c3c;}
