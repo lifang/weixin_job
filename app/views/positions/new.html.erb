@@ -52,13 +52,19 @@
 
   <!--新建菜单-->
   <div class="second_box second_box_fixed address" id="add_menu_div">
-    <div class="second_content" style="width: 650px;">
+    <div class="second_content" style="width: 550px;">
       <span class="close" title="关闭">×</span>
       <h1 name="add_menu_h1"></h1>
       <div class="largeCon">
         <p>
           <label>工作地点</label>
         </p>
+        <%if @work_addresses.blank?%>
+        <p>
+          <label>暂无工作地点</label>
+          <span>请到工作地点管理里面创建属于您公司的工作地点。</span>
+        </p>
+        <%end%>
         <%@work_addresses.each do |wa|%>
           <p>
             <label>地点：</label>
