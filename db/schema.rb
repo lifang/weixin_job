@@ -17,9 +17,14 @@ ActiveRecord::Schema.define(:version => 20140318024400) do
     t.integer  "order_index"
     t.string   "name"
     t.integer  "parent_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "cities", ["created_at"], :name => "index_cities_on_created_at"
+  add_index "cities", ["order_index"], :name => "index_cities_on_order_index"
+  add_index "cities", ["parent_id"], :name => "index_cities_on_parent_id"
+  add_index "cities", ["updated_at"], :name => "index_cities_on_updated_at"
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"

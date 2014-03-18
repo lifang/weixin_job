@@ -66,8 +66,13 @@ match "/weixins/accept_token" => "weixins#accept_token"
 
     resources :reminds
     resources :records
-
+    resources :address_settings do
+      collection do
+        get :search_citties
+      end
+    end
   end
+
   resources :client_resumes do
     collection do
       get :create_friend_resume

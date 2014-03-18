@@ -1,0 +1,30 @@
+<div class="second_content" style="width: 450px;">
+  <span class="close" title="关闭" onclick="address_cancel(this)">×</span>
+  <h1>编辑工作地点</h1>
+  <%= form_tag company_address_setting_path(@company,@wa), :method => :put do %>
+    <div>
+      <p>
+        <label>选择城市</label>
+        <select class="sheng" onchange="address_search_city(this, <%= @company.id %>, 1)">
+          <% @provinces.each do |p| %>
+            <option value="<%= p.id %>" <% if @addre_city.parent_id == p.id %>selected<% end %>><%= p.name %></option>
+          <% end if @provinces.any? %>
+        </select>
+        <select class="shi" id="edit_address_select_city" name="edit_address_select_city">
+          <option value="0">----</option>
+          <% @cities.each do |c| %>
+            <option value="<%= c.id %>" <% if @addre_city.id == c.id %>selected<% end %>><%= c.name %></option>
+          <% end if @cities && @cities.any?%>
+        </select>
+      </p>
+      <p>
+        <label>详细地址</label>
+        <input type="text" name="edit_addre" value="<%= @wa.address %>"/>
+      </p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn" type="button" onclick="address_valid(this, 1)">确定</button>
+      <button class="orangeBtn" type="button" onclick="address_cancel(this)">取消</button>
+    </div>
+  <% end %>
+</div>
