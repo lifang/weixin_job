@@ -17,44 +17,61 @@
     </div>
 
     <script>
-
       var href = window.location.href;
       var arr = href.split('?secret_key=');
       var secret_key = arr[1];
-
       function submit_form(obj){
-        var input =$(obj).parents('form').find('input.client_required');
-        name = $.trim(input.val());
-        label = input.attr('data-name')
-        if(name==''){
-          alert(label + '不能为空！');
-          return false;
-        }
+        var flag = true;
+        var err_msg = "";
+        if(secret_key == undefined || $.trim(secret_key) == ""){
+          err_msg += "缺少secret_key\r\n";
+          flag = false;
+        };
+        var texts =$(obj).parents('form').find("input[type='text']");
+        $.each(texts, function(index,val){
+          if($(this).val()==""){
+            var label =  $(this).prev().text();
+            err_msg += label+"不能为空!\r\n";
+            flag = false;
+            return false;
 
-        var str = $(obj).parents('form').serialize();
-        if(secret_key != 'undefined' && $.trim(secret_key) != ''){
-          str = str + '&open_id='+secret_key;
-        }
-        $.ajax({
-          async : true,
-          type : 'post',
-          url : '/companies/<%= @company.id %>/app_managements/get_form_date',
-          dataType : 'text',
-          data : str,
-          success : function(data) {
-            if(data==1)
-              window.location.replace('/submit_redirect');
-            else if(data==2)
-              window.location.replace('/submit_redirect');
-            else if(data==3)
-              alert('缺少参数!')
-            else
-              alert('error');
           }
         });
+        var checks = $(obj).parents('form').find("div.checkItem");
+        $.each(checks, function(index,val){
+          var checked = $(this).find("input[type='checkbox']:checked").length;
+          if(checked<=0){
+            var label =  $(this).find("span").first().text();
+            err_msg += label+"不能为空!\r\n";
+            flag = false;
+            return false;
 
+          }
+        });
+        if(flag){
+          var str = $(obj).parents('form').serialize();
+          str = str + '&open_id='+secret_key;
+          $.ajax({
+            async : true,
+            type : 'post',
+            url : '/companies/<%= @company.id %>/app_managements/get_form_date',
+            dataType : 'text',
+            data : str,
+            success : function(data) {
+              if(data==1)
+                window.location.replace('/submit_redirect');
+              else if(data==2)
+                window.location.replace('/submit_redirect');
+              else if(data==3)
+                alert('缺少参数!')
+              else
+                alert('error');
+            }
+          });
+        }else{
+          alert(err_msg);
+        }
       }
-    </script>
-   
+    </script>   
   </body>
 </html>
