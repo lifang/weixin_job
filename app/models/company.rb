@@ -2,6 +2,7 @@
 class Company < ActiveRecord::Base
   has_many :position_types
   has_many :positions
+  has_many :work_addresses
   has_many :resume_templates
   has_many :delivery_resume_records
   has_many :company_profiles

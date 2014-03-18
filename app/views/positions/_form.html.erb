@@ -3,7 +3,7 @@
 <script>
   KindEditor.ready(function(K) {
    
-    window.editor = K.create('#k_editor_id', {
+    window.editor = K.create('.k_editor_id', {
       width : '380px',
       minWidth : '380px',
       items : ['source',
@@ -33,9 +33,18 @@
     <label>职位名称</label>
     <input type="text" name="positions[name]" value="<%=@position.name if @position%>"/>
   </p>
+  <p class="place">
+    <label >工作地点</label>
+    <span class="scd_btn" name="address" style="text-align: center;">请点击选择工作地点</span>
+  </p>
   <p>
     <label>职位描述</label>
-    <textarea id="k_editor_id"  name="positions[description]"  onkeydown='character_limit(this,250)' onkeyup='character_limit(this,250)' ><%=@position.description if @position%></textarea>
+    <textarea class="k_editor_id"  name="positions[description]"  onkeydown='character_limit(this,250)' onkeyup='character_limit(this,250)' ><%=@position.description if @position%></textarea>
+  </p>
+
+  <p>
+    <label>任职要求</label>
+    <textarea class="k_editor_id"  name="positions[requirement]"  onkeydown='character_limit(this,250)' onkeyup='character_limit(this,250)' ><%=@position.requirement if @position%></textarea>
 
   </p>
   <p>

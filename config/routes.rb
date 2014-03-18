@@ -1,4 +1,6 @@
 WeixinJob::Application.routes.draw do
+  get "work_addresses/index"
+
   get "company_profiles/index"
 
   # The priority is based upon order of creation:
@@ -27,6 +29,8 @@ match "/weixins/accept_token" => "weixins#accept_token"
   end
 
   resources :companies do
+    resources :work_addresses
+
     resources :company_profiles do
       collection do
         post :upload_img

@@ -20,12 +20,16 @@
             <th>职位名称</th>
             <th>职位类型</th>
             <th>职位描述</th>
+            <th>任职要求</th>
+            <th>工作地点</th>
             <th>操作</th>
           </tr>
           <%@positions.each do |position|%>
             <tr>
               <td><%=position.name%></td>
               <td><%= find_name_from  @position_types,position.position_type_id %></td>
+              <td><%=raw position.description %></td>
+              <td><%=raw position.requirement %></td>
               <td><%=raw position.description %></td>
               <td>
                 <%=link_to edit_company_position_path(@company,position.id) do%>

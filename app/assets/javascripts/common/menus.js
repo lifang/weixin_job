@@ -31,9 +31,15 @@ function add_selected(obj){
         });
         $(obj).attr("class", "check checked");
     }
-    
 }
+function add_selected1(obj){
+    if($(obj).attr("class")=="check checked"){
+        $(obj).attr("class", "check");
+    }else{
+        $(obj).attr("class", "check checked");
+    }
 
+}
 function add_menu_commit(company_id){
     var parent_id = $("#add_menu_div").find("input[name='parent_id']").first().val();
     var menu_name = $("#add_menu_div").find("input[name='menu_name']").first().val();
