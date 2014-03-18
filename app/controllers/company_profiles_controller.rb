@@ -58,7 +58,7 @@ class CompanyProfilesController < ApplicationController
       redirect_to company_company_profiles_path(@company)
     else
       flash[:error] = "更新失败,不存在简介"
-      render 'new'
+      redirect_to new_company_company_profile_path(@company)
     end
   end
 

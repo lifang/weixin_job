@@ -59,6 +59,9 @@ $(function(){
         }else {
             $(".profileExplain li").removeClass("open");
             $(this).addClass("open");
+            //点击后重新计算左侧侧边栏以及整个高度
+             $(".leftMenu").css("height",document.body.scrollHeight - 84 +"px");
+             $(".menuMakerDtl").css("height",document.body.scrollHeight - 168 +"px");
         }
     });
 })

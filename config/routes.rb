@@ -47,7 +47,7 @@ match "/weixins/accept_token" => "weixins#accept_token"
         post :send_resume
       end
       member do
-        get :release
+        get :release,:dis_release
       end
     end
     resources :menus

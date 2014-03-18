@@ -10,7 +10,7 @@ function position_edit(obj){
 function character_limit(obj,num){
     if($(obj).val().length>num){
         $(obj).val($(obj).val().substring(0,num));
-        tishi_alert("字数不能超过250");
+        tishi_alert("字数不能超过500");
     }
 }
 
@@ -33,8 +33,8 @@ function check_position(){
         tishi_alert("描述不能为空！");
         return false;
     }
-    if(description.length>250){
-        tishi_alert("描述不能大于250字！");
+    if(description.length>500){
+        tishi_alert("描述不能大于500字！");
         return false;
     }
     $(".jobInfo").children("form").submit();

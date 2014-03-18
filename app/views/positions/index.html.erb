@@ -37,17 +37,19 @@
                       <button class="publish" title="发布职位"></button>
                     <%end%>
                   <%elsif position.status == 2%>
-                    <button class="publish fabu" title="已经发布" ></button>
+                    <%=link_to dis_release_company_position_path(@company,position) do%>
+                      <button class="publish fabu" title="取消发布" ></button>
+                    <%end%>
                   <%end%>
                   <%=link_to company_position_path(@company,position.id),target:"_blank" do%>
                     <button class="show" title="预览"></button>
-                    <%end%>
-                  </td>
-                </tr>
-              <%end%>
-            </table>
-          <%end%>
-        </div>
+                  <%end%>
+                </td>
+              </tr>
+            <%end%>
+          </table>
+        <%end%>
       </div>
+    </div>
 
 
