@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140317054632) do
+ActiveRecord::Schema.define(:version => 20140318024400) do
+
+  create_table "cities", :force => true do |t|
+    t.integer  "order_index"
+    t.string   "name"
+    t.integer  "parent_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"
@@ -102,15 +110,6 @@ ActiveRecord::Schema.define(:version => 20140317054632) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "form_datas", :force => true do |t|
-    t.integer  "client_resume_id"
-    t.text     "data_hash"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
-
-  add_index "form_datas", ["client_resume_id"], :name => "index_form_datas_on_client_resume_id"
-
   create_table "labels", :force => true do |t|
     t.integer  "company_id"
     t.integer  "tag_id"
@@ -149,6 +148,14 @@ ActiveRecord::Schema.define(:version => 20140317054632) do
   end
 
   add_index "messages", ["msg_id"], :name => "by_msg_id", :unique => true
+
+  create_table "position_address_relations", :force => true do |t|
+    t.integer  "position_id",     :null => false
+    t.integer  "work_address_id", :null => false
+    t.integer  "company_id",      :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "position_types", :force => true do |t|
     t.string   "name",       :null => false
@@ -213,6 +220,14 @@ ActiveRecord::Schema.define(:version => 20140317054632) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "company_id"
+  end
+
+  create_table "work_addresses", :force => true do |t|
+    t.string   "address"
+    t.integer  "city_id",    :null => false
+    t.integer  "company_id", :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
