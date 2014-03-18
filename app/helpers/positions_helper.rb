@@ -7,4 +7,8 @@ module PositionsHelper
     end
     nil
   end
+
+  def get_address_name address
+    "#{address.province}#{address.city}#{address.address}"
+  end
 end

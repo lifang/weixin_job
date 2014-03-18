@@ -1,3 +1,4 @@
+#encoding:utf-8
 class AddressSettingsController < ApplicationController
   before_filter :has_sign?, :get_title
   def index

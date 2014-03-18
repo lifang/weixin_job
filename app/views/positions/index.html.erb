@@ -30,7 +30,17 @@
               <td><%= find_name_from  @position_types,position.position_type_id %></td>
               <td><%=raw position.description %></td>
               <td><%=raw position.requirement %></td>
-              <td><%=raw position.description %></td>
+              <td>
+                 <%@addr_and_position_relations.each do |aapr|%>
+                  <%if aapr.position_id==position.id%>
+                    <%@work_addresses.each do |wa|%>
+                      <%if wa.id == aapr.work_address_id%>
+                          <%=get_address_name wa%><br/>
+                      <%end%>
+                    <%end%>
+                  <%end%>
+                <%end%>
+              </td>
               <td>
                 <%=link_to edit_company_position_path(@company,position.id) do%>
                   <button class="edit" title="编辑"></button>

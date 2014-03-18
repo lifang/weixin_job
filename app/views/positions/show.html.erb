@@ -50,7 +50,21 @@
     <div class="form_list">
       <div class="jobInfo">
         <h1><%=@position.name%></h1>
-        <div class="itemBox"><p><%=raw @position.description%></p></div>
+        <div class="itemBox">
+          <p><%=raw @position.description%></p>
+          <p><%=raw @position.requirement%></p>
+          
+            <%@addr_and_position_relations.each do |aapr|%>
+              <%if aapr.position_id==@position.id%>
+                <%@work_addresses.each do |wa|%>
+                  <%if wa.id == aapr.work_address_id%>
+                   <p>地点：<%=get_address_name wa%> </p>
+                  <%end%>
+                <%end%>
+              <%end%>
+            <%end%>
+         
+        </div>
       </div>
       <div class="form_btn">
         <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
