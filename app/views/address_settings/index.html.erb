@@ -1,27 +1,32 @@
 <div class="main_con2">
   <div>
     <div class="toolbar">
-      <button class="orangeBtn" name="newWorkplace" style="margin: 25px 50px;" onclick="new_addre_button()">新建工作地点</button>
+      <button class="white_btn_for_a" name="newWorkplace" style=" float: left; margin: 25px 50px;" onclick="new_addre_button()">新建工作地点</button>
     </div>
-    <div class="workplaceBox">
-      <table class="table1">
-        <tr>
-          <th>省市</th>
-          <th>详细地址</th>
-          <th>操作</th>
-        </tr>
-        <% @addresses.each do |a| %>
+    <% if @addresses.any?  %>
+      <div class="workplaceBox">
+        <table class="table1">
           <tr>
-            <td><%= a.pname %><%= a.cname %></td>
-            <td><%= a.address %></td>
-            <td>
-              <a href="/companies/<%= @company.id %>/address_settings/<%= a.wid %>" data-confirm="确定删除此地点?" data-method="delete"><button class="delete" title="删除"></button></a>
-              <button class="edit" title="编辑" onclick="edit_address(<%= @company.id %>, <%= a.wid %>)"></button>
-            </td>
+            <th>省市</th>
+            <th>详细地址</th>
+            <th>操作</th>
           </tr>
-        <% end %>
-      </table>
-    </div>
+          <% @addresses.each do |a| %>
+            <tr>
+              <td><%= a.pname %><%= a.cname %></td>
+              <td><%= a.address %></td>
+              <td>
+                <a href="/companies/<%= @company.id %>/address_settings/<%= a.wid %>" data-confirm="确定删除此地点?" data-method="delete"><button class="delete" title="删除"></button></a>
+                <button class="edit" title="编辑" onclick="edit_address(<%= @company.id %>, <%= a.wid %>)"></button>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+      </div>
+    <% end %>
     <%= will_paginate @addresses,:class=>"page",:previous_label=>"上一页",:next_label=>"下一页" unless  @addresses.blank?%>
   </div>
 </div>
