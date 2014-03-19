@@ -74,3 +74,6 @@ article:after, .clearAfter:after {
 .tuwenBox { margin-bottom: 10px;}
 .tuwenImg img { width: 100%;}
 .tuwenBox p { text-indent: 10px; font-size: 14px; line-height: 24px; padding: 5px;}
+
+.jobInfo h1 { font-size: 20px; margin-bottom: 10px;}
+.jobInfo h2 { font-size: 20px; font-weight: normal;}

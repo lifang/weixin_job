@@ -48,7 +48,7 @@ function check_position(){
         tishi_alert("名称不能超过15个字！");
         return false;
     }
-    var place = $(".jobInfo").find(".place span").text();
+    var place = $.trim($(".jobInfo").find(".place span").text());
     if(place == "请点击选择工作地点"){
         tishi_alert("请点击选择工作地点！");
         return false;

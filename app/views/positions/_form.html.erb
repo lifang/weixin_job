@@ -35,8 +35,9 @@
   </p>
   <p class="place">
     <label >工作地点</label>
-    <%i=0%>
+    
     <%if @position && !@position.new_record?%>
+      <%i=0%>
       <span class="scd_btn" name="address" style="text-align: center;">
         <% @addr_and_position_relations.each do |aapr|%>
           <%if aapr.position_id==@position.id%>
@@ -49,7 +50,7 @@
             <%end%>
           <%end%>
         <%end%>
-        <%unless i==0%>
+        <%if i==0 %>
           请点击选择工作地点
         <%end%>
       </span>
