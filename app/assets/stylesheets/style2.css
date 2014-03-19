@@ -7,7 +7,7 @@ body {
     background: none repeat scroll 0 0 #FFFFFF;
     color: #333333;
     font-family: "微软雅黑","宋体",Arial;
-    font-size: 14px;
+    font-size: 18px;
 }
 img {
     border: medium none;
@@ -42,19 +42,19 @@ article:after, .clearAfter:after {
 
 
 .form_list {
-    font-size: 16px;
+    font-size: 20px;
     margin: 10px;
 }
 .itemBox { line-height: 32px; margin: 5px 0; padding: 5px; background: #f2f2f2; border-radius: 5px;}
 .itemBox label { display: block;}
-.itemBox input[type="text"] { padding: 3px; width: 230px; margin-left: 10px; border: 1px solid #c2c2c2;}
-.itemBox select { padding: 3px; width: 240px; margin-left: 10px; border: 1px solid #c2c2c2;}
+.itemBox input[type="text"] { padding: 5px; width: 230px; margin-left: 10px; border: 1px solid #c2c2c2;}
+.itemBox input[type="file"] { padding: 5px; width: 230px; margin-left: 10px; }
+.itemBox select { padding: 5px; width: 240px; margin-left: 10px; border: 1px solid #c2c2c2;}
 .itemBox input[type="radio"],.itemBox input[type="checkbox"] { margin: 0 10px;}
-.itemBox p { text-indent: 10px; font-size: 14px;}
+.itemBox p { text-indent: 10px; font-size: 18px;}
 
-.txtItem p { text-indent: 10px; font-size: 14px;}
-.imgItem { min-height: 120px;}
-.itemBox input[type="file"] { margin-left: 10px;}
+.txtItem p { text-indent: 10px; font-size: 18px;}
+.imgItem {}
 .imgItem img { width: 100%;}
 
 .form_btn { padding: 10px 0; text-align: center;}
@@ -70,10 +70,33 @@ article:after, .clearAfter:after {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff",endColorstr="#c2c2c2",GradientType=0);
 }
 
-.jobInfo {}
-.tuwenBox { margin-bottom: 10px;}
-.tuwenImg img { width: 100%;}
-.tuwenBox p { text-indent: 10px; font-size: 14px; line-height: 24px; padding: 5px;}
-
 .jobInfo h1 { font-size: 20px; margin-bottom: 10px;}
 .jobInfo h2 { font-size: 20px; font-weight: normal;}
+.jobInfo p {}
+
+.tuwenBox { margin-bottom: 10px;}
+.tuwenImg img { width: 100%;}
+.tuwenBox p { text-indent: 10px; font-size: 18px; line-height: 24px; padding: 5px;}
+
+/*file*/
+.fileBox { position:relative; overflow:hidden; margin: 0 auto;}
+.fileBox .fileText_1 { height: 20px;}
+.fileBox .fileBtn_1 { margin:0;}
+.fileBox .file_1 { position:absolute; top:0; left:0; opacity: 0; filter: alpha(opacity=0); width:100%; margin:0;height: 30px;}
+
+.message {
+	width: 150px;
+	display: block;
+	padding: 15px 50px;
+	font-size: 22px;
+	margin: 50px auto;
+	text-align: center;
+	border-radius: 5px;
+	color: #FF5353;
+	box-shadow: 0 0 3px rgba(0,0,0,0.5);
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#c2c2c2));
+	background: -moz-linear-gradient(top, #fff,#c2c2c2);
+	background: -ms-linear-gradient(top,  #fff 0%,#c2c2c2 100%);
+	background: linear-gradient(top,  #fff 0%,#c2c2c2 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff",endColorstr="#c2c2c2",GradientType=0);
+}
