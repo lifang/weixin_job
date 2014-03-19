@@ -15,6 +15,24 @@ class WeixinsController < ApplicationController
     if request.request_method == "POST" && tmp_encrypted_str == signature
       if @company.present?
         open_id = params[:xml][:FromUserName]
+        unless @company.service_account? && @company.app_service_certificate
+          client = Client.find_by_open_id(open_id)
+          if client
+            if client.faker_id.blank?  #有open_id 没有 faker_id
+              faker_id = get_voice_path_or_faker_id(@company, "faker_id")
+              client.update_attribute(:faker_id, faker_id)
+            end
+          else
+            faker_id = get_voice_path_or_faker_id(@company, "faker_id")
+            client = @company.clients.where(:types => Client::TYPES[:CONCERNED], :faker_id => faker_id)[0]
+            if client  # 有faker_id 没有 open_id  是老用户  同步来的
+              client.update_attribute(:open_id, open_id)
+            else
+              
+            end
+          end
+
+        end
         if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
           return_app_regist_link  #返回app登记链接
           save_client_info(open_id, @company) #新建client记录，保存头像，faker_id, open_id
@@ -153,7 +171,7 @@ Text
         remote_resource_url = params[:xml][:PicUrl]
         message_path = save_file(remote_resource_url, file_extension, msg_id) #保存图片资源路径
       else #语音
-        if @company.service_account? && @company.app_service_certificate #服务号分认证与未认证
+        if @company.service_account? && @company.app_service_certificate #服务号认证
           access_token = get_access_token(@company)
           if access_token && access_token["access_token"]
             media_id = params[:xml][:MediaId]
@@ -168,12 +186,10 @@ Text
             p back_res[:errcode]
             if back_res && back_res[:errcode].nil? #认证服务号
               message_path = save_file(remote_resource_url, file_extension, msg_id) #保存语音资源路径
-#            else  #未认证服务号
-#              message_path = save_video_from_message_list(@company)
             end
           end
-        else  #订阅号
-          message_path = save_video_from_message_list(@company)
+        else  #订阅号 and 未认证服务号
+          message_path = get_voice_path_or_faker_id(@company, "voice")
         end
       end
       get_client_message(message_path) if message_path
@@ -196,40 +212,50 @@ Text
   end
 
   #保存语音消息 hack
-  def save_video_from_message_list(company)
+  def get_voice_path_or_faker_id(company, flag)
     gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
     wx_token = gzh_client.wx_login_token
     wx_cookie = gzh_client.wx_cookie
-    newest_msg_id = get_newest_message_id(wx_token, wx_cookie)
+    newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie)
     if !newest_msg_id
       login_info = login_to_weixin(company)
       if login_info.present?
         wx_token, wx_cookie = login_info
-        newest_msg_id = get_newest_message_id(wx_token, wx_cookie)
-        if newest_msg_id.present?
+        newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie)
+        if newest_msg_id.present? && flag == "voice"
           #download 语音消息
           message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
+          return message_path #返回保存下来的音频路径
+        else
+          return faker_id  #返回 faker_id
         end
       end
     else
       #download 语音消息
-      message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
+      if flag == "voice"
+        message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
+        return message_path  #返回保存下来的音频路径
+      else
+        return faker_id  #返回 faker_id
+      end
     end
-    message_path
+    
   end
 
-  #取最新消息
-  def get_newest_message_id(wx_token, wx_cookie)
+  #取最新消息  #消息id
+  def get_newest_message_id_and_faker_id(wx_token, wx_cookie)
     http = set_http(WEIXIN_URL)
     action = WEIXIN_GET_MESSAGE_ACTION % wx_token
-    msg_id = nil
+    msg_id, faker_id = nil, nil
     http.request_get(action,{"Cookie" => wx_cookie} ) {|response|
       res = response.body
       m_id = Regexp.new('"id":([0-9]{4,20})')
-      arr = res.scan(m_id)
-      msg_id = arr.flatten[0]
+      faker_id = Regexp.new('"faker_id":([0-9]{4,20})')
+      msg_arr = res.scan(m_id)
+      faker_id = res.scan(faker_id)
+      msg_id = msg_arr.flatten[0]
     }
-    msg_id
+    [msg_id,faker_id]
   end
 
   #下载语音消息
@@ -259,13 +285,10 @@ Text
   #保存关注者信息
   def save_client_info(open_id, company)
     client = Client.find_by_open_id_and_company_id(open_id, company.id) #先查找是否存在当前关注者的信息
-    if company.service_account?  #服务号 分认证与未认证
+    if company.service_account? && self.app_service_certificate #是服务号并且是认证的
       avatar_url = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息  认证服务号
-      unless avatar_url
-        avatar_url, friend_faker_id = get_avatar_hack(company)  #未认证服务号
-      end
     else
-      avatar_url, friend_faker_id = get_avatar_hack(company)  #订阅号
+      avatar_url, friend_faker_id = get_avatar_hack(company)  #订阅号 and 未认证服务号
     end
     if client
       client.update_attributes(:avatar_url => avatar_url, :faker_id => friend_faker_id)

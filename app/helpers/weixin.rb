@@ -14,7 +14,8 @@ module Weixin
   GET_USER_INFO_ACTION = "/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN" #微信获取用户基本信息action
   ACCESS_TOKEN_ACTION = "/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" #微信获取access_token action
   CREATE_MENU_ACTION = "/cgi-bin/menu/create?access_token=%s" #创建自定义菜单action
-  GET_USER_LIST_ACTION = "/cgi-bin/user/get?access_token=%s" #获取关注者列表action
+  GET_USER_LIST_ACTION1 = "/cgi-bin/user/get?access_token=%s" #获取关注者列表action1
+  GET_USER_LIST_ACTION2 = "/cgi-bin/user/get?access_token=%s&next_openid=%s" #获取关注者列表action2 超过10000个的时候
 
 
   #订阅号 hack action
@@ -64,6 +65,14 @@ module Weixin
     http
   end
 
+  def service_account_get_user_list(access_token_val, company, next_open_id = nil)
+    get_user_list_action = next_open_id.present? ? (GET_USER_LIST_ACTION2 % [access_token_val, next_open_id]) : (GET_USER_LIST_ACTION1 % access_token_val)
+    user_list_info = Company.create_get_http(WEIXIN_OPEN_URL ,get_user_list_action)
+    if user_list_info && user_list_info["errcode"].nil?
+      count = user_list_info["count"] || 0
+    end
+    get_all_user_info(user_list_info, access_token_val, company) if count != 0#在helpers/weixin.rb
+  end
   #根据获得的用户 open_id 列表
   #  {
   #  "total":23000,
@@ -78,10 +87,12 @@ module Weixin
   #   },
   #   "next_openid":"NEXT_OPENID1"
   #}
-  def get_all_user_info(user_list_info, access_token_val, cmpany)
+  def get_all_user_info(user_list_info, access_token_val, company)
     total_count = user_list_info["total"]
+    status = 0
     if total_count > 10000
-
+      next_open_id = user_list_info["next_openid"]
+      service_account_get_user_list(access_token_val, company, next_open_id)
     else
       openid_list = user_list_info["data"]["openid"]
       openid_list.each_with_index do |open_id, index|
@@ -90,12 +101,21 @@ module Weixin
         user_info = create_get_http(WEIXIN_OPEN_URL, action)
         if user_info && user_info["subscribe"] == 1
           client = Client.find_by_open_id(open_id)
-          client_attributes = {:company_id => cmpany.id, :name => user_info["nickname"], :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
+          client_attributes = {:company_id => company.id, :name => user_info["nickname"], :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
           if client
-            client.update_attributes(client_attributes)
+            unless client.update_attributes(client_attributes)
+              client_attributes[:name] = "游客"
+              client.update_attributes(client_attributes)
+            end
           else
             client = Client.create(client_attributes)
+            unless client
+              client_attributes[:name] = "游客"
+              client.create(client_attributes)
+            end
           end
+        else
+          status = -1
         end
       end
     end
@@ -148,8 +168,9 @@ module Weixin
  
   end
 
-  def get_friend_total_count(token,wx_cookie, perpage, index, company = nil)
-    page_contact_action = WEIXIN_CONTACT_LIST_ACTION % [token, perpage, index]
+  #请求获取好友总数 以及匹配的关注者列表
+  def get_friend_total_count(token, wx_cookie, perpage, index, company = nil)
+    page_contact_action = WEIXIN_CONTACT_LIST_ACTION % [perpage, token, index]
     http = set_http(WEIXIN_URL)
     client_arr = []
     total_count = 0
@@ -157,18 +178,14 @@ module Weixin
       str = response.body
       #查找关注者总数
       total_user_regexp = Regexp.new('"cnt":([0-9]{1,6})')
+     # p str
       total_count_arr = total_user_regexp.match(str).to_a
-      p "llllllllllllllllllllllllllllllllll"
- p total_count_arr
       total_count = total_count_arr[1].to_i
-      
-      p  total_count
       contacts_reg = Regexp.new('"contacts":\[(\{.+\})\]')
       contacts_str = str.scan(contacts_reg).flatten[0] #"{\"id\":1366127225,\"nick_name\":\"\u90D1\u8D24\u7389\",\"remark_name\":\"\"},
       #{\"id\"::664229417,\"nick_name\":\"shevechenco\",\"remark_name\":\"\",\"group_id\":0}"  #一整个string
       if contacts_str
         contacts_str = contacts_str.force_encoding 'utf-8'
-
         user_hash_arr = contacts_str.scan(/(\{[^\{\}]+\})/u).flatten  #["{\"id\":1366127225,\"nick_name\":\"\u90D1\u8D24\u7389\",\"remark_name\":\"\"}",
         #"{\"id\"::664229417,\"nick_name\":\"shevechenco\",\"remark_name\":\"\",\"group_id\":0}"] #数组里面n个stringhash
         user_hash_arr.each do |str_hash|
@@ -181,18 +198,21 @@ module Weixin
     total_count
   end
 
-  
-
+  #保存用户信息
   def save_user_info_from_page(client_arr, company)
     #{"id"=>2166217981, "nick_name"=>"\u542C\u96EA", "remark_name"=>"", "group_id"=>0}
     client_arr.each do |client_hash|
       client = Client.where(:faker_id => client_hash["id"], :company_id => company.id )[0]
       if client.present?
-        client.update_attributes({:name => client_hash["remark_name"].present? ? client_hash["remark_name"] : client_hash["nick_name"],
+        unless client.update_attributes({:name => client_hash["remark_name"].present? ? client_hash["remark_name"] : client_hash["nick_name"],
             :faker_id => client_hash["id"]})
+          client.update_attributes({:name => "游客",:faker_id => client_hash["id"]})
+        end
       else
         client = Client.create({:name => client_hash["remark_name"].present? ? client_hash["remark_name"] : client_hash["nick_name"],
             :faker_id => client_hash["id"],:company_id => company.id, :types => Client::TYPES[:CONCERNED]})
+        client = Client.create({:name => "游客",:faker_id => client_hash["id"],:company_id => company.id,
+            :types => Client::TYPES[:CONCERNED]}) unless client
       end
     end
   end

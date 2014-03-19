@@ -66,6 +66,7 @@ class ApplicationController < ActionController::Base
     new_friend_faker_id = nil
     http.request_get(page_contact_action,{"Cookie" => wx_cookie} ) {|response|
       f_id = Regexp.new('"id":([0-9]{4,20})')
+      #TODO  nickname
       response.read_body do |str|   # read body now
         friend_faker_id = f_id.match(str).to_a[1]
         if !friend_faker_id.nil? && !friend_faker_id.empty?

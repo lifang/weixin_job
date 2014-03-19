@@ -162,6 +162,6 @@ module ApplicationHelper
     else
       init_page = total/perpage + 1
     end
-    init_page
+    [init_page,perpage]
   end
 end
