@@ -57,56 +57,6 @@ class ApplicationController < ActionController::Base
     tmp_encrypted_str
   end
 
-  #根据app_id 和app_secret获取帐号token
-  def get_access_token(company)
-    app_id = company.app_id
-    app_secret = company.app_secret
-    token_action = ACCESS_TOKEN_ACTION % [app_id, app_secret]
-    token_info = create_get_http(WEIXIN_OPEN_URL ,token_action)
-    return token_info
-  end
-
-  #发get请求获得access_token
-  def create_get_http(url ,route)
-    http = set_http(url)
-    request= Net::HTTP::Get.new(route)
-    back_res = http.request(request)
-    return JSON back_res.body
-  end
-
-  #发post请求创建自定义菜单
-  def create_post_http(url,route_action,menu_bar)
-    http = set_http(url)
-    request = Net::HTTP::Post.new(route_action)
-    request.set_body_internal(menu_bar)
-    return JSON http.request(request).body
-  end
-
-  #设置http基本参数
-  def set_http(url)
-    uri = URI.parse(url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    if uri.port==443
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    end
-    http
-  end
-
-  #根据open_id和token，保存用户的头像信息
-  def get_user_basic_info(open_id, company)
-    access_token = get_access_token(company)
-    user_avatar_url = nil
-    if access_token and access_token["access_token"]
-      action = GET_USER_INFO_ACTION % [access_token["access_token"], open_id]
-      user_info = create_get_http(WEIXIN_OPEN_URL, action)
-      if user_info && user_info["subscribe"]==1
-        user_avatar_url = user_info["headimgurl"]
-      end
-    end
-    user_avatar_url
-  end
-
   #登录微信
   def login_to_weixin(company)
     account = company.app_account
@@ -223,7 +173,7 @@ class ApplicationController < ActionController::Base
         if login_info.present?
           wx_token, wx_cookie = login_info
 
-         # gzh_client.update_attributes(:wx_login_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
+          # gzh_client.update_attributes(:wx_login_token => wx_token, :wx_cookie => wx_cookie) #更新公众号faker_id
           while i < 1
             send_message_request(company, content, gzh_client, to_faker_id, wx_token, wx_cookie)
             i += 1
@@ -268,6 +218,21 @@ class ApplicationController < ActionController::Base
     end
     content_hash = content_hash.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
     content_hash
+  end
+
+
+  #根据open_id和token，保存用户的头像信息
+  def get_user_basic_info(open_id, company)
+    access_token = get_access_token(company)
+    user_avatar_url = nil
+    if access_token && access_token["access_token"]
+      action = GET_USER_INFO_ACTION % [access_token["access_token"], open_id]
+      user_info = create_get_http(WEIXIN_OPEN_URL, action)
+      if user_info && user_info["subscribe"]==1
+        user_avatar_url = user_info["headimgurl"]
+      end
+    end
+    user_avatar_url
   end
 
 end

@@ -63,6 +63,7 @@ class WeixinsController < ApplicationController
           begin
             m = Message.find_by_msg_id(params[:xml][:MsgId].to_s)
             if m.nil?
+              p 111111111111111111111
               msg_type_value = Message::MSG_TYPE[params[:xml][:MsgType].to_sym]
               content = params[:xml][:Content]
               unless params[:xml][:Content].present?
@@ -72,8 +73,10 @@ class WeixinsController < ApplicationController
                 :types => Message::TYPES[:weixin], :content => content,
                 :status => Message::STATUS[:UNREAD], :msg_id => params[:xml][:MsgId],
                 :message_type => msg_type_value, :message_path => wx_resource_url)
+              p mess
               if mess && (!@company.receive_status || !(@company.receive_status && @company.not_receive_start_at && @company.not_receive_end_at && time_now >= @site.not_receive_start_at.strftime("%H:%M") && time_now <= @site.not_receive_end_at.strftime("%H:%M")))
                 #推送到IOS端
+                p "000000000000000000000"
                 APNS.host = 'gateway.sandbox.push.apple.com'
                 APNS.pem  = File.join(Rails.root, 'config', 'CMR_Development.pem')
                 APNS.port = 2195
@@ -132,7 +135,7 @@ Text
   #创建自定义菜单
   def create_menu
     access_token = get_access_token(@company)
-    if access_token and access_token["access_token"]
+    if access_token && access_token["access_token"]
       menu_str = @company.get_menu_by_website
       c_menu_action = CREATE_MENU_ACTION % access_token["access_token"]
       response = create_post_http(WEIXIN_OPEN_URL ,c_menu_action ,menu_str)
@@ -150,9 +153,9 @@ Text
         remote_resource_url = params[:xml][:PicUrl]
         message_path = save_file(remote_resource_url, file_extension, msg_id) #保存图片资源路径
       else #语音
-        if @company.service_account?  #服务号分认证与未认证
+        if @company.service_account? && @company.app_service_certificate #服务号分认证与未认证
           access_token = get_access_token(@company)
-          if access_token and access_token["access_token"]
+          if access_token && access_token["access_token"]
             media_id = params[:xml][:MediaId]
             download_action = DOWNLOAD_RESOURCE_ACTION % [access_token["access_token"], media_id]
             remote_resource_url = (WEIXIN_DOWNLOAD_URL + download_action)
@@ -161,10 +164,12 @@ Text
             http = set_http(WEIXIN_DOWNLOAD_URL)
             request= Net::HTTP::Get.new(download_action)
             back_res = http.request(request)
-            if back_res && back_res[:errcode]== 0 #认证服务号
+            p back_res
+            p back_res[:errcode]
+            if back_res && back_res[:errcode].nil? #认证服务号
               message_path = save_file(remote_resource_url, file_extension, msg_id) #保存语音资源路径
-            else  #未认证服务号
-              message_path = save_video_from_message_list(@company)
+#            else  #未认证服务号
+#              message_path = save_video_from_message_list(@company)
             end
           end
         else  #订阅号

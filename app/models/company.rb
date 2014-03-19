@@ -1,5 +1,6 @@
 #encoding: utf-8
 class Company < ActiveRecord::Base
+  extend ApplicationHelper
   has_many :position_types
   has_many :positions
   has_many :work_addresses
@@ -72,5 +73,24 @@ class Company < ActiveRecord::Base
            right join client_resumes clf  on cl.id = clf.resume_template_id
            where c.id = ? and clf.created_at >=? and clf.created_at <=?"
     Company.find_by_sql([sql,company_id,start_time,end_time])
+  end
+
+
+  #同步旧的关注者的信息
+  def synchronize_old_client_data
+    public_client = self.clients.where(:types => Client::TYPES[:ADMIN])[0]
+    if self.app_type && self.app_service_certificate #是服务号并且是认证的
+      #请求api
+      access_token = Company.get_access_token(self)
+      if access_token && access_token["access_token"]
+        access_token_val = access_token["access_token"]
+        get_user_list_action = ApplicationHelper::GET_USER_LIST_ACTION % access_token_val
+        user_list_info = Company.create_get_http(ApplicationHelper::WEIXIN_OPEN_URL ,get_user_list_action)
+        Company.get_all_user_info(user_list_info, access_token_val)
+      end
+    else
+      #请求公众号后台用户列表
+       
+    end
   end
 end
