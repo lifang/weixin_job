@@ -6,16 +6,6 @@ class ApplicationController < ActionController::Base
   require 'net/http'
   require "uri"
   require 'openssl'
-  
-  #订阅号 hack actin
-  WEIXIN_URL = 'https://mp.weixin.qq.com' #微信公众号url
-  WEIXIN_LOGIN_ACTION = "/cgi-bin/login?lang=zh_CN" #公众号后台登录action
-  WEIXIN_USER_SETTING_ACTION = '/cgi-bin/settingpage?t=setting/index&action=index&token=%s&lang=zh_CN' #公众号设置页面action，获取自身faker_id
-  WEIXIN_CONTACT_LIST_ACTION = "/cgi-bin/contactmanage?t=user/index&lang=zh_CN&pagesize=10&type=0&groupid=0&token=%s&pageidx=0" #获取关注者列表 action
-  WEIXIN_GET_FRIEND_AVATAR_ACTION = "/cgi-bin/getheadimg?fakeid=%s&token=%s&lang=zh_CN" #公众号获得用户头像action
-  WEIXIN_SEND_MESSAGE_ACTION = '/cgi-bin/singlesend?lang=zh_CN'  #公众号发送消息 action
-  WEIXIN_GET_MESSAGE_ACTION = '/cgi-bin/message?t=message/list&count=5&day=0&token=%s&lang=zh_CN' #公众号获取消息列表 action
-  WEIXIN_DOWNLOAD_VOICE_ACTION = '/cgi-bin/downloadfile?msgid=%d&source=&token=%s'  #公众号下载语音消息 action
 
   Weixin_resource = "/public/companies/%d/weixin_resource/"
 
@@ -57,42 +47,6 @@ class ApplicationController < ActionController::Base
     tmp_encrypted_str
   end
 
-  #登录微信
-  def login_to_weixin(company)
-    account = company.app_account
-    pwd = company.app_password
-    data_param = 'username=' + account +'&pwd=' + pwd +'&imgcode=''&f=json'
-    http = set_http(WEIXIN_URL)
-
-    wx_cookie, slave_user, slave_sid, token = "", nil, nil, nil
-    http.request_post(WEIXIN_LOGIN_ACTION, data_param, {"x-requested-with" => "XMLHttpRequest",
-        "referer" => "https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN"}) {|response|
-      res_data = JSON response.body   #   {"Ret"=>302, "ErrMsg"=>"/cgi-bin/home?t=home/index&lang=zh_CN&token=155671926", "ShowVerifyCode"=>0,"ErrCode"=>0, "WtloginErrCode"=>0}
-      if res_data["ErrCode"] == 0
-        wx_cookie_str = response['set-cookie']  #获取cookie的值
-        #"slave_user=gh_91dc23d9899e; Path=/; Secure; HttpOnly, slave_sid=NjJyWU9CMllLYWNRS0w4Tk05YXk3NlRjR09MZVQzOUFNSGRVR3lEcG1Pc1lYS1BPMEZ5dVduNGdCQnRVYnZHRnpOdlF3UmllRVVRak50ZlZmTWs3TkZ1YmhLQWxJWWR3RXRWMXhxSzRPdkZFSjFLRUNiblFrcHB6c1ZkdHVNWE0=; Path=/; Secure; HttpOnly"
-        slave_user = wx_cookie_str.scan(/slave_user=(\w+);/).flatten[0]  #当前登录用户
-        slave_sid = wx_cookie_str.scan(/slave_sid=(\w+=)/).flatten[0] #当前登录用户id
-
-        wx_cookie = "slave_user=#{slave_user}; slave_sid=#{slave_sid};"
-        msg =res_data["ErrMsg"]
-        token = msg.scan(/token=(\d+)/).flatten[0] #登录后的token
-
-        gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
-        gzh_client.update_attributes(:wx_login_token => token, :wx_cookie => wx_cookie) #更新公众号faker_id
-      else
-        message = "login error"
-        return false
-      end
-    }
-    if slave_user && slave_sid && token
-      return [token, wx_cookie]
-    else
-      return false
-    end
-
-  end
-
   #获取自身faker_id
   def get_self_fakeid(wx_cookie, token)
     http = set_http(WEIXIN_URL)
@@ -107,7 +61,7 @@ class ApplicationController < ActionController::Base
 
   #获取朋友faker_id
   def get_new_friend_fakeid(wx_cookie, token)
-    page_contact_action = WEIXIN_CONTACT_LIST_ACTION % token
+    page_contact_action = WEIXIN_CONTACT_LIST_ACTION % [10, token, 0]  #10 代表每页个数， 0代表第一页
     http = set_http(WEIXIN_URL)
     new_friend_faker_id = nil
     http.request_get(page_contact_action,{"Cookie" => wx_cookie} ) {|response|

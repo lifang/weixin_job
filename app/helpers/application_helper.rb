@@ -5,88 +5,7 @@ module ApplicationHelper
   require 'net/http'
   require "uri"
   require 'openssl'
-  
-  MW_URL = "http://wzpapp.gankao.co" #服务器地址
-  WEIXIN_OPEN_URL = "https://api.weixin.qq.com"  #微信api地址
-  WEIXIN_DOWNLOAD_URL = "http://file.api.weixin.qq.com"  #微信文件地址
-  DOWNLOAD_RESOURCE_ACTION = "/cgi-bin/media/get?access_token=%s&media_id=%s"  #微信下载资源 action
-  GET_USER_INFO_ACTION = "/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN" #微信获取用户基本信息action
-  ACCESS_TOKEN_ACTION = "/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" #微信获取access_token action
-  CREATE_MENU_ACTION = "/cgi-bin/menu/create?access_token=%s" #创建自定义菜单action
-  GET_USER_LIST_ACTION = "/cgi-bin/user/get?access_token=%s" #获取关注者列表action
-
-  #根据app_id 和app_secret获取帐号token
-  def get_access_token(company)
-    app_id = company.app_id
-    app_secret = company.app_secret
-    token_action = ACCESS_TOKEN_ACTION % [app_id, app_secret]
-    token_info = create_get_http(WEIXIN_OPEN_URL ,token_action)
-    return token_info
-  end
-
-  #发get请求获得access_token
-  def create_get_http(url ,route)
-    http = set_http(url)
-    request= Net::HTTP::Get.new(route)
-    back_res = http.request(request)
-    return JSON back_res.body
-  end
-
-  #发post请求创建自定义菜单
-  def create_post_http(url,route_action,menu_bar)
-    http = set_http(url)
-    request = Net::HTTP::Post.new(route_action)
-    request.set_body_internal(menu_bar)
-    return JSON http.request(request).body
-  end
-
-  #设置http基本参数
-  def set_http(url)
-    uri = URI.parse(url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    if uri.port==443
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    end
-    http
-  end
-
-  #根据获得的用户 open_id 列表
-  #  {
-  #  "total":23000,
-  #  "count":10000,
-  #  "data":{"
-  #   openid":[
-  #        "OPENID1",
-  #        "OPENID2",
-  #        ...,
-  #        "OPENID10000"
-  #     ]
-  #   },
-  #   "next_openid":"NEXT_OPENID1"
-  #}
-  def get_all_user_info(user_list_info, access_token_val)
-    total_count = user_list_info["total"]
-    if total_count > 10000
-
-    else
-      openid_list = user_list_info["data"]["openid"]
-      openid_list.each do |open_id|
-        action = GET_USER_INFO_ACTION % [access_token_val, open_id]
-
-        user_info = create_get_http(WEIXIN_OPEN_URL, action)
-        if user_info && user_info["subscribe"] == 1
-          client = Client.find_by_open_id(open_id)
-          client_attributes = {:name => user_info["nickname"], :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
-          if client
-            client.update_attributes(client_attributes)
-          else
-            client = Client.create(client_attributes)
-          end
-        end
-      end
-    end
-  end
+  include Weixin
 
   def is_hover?(*controller_name)
     controller_name.each do |name|
@@ -217,5 +136,32 @@ module ApplicationHelper
       APNS.port = 2195
       APNS.send_notification(token,:alert => content, :badge => badge, :sound => client.id)
     end
+  end
+
+  #辅助，根据总数自定义每页数目
+  def set_perpage(total)
+    if total < 100
+      perpage = 50
+    elsif total >= 100 && total <= 1000
+      perpage = 200
+    elsif total > 1000 && total <= 3000
+      perpage = 300
+    elsif total > 3000 && total <= 10000
+      perpage = 1000
+    else
+      perpage = 1500
+    end
+    perpage
+  end
+  
+  #辅助方法，返回分页数
+  def pagecount(total)
+    perpage = set_perpage(total)
+    if total % perpage == 0
+      init_page = total/perpage
+    else
+      init_page = total/perpage + 1
+    end
+    init_page
   end
 end
