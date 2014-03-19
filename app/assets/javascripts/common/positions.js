@@ -20,6 +20,9 @@ function position_edit(obj){
         str += add_arr[i]+"</br>"
         str += "<input type='hidden' name='address_id[]' value='"+arr[i]+"' />"
     }
+    if(str==""){
+        str="请点击选择工作地点"
+    }
     var span = $(".jobInfo").find(".place").find("span");
     span.html(str);
 }
