@@ -343,7 +343,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 /*工作地点*/
 .workplaceBox { padding: 20px;}
-.newWorkplace .sheng,.newWorkplace .shi { font-size: 16px; margin-left: 10px; padding: 3px; width: 122px;}
+.newWorkplace .sheng,.newWorkplace .shi { font-size: 12px; margin-left: 10px; padding: 3px; width: 122px;}
 
 /*分页样式*/
 .page { text-align: center; line-height: 30px; margin-bottom: 10px;}
