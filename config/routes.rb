@@ -29,6 +29,9 @@ match "/weixins/accept_token" => "weixins#accept_token"
   end
 
   resources :companies do
+    collection do
+      get :synchronize_old_users
+    end
     resources :work_addresses
 
     resources :company_profiles do
