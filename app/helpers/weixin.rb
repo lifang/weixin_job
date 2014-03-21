@@ -150,17 +150,18 @@ module Weixin
     else
       avatar_url, friend_faker_id, nickname = get_avatar_hack(company)  #订阅号 and 未认证服务号
     end
+    nickname = nickname.force_encoding 'utf-8'
     if client
       begin
         client.update_attributes(:avatar_url => avatar_url,:name=> get_name(nickname), :faker_id => friend_faker_id)
       rescue
-        client.update_attributes(:avatar_url => avatar_url,:name=> "无名氏", :faker_id => friend_faker_id)
+        client.update_attributes(:avatar_url => avatar_url,:name=> "无名氏1", :faker_id => friend_faker_id)
       end
     else
       begin
-        company.clients.create(:name => get_name(nickname), :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
-      rescue
-        company.clients.create(:name => "无名氏", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+        client = company.clients.create(:name => get_name(nickname), :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+      rescue  Exception => e
+        company.clients.create(:name => "无名氏2", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
       end
     end
   end
@@ -188,7 +189,6 @@ module Weixin
       wx_token, wx_cookie = login_info
       user_faker_id = get_self_fakeid(wx_cookie, wx_token) #获取自身faker_id
       friend_faker_id, nickname = get_new_friend_fakeid_and_nickname(wx_cookie, wx_token) #获取最新好友的faker_id and nickname
-
       gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
       gzh_client.update_attributes(:faker_id =>user_faker_id) if gzh_client.faker_id != user_faker_id #更新公众号faker_id
       avatar_url = get_friend_avatar(wx_token, wx_cookie, friend_faker_id, company) #订阅号，获取头像
@@ -203,17 +203,18 @@ module Weixin
     http = set_http(WEIXIN_URL)
     new_friend_faker_id, nick_name = nil, nil
     http.request_get(page_contact_action,{"Cookie" => wx_cookie} ) {|response|
+      str = response.body
       f_id_reg = Regexp.new('"id":([0-9]{4,20})')
       nick_name_reg = Regexp.new('"nick_name":"([^"]+)"')
-      response.read_body do |str|   # read body now
-        friend_faker_id = f_id_reg.match(str).to_a[1]
-        nickname = nick_name_reg.match(str).to_a[1]
-        if friend_faker_id.present? && nickname.present?
-          new_friend_faker_id = friend_faker_id
-          nick_name = nickname
-          break
-        end
+      #response.read_body do |str|   # read body now
+      friend_faker_id = f_id_reg.match(str).to_a[1]
+      nickname = nick_name_reg.match(str).to_a[1]
+      if friend_faker_id.present? && nickname.present?
+        new_friend_faker_id = friend_faker_id
+        nick_name = nickname
+        # break
       end
+      #end
     }
     [new_friend_faker_id, nick_name]
   end

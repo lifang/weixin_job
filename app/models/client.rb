@@ -7,6 +7,7 @@ class Client < ActiveRecord::Base
   has_many :tags, :through => :labels
   attr_protected :authenticate
   #serialize :html_content
+  validates_uniqueness_of :open_id, :allow_nil => true
   TYPES = {:ADMIN => 0, :CONCERNED => 1}  #0 管理员(从IOS设备上登陆的人)，1关注的用户
   HAS_NEW_MESSAGE = {:NO => 0, :YES => 1} #是否有新消息
   HAS_NEW_RECORD = {:NO => 0, :YES => 1}  #是否有新提醒
