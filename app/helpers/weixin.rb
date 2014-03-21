@@ -236,24 +236,16 @@ module Weixin
       "referer" => 'https://mp.weixin.qq.com/cgi-bin/singlemsgpage?&token=%s&fromfakeid=%s'+
         '&msgid=&source=&count=20&t=wxm-singlechat&lang=zh_CN' % [wx_token, gzh_client.faker_id]
     }  # 添加 HTTP header 里的 referer 欺骗腾讯服务器。如果没有此 HTTP header，将得到登录超时的错误。
-    #i = 0
     msg = ""
     http.request_post(WEIXIN_SEND_MESSAGE_ACTION, post_data, header) {|response|
       res =  JSON response.body
-      p 11111111111111111111111
-      p res
-      p res["base_resp"]["ret"]
       if res["base_resp"]["ret"]== 0
         msg = "success"
       else #数据库的token超时，重新登录
         login_info = login_to_weixin(company)
         if login_info.present?
           wx_token, wx_cookie = login_info
-
-#          while i < 2
-#            i += 1
             send_message_request(company, content, gzh_client, to_faker_id, wx_token, wx_cookie)
-#          end
         end
       end
     }
