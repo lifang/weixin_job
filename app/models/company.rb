@@ -93,5 +93,8 @@ class Company < ActiveRecord::Base
         Company.get_friend_list(wx_cookie, wx_token, self)
       end
     end
+    Client.find_each do |client|
+      client.give_client_a_name
+    end
   end
 end

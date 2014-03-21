@@ -5,7 +5,7 @@
         <label>公司名称</label>
         <span><%= @company.name %></span>
         <a class="scd_btn" name="companyInfoEdit">编辑</a>
-        &nbsp;&nbsp;&nbsp;<a class="scd_btn sync_user" data-url="<%= synchronize_old_users_companies_path + "?company_id=#{@company.id}" %>">同步微信公众号关注者数据</a>
+        &nbsp;&nbsp;&nbsp;<a class="sync_user" data-url="<%= synchronize_old_users_companies_path + "?company_id=#{@company.id}" %>">同步微信公众号关注者数据</a>
       </li>
       <li>
         <label>公众账号类型</label>

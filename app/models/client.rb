@@ -12,7 +12,7 @@ class Client < ActiveRecord::Base
   HAS_NEW_RECORD = {:NO => 0, :YES => 1}  #是否有新提醒
   STATUS = {:valid => 0, :invalid => 1}  #用户是否被屏蔽？ 0是正常， 1被屏蔽
   
-  after_save :give_client_a_name
+  #  after_save :give_client_a_name
 
   #获得关注者头像
   def client_avatar_url

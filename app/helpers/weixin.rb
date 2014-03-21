@@ -152,13 +152,13 @@ module Weixin
       begin
         client.update_attributes(:avatar_url => avatar_url,:name=> get_name(nickname), :faker_id => friend_faker_id)
       rescue
-        client.update_attributes(:avatar_url => avatar_url,:name=> "游客", :faker_id => friend_faker_id)
+        client.update_attributes(:avatar_url => avatar_url,:name=> "无名氏", :faker_id => friend_faker_id)
       end
     else
       begin
         company.clients.create(:name => get_name(nickname), :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
       rescue
-        company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+        company.clients.create(:name => "无名氏", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
       end
     end
   end
@@ -520,7 +520,7 @@ Text
               begin
                 client.update_attributes(client_attributes)
               rescue
-                client_attributes[:name] = "游客"
+                client_attributes[:name] = "无名氏"
                 client.update_attributes(client_attributes)
               end
             else
@@ -532,10 +532,10 @@ Text
           if user_info && user_info["subscribe"] == 1
             client_attributes = {:company_id => company.id, :mobiephone => "", :name => get_name(user_info["nickname"]), :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
             begin
-              Client.create(client_attributes)
+              client = Client.create(client_attributes)
             rescue
-              client_attributes[:name] = "游客"
-              Client.create(client_attributes)
+              client_attributes[:name] = "无名氏"
+              client = Client.create(client_attributes)
             end
           else
             status = -1
@@ -574,10 +574,14 @@ Text
     total_count = get_friend_total_count(token, wx_cookie, 1, 0) #1代表每页个数， 0代表第几页 这一次取关注者总数
     total_page, perpage = pagecount(total_count)
     total_page.times do |i|
-      sleep 2
-      get_friend_total_count(token, wx_cookie, perpage, i, company)
+      begin
+        get_friend_total_count(token, wx_cookie, perpage, i, company)
+      rescue
+        msg = "time_out"
+      ensure
+        next
+      end
     end
-
   end
 
   #请求获取好友总数 以及匹配的关注者列表
@@ -617,34 +621,37 @@ Text
       faker_id = client_hash["id"]
     
       client = Client.where(:faker_id => faker_id, :company_id => company.id )[0]
-      if client.present?
-        avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company)
-        client_attr = {:name => client_hash["remark_name"].present? ? get_name(client_hash["remark_name"]) : get_name(client_hash["nick_name"]),
-          :faker_id => faker_id}
-        begin
-          if avatar_url
-            client.update_attributes(client_attr.merge({:avatar_url => avatar_url}))
-          else
-            client.update_attributes(client_attr)
+      Client.transaction do
+        if client.present?
+          avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company) if client.avatar.blank?
+          client_attr = {:name => client_hash["remark_name"].present? ? get_name(client_hash["remark_name"]) : get_name(client_hash["nick_name"]),
+            :faker_id => faker_id}
+          begin
+            if avatar_url
+              client.update_attributes(client_attr.merge({:avatar_url => avatar_url}))
+            else
+              client.update_attributes(client_attr)
+            end
+          rescue
+            if avatar_url
+              client.update_attributes({:name => "无名氏",:faker_id => faker_id, :avatar_url => avatar_url})
+            else
+              client.update_attributes({:name => "无名氏",:faker_id => faker_id})
+            end
           end
-        rescue
-          if avatar_url
-            client.update_attributes({:name => "游客",:faker_id => faker_id, :avatar_url => avatar_url})
-          else
-            client.update_attributes({:name => "游客",:faker_id => faker_id})
+        else
+          avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company)
+          client_attr = {:name => client_hash["remark_name"].present? ? get_name(client_hash["remark_name"]) : get_name(client_hash["nick_name"]),
+            :faker_id => faker_id,:company_id => company.id, :types => Client::TYPES[:CONCERNED], :avatar_url => avatar_url,
+            :mobiephone => ""}
+          begin
+            client = Client.create(client_attr)
+          rescue
+            client_attr[:name] = "无名氏"
+            client = Client.create(client_attr)
           end
         end
-      else
-        avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company)
-        client_attr = {:name => client_hash["remark_name"].present? ? get_name(client_hash["remark_name"]) : get_name(client_hash["nick_name"]),
-          :faker_id => faker_id,:company_id => company.id, :types => Client::TYPES[:CONCERNED], :avatar_url => avatar_url,
-          :mobiephone => ""}
-        begin
-          Client.create(client_attr)
-        rescue
-          client_attr[:name] = "游客"
-          Client.create(client_attr)
-        end
+        client.give_client_a_name
       end
     end
   end

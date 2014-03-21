@@ -57,6 +57,8 @@ class CompaniesController < ApplicationController
       company.synchronize_old_client_data
     rescue
       status = -1
+    ensure
+      status = 0
     end
     render :text =>  status
   end
