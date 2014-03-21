@@ -26,8 +26,8 @@ class Client < ActiveRecord::Base
 
   #client保存之后，如果没有名字，给个无名氏
   def give_client_a_name
-    if self.name.blank?
-      self.name = "无名氏"
+    if self.types == TYPES[:CONCERNED] && self.name.blank?
+      self.update_attribute(:name, "无名氏")
     end
   end
 end
