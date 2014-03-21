@@ -239,14 +239,16 @@ module Weixin
     msg = ""
     http.request_post(WEIXIN_SEND_MESSAGE_ACTION, post_data, header) {|response|
       res =  JSON response.body
-      if res["base_resp"]["ret"]== 0
+      if res["base_resp"]["ret"] == 0
         msg = "success"
-      else #数据库的token超时，重新登录
+      elsif res["base_resp"]["ret"].blank?  #数据库的token超时，重新登录
         login_info = login_to_weixin(company)
         if login_info.present?
           wx_token, wx_cookie = login_info
-            send_message_request(company, content, gzh_client, to_faker_id, wx_token, wx_cookie)
+          send_message_request(company, content, gzh_client, to_faker_id, wx_token, wx_cookie)
         end
+      else
+        msg = ""
       end
     }
     msg

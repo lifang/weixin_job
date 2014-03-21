@@ -175,7 +175,8 @@ class Api::MessagesController < ApplicationController
           if message
             msg = "发送成功"
           else
-            msg = "发送失败"
+            status = 0
+            msg = "此用户超过48小时未与您互动，发送消息失败"
           end
         end
       else
@@ -185,7 +186,7 @@ class Api::MessagesController < ApplicationController
      
     else
       status = 0
-      msg = "缺少参数或者用户无效"
+      msg = "缺少参数或者用户无效，等待用户主动与您联系"
     end
 
     render :json => {:status => status, :message => msg, :return_object => {:message => status == 0 ? nil : message}}
