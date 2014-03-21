@@ -7,7 +7,9 @@ module Weixin
 
   Weixin_resource = "/public/companies/%d/weixin_resource/" #微信资源路径
   #认证服务号
-  MW_URL = "http://wzp.comdosoft.com" #服务器地址
+  #MW_URL = "http://wzp.comdosoft.com" #服务器地址
+  #MW_URL = "http://wzpapp.gankao.co" #服务器地址
+  MW_URL = "http://116.255.202.123" #服务器地址
   WEIXIN_OPEN_URL = "https://api.weixin.qq.com"  #微信api地址
   WEIXIN_DOWNLOAD_URL = "http://file.api.weixin.qq.com"  #微信文件地址
   DOWNLOAD_RESOURCE_ACTION = "/cgi-bin/media/get?access_token=%s&media_id=%s"  #微信下载资源 action
@@ -143,7 +145,7 @@ module Weixin
   #保存关注者信息
   def save_client_info(open_id, company)
     client = Client.find_by_open_id_and_company_id(open_id, company.id) #先查找是否存在当前关注者的信息
-    if company.service_account? && self.app_service_certificate #是服务号并且是认证的
+    if company.service_account? && company.app_service_certificate #是服务号并且是认证的
       avatar_url,nickname = get_user_basic_info(open_id, company) #服务号根据api接口获取头像信息  认证服务号
     else
       avatar_url, friend_faker_id, nickname = get_avatar_hack(company)  #订阅号 and 未认证服务号
@@ -607,6 +609,7 @@ Text
         end
       end
     }
+   
     save_user_info_from_page(client_arr, company, token, wx_cookie) if company
     total_count
   end
@@ -616,11 +619,10 @@ Text
     #{"id"=>2166217981, "nick_name"=>"\u542C\u96EA", "remark_name"=>"", "group_id"=>0}
     client_arr.each do |client_hash|
       faker_id = client_hash["id"]
-    
       client = Client.where(:faker_id => faker_id, :company_id => company.id )[0]
       Client.transaction do
         if client.present?
-          avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company) if client.avatar.blank?
+          avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company) if client.avatar_url.blank?
           client_attr = {:name => client_hash["remark_name"].present? ? get_name(client_hash["remark_name"]) : get_name(client_hash["nick_name"]),
             :faker_id => faker_id}
           begin
@@ -648,7 +650,6 @@ Text
             client = Client.create(client_attr)
           end
         end
-        client.give_client_a_name
       end
     end
   end

@@ -16,23 +16,6 @@ class WeixinsController < ApplicationController
       if @company.present?
         open_id = params[:xml][:FromUserName]
         client = Client.find_by_open_id(open_id)
-        #完善用户信息
-        unless @company.service_account? && @company.app_service_certificate
-          if client
-            if client.faker_id.blank?  #有open_id 没有 faker_id
-              faker_id = get_voice_path_or_faker_id(@company, "faker_id")
-              client.update_attribute(:faker_id, faker_id)
-            end
-          else
-            faker_id = get_voice_path_or_faker_id(@company, "faker_id")
-            client = @company.clients.where(:types => Client::TYPES[:CONCERNED], :faker_id => faker_id)[0]
-            if client  # 有faker_id 没有 open_id  是老用户  同步来的
-              client.update_attribute(:open_id, open_id)
-            else
-              save_client_info(open_id, @company) #新建client记录，保存头像，faker_id, open_id
-            end
-          end
-        end
 
         if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
           return_app_regist_link  #返回app登记链接
@@ -42,12 +25,11 @@ class WeixinsController < ApplicationController
         elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
           #存储消息并推送到ios端
           get_client_message
-          unless @company.service_account? && @company.app_service_certificate
-            if client && client.html_content.blank? #返回app登记链接
-              return_app_regist_link
-            else
-              render :text => "ok"
-            end
+          #完善用户信息
+          complete_client_info(@company, client, open_id)  #save open_id
+ 
+          if client && client.html_content.blank? #返回app登记链接
+            return_app_regist_link
           else
             render :text => "ok"
           end
@@ -73,6 +55,25 @@ class WeixinsController < ApplicationController
       end
     elsif request.request_method == "GET" && tmp_encrypted_str == signature  #配置服务器token时是get请求
       render :text => tmp_encrypted_str == signature ? echostr :  false
+    end
+  end
+
+  def complete_client_info(company, client, open_id)
+    unless company.service_account? && company.app_service_certificate
+      if client
+        if client.faker_id.blank?  #有open_id 没有 faker_id
+          faker_id = get_voice_path_or_faker_id(company, "faker_id")
+          client.update_attribute(:faker_id, faker_id)
+        end
+      else
+        faker_id = get_voice_path_or_faker_id(company, "faker_id")
+        client = company.clients.where(:types => Client::TYPES[:CONCERNED], :faker_id => faker_id)[0]
+        if client  # 有faker_id 没有 open_id  是老用户  同步来的
+          client.update_attribute(:open_id, open_id)
+        else
+          #save_client_info(open_id, @company) #新建client记录，保存头像，faker_id, open_id
+        end
+      end
     end
   end
 
