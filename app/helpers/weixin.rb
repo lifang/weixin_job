@@ -23,7 +23,7 @@ module Weixin
   WEIXIN_LOGIN_ACTION = "/cgi-bin/login?lang=zh_CN" #公众号后台登录action
   WEIXIN_USER_SETTING_ACTION = '/cgi-bin/settingpage?t=setting/index&action=index&token=%s&lang=zh_CN' #公众号设置页面action，获取自身faker_id
   WEIXIN_CONTACT_LIST_ACTION = "/cgi-bin/contactmanage?t=user/index&lang=zh_CN&pagesize=%d&type=0&groupid=0&token=%s&pageidx=%d" #获取关注者列表 action
-  WEIXIN_GET_FRIEND_AVATAR_ACTION = "/cgi-bin/getheadimg?fakeid=%s&token=%s&lang=zh_CN" #公众号获得用户头像action
+  WEIXIN_GET_FRIEND_AVATAR_ACTION = "/misc/getheadimg?fakeid=%s&token=%s&lang=zh_CN" #公众号获得用户头像action
   WEIXIN_SEND_MESSAGE_ACTION = '/cgi-bin/singlesend?lang=zh_CN'  #公众号发送消息 action
   WEIXIN_GET_MESSAGE_ACTION = '/cgi-bin/message?t=message/list&count=5&day=0&token=%s&lang=zh_CN' #公众号获取消息列表 action
   WEIXIN_DOWNLOAD_VOICE_ACTION = '/cgi-bin/downloadfile?msgid=%d&source=&token=%s'  #公众号下载语音消息 action
@@ -149,9 +149,17 @@ module Weixin
       avatar_url, friend_faker_id, nickname = get_avatar_hack(company)  #订阅号 and 未认证服务号
     end
     if client
-      client.update_attributes(:avatar_url => avatar_url,:name=> nickname, :faker_id => friend_faker_id)
+      begin
+        client.update_attributes(:avatar_url => avatar_url,:name=> get_name(nickname), :faker_id => friend_faker_id)
+      rescue
+        client.update_attributes(:avatar_url => avatar_url,:name=> "游客", :faker_id => friend_faker_id)
+      end
     else
-      company.clients.create(:name => nickname || "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+      begin
+        company.clients.create(:name => get_name(nickname), :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+      rescue
+        company.clients.create(:name => "游客", :mobiephone =>"", :remark => "无", :types => Client::TYPES[:CONCERNED], :open_id => open_id, :avatar_url => avatar_url, :faker_id => friend_faker_id)
+      end
     end
   end
   
@@ -406,10 +414,11 @@ module Weixin
     http.request_get(action,{"Cookie" => wx_cookie} ) {|response|
       res = response.body
       m_id = Regexp.new('"id":([0-9]{4,20})')
-      faker_id = Regexp.new('"faker_id":([0-9]{4,20})')
+      faker_id = Regexp.new('"fakeid":"([0-9]{4,20})"')
       msg_arr = res.scan(m_id)
-      faker_id = res.scan(faker_id)
+      faker_id_arr = res.scan(faker_id)
       msg_id = msg_arr.flatten[0]
+      faker_id = faker_id_arr.flatten[0]
     }
     [msg_id,faker_id]
   end
@@ -507,7 +516,7 @@ Text
           unless client.name.present? && client.avatar_url.present?
             user_info = create_get_http(WEIXIN_OPEN_URL, action)
             if user_info && user_info["subscribe"] == 1
-              client_attributes = {:company_id => company.id, :name => user_info["nickname"], :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
+              client_attributes = {:company_id => company.id, :name => get_name(user_info["nickname"]), :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
               begin
                 client.update_attributes(client_attributes)
               rescue
@@ -521,7 +530,7 @@ Text
         else
           user_info = create_get_http(WEIXIN_OPEN_URL, action)
           if user_info && user_info["subscribe"] == 1
-            client_attributes = {:company_id => company.id, :name => user_info["nickname"], :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
+            client_attributes = {:company_id => company.id, :mobiephone => "", :name => get_name(user_info["nickname"]), :open_id => user_info["openid"], :avatar_url => user_info["headimgurl"],:types => Client::TYPES[:CONCERNED]}
             begin
               Client.create(client_attributes)
             rescue
@@ -609,8 +618,8 @@ Text
     
       client = Client.where(:faker_id => faker_id, :company_id => company.id )[0]
       if client.present?
-        avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company) unless client.avatar_url.present?
-        client_attr = {:name => client_hash["remark_name"].present? ? client_hash["remark_name"] : client_hash["nick_name"],
+        avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company)
+        client_attr = {:name => client_hash["remark_name"].present? ? get_name(client_hash["remark_name"]) : get_name(client_hash["nick_name"]),
           :faker_id => faker_id}
         begin
           if avatar_url
@@ -627,12 +636,14 @@ Text
         end
       else
         avatar_url = return_avatar_url(wx_token, wx_cookie,faker_id, company)
+        client_attr = {:name => client_hash["remark_name"].present? ? get_name(client_hash["remark_name"]) : get_name(client_hash["nick_name"]),
+          :faker_id => faker_id,:company_id => company.id, :types => Client::TYPES[:CONCERNED], :avatar_url => avatar_url,
+          :mobiephone => ""}
         begin
-          Client.create({:name => client_hash["remark_name"].present? ? client_hash["remark_name"] : client_hash["nick_name"],
-              :faker_id => faker_id,:company_id => company.id, :types => Client::TYPES[:CONCERNED], :avatar_url => avatar_url})
+          Client.create(client_attr)
         rescue
-          Client.create({:name => "游客",:faker_id => faker_id,:company_id => company.id,
-              :types => Client::TYPES[:CONCERNED], :avatar_url => avatar_url})
+          client_attr[:name] = "游客"
+          Client.create(client_attr)
         end
       end
     end
@@ -685,5 +696,9 @@ Text
     link
   end
 
+  #处理名字
+  def get_name(name)
+    name.present? ? name : "无"
+  end
   
 end

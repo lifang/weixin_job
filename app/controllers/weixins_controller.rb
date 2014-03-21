@@ -40,12 +40,17 @@ class WeixinsController < ApplicationController
         
           create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
         elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
-          unless @company.service_account? && @company.app_service_certificate
-            return_app_regist_link if client && client.html_content.blank? #返回app登记链接
-          end
           #存储消息并推送到ios端
           get_client_message
-          render :text => "ok"
+          unless @company.service_account? && @company.app_service_certificate
+            if client && client.html_content.blank? #返回app登记链接
+              return_app_regist_link
+            else
+              render :text => "ok"
+            end
+          else
+            render :text => "ok"
+          end
         elsif params[:xml][:MsgType] == "image" #用户发送图片
           save_image_or_voice_from_wx("image")
           render :text => "ok"
