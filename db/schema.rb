@@ -17,14 +17,9 @@ ActiveRecord::Schema.define(:version => 20140318071029) do
     t.integer  "order_index"
     t.string   "name"
     t.integer  "parent_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
-
-  add_index "cities", ["created_at"], :name => "index_cities_on_created_at"
-  add_index "cities", ["order_index"], :name => "index_cities_on_order_index"
-  add_index "cities", ["parent_id"], :name => "index_cities_on_parent_id"
-  add_index "cities", ["updated_at"], :name => "index_cities_on_updated_at"
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"
@@ -115,6 +110,15 @@ ActiveRecord::Schema.define(:version => 20140318071029) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "form_datas", :force => true do |t|
+    t.integer  "client_resume_id"
+    t.text     "data_hash"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "form_datas", ["client_resume_id"], :name => "index_form_datas_on_client_resume_id"
 
   create_table "labels", :force => true do |t|
     t.integer  "company_id"

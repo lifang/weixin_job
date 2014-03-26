@@ -135,12 +135,8 @@ class CompanyProfilesController < ApplicationController
       imge = (img=="#" ? "" : "<img src='#{img}' />")
       txt = (text_arr[index].nil? ? "":"<p>#{  (text_arr[index].html_safe)}</p>")
       tuwen += "
-      <div class='tuwenBox'>
-			<div class='tuwenImg'>
-				#{imge}
-			</div>
+			#{imge}
 			#{txt}
-		</div>
       "
     end
     html = "
@@ -159,9 +155,14 @@ class CompanyProfilesController < ApplicationController
 </script>
 </head>
 <body>
-	<div class='jobInfo'>
-		#{tuwen}
-	</div>
+<article>
+<section class='title'>#{@company.name}</section>
+    <section class='area'>
+    	<div class='about'>
+      #{tuwen}
+	  </div>
+    </section>
+</article>
 </body>
 </html>
     "
