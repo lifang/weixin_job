@@ -29,7 +29,7 @@ module ApplicationHelper
   end
 
   def get_element_html(client_html_content, optional_fileds, tag_names)
-    ele = ""
+    ele = "<ul>"
     client_html_content = change_string_to_hash(client_html_content) if client_html_content
     optional_fileds.each do |ele_type_name, label_and_options|
       label_name = label_and_options["name"]
@@ -39,41 +39,42 @@ module ApplicationHelper
       end
       # input
       if ele_type_name.include?("message")
-        ele += "<div class='infoItem itemBox'>
-                     <div><label>#{label_name}</label><input type='text' name='app_client[#{ele_type_name}]' value= '#{saved_value}' /></div>
-                </div>"
+        ele += "<li class='infoItem itemBox'>
+                     <label>#{label_name}</label>
+<input type='text' name='app_client[#{ele_type_name}]' value= '#{saved_value}' />
+                </li>"
         #单选
       elsif ele_type_name.include?("radio")
         radio=""
 
         options.each do |value|
-          radio += "<div><input type='radio' name='app_client[#{ele_type_name}]' value='#{value}'  #{saved_value && saved_value == value ? 'checked=checked' : ''} /><span>#{value}</span></div>"
+          radio += "<p><input type='radio' name='app_client[#{ele_type_name}]' value='#{value}'  #{saved_value && saved_value == value ? 'checked=checked' : ''} />#{value}</p>"
         end
-        ele += "<div class='radioItem itemBox'>
-                    <div><span>#{label_name}</span></div>
+        ele += "<li class='radioItem itemBox'>
+                   <label>#{label_name}</label>
                       #{radio}
-                </div>"
+                </li>"
 
         #多选~~~
       elsif ele_type_name.include?("checkbox")
         checkbox = ""
         options.each do |value|
-          checkbox += "<div><input type='checkbox' name='app_client[#{ele_type_name}][]' value='#{value}'  #{saved_value && saved_value.include?(value) ? 'checked=checked' : ''}/><span>#{value}</span></div>"
+          checkbox += "<p><input type='checkbox' name='app_client[#{ele_type_name}][]' value='#{value}'  #{saved_value && saved_value.include?(value) ? 'checked=checked' : ''}/>#{value}<p>"
         end
-        ele += " <div class='checkItem itemBox'>
-                    <div><span>#{label_name}</span></div>
+        ele += " <li class='checkItem itemBox'>
+                    <label>#{label_name}</label>
                         #{checkbox}
-                </div>"
+                </li>"
         #标签
       elsif ele_type_name.include?("tag")
         checkbox = ""
         options.each do |value|
-          checkbox += "<div><input type='checkbox' name='tags[#{ele_type_name}][]' value='#{value}' #{tag_names.include?(value) ? 'checked=checked' : ''}/><span>#{value}</span></div>"
+          checkbox += "<p><input type='checkbox' name='tags[#{ele_type_name}][]' value='#{value}' #{tag_names.include?(value) ? 'checked=checked' : ''}/>#{value}</p>"
         end
-        ele += "<div class='checkItem itemBox'>
-                    <div><span>#{label_name}</span></div>
+        ele += "<li class='checkItem itemBox'>
+                    <label>#{label_name}</label>
                         #{checkbox}
-                </div>"
+                </li>"
         #下拉框
       elsif ele_type_name.include?("select")
         select = ""
@@ -81,10 +82,10 @@ module ApplicationHelper
           select += "<option value='#{value}' #{saved_value == value ? 'selected=selected' : ''}>#{value}</option>"
         end
 
-        ele += "<div class='selectItem itemBox'>
+        ele += "<li class='selectItem itemBox'>
                   <label>#{label_name}</label>
                  <select name=app_client[#{ele_type_name}]>#{select}</select>
-        "
+                </li>"
       end
     end if optional_fileds
     ele
