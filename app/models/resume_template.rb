@@ -19,55 +19,58 @@ class ResumeTemplate < ActiveRecord::Base
     <title>#{company.name}-我的简历</title>
   </head>
   <body>
-    <div class='form_list'>
+<article>
+    <section class='title'>我的简历</section>
     <form id='create_client_resume_form' action='/client_resumes' accept-charset='UTF-8' method='post' enctype='multipart/form-data'>
+       <section class='area'>
+    	    <div class='input_list'>
     <input name='utf8' type='hidden' value='✓'/>
     <input class='authenticity_token' name='authenticity_token' type='hidden' value=''/>
     <input type='hidden' name='resume_id' value='#{resume.id}'/>
-    <input type='hidden' name='company_id' value='#{resume.company_id}'/>"
-
+    <input type='hidden' name='company_id' value='#{resume.company_id}'/>
+   <ul>"
     resume.html_content.each do |k, v|
       if k.to_s.include?("message")
-        html_head << "<div class='infoItem itemBox'><div><label>#{v[:name]}</label><input type='text' name='[form_p][#{k.to_s}][#{v[:name]}]'/></div></div>"
+        html_head << "<li class='infoItem itemBox'><label>#{v[:name]}</label><input type='text' name='[form_p][#{k.to_s}][#{v[:name]}]'/></li>"
       elsif k.to_s.include?("radio")
-        html_head << "<div class='radioItem itemBox'><div><span>#{v[:name]}</span></div>"
-        html_head << "<div><input type='radio' name='[form_p][#{k.to_s}][#{v[:name]}]' value='#{v[:options][0]}' checked/><span>#{v[:options][0]}</span></div>"
+        html_head << "<li class='radioItem itemBox'><label>#{v[:name]}</label>"
+        html_head << "<p><input type='radio' name='[form_p][#{k.to_s}][#{v[:name]}]' value='#{v[:options][0]}' checked/>#{v[:options][0]}</p>"
         v[:options][1..v[:options].length-1].each do |o|
-          html_head << "<div><input type='radio' name='[form_p][#{k.to_s}][#{v[:name]}]' value='#{o}'/><span>#{o}</span></div>"
+          html_head << "<p><input type='radio' name='[form_p][#{k.to_s}][#{v[:name]}]' value='#{o}'/>#{o}</p>"
         end if v[:options][1..v[:options].length-1]
-        html_head << "</div>"
+        html_head << "</li>"
       elsif k.to_s.include?("checkbox")
-        html_head << "<div class='checkItem itemBox'><div><span>#{v[:name]}</span></div>"
+        html_head << "<li class='checkItem itemBox'><label>#{v[:name]}</label>"
         v[:options].each do |o|
-          html_head << "<div><input type='checkbox' name='[form_p][#{k.to_s}][#{v[:name]}][]' value='#{o}'/><span>#{o}</span></div>"
+          html_head << "<p><input type='checkbox' name='[form_p][#{k.to_s}][#{v[:name]}][]' value='#{o}'/>#{o}</p>"
         end
-        html_head << "</div>"
+        html_head << "</li>"
       elsif k.to_s.include?("select")
-        html_head << "<div class='selectItem itemBox'><label>#{v[:name]}</label>"
+        html_head << "<li class='selectItem itemBox'><label>#{v[:name]}</label>"
         html_head << "<select name='[form_p][#{k.to_s}][#{v[:name]}]'>"
         v[:options].each do |o|
           html_head << "<option value='#{o}'>#{o}</option>"
         end
-        html_head << "</select></div>"
+        html_head << "</select></li>"
       elsif k.to_s.include?("text")
         str = ResumeTemplate.encoding_character(v[:text])
-        html_head << "<div class='txtItem itemBox'>"
-        html_head << "<p>#{str}</p>"
+        html_head << "<li class='txtItem itemBox'>"
+        html_head << "<h1>#{str}</h1>"
         html_head << "<input type='hidden' name='[form_p][#{k.to_s}][#{:text}]' value='#{v[:text]}'/>"
-        html_head << "</div>"
+        html_head << "</li>"
       elsif k.to_s.include?("headimage")
-        html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
+        html_head << "<li class='imgItem itemBox'><label>#{v[:name]}</label>"
         html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
-        html_head << "</div>"
+        html_head << "</li>"
       elsif k.to_s.include?("file")
-        html_head << "<div class='imgItem itemBox'><label>#{v[:name]}</label>"
+        html_head << "<li class='imgItem itemBox'><label>#{v[:name]}</label>"
         html_head << "<input type='file' name='[form_p][#{k.to_s}][#{v[:name]}]'/>"
-        html_head << "</div>"     
+        html_head << "</li>"
       end
     end if resume.html_content
 
-    html_head << "<div class='form_btn'><button type='button' onclick='client_resume_valid(this)'>提交</button></div></form>"
-    html_head << "</div></body></html>"
+    html_head << "</ul></section><section class='btn'><button type='button' onclick='client_resume_valid(this)'>确定</button></section></form>"
+    html_head << "</article></body></html>"
     root_path = "#{Rails.root.to_s}/public/"
     resume_path =  "/companies/#{resume.company_id}/resumes/"
     FileUtils.mkdir_p(root_path + resume_path) unless Dir.exists?(root_path + resume_path)
