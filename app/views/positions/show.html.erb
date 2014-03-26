@@ -51,7 +51,7 @@
       <section class="area">
         <div class="text">
           <div class="h_name"><%=@position.name%></div>
-          <div><em><%=@position.updated_at.strftime("%Y-%m-%d")%></em></div>
+          <p><em><%=@position.updated_at.strftime("%Y-%m-%d")%></em></p>
           <div class="company">
             <h3><%=@company.name%></h3>
             <p>工作地点：<%@addr_and_position_relations.each do |aapr|%>

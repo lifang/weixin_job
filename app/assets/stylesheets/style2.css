@@ -114,10 +114,10 @@ article:after{
 	line-height: 40px;
 	height: 40px;
 }
-.text ol { padding: 10px 0;}
+.text ol {}
 .text ol li { list-style: inside decimal; margin: 10px 0;}
 .text div {line-height: 32px; padding: 10px 0;}
-.company { background: #f0f3f5; padding: 10px; border-radius: 5px; margin-top: 15px;}
+.text div.company { background: #f0f3f5; padding: 10px; border-radius: 5px; margin-top: 15px;}
 .company h3 { border-bottom: 1px #FFFFFF solid; font-size: 16px; line-height: 28px;}
 .company p { padding: 0px; line-height: 32px;}
 
