@@ -78,19 +78,23 @@ class Company < ActiveRecord::Base
 
   #同步旧的关注者的信息
   def synchronize_old_client_data
-    public_client = self.clients.where(:types => Client::TYPES[:ADMIN])[0]
-    if self.app_type && self.app_service_certificate #是服务号并且是认证的
+    if self.service_account? && self.app_service_certificate #是服务号并且是认证的
       #请求api
-      access_token = Company.get_access_token(self)
+      access_token = Company.get_access_token(self)#在helpers/weixin.rb
       if access_token && access_token["access_token"]
         access_token_val = access_token["access_token"]
-        get_user_list_action = ApplicationHelper::GET_USER_LIST_ACTION % access_token_val
-        user_list_info = Company.create_get_http(ApplicationHelper::WEIXIN_OPEN_URL ,get_user_list_action)
-        Company.get_all_user_info(user_list_info, access_token_val)
+        Company.service_account_get_user_list(access_token_val, self)
       end
     else
       #请求公众号后台用户列表
-       
+      login_info = Company.login_to_weixin(self)#在helpers/weixin.rb
+      if login_info.present?
+        wx_token, wx_cookie = login_info
+        Company.get_friend_list(wx_cookie, wx_token, self)
+      end
+    end
+    Client.find_each do |client|
+      client.give_client_a_name
     end
   end
 end

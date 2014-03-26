@@ -130,11 +130,10 @@ class Api::MessagesController < ApplicationController
       content = msg_type_value == 1 ? "图片" : "语音"
     end
     content_hash = get_content_hash_by_type(open_id, msg_type, content)
-
     if company_id.present? && current_client && receive_client && open_id
       company = Company.find_by_id(company_id)
       if company
-        if company.service_account?  #公众号是服务号
+        if company.service_account? &&  company.app_service_certificate #公众号是认证服务号
           access_token = get_access_token(company)
           if access_token and access_token["access_token"]
             send_message_action = "/cgi-bin/message/custom/send?access_token=#{access_token["access_token"]}"
@@ -160,13 +159,8 @@ class Api::MessagesController < ApplicationController
                 status = 0
                 msg = "此用户超过48小时未与您互动，发送消息失败"
               else
-                #没有发送短信的权限
-                message = send_message_hack(company, content, receive_client_id, current_client, receive_client, msg_type_value)
-                if message
-                  msg = "发送成功"
-                else
-                  msg = "发送失败"
-                end
+                status = 0
+                msg = "发送失败"
               end
             else
               status = 0
@@ -176,12 +170,13 @@ class Api::MessagesController < ApplicationController
             status = 0
             msg = "此公众号没有权限主动发送信息，请先认证！"
           end
-        else   #公众号是订阅号
+        else   #公众号是订阅号 或者未认证的服务号
           message = send_message_hack(company, content, receive_client_id, current_client, receive_client, msg_type_value)
           if message
             msg = "发送成功"
           else
-            msg = "发送失败"
+            status = 0
+            msg = "此用户超过48小时未与您互动，发送消息失败"
           end
         end
       else
@@ -191,7 +186,7 @@ class Api::MessagesController < ApplicationController
      
     else
       status = 0
-      msg = "缺少参数或者用户无效"
+      msg = "缺少参数或者用户无效，等待用户主动与您联系"
     end
 
     render :json => {:status => status, :message => msg, :return_object => {:message => status == 0 ? nil : message}}

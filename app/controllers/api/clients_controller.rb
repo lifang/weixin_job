@@ -27,7 +27,7 @@ class Api::ClientsController < ApplicationController
           tags = Tag.all.map(&:content).uniq
           person_list = Client.where(["company_id=? and types=?", user.company_id, Client::TYPES[:CONCERNED]])
           pl = person_list.inject([]){|a,p|
-            hash = {:id => p.id, :name => p.name, :mobiephone => p.mobiephone, :avatar_url => p.client_avatar_url,
+            hash = {:id => p.id, :name => get_name(p.name), :mobiephone => p.mobiephone, :avatar_url => p.client_avatar_url,
               :has_new_message => p.has_new_message, :has_new_record => p.has_new_record, :html_content => p.html_content,
               :remark => p.remark, :status => p.status}
             person_tags =  Label.find_by_sql(["select t.content from labels l inner join tags t on l.tag_id=t.id
@@ -123,7 +123,7 @@ class Api::ClientsController < ApplicationController
     if type == 0  #刷新通讯录
       person_list = Client.where(["company_id=? and types=?", company_id, Client::TYPES[:CONCERNED]])
       pl = person_list.inject([]){|a,p|
-        hash = {:id => p.id, :name => p.name, :mobiephone => p.mobiephone, :avatar_url => p.client_avatar_url,
+        hash = {:id => p.id, :name => get_name(p.name), :mobiephone => p.mobiephone, :avatar_url => p.client_avatar_url,
           :has_new_message => p.has_new_message, :has_new_record => p.has_new_record, :html_content => p.html_content,
           :remark => p.remark, :status => p.status}
         person_tags =  Label.find_by_sql(["select t.content from labels l inner join tags t on l.tag_id=t.id
@@ -226,7 +226,7 @@ class Api::ClientsController < ApplicationController
         if status == 0
           c = nil
         else
-          c = {:id => client.id, :name => client.name, :mobiephone => client.mobiephone, :avatar_url => client.client_avatar_url,
+          c = {:id => client.id, :name => get_name(client.name), :mobiephone => client.mobiephone, :avatar_url => client.client_avatar_url,
             :has_new_message => client.has_new_message, :has_new_record => client.has_new_record, :remark => client.remark,
             :html_content => client.html_content, :status => client.status
           }
@@ -259,7 +259,7 @@ class Api::ClientsController < ApplicationController
       if status == 0
         c = nil
       else
-        c = {:id => client.id, :name => client.name, :mobiephone => client.mobiephone, :avatar_url => client.client_avatar_url,
+        c = {:id => client.id, :name => get_name(client.name), :mobiephone => client.mobiephone, :avatar_url => client.client_avatar_url,
           :has_new_message => client.has_new_message, :has_new_record => client.has_new_record, :remark => client.remark,
           :html_content => client.html_content, :status => client.status
         }

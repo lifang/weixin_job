@@ -31,9 +31,9 @@ class CompaniesController < ApplicationController
             client.update_attributes(:username => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
               :password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip))
           else
-             @company.clients.create(:username => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
+            @company.clients.create(:username => params[:has_app].to_i==0 ? nil : params[:company_app_account].strip,
               :password => params[:has_app].to_i==0 ? nil : Digest::MD5.hexdigest(params[:company_app_password].strip),
-               :types => Client::TYPES[:ADMIN])
+              :types => Client::TYPES[:ADMIN])
           end
           #创建client 结束
           flash[:notice] = "设置成功!"
@@ -47,5 +47,19 @@ class CompaniesController < ApplicationController
   
   def get_title
     @title = "设置"
+  end
+
+  #同步旧的微信用户
+  def synchronize_old_users
+    company = Company.find(params[:company_id])
+    status = 0
+    begin
+      company.synchronize_old_client_data
+    rescue
+      status = -1
+    ensure
+      status = 0
+    end
+    render :text =>  status
   end
 end
