@@ -38,6 +38,7 @@ function submit_comany_profiles(){
     for(var i=0;i<tuwens.length;i++){
         var img =  $(tuwens[i]).find(".tuwenImg").find(".company_image").val();
         var text =  $.trim($(tuwens[i]).children("textarea").val());
+        text = text.replace(/[>&<'"]/g, function(x) { return "&#" + x.charCodeAt(0) + ";"; })
         if(img == "#" && text==""){
             tishi_alert("图片文字至少要写一个");
             return false;
