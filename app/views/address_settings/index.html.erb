@@ -1,0 +1,71 @@
+<div class="main_con2">
+  <div>
+    <div class="toolbar">
+      <button class="white_btn_for_a" name="newWorkplace" style=" float: left; margin: 25px 50px;" onclick="new_addre_button()">新建工作地点</button>
+    </div>
+    <% if @addresses.any?  %>
+      <div class="workplaceBox">
+        <table class="table1">
+          <tr>
+            <th>省市</th>
+            <th>详细地址</th>
+            <th>操作</th>
+          </tr>
+          <% @addresses.each do |a| %>
+            <tr>
+              <td><%= a.pname %><%= a.cname %></td>
+              <td><%= a.address %></td>
+              <td>
+                <a href="/companies/<%= @company.id %>/address_settings/<%= a.wid %>" data-confirm="确定删除此地点?" data-method="delete"><button class="delete" title="删除"></button></a>
+                <button class="edit" title="编辑" onclick="edit_address(<%= @company.id %>, <%= a.wid %>)"></button>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+      </div>
+    <% end %>
+    <%= will_paginate @addresses,:class=>"page",:previous_label=>"上一页",:next_label=>"下一页" unless  @addresses.blank?%>
+  </div>
+</div>
+
+<div class="second_bg"></div>
+<div class="second_box second_box_fixed newWorkplace" id="new_addre_div">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>新建工作地点</h1>
+    <%= form_tag company_address_settings_path(@company), :method => :post do %>
+      <div>
+        <p>
+          <label>选择城市</label>
+          <select class="sheng" onchange="address_search_city(this, <%= @company.id %>, 0)">
+            <% @provinces.each do |p| %>
+              <option value="<%= p.id %>"><%= p.name %></option>
+            <% end if @provinces.any? %>
+          </select>
+          <select class="shi" id="new_address_select_city" name="new_address_select_city">
+            <option value="0">----</option>
+            <% @cities.each do |c| %>
+              <option value="<%= c.id %>"><%= c.name %></option>
+            <% end if @cities && @cities.any?%>
+          </select>
+        </p>
+        <p>
+          <label>详细地址</label>
+          <input type="text" name="new_addre"/>
+        </p>
+      </div>
+      <div class="scdBoxAct">
+        <button class="orangeBtn" type="button" onclick="address_valid(this,0)">确定</button>
+        <button class="orangeBtn" type="button" onclick="address_cancel(this)">取消</button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="second_box second_box_fixed newWorkplace" id="edit_addre_div">
+
+</div>
+

@@ -53,6 +53,10 @@
           <%= link_to company_app_managements_path(@company) do %>
           <li class="leftMenuItem <%= is_hover?("app_managements")%>">APP管理</li>
           <% end %>
+
+          <%= link_to company_address_settings_path(@company) do %>
+          <li class="leftMenuItem <%= is_hover?("address_settings")%>">工作地点管理</li>
+          <% end %>
           <a href="/logins/sign_out">
           <li class="leftMenuItem">注销</li>
           </a>

@@ -1,3 +1,22 @@
+<script charset="utf-8" src="/assets/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/assets/kindeditor/lang/zh_CN.js"></script>
+<script>
+  KindEditor.ready(function(K) {
+    window.editor = K.create('.k_editor_id', {
+      width : '370px',
+      minWidth : '370px',
+      items : ['source',
+        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
+      afterCreate : function() {
+        this.sync();
+      },
+      afterBlur: function(){
+        this.sync();
+      }//同步KindEditor的值到textarea文本框
+    });
+  });
+</script>
 <script>
   function add_tuwen(){
     var html=" \n\
@@ -5,14 +24,33 @@
     <div class='tuwenImg'>  \n\
     <input type='hidden' class='company_image' value='#' /> \n\
     <form accept-charset='UTF-8' action='/companies/<%=@company.id%>/company_profiles/upload_img' data-remote='true' date-type='script' enctype='multipart/form-data' method='post'> \n\
-    <span onclick='$(this).next().click()' >请点击上传图片</span> \n\
+    <span onclick='$(this).next().click()' >请点击上传图片(图片(git,jpg,png)大小不超过1M)</span> \n\
     <input type='file' name='image' style='display: none;' onchange='change_file(this)'/> \n\
     <input type='hidden' id='old_img' name='old_img' value='' /> \n\
     <input type='hidden' id='index' name='index' value='' />        \n\
     </form>  \n\
-    </div><textarea></textarea></div> \n\
+    </div><textarea class='k_editor_id'></textarea></div> \n\
     "
     $("#tuwen_box").append(html);
+    kind_edit();
+  }
+
+  function kind_edit(){
+    KindEditor.ready(function(K) {
+      window.editor = K.create('.k_editor_id', {
+        width : '370px',
+        minWidth : '370px',
+        items : ['source',
+          'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+          'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
+        afterCreate : function() {
+          this.sync();
+        },
+        afterBlur: function(){
+          this.sync();
+        }//同步KindEditor的值到textarea文本框
+      });
+    });
   }
 </script>
 <div class="main_con2">
@@ -36,7 +74,6 @@
 
       <p class="profile_title">
         标题： <input type="text" name="title" id="title" value="<%=@company_profile.title if @company_profile %>" />
-        文件名：<input type="text" name="file_name" id="file_name" value="<%=@company_profile.file_path.split("/")[-1].split(".")[0] if @company_profile %>"  />.html
       </p>
       <div class="jobInfo">
         <div id="tuwen_box">
@@ -52,7 +89,6 @@
           <p>
             <input type="hidden"  id="company_profile_id" name="company_profile_id" value="<%=@company_profile.nil? ? "":@company_profile.id%>"/>
             <input type="hidden"  id="update_or_create" name="update_or_create" value="<%=@company_profile.nil? ? 'create':'update'%>" />
-            <input type="hidden"  id="send_file_name" name="file_name" />
             <input type="hidden"  id="send_title" name="title" />
             <input type="hidden"  id="html_content" name="html_content" />
             <button type="button" class="orangeBtn" onclick="add_tuwen()">添加图文块</button>
@@ -62,10 +98,10 @@
       </div>
 
       <div class="jobInfoTemp">
-        <h2>已有模块</h2>
+        <h2>引用</h2>
         <div>
           <%@company_profiles.each do |cp|%>
-          <div class="jobTemp <%=cp==@company_profile ? "checked":""%>" onclick="show_tuwen_box(this,<%=@company.id%>)">
+            <div class="jobTemp <%=cp==@company_profile ? "checked":""%>" onclick="show_tuwen_box(this,<%=@company.id%>)">
               <input type="hidden" id="id" value="<%=cp.id%>" />
               <div class="jobTempCheck"></div>
               <img src="/assets/jobTemp.png" width="85" />

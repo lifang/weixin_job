@@ -19,7 +19,9 @@ class Api::MessagesController < ApplicationController
         mess = {:id => message.id, :from_user => message.from_user, :to_user => message.to_user, :types => message.types,
           :content => message.content, :status => message.status ? 0 : 1,
           :date => message.created_at.nil? ? nil : message.created_at.strftime("%Y-%m-%d %H:%M"),
-          :message_type => message.message_type, :message_path => MW_URL + message.message_path.to_s }
+          :message_type => message.message_type, :message_path => MW_URL + message.message_path.to_s,
+          :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
+        }
         if types == Message::TYPES[:remind] #如果是提醒，则要将has_new_record设为1
           person = Client.find_by_id(to_user)
           person.update_attribute("has_new_record", true) if person
@@ -90,7 +92,8 @@ class Api::MessagesController < ApplicationController
               :to_user => previous_mess.to_user, :types => previous_mess.types, :content => previous_mess.content,
               :status => previous_mess.status ? 0 : 1, :created_at => previous_mess.created_at,
               :updated_at => previous_mess.updated_at, :msg_id => previous_mess.msg_id, :message_type => previous_mess.message_type,
-              :message_path => MW_URL + previous_mess.message_path.to_s
+              :message_path => MW_URL + previous_mess.message_path.to_s,
+              :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
             }
           end
 
@@ -127,11 +130,10 @@ class Api::MessagesController < ApplicationController
       content = msg_type_value == 1 ? "图片" : "语音"
     end
     content_hash = get_content_hash_by_type(open_id, msg_type, content)
-
     if company_id.present? && current_client && receive_client && open_id
       company = Company.find_by_id(company_id)
       if company
-        if company.service_account?  #公众号是服务号
+        if company.service_account? &&  company.app_service_certificate #公众号是认证服务号
           access_token = get_access_token(company)
           if access_token and access_token["access_token"]
             send_message_action = "/cgi-bin/message/custom/send?access_token=#{access_token["access_token"]}"
@@ -146,7 +148,9 @@ class Api::MessagesController < ApplicationController
                 message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
                   :content => mess.content, :status => mess.status ? 0 : 1,
                   :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
-                  :message_path => MW_URL + mess.message_path.to_s}
+                  :message_path => MW_URL + mess.message_path.to_s,
+                  :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
+                  }
                 unless mess
                   status = 0
                   msg += "保存失败"
@@ -155,13 +159,8 @@ class Api::MessagesController < ApplicationController
                 status = 0
                 msg = "此用户超过48小时未与您互动，发送消息失败"
               else
-                #没有发送短信的权限
-                message = send_message_hack(company, content, receive_client_id, current_client, receive_client, msg_type_value)
-                if message
-                  msg = "发送成功"
-                else
-                  msg = "发送失败"
-                end
+                status = 0
+                msg = "发送失败"
               end
             else
               status = 0
@@ -171,12 +170,13 @@ class Api::MessagesController < ApplicationController
             status = 0
             msg = "此公众号没有权限主动发送信息，请先认证！"
           end
-        else   #公众号是订阅号
+        else   #公众号是订阅号 或者未认证的服务号
           message = send_message_hack(company, content, receive_client_id, current_client, receive_client, msg_type_value)
           if message
             msg = "发送成功"
           else
-            msg = "发送失败"
+            status = 0
+            msg = "此用户超过48小时未与您互动，发送消息失败"
           end
         end
       else
@@ -186,7 +186,7 @@ class Api::MessagesController < ApplicationController
      
     else
       status = 0
-      msg = "缺少参数或者用户无效"
+      msg = "缺少参数或者用户无效，等待用户主动与您联系"
     end
 
     render :json => {:status => status, :message => msg, :return_object => {:message => status == 0 ? nil : message}}
@@ -203,7 +203,8 @@ class Api::MessagesController < ApplicationController
       message = {:id => mess.id, :from_user => mess.from_user, :to_user => mess.to_user, :types => mess.types,
         :content => mess.content, :status => mess.status ? 0 : 1,
         :date => mess.created_at.nil? ? nil : mess.created_at.strftime("%Y-%m-%d %H:%M"), :message_type => mess.message_type,
-        :message_path => MW_URL + mess.message_path.to_s}
+        :message_path => MW_URL + mess.message_path.to_s,
+        :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil}
     end
     message
   end

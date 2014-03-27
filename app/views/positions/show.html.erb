@@ -45,14 +45,32 @@
     </script>
 
   </head>
-
   <body>
-    <div class="form_list">
-      <div class="jobInfo">
-        <h1><%=@position.name%></h1>
-        <div class="itemBox"><p><%=@position.description%></p></div>
-      </div>
-      <div class="form_btn">
+    <article>
+      <section class="title">职位介绍</section>
+      <section class="area">
+        <div class="text">
+          <div class="h_name"><%=@position.name%></div>
+          <p><em><%=@position.updated_at.strftime("%Y-%m-%d")%></em></p>
+          <div class="company">
+            <h3><%=@company.name%></h3>
+            <p>工作地点：<%@addr_and_position_relations.each do |aapr|%>
+                <%if aapr.position_id==@position.id%>
+                  <%@work_addresses.each do |wa|%>
+                    <%if wa.id == aapr.work_address_id%>
+                      <%=get_address_name wa%>
+                    <%end%>
+                  <%end%>
+                <%end%>
+              <%end%></p>
+          </div>
+          <h1>职位描述</h1>
+          <div><%=raw @position.description%></div>
+          <h1>任职要求</h1>
+          <div><%=raw @position.requirement%></div>
+        </div>
+      </section>
+      <section class="btn">
         <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
           <input type="hidden" name="client_resume_id" value="<%=@client_resume.id if @client_resume%>"/>
           <input type="hidden" name="position_id" value="<%=@position.id%>"/>
@@ -60,11 +78,13 @@
           <input type="hidden" name="open_id" value="<%=@open_id%>"/>
           <button >投递简历</button>
         </form>
-      </div>
-    </div>
-    <script>
-      var from = getQueryString("from")
-      $("#from").val(from);
-    </script>
+      </section>
+    </article>
   </body>
+  <script>
+    var from = getQueryString("from")
+    $("#from").val(from);
+  </script>
 </html>
+
+

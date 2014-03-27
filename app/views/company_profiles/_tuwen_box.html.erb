@@ -1,15 +1,16 @@
+
 <div class="tuwenBox">
   <span class="close" title="关闭" onclick="close_tuwen(this)">×</span>
   <div class="tuwenImg">
     <input type="hidden" class="company_image" value="#" />
     <%=form_for(:company_profiles,url:upload_img_company_company_profiles_path(@company),remote:true, :html =>{:multipart => true,'date-type'=>'script'}) do |f|%>
-      <span  onclick="$(this).next().click()" >请点击上传图片</span>
+      <span  onclick="$(this).next().click()" >请点击上传图片(图片(git,jpg,png)大小不超过1M)</span>
       <input type="file" name="image" style="display: none;" onchange="change_file(this)"/>
       <input type="hidden" id="old_img" name="old_img" value="" />
       <input type="hidden" id="index" name="index" value="" />
     <%end%>
   </div>
-  <textarea ></textarea>
+  <textarea class="k_editor_id"></textarea>
 </div>
 <div class="tuwenBox" >
   <span class="close" title="关闭" onclick="close_tuwen(this)">×</span>
@@ -17,11 +18,11 @@
 
     <input type="hidden" class="company_image" value="#" />
     <%=form_for(:company_profiles,url:upload_img_company_company_profiles_path(@company),remote:true, :html =>{:multipart => true,'date-type'=>'script'}) do |f|%>
-      <span onclick="$(this).next().click()" >请点击上传图片</span>
+      <span onclick="$(this).next().click()" >请点击上传图片(图片(git,jpg,png)大小不超过1M)</span>
       <input type="file" name="image" style="display: none;" onchange="change_file(this)"/>
       <input type="hidden" id="old_img" name="old_img" value="" />
       <input type="hidden" id="index" name="index" value="" />
     <%end%>
   </div>
-  <textarea></textarea>
+  <textarea class="k_editor_id"></textarea>
 </div>

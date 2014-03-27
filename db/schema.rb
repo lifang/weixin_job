@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140314022325) do
+ActiveRecord::Schema.define(:version => 20140318071029) do
+
+  create_table "cities", :force => true do |t|
+    t.integer  "order_index"
+    t.string   "name"
+    t.integer  "parent_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "client_html_infos", :force => true do |t|
     t.integer  "client_id"
@@ -56,22 +64,23 @@ ActiveRecord::Schema.define(:version => 20140314022325) do
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.string   "root_path"
-    t.integer  "status",               :default => 1
+    t.integer  "status",                  :default => 1
     t.string   "cweb"
-    t.boolean  "has_app",              :default => false
+    t.boolean  "has_app",                 :default => false
     t.string   "app_account"
     t.string   "app_password"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
-    t.string   "company_account",                         :null => false
-    t.string   "company_password",                        :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.string   "company_account",                            :null => false
+    t.string   "company_password",                           :null => false
     t.integer  "app_type"
     t.string   "app_id"
     t.string   "app_secret"
     t.boolean  "is_send_app_msg"
-    t.boolean  "receive_status",       :default => false
+    t.boolean  "receive_status",          :default => false
     t.datetime "not_receive_start_at"
     t.datetime "not_receive_end_at"
+    t.boolean  "app_service_certificate", :default => false
   end
 
   create_table "company_profiles", :force => true do |t|
@@ -93,6 +102,23 @@ ActiveRecord::Schema.define(:version => 20140314022325) do
   end
 
   add_index "delivery_resume_records", ["recomender_id"], :name => "index_delivery_resume_records_on_recomender_id"
+
+  create_table "export_records", :force => true do |t|
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer  "company_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "form_datas", :force => true do |t|
+    t.integer  "client_resume_id"
+    t.text     "data_hash"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "form_datas", ["client_resume_id"], :name => "index_form_datas_on_client_resume_id"
 
   create_table "labels", :force => true do |t|
     t.integer  "company_id"
@@ -133,6 +159,14 @@ ActiveRecord::Schema.define(:version => 20140314022325) do
 
   add_index "messages", ["msg_id"], :name => "by_msg_id", :unique => true
 
+  create_table "position_address_relations", :force => true do |t|
+    t.integer  "position_id",     :null => false
+    t.integer  "work_address_id", :null => false
+    t.integer  "company_id",      :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "position_types", :force => true do |t|
     t.string   "name",       :null => false
     t.integer  "company_id", :null => false
@@ -144,7 +178,7 @@ ActiveRecord::Schema.define(:version => 20140314022325) do
     t.string   "name"
     t.integer  "status"
     t.string   "requirement"
-    t.string   "description"
+    t.text     "description"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "menu_id"
@@ -196,6 +230,14 @@ ActiveRecord::Schema.define(:version => 20140314022325) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "company_id"
+  end
+
+  create_table "work_addresses", :force => true do |t|
+    t.string   "address"
+    t.integer  "city_id",    :null => false
+    t.integer  "company_id", :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end

@@ -1,76 +1,127 @@
 @charset "utf-8";
-* {
-    margin: 0;
-    padding: 0;
-}
-body {
-    background: none repeat scroll 0 0 #FFFFFF;
-    color: #333333;
-    font-family: "微软雅黑","宋体",Arial;
-    font-size: 14px;
-}
-img {
-    border: medium none;
-}
-li {
-    list-style: none outside none;
-}
-a {
-    color: #333333;
-    text-decoration: none;
-}
-input, button, select, textarea, img {
-    outline: medium none;
-}
-button {
-    border: medium none;
-    cursor: pointer;
-    font-family: "微软雅黑";
-}
-article {
-    overflow: hidden;
-    position: relative;
-}
-article:after, .clearAfter:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
+* { padding: 0; margin: 0;}
+body { font-family:"微软雅黑", "宋体", Arial; background: #f0f2f5; font-size: 16px; color: #333;}
+img { border: none;}
+li { list-style: none;}
+a { text-decoration: none; color: #333;}
+input,button,select,textarea,img{outline:none}
+button { border: none; cursor: pointer;}
+
+article { overflow: hidden; padding-top: 50px;}
+article:after{
+	display: block;
+	overflow:hidden;
+	clear: both;
+	height:0;
+	visibility:hidden;
+	content:".";
 }
 
-
-.form_list {
-    font-size: 16px;
-    margin: 10px;
-}
-.itemBox { line-height: 32px; margin: 5px 0; padding: 5px; background: #f2f2f2; border-radius: 5px;}
-.itemBox label { display: block;}
-.itemBox input[type="text"] { padding: 3px; width: 230px; margin-left: 10px; border: 1px solid #c2c2c2;}
-.itemBox select { padding: 3px; width: 240px; margin-left: 10px; border: 1px solid #c2c2c2;}
-.itemBox input[type="radio"],.itemBox input[type="checkbox"] { margin: 0 10px;}
-.itemBox p { text-indent: 10px; font-size: 14px;}
-
-.txtItem p { text-indent: 10px; font-size: 14px;}
-.imgItem { min-height: 120px;}
-.itemBox input[type="file"] { margin-left: 10px;}
-.imgItem img { width: 100%;}
-
-.form_btn { padding: 10px 0; text-align: center;}
-.form_btn button {
-	padding: 6px;
+.title {
+	background: #01b2bd;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: #FFF;
+	font-size: 18px;
+	text-shadow: 0px 0px 2px rgba(64,64,64,0.5);
+	position: fixed;
+	top: 0px;
+	left: 0px;
 	width: 100%;
-	border-radius: 3px;
-	border: 1px solid #c3c3c3;
-	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#c2c2c2));
-	background: -moz-linear-gradient(top, #fff,#c2c2c2);
-	background: -ms-linear-gradient(top,  #fff 0%,#c2c2c2 100%);
-	background: linear-gradient(top,  #fff 0%,#c2c2c2 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff",endColorstr="#c2c2c2",GradientType=0);
+	box-shadow: 0px 0px 5px rgba(64,64,64,0.8);
+}
+.area {
+	background: #FFF;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 5px;
+	border-bottom: 4px #e3e4e8 solid;
 }
 
-.jobInfo {}
-.tuwenBox { margin-bottom: 10px;}
-.tuwenImg img { width: 100%;}
-.tuwenBox p { text-indent: 10px; font-size: 14px; line-height: 24px; padding: 5px;}
+.area h1 {
+	height: 50px;
+	line-height: 50px;
+	border-radius: 5px;
+	padding: 0 20px;
+	color: #FFF;
+	text-shadow: 0px 0px 2px rgba(64,64,64,0.3);
+	font-weight:normal;
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#2ed1db), to(#32b4bc));
+	background:-moz-linear-gradient(top, #2ed1db,#32b4bc);
+	background:-ms-linear-gradient(top, #2ed1db, #32b4bc);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#2ed1db,endColorstr=#32b4bc,grandientType=1);
+	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#2ed1db,endColorstr=#32b4bc,grandientType=1);
+}
+
+.content { padding: 20px;}
+.input_list {}
+.input_list li { margin-bottom: 20px;}
+.input_list label { display: block; line-height: 32px; font-size: 18px;}
+.input_list input[type="text"] {
+	border: 2px #e3e4e8 solid;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 5px;
+	padding: 0 5px;
+	width: 97%;
+	font-size: 16px;
+	font-family: "微软雅黑";
+}
+.input_list input[type="text"]:hover { border: 2px #9bf3f8 solid; }
+
+.input_list p { padding: 10px 0; overflow: hidden;}
+.input_list input[type="radio"], .input_list input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	margin-top: 2px;
+	float: left;
+	margin-right: 10px;
+}
+
+.input_list select {
+	width: 100%;
+	line-height: 40px;
+	height: 40px;
+	border: 2px #e3e4e8 solid;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+.input_list input[type="file"] {
+	font-size: 18px;
+}
+
+.btn { padding: 20px 10px; text-align: center;}
+.btn button {
+	height: 50px;
+	line-height: 50px;
+	background: #ed5564;
+	border-bottom: 4px #d94553 solid;
+	display: inline-block;
+	width: 100%;
+	border-radius: 5px;
+	font-size: 18px;
+	color: #FFF;
+	font-family:"微软雅黑";
+}
+
+.text {}
+.text h1 { margin-top: 15px;}
+.text .h_name {
+	font-size: 24px;
+	color: #01b2bd;
+	line-height: 40px;
+	height: 40px;
+}
+.text ol {}
+.text ol li { list-style: inside decimal; margin: 10px 0;}
+.text div {line-height: 32px; padding: 10px 0;}
+.text div.company { background: #f0f3f5; padding: 10px; border-radius: 5px; margin-top: 15px;}
+.company h3 { border-bottom: 1px #FFFFFF solid; font-size: 16px; line-height: 28px;}
+.company p { padding: 0px; line-height: 32px;}
+
+
+.about img { width: 100%; margin-bottom: 10px;}
+.about div {line-height: 32px; padding: 10px 0;}
+

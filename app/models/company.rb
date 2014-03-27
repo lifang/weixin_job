@@ -1,7 +1,9 @@
 #encoding: utf-8
 class Company < ActiveRecord::Base
+  extend ApplicationHelper
   has_many :position_types
   has_many :positions
+  has_many :work_addresses
   has_many :resume_templates
   has_many :delivery_resume_records
   has_many :company_profiles
@@ -20,6 +22,7 @@ class Company < ActiveRecord::Base
   STATUS = {:DELETED => 0, :NORMAL => 1}  #状态0删除，1正常
   HAS_APP = {:NO => false, :YES => true} #是否有APP
   APP_TYPE = {:SUBSCRIPTION => 0, :SERVICE => 1} #公众号类型0订阅号，1服务号
+  APP_CERTIFICATED_TYPE = {:YES => 1, :NO => 0} #公众号类型0订阅号，1服务号
 
   def subscribed_account?
     self.app_type == APP_TYPE[:SUBSCRIPTION]
@@ -70,5 +73,28 @@ class Company < ActiveRecord::Base
            right join client_resumes clf  on cl.id = clf.resume_template_id
            where c.id = ? and clf.created_at >=? and clf.created_at <=?"
     Company.find_by_sql([sql,company_id,start_time,end_time])
+  end
+
+
+  #同步旧的关注者的信息
+  def synchronize_old_client_data
+    if self.service_account? && self.app_service_certificate #是服务号并且是认证的
+      #请求api
+      access_token = Company.get_access_token(self)#在helpers/weixin.rb
+      if access_token && access_token["access_token"]
+        access_token_val = access_token["access_token"]
+        Company.service_account_get_user_list(access_token_val, self)
+      end
+    else
+      #请求公众号后台用户列表
+      login_info = Company.login_to_weixin(self)#在helpers/weixin.rb
+      if login_info.present?
+        wx_token, wx_cookie = login_info
+        Company.get_friend_list(wx_cookie, wx_token, self)
+      end
+    end
+    Client.find_each do |client|
+      client.give_client_a_name
+    end
   end
 end

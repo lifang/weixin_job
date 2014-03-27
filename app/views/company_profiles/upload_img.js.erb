@@ -1,3 +1,7 @@
-var tuwens = $("#tuwen_box").find(".tuwenBox");
-$(tuwens[<%=@index%>]).find(".tuwenImg").css("background","url('<%=  @img_path%>')");
-$(tuwens[<%=@index%>]).find(".tuwenImg").find(".company_image").val('<%=  @img_path%>');
+<%if @msg == "success"%>
+  var tuwens = $("#tuwen_box").find(".tuwenBox");
+  $(tuwens[<%=@index%>]).find(".tuwenImg").css("background","url('<%=  @img_path%>')");
+  $(tuwens[<%=@index%>]).find(".tuwenImg").find(".company_image").val('<%=  @img_path%>');
+<%else%>
+  tishi_alert('<%=@msg%>');
+<%end%>

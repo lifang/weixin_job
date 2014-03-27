@@ -3,7 +3,7 @@ class MenusController < ApplicationController   #菜单
   before_filter :has_sign?
   before_filter :get_title
   def index
-    @resume_tmp = ResumeTemplate.find_by_id(@company.id)
+    @resume_tmp = ResumeTemplate.find_by_company_id(@company.id)
     @positions = PositionType.select("id,name").where(["company_id =?", @company.id])
     @comp_profiles = CompanyProfile.select("id,title,file_path").where(["company_id = ?", @company.id])
     menus = Menu.where(["company_id = ?", @company.id]).group_by{|m|m.parent_id.to_s}

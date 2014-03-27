@@ -53,31 +53,41 @@ $(function(){
     });
     $("#flash_field").fadeOut(2000);
 
-
+    $(".profileExplain").on("click","li",function(){
+        if($(this).hasClass("open")){
+            $(this).removeClass("open");
+        }else {
+            $(".profileExplain li").removeClass("open");
+            $(this).addClass("open");
+            //点击后重新计算左侧侧边栏以及整个高度
+             $(".leftMenu").css("height",document.body.scrollHeight - 84 +"px");
+             $(".menuMakerDtl").css("height",document.body.scrollHeight - 168 +"px");
+        }
+    });
 })
 
 //提示错误信息
 function tishi_alert(message) {
-	$(".alert_h").html(message);
-	var tab = $(".tab_alert");
-	var scolltop = document.body.scrollTop | document.documentElement.scrollTop;
-	//滚动条高度
-	var win_height = $(document).height();
-	var z_layer_height = $(".tab_alert").height();
-	tab.css('top', 100 + scolltop);
-	var doc_width = $(document).width();
-	var layer_width = $(".tab_alert").width();
-	tab.css('left', (doc_width - layer_width) / 2);
-	tab.css('display', 'block');
-	tab.fadeTo("slow", 1);
-	$(".tab_alert .close").click(function() {
-		tab.css('display', 'none');
-	})
-	setTimeout(function() {
-		tab.fadeTo("slow", 0);
-	}, 4000);
-	setTimeout(function() {
-		tab.css('display', 'none');
-	}, 4000);
+    $(".alert_h").html(message);
+    var tab = $(".tab_alert");
+    var scolltop = document.body.scrollTop | document.documentElement.scrollTop;
+    //滚动条高度
+    var win_height = $(document).height();
+    var z_layer_height = $(".tab_alert").height();
+    tab.css('top', 100 + scolltop);
+    var doc_width = $(document).width();
+    var layer_width = $(".tab_alert").width();
+    tab.css('left', (doc_width - layer_width) / 2);
+    tab.css('display', 'block');
+    tab.fadeTo("slow", 1);
+    $(".tab_alert .close").click(function() {
+        tab.css('display', 'none');
+    })
+    setTimeout(function() {
+        tab.fadeTo("slow", 0);
+    }, 4000);
+    setTimeout(function() {
+        tab.css('display', 'none');
+    }, 4000);
 
 }

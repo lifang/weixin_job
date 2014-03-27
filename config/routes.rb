@@ -1,4 +1,6 @@
 WeixinJob::Application.routes.draw do
+  get "work_addresses/index"
+
   get "company_profiles/index"
 
   # The priority is based upon order of creation:
@@ -27,6 +29,11 @@ match "/weixins/accept_token" => "weixins#accept_token"
   end
 
   resources :companies do
+    collection do
+      get :synchronize_old_users
+    end
+    resources :work_addresses
+
     resources :company_profiles do
       collection do
         post :upload_img
@@ -47,7 +54,7 @@ match "/weixins/accept_token" => "weixins#accept_token"
         post :send_resume
       end
       member do
-        get :release
+        get :release,:dis_release
       end
     end
     resources :menus
@@ -66,8 +73,13 @@ match "/weixins/accept_token" => "weixins#accept_token"
 
     resources :reminds
     resources :records
-
+    resources :address_settings do
+      collection do
+        get :search_citties
+      end
+    end
   end
+
   resources :client_resumes do
     collection do
       get :create_friend_resume

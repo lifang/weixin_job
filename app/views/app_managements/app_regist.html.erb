@@ -8,44 +8,63 @@
     <title>用户登记</title>
   </head>
   <body>
-    <div class='form_list'>
-      <%= form_tag :url => "/companies/#{@company.id}/app_managements/get_form_date", :method => "post" do |f|%>
-        <div class='infoItem itemBox'>
-          <div><label><span class='mark'>*</span>姓名：</label><input type='text' data-name='姓名' class='client_required' name='client[name]' value="<%= @client.try(:name) %>"/></div>
+  <article>
+    <section class='title'>用户登记</section>
+    <%= form_tag :url => "/companies/#{@company.id}/app_managements/get_form_date", :method => "post" do |f|%>
+      <section class="area">
+        <div class="input_list">
+          <%= raw @ele %>
         </div>
-        <div class='infoItem itemBox'>
-          <div><label><span class='mark'>*</span>手机号码：</label><input type='text' data-name='手机号码' class='client_required' name='client[mobiephone]' value="<%= @client.try(:mobiephone) %>" /></div>
-        </div>
-        <div class='infoItem itemBox'>
-          <div><label>备注：</label><input type='text' name='client[remark]' value="<%= @client.try(:remark) %>"/></div>
-        </div>
-   
-        <%= raw @ele %>
+      </section>
+      <section class="btn"><button type='button' onclick='submit_form(this)'>确定</button></section>
+    <% end %>
+  </article>
+  <script>
+    var href = window.location.href;
+    var arr = href.split('?secret_key=');
+    var secret_key = arr[1];
+    function submit_form(obj){
+      var flag = true;
+      var err_msg = "";
+      if(secret_key == undefined || $.trim(secret_key) == ""){    //验证secret_key
+        err_msg += "缺少secret_key\r\n";
+        flag = false;
+        return false;
+      };
+      var texts =$(obj).parents('form').find("input[type='text']");   //验证填空
+      $.each(texts, function(index,val){
+        if($(this).val()==""){
+          var label =  $(this).prev().text();
+          err_msg += label+"不能为空!\r\n";
+          flag = false;
+          return false;
 
-        <p class='warn'>带*内容爲必填项目，请你务必完成填写。对于你所填写的所有信息，我们将严格保密。</p>
-        <div class='form_btn'><button type='button' onclick='submit_form(this)'>确认提交</button></div>
-      <% end %>
-    </div>
+        }
+      });
+      var checks = $(obj).parents('form').find("li.checkItem");    //验证复选框
+      $.each(checks, function(index,val){
+        var checked = $(this).find("input[type='checkbox']:checked").length;
+        if(checked<=0){
+          var label =  $(this).find("label").first().text();
+          err_msg += label+"不能为空!\r\n";
+          flag = false;
+          return false;
 
-    <script>
-
-      var href = window.location.href;
-      var arr = href.split('?secret_key=');
-      var secret_key = arr[1];
-
-      function submit_form(obj){
-        var input =$(obj).parents('form').find('input.client_required');
-        name = $.trim(input.val());
-        label = input.attr('data-name')
-        if(name==''){
-          alert(label + '不能为空！');
+        }
+      });
+      var radios = $(obj).parents('form').find("li.radioItem");    //验证单选框
+      $.each(radios, function(index,val){
+        var checked = $(this).find("input[type='radio']:checked").length;
+        if(checked<=0){
+          var label =  $(this).find("label").first().text();
+          err_msg += label+"不能为空!\r\n";
+          flag = false;
           return false;
         }
-
+      });
+      if(flag){
         var str = $(obj).parents('form').serialize();
-        if(secret_key != 'undefined' && $.trim(secret_key) != ''){
-          str = str + '&open_id='+secret_key;
-        }
+        str = str + '&open_id='+secret_key;
         $.ajax({
           async : true,
           type : 'post',
@@ -63,9 +82,10 @@
               alert('error');
           }
         });
-
+      }else{
+        alert(err_msg);
       }
-    </script>
-   
-  </body>
+    }
+  </script>
+</body>
 </html>

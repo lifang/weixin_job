@@ -2,15 +2,10 @@
 require 'iconv'
 module ApplicationHelper
   require "json"
-  MW_URL = "http://wzpapp.gankao.co" #服务器地址
-
-  WEIXIN_OPEN_URL = "https://api.weixin.qq.com"  #微信api地址
-  WEIXIN_DOWNLOAD_URL = "http://file.api.weixin.qq.com"  #微信文件地址
-  DOWNLOAD_RESOURCE_ACTION = "/cgi-bin/media/get?access_token=%s&media_id=%s"  #微信下载资源 action
-  GET_USER_INFO_ACTION = "/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN" #微信获取用户基本信息action
-  ACCESS_TOKEN_ACTION = "/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" #微信获取access_token action
-  CREATE_MENU_ACTION = "/cgi-bin/menu/create?access_token=%s"
-
+  require 'net/http'
+  require "uri"
+  require 'openssl'
+  include Weixin
 
   def is_hover?(*controller_name)
     controller_name.each do |name|
@@ -34,7 +29,7 @@ module ApplicationHelper
   end
 
   def get_element_html(client_html_content, optional_fileds, tag_names)
-    ele = ""
+    ele = "<ul>"
     client_html_content = change_string_to_hash(client_html_content) if client_html_content
     optional_fileds.each do |ele_type_name, label_and_options|
       label_name = label_and_options["name"]
@@ -44,41 +39,42 @@ module ApplicationHelper
       end
       # input
       if ele_type_name.include?("message")
-        ele += "<div class='infoItem itemBox'>
-                     <div><label>#{label_name}</label><input type='text' name='app_client[#{ele_type_name}]' value= '#{saved_value}' /></div>
-                </div>"
+        ele += "<li class='infoItem itemBox'>
+                     <label>#{label_name}</label>
+<input type='text' name='app_client[#{ele_type_name}]' value= '#{saved_value}' />
+                </li>"
         #单选
       elsif ele_type_name.include?("radio")
         radio=""
 
         options.each do |value|
-          radio += "<div><input type='radio' name='app_client[#{ele_type_name}]' value='#{value}'  #{saved_value && saved_value == value ? 'checked=checked' : ''} /><span>#{value}</span></div>"
+          radio += "<p><input type='radio' name='app_client[#{ele_type_name}]' value='#{value}'  #{saved_value && saved_value == value ? 'checked=checked' : ''} />#{value}</p>"
         end
-        ele += "<div class='radioItem itemBox'>
-                    <div><span>#{label_name}</span></div>
+        ele += "<li class='radioItem itemBox'>
+                   <label>#{label_name}</label>
                       #{radio}
-                </div>"
+                </li>"
 
         #多选~~~
       elsif ele_type_name.include?("checkbox")
         checkbox = ""
         options.each do |value|
-          checkbox += "<div><input type='checkbox' name='app_client[#{ele_type_name}][]' value='#{value}'  #{saved_value && saved_value.include?(value) ? 'checked=checked' : ''}/><span>#{value}</span></div>"
+          checkbox += "<p><input type='checkbox' name='app_client[#{ele_type_name}][]' value='#{value}'  #{saved_value && saved_value.include?(value) ? 'checked=checked' : ''}/>#{value}<p>"
         end
-        ele += " <div class='checkItem itemBox'>
-                    <div><span>#{label_name}</span></div>
+        ele += " <li class='checkItem itemBox'>
+                    <label>#{label_name}</label>
                         #{checkbox}
-                </div>"
+                </li>"
         #标签
       elsif ele_type_name.include?("tag")
         checkbox = ""
         options.each do |value|
-          checkbox += "<div><input type='checkbox' name='tags[#{ele_type_name}][]' value='#{value}' #{tag_names.include?(value) ? 'checked=checked' : ''}/><span>#{value}</span></div>"
+          checkbox += "<p><input type='checkbox' name='tags[#{ele_type_name}][]' value='#{value}' #{tag_names.include?(value) ? 'checked=checked' : ''}/>#{value}</p>"
         end
-        ele += "<div class='checkItem itemBox'>
-                    <div><span>#{label_name}</span></div>
+        ele += "<li class='checkItem itemBox'>
+                    <label>#{label_name}</label>
                         #{checkbox}
-                </div>"
+                </li>"
         #下拉框
       elsif ele_type_name.include?("select")
         select = ""
@@ -86,10 +82,10 @@ module ApplicationHelper
           select += "<option value='#{value}' #{saved_value == value ? 'selected=selected' : ''}>#{value}</option>"
         end
 
-        ele += "<div class='selectItem itemBox'>
+        ele += "<li class='selectItem itemBox'>
                   <label>#{label_name}</label>
                  <select name=app_client[#{ele_type_name}]>#{select}</select>
-        "
+                </li>"
       end
     end if optional_fileds
     ele
@@ -141,5 +137,32 @@ module ApplicationHelper
       APNS.port = 2195
       APNS.send_notification(token,:alert => content, :badge => badge, :sound => client.id)
     end
+  end
+
+  #辅助，根据总数自定义每页数目
+  def set_perpage(total)
+    if total < 100
+      perpage = 50
+    elsif total >= 100 && total <= 1000
+      perpage = 200
+    elsif total > 1000 && total <= 3000
+      perpage = 300
+    elsif total > 3000 && total <= 10000
+      perpage = 1000
+    else
+      perpage = 1500
+    end
+    perpage
+  end
+  
+  #辅助方法，返回分页数
+  def pagecount(total)
+    perpage = set_perpage(total)
+    if total % perpage == 0
+      init_page = total/perpage
+    else
+      init_page = total/perpage + 1
+    end
+    [init_page,perpage]
   end
 end

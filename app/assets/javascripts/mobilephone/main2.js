@@ -39,7 +39,7 @@ function client_resume_valid(obj){
         });
         if(i==0){
             flag = false;
-            var name = $(this).find("span").first().text();
+            var name = $(this).find("label").first().text();
             msg += name+"至少选择一个!\r\n";
         }
     })
@@ -72,7 +72,7 @@ function edit_client_resume_valid(obj){
         });
         if(i==0){
             flag = false;
-            var name = $(this).find("span").first().text();
+            var name = $(this).find("label").first().text();
             msg += name+"至少选择一个!\r\n";
         }
     });
