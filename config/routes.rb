@@ -45,7 +45,11 @@ match "/weixins/accept_token" => "weixins#accept_token"
     resources :position_types
     resources :resumes do
       collection do
-        get :add_form_item
+        get :add_form_item,:newest_resumes,:choice_position,
+          :audition_resume,:refuse_resume,:pass_resume
+      end
+      member do
+        get :change_status,:deal_audition
       end
     end
     resources :positions do

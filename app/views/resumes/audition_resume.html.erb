@@ -1,0 +1,64 @@
+<script src="/assets/My97DatePicker/WdatePicker.js" >
+</script>
+<div class="main_con2">
+  <div class="toolbar">
+    <div class="searchBox2">
+      <%=render 'choice_part', status:@status %>
+    </div>
+  </div>
+  <%if @positions_and_resumes.blank?%>
+    <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+    </div>
+  <%else%>
+    <table class="table1">
+      <tr>
+        <th>职位</th>
+        <th>姓名</th>
+        <th>手机号码</th>
+        <th>面试时间</th>
+        <th>附件</th>
+        <th>操作</th>
+      </tr>
+      <%@positions_and_resumes.each do |p_and_r|%>
+      <tr>
+        <td><%=p_and_r.name%></td>
+        <td>负责全面的HR事物与部门协调</td>
+        <td>HR经理</td>
+        <td>负责全面的HR事物与部门协调</td>
+        <td>HR经理</td>
+        <td>
+          <button class="show" title="查看"></button>
+          <button class="refuse" title="拒绝" onclick="change_status(<%=@company.id%>,<%=p_and_r.id%>,1)" ></button>
+          <button class="toEmploy scd_btn" onclick="deal_audition(<%=@company.id%>,<%=p_and_r.id%>)" name="employInfo" title="安排入职"></button>
+        </td>
+      </tr>
+      <%end%>
+    </table>
+  <%end%>
+  </div>
+
+  <div class="second_bg"></div>
+  <div class="second_box second_box_fixed employInfo">
+    <div class="second_content" style="width: 450px;">
+      <span class="close" title="关闭">×</span>
+      <h1>安排入职</h1>
+      <div>
+        <p>
+          <label>时间</label>
+          <input type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
+        </p>
+        <p>
+          <label>地址</label>
+          <input type="text" />
+        </p>
+        <p style="overflow: hidden; height: auto; margin-top: 3px;">
+          <label style="float: left;">备注</label>
+          <textarea style=" margin-left: 14px; resize: none; width: 250px; padding: 3px;"></textarea>
+        </p>
+      </div>
+      <div class="scdBoxAct">
+        <button class="orangeBtn">确定</button>
+        <button class="orangeBtn">取消</button>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,33 @@
+<div class="main_con2">
+  <div class="toolbar">
+    <div class="searchBox2">
+      <%=render 'choice_part', status:@status %>
+    </div>
+  </div>
+  <%if @positions_and_resumes.blank?%>
+    <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+    </div>
+  <%else%>
+    <table class="table1">
+      <tr>
+        <th>职位</th>
+        <th>姓名</th>
+        <th>手机号码</th>
+        <th>附件</th>
+        <th>操作</th>
+      </tr>
+      <%@positions_and_resumes.each do |p_and_r|%>
+      <tr>
+        <td><%=p_and_r.name%></td>
+        <td>负责全面的HR事物与部门协调</td>
+        <td>HR经理</td>
+        <td>HR经理</td>
+        <td>
+          <button class="show" title="查看"></button>
+          <button class="delete" title="删除"></button>
+        </td>
+      </tr>
+      <%end%>
+    </table>
+  <%end%>
+  </div>

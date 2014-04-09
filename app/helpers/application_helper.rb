@@ -165,4 +165,19 @@ module ApplicationHelper
     end
     [init_page,perpage]
   end
+
+  #
+  def is_hover_top? controller_name
+    arr3 = ["companies/show","company_profiles","position_types","address_settings","menus","app_managements"]
+    arr2 = ["positions"]
+    arr1 = ["resumes","exports"]
+    if arr1.include?(controller_name)
+      return 1
+    elsif arr2.include?(controller_name)
+      return 2
+    elsif arr3.include?(controller_name)
+      return 3
+    end
+    0
+  end
 end

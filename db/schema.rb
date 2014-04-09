@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140318071029) do
+ActiveRecord::Schema.define(:version => 20140409024701) do
 
   create_table "cities", :force => true do |t|
     t.integer  "order_index"
@@ -61,6 +61,8 @@ ActiveRecord::Schema.define(:version => 20140318071029) do
     t.string   "wx_login_token"
   end
 
+  add_index "clients", ["open_id"], :name => "by_open_id", :unique => true
+
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.string   "root_path"
@@ -93,12 +95,16 @@ ActiveRecord::Schema.define(:version => 20140318071029) do
   end
 
   create_table "delivery_resume_records", :force => true do |t|
-    t.integer  "company_id",       :null => false
-    t.integer  "position_id",      :null => false
-    t.integer  "client_resume_id", :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.integer  "company_id",                      :null => false
+    t.integer  "position_id",                     :null => false
+    t.integer  "client_resume_id",                :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "recomender_id"
+    t.integer  "status",           :default => 0
+    t.datetime "audition_time"
+    t.string   "audition_addr"
+    t.string   "remark"
   end
 
   add_index "delivery_resume_records", ["recomender_id"], :name => "index_delivery_resume_records_on_recomender_id"

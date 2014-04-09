@@ -64,6 +64,14 @@ $(function(){
              $(".menuMakerDtl").css("height",document.body.scrollHeight - 168 +"px");
         }
     });
+    $(".leftMenuItem").click(function(){
+		if($(this).hasClass("hover")){
+			$(this).toggleClass("hover");
+		}else{
+			$(".leftMenuItem").removeClass("hover");
+			$(this).toggleClass("hover");
+		}
+	});
 })
 
 //提示错误信息
