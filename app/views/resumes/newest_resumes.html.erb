@@ -22,12 +22,12 @@
       <%@positions_and_resumes.each do |p_and_r|%>
         <tr>
           <td><%=p_and_r.name%></td>
-          <td><%=p_and_r.html_content_datas.class%></td>
-          <td><%=p_and_r.html_content_datas['联系电话']%></td>
-          <td><%=p_and_r.created_at%></td>
+          <td><%=p_and_r.clint_name%></td>
+          <td><%=p_and_r.client_phone%></td>
+          <td><%=p_and_r.created_at.strftime("%Y-%m-%d %H:%M")%></td>
           <td><%=p_and_r.html_content_datas['附件']%></td>
           <td>
-            <button class="show" title="查看" ></button>
+            <button class="show" title="查看"  onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>,1)" ></button>
             <button class="refuse" title="拒绝" onclick="change_status(<%=@company.id%>,<%=p_and_r.id%>,1)" ></button>
             <button class="toInterview scd_btn" onclick="deal_audition(<%=@company.id%>,<%=p_and_r.id%>)" name="InterviewInfo" title="安排面试"></button>
           </td>
@@ -58,7 +58,7 @@
         </p>
       </div>
       <div class="scdBoxAct">
-        <button class="orangeBtn" onclick="submit_audition_form(this)">确定</button>
+        <button type="button" class="orangeBtn" onclick="submit_audition_form(this)">确定</button>
         <button type="button" class="orangeBtn">取消</button>
       </div>
     </form>

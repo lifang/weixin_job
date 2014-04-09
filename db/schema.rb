@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140409024701) do
+ActiveRecord::Schema.define(:version => 20140409081029) do
 
   create_table "cities", :force => true do |t|
     t.integer  "order_index"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(:version => 20140409024701) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.integer  "company_id"
+    t.string   "clint_name"
+    t.string   "client_phone"
   end
 
   create_table "clients", :force => true do |t|
@@ -105,6 +107,9 @@ ActiveRecord::Schema.define(:version => 20140409024701) do
     t.datetime "audition_time"
     t.string   "audition_addr"
     t.string   "remark"
+    t.datetime "join_time"
+    t.string   "join_addr"
+    t.string   "join_remark"
   end
 
   add_index "delivery_resume_records", ["recomender_id"], :name => "index_delivery_resume_records_on_recomender_id"

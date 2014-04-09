@@ -206,20 +206,47 @@ function change_status(company_id,p_and_r_id,status){
 function deal_audition(company_id,p_and_r_id){
   $("#audition_form").attr("action","/companies/"+company_id+"/resumes/"+p_and_r_id+"/deal_audition");
 }
+function deal_join(company_id,p_and_r_id){
+  $("#join_form").attr("action","/companies/"+company_id+"/resumes/"+p_and_r_id+"/deal_join");
+}
 function submit_audition_form(obj){
-    var form = $(obj).parents("audition_form");
+    var form = $(obj).parents("#audition_form");
     var input =$(form).find("input");
-    if($.trim(input[0].val())== "" ){
+    var textarea =$.trim($(form).find("textarea").val());
+    if($.trim($(input[0]).val())== "" ){
         tishi_alert("时间不能为空！");
         return false;
     }
-    if($.trim(input[1].val())== "" ){
+    if($.trim($(input[1]).val())== "" ){
         tishi_alert("地址不能为空！");
+        return false;
+    }
+    if(textarea.length > 250 ){
+        tishi_alert("备注长度不能大于250！");
         return false;
     }
     form.submit();   
 }
 
+
+function submit_join_form(obj){
+    var form = $(obj).parents("#join_form");
+    var input =$(form).find("input");
+    var textarea =$.trim($(form).find("textarea").val());
+    if($.trim($(input[0]).val())== "" ){
+        tishi_alert("时间不能为空！");
+        return false;
+    }
+    if($.trim($(input[1]).val())== "" ){
+        tishi_alert("地址不能为空！");
+        return false;
+    }
+    if(textarea.length > 250 ){
+        tishi_alert("备注长度不能大于250！");
+        return false;
+    }
+    form.submit();
+}
 function search_positon_resumes(obj){
     var form = $(obj).parent();
     var postion_id = $(form).find("select[name='postion_id']").val();
@@ -239,8 +266,10 @@ function search_positon_resumes(obj){
     }
     form.submit();
 }
-
 function show_the_position(obj){
   var content = $(obj).find("option:selected").text();
   $(obj).parent().find(".search_position").html(content);
+}
+function show_resume(company_id,client_resume_id){
+    location.href = "/companies/"+company_id+"/resumes/show_resume?client_resume_id="+client_resume_id;
 }
