@@ -251,7 +251,7 @@ function search_positon_resumes(obj){
     var form = $(obj).parent();
     var postion_id = $(form).find("select[name='postion_id']").val();
     if(postion_id==0){
-        tishi_alert("请选择！");
+        tishi_alert("请选择职位！");
         return false;
     }
     var start = $(form).find("input[name='start']").val();
@@ -272,4 +272,9 @@ function show_the_position(obj){
 }
 function show_resume(company_id,client_resume_id){
     location.href = "/companies/"+company_id+"/resumes/show_resume?client_resume_id="+client_resume_id;
+}
+
+function cancle_the_box(obj){
+    $(".second_bg").hide();
+    $(".second_box_fixed").hide();
 }

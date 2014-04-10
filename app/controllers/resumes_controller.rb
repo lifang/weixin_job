@@ -38,79 +38,23 @@ class ResumesController < ApplicationController   #简历模板
   end
 
   def newest_resumes
-    @title+="-最新简历"
-    @status = DeliveryResumeRecord::STATUS[:newest]
-    @positions = @company.positions.where(" status = 2")
-    @positions_and_resumes = Position.select("drr.id,positions.name,
-             positions.id position_id,
-             cr.id client_resume_id,
-             cr.html_content_datas,
-             cr.clint_name,
-             cr.client_phone,
-             drr.created_at,
-             drr.updated_at,
-             drr.status,
-             drr.audition_time,
-             drr.audition_addr,
-             drr.remark,
-             drr.join_time,
-             drr.join_addr,
-             drr.join_remark").
-      joins("inner join delivery_resume_records drr on drr.position_id = positions.id").
-      joins("inner join client_resumes cr on drr.client_resume_id = cr.id").
-      where(["drr.status= ? and drr.company_id= ?",DeliveryResumeRecord::STATUS[:newest],@company.id])
+    get_positions_and_resumes_record "-最新简历",DeliveryResumeRecord::STATUS[:newest]
   end
 
   def audition_resume
-    @title+="-面试简历"
-    @status = DeliveryResumeRecord::STATUS[:audition]
-    @positions = @company.positions.where(" status = 2")
-    @positions_and_resumes = Position.select("drr.id,positions.name,
-             positions.id position_id,
-             cr.id client_resume_id,
-             cr.html_content_datas,
-             cr.clint_name,
-             cr.client_phone,
-             drr.created_at,
-             drr.updated_at,
-             drr.status,
-             drr.audition_time,
-             drr.audition_addr,
-             drr.remark,
-             drr.join_time,
-             drr.join_addr,
-             drr.join_remark").
-      joins("inner join delivery_resume_records drr on drr.position_id = positions.id").
-      joins("inner join client_resumes cr on drr.client_resume_id = cr.id").
-      where(["drr.status= ? and drr.company_id= ?",DeliveryResumeRecord::STATUS[:audition],@company.id])
+    get_positions_and_resumes_record "-面试简历",DeliveryResumeRecord::STATUS[:audition]
   end
   def refuse_resume
-    @title+="-拒绝简历"
-    @status = DeliveryResumeRecord::STATUS[:refuse]
-    @positions = @company.positions.where(" status = 2")
-    @positions_and_resumes = Position.select("drr.id,positions.name,
-             positions.id position_id,
-             cr.id client_resume_id,
-             cr.html_content_datas,
-             cr.clint_name,
-             cr.client_phone,
-             drr.created_at,
-             drr.updated_at,
-             drr.status,
-             drr.audition_time,
-             drr.audition_addr,
-             drr.remark,
-             drr.join_time,
-             drr.join_addr,
-             drr.join_remark").
-      joins("inner join delivery_resume_records drr on drr.position_id = positions.id").
-      joins("inner join client_resumes cr on drr.client_resume_id = cr.id").
-      where(["drr.status= ? and drr.company_id= ?",DeliveryResumeRecord::STATUS[:refuse],@company.id])
+    get_positions_and_resumes_record "-拒绝简历",DeliveryResumeRecord::STATUS[:refuse]
   end
   
   def pass_resume
-    @title+="-入职简历"
-    @status = DeliveryResumeRecord::STATUS[:pass]
+    get_positions_and_resumes_record  "-入职简历",DeliveryResumeRecord::STATUS[:pass]
+  end
+
+  def get_positions_and_resumes_record msg,status
+    @title+=msg
+    @status = status
     @positions = @company.positions.where(" status = 2")
     @positions_and_resumes = Position.select("drr.id,positions.name,
              positions.id position_id,
@@ -129,7 +73,7 @@ class ResumesController < ApplicationController   #简历模板
              drr.join_remark").
       joins("inner join delivery_resume_records drr on drr.position_id = positions.id").
       joins("inner join client_resumes cr on drr.client_resume_id = cr.id").
-      where(["drr.status= ? and drr.company_id= ?",DeliveryResumeRecord::STATUS[:pass],@company.id])
+      where(["drr.status= ? and drr.company_id= ?",status,@company.id])
   end
 
   def deal_audition
@@ -141,9 +85,12 @@ class ResumesController < ApplicationController   #简历模板
         audition_addr: audition_addr,
         status: DeliveryResumeRecord::STATUS[:audition],
         remark: params[:remark])
+      flash[:success] = '安排面试成功'
       redirect_to newest_resumes_company_resumes_path(@company,params[:id])
     else
-      render 'newest'
+      flash[:success] = '安排面试失败'
+      get_positions_and_resumes_record "-最新简历",DeliveryResumeRecord::STATUS[:newest]
+      render 'newest_resumes'
     end
   end
 
@@ -153,11 +100,14 @@ class ResumesController < ApplicationController   #简历模板
     join_addr = params[:join_addr]
     if positions_and_resumes
       positions_and_resumes.update_attributes(join_time: join_time,
-        join_addr: joinf_addr,
+        join_addr: join_addr,
         status: DeliveryResumeRecord::STATUS[:pass],
         join_remark: params[:join_remark])
+      flash[:success] = '安排入职成功'
       redirect_to audition_resume_company_resumes_path(@company,params[:id])
     else
+      flash[:success] = '安排入职失败'
+      get_positions_and_resumes_record "-面试简历",DeliveryResumeRecord::STATUS[:audition]
       render 'audition_resume'
     end
   end
@@ -167,7 +117,6 @@ class ResumesController < ApplicationController   #简历模板
     postion_id = params[:postion_id]
     start_time = params[:start]
     end_time = params[:end]
-    p 12312312,status
     case status
     when DeliveryResumeRecord::STATUS[:newest]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:newest]

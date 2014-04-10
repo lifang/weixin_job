@@ -31,7 +31,6 @@ class ClientResumesController < ApplicationController
           status, @err_msg = ClientResume.image_and_file_valid(hash)
           if status == 1
             hash.each do |k, v|
-              p 12312312312,k.to_s
               if k.to_s.include?("headimage")
                 v.each do |name, img|
                   status, img_url, @err_msg = ClientResume.upload_headimg(img, company_id, secret_id)
