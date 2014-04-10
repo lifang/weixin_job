@@ -34,16 +34,16 @@
           <li class="leftMenuItem <%=is_hover_top?(controller.controller_name) == 1 ? "hover":""%>">简历
             <ul>
               <%= link_to newest_resumes_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes/newest_resumes")%>">最新简历</li>
+                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:newest] ? "hover" : ""%>">最新简历</li>
               <% end %>
               <%= link_to audition_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes/audition_resume")%>">面试简历</li>
+                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:audition] ? "hover" : ""%>">面试简历</li>
               <% end %>
               <%= link_to  pass_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes/pass_resume")%>">入职简历</li>
+                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:pass] ? "hover" : ""%>">入职简历</li>
               <% end %>
               <%= link_to refuse_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes/refuse_resume")%>">已拒绝简历</li>
+                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:refuse] ? "hover" : ""%>">已拒绝简历</li>
               <% end %>
               <%= link_to company_resumes_path(@company) do %>
                 <li class="leftMenuItem_2 <%= is_hover?("resumes") if controller.action_name == 'index'%>">简历模板</li>

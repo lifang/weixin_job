@@ -188,7 +188,7 @@ class ResumesController < ApplicationController   #简历模板
     @status = status
     @positions = @company.positions.where("status = 2")
     @positions_and_resumes = Position.select("drr.id,positions.name,
-positions.id position_id,
+             positions.id position_id,
              cr.id client_resume_id,
              cr.html_content_datas,
              cr.clint_name,
@@ -204,7 +204,7 @@ positions.id position_id,
              drr.join_remark").
       joins("inner join delivery_resume_records drr on drr.position_id = positions.id").
       joins("inner join client_resumes cr on drr.client_resume_id = cr.id").
-      where(["drr.status= ? and drr.created_at >= ? and drr.created_at <= ? and positions.id = ?",DeliveryResumeRecord::STATUS[:newest],start_time,end_time,position_id ])
+      where(["drr.status= ? and drr.created_at >= ? and drr.created_at <= ? and positions.id = ?",status,start_time,end_time,position_id ])
   end
   def get_title
     @title = "简历"

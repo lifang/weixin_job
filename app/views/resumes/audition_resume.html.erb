@@ -25,7 +25,7 @@
           <td><%=p_and_r.clint_name%></td>
           <td><%=p_and_r.client_phone%></td>
           <td><%=p_and_r.audition_time.strftime("%Y-%m-%d %H:%M")%></td>
-          <td></td>
+          <td><%=%></td>
           <td>
             <button class="show" title="查看" onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)" ></button>
             <button class="refuse" title="拒绝" onclick="change_status(<%=@company.id%>,<%=p_and_r.id%>,1)" ></button>
