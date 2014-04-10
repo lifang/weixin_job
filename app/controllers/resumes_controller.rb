@@ -222,6 +222,17 @@ class ResumesController < ApplicationController   #简历模板
     render 'client_resumes/edit'
   end
 
+  def destroy
+    @deliveryresumerecord = DeliveryResumeRecord.find_by_id(params[id])
+    if @deliveryresumerecord
+      @deliveryresumerecord.destroy
+      flash[:success] = '删除成功！'
+      redirect_to refuse_resume_company_resumes_path(@company)
+    else
+      flash[:error] = '删除失败，不存在该简历！'
+      redirect_to refuse_resume_company_resumes_path(@company)
+    end
+  end
   private
   def get_positions_and_resumes position_id,start_time,end_time,status
     @title+="-最新简历"

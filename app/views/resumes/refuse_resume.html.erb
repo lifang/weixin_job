@@ -24,7 +24,9 @@
           <td></td>
           <td>
             <button class="show" title="查看" onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)"></button>
-            <button class="delete" title="删除"></button>
+            <%=link_to company_resume_path(@company,p_and_r.id),method:'delete',confirm:"是否确定删除？" do%>
+              <button class="delete" title="删除"></button>
+            <%end%>
           </td>
         </tr>
       <%end%>
