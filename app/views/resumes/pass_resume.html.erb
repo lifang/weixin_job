@@ -23,7 +23,7 @@
           <td><%=  p_and_r.clint_name%></td>
           <td><%=  p_and_r.client_phone%></td>
           <td><%=  p_and_r.join_time.strftime("%Y-%m-%d %H:%M") %></td>
-          <td><%=  get_accessory_from p_and_r.html_content_datas%></td>
+          <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">附件</a></td>
           <td>
             <button class="show" title="查看" onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)"></button>
           </td>

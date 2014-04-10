@@ -6,6 +6,6 @@ module ClientResumesHelper
          return v.values[0]
       end
     end
-    ""
+    "javascript:void(0)"
   end
 end
