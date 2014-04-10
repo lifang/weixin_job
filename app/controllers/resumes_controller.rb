@@ -167,19 +167,20 @@ class ResumesController < ApplicationController   #简历模板
     postion_id = params[:postion_id]
     start_time = params[:start]
     end_time = params[:end]
+    p 12312312,status
     case status
     when DeliveryResumeRecord::STATUS[:newest]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:newest]
       render 'newest_resumes'
     when DeliveryResumeRecord::STATUS[:refuse]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:refuse]
-      render 'refuse_resumes'
+      render 'refuse_resume'
     when DeliveryResumeRecord::STATUS[:audition]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:audition]
-      render 'audition_resumes'
+      render 'audition_resume'
     when DeliveryResumeRecord::STATUS[:pass]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:pass]
-      render 'pass_resumes'
+      render 'pass_resume'
     end
   end
 
@@ -196,6 +197,7 @@ class ResumesController < ApplicationController   #简历模板
     @company = Company.find_by_id(params[:company_id])
     @company_id = params[:company_id].nil? ? nil : params[:company_id].to_i
     @client_resume =ClientResume.find_by_id(params[:client_resume_id])
+    
     @open_id = @client_resume.open_id
     @cr = ClientResume.find_by_open_id_and_company_id(@open_id, @company_id)
     if @company_id.nil? || @open_id.nil? || @cr.nil? || @cr.html_content_datas.nil?

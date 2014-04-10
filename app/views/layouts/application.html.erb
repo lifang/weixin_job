@@ -39,14 +39,14 @@
               <%= link_to audition_resume_company_resumes_path(@company) do %>
                 <li class="leftMenuItem_2 <%= is_hover?("resumes/audition_resume")%>">面试简历</li>
               <% end %>
-              <%= link_to refuse_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes/refuse_resume")%>">入职简历</li>
+              <%= link_to  pass_resume_company_resumes_path(@company) do %>
+                <li class="leftMenuItem_2 <%= is_hover?("resumes/pass_resume")%>">入职简历</li>
               <% end %>
-              <%= link_to pass_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes/pass_resume")%>">已拒绝简历</li>
+              <%= link_to refuse_resume_company_resumes_path(@company) do %>
+                <li class="leftMenuItem_2 <%= is_hover?("resumes/refuse_resume")%>">已拒绝简历</li>
               <% end %>
               <%= link_to company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes/index")%>">简历模板</li>
+                <li class="leftMenuItem_2 <%= is_hover?("resumes") if controller.action_name == 'index'%>">简历模板</li>
               <% end %>
               <%= link_to company_exports_path(@company) do %>
                 <li class="leftMenuItem_2 <%= is_hover?("exports")%>">下载简历</li>

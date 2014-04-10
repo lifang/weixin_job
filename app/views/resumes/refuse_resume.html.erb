@@ -17,17 +17,17 @@
         <th>操作</th>
       </tr>
       <%@positions_and_resumes.each do |p_and_r|%>
-      <tr>
-        <td><%=p_and_r.name%></td>
-        <td>负责全面的HR事物与部门协调</td>
-        <td>HR经理</td>
-        <td>HR经理</td>
-        <td>
-          <button class="show" title="查看"></button>
-          <button class="delete" title="删除"></button>
-        </td>
-      </tr>
+        <tr>
+          <td><%=p_and_r.name%></td>
+          <td><%=p_and_r.clint_name%></td>
+          <td><%=p_and_r.client_phone%></td>
+          <td></td>
+          <td>
+            <button class="show" title="查看" onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)"></button>
+            <button class="delete" title="删除"></button>
+          </td>
+        </tr>
       <%end%>
     </table>
   <%end%>
-  </div>
+</div>

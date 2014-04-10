@@ -20,19 +20,22 @@
                 <% if k.to_s == "headimage" %>
                   <li class="imgItem itemBox">
                     <label><%= v["name"] %></label>
-                    <input type="file" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
                     <img <% if @html_content_datas["headimage"] %> src="<%= @html_content_datas["headimage"].values[0] %>" <% end %>/>
                   </li>
                 <% elsif  k.to_s.include?("message") %>
                   <li class="infoItem itemBox">
                     <label><%= v["name"] %></label>
-                    <input type="text" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" <% if @html_content_datas[k.to_s] %>value="<%= @html_content_datas[k.to_s].values[0] %>"<% end %>/>
+                    <input readonly type="text" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" <% if @html_content_datas[k.to_s] %>value="<%= @html_content_datas[k.to_s].values[0] %>"<% end %>/>
                   </li>
                 <% elsif k.to_s.include?("select") %>
                   <li class="selectItem itemBox">
                     <label><%= v["name"] %></label>
-                    <select name="[form_p][<%= k.to_s %>][<%= v["name"] %>]">
+
+                    <select  name="[form_p][<%= k.to_s %>][<%= v["name"] %>]">
                       <% v["options"].each do |o| %>
+                        <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s].values[0] == o %>
+                          <input readonly type="text"  value="<%= o %>" />
+                        <%end%>
                         <option value="<%= o %>" <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s].values[0] == o %>selected<% end %>><%= o %></option>
                       <% end if v["options"] %>
                     </select>
@@ -41,13 +44,24 @@
                   <li class="radioItem itemBox">
                     <label><%= v["name"] %></label>
                     <% v["options"].each do |o| %>
-                      <p><input type="radio" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" value="<%= o %>" <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s].values[0] == o %>checked<% end %>/><%= o %></p>
+                      <p>
+                        <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s].values[0] == o %>
+                          <input readonly type="text"  value="<%= o %>" />
+                        <% end %>
+                        <input type="radio" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]" value="<%= o %>" <% if @html_content_datas[k.to_s] && @html_content_datas[k.to_s].values[0] == o %>checked<% end %>/><%= o %>
+                      </p>
                     <% end if v["options"] %>
                   </li>
                 <% elsif k.to_s.include?("checkbox") %>
                   <li class="checkItem itemBox">
                     <label><%= v["name"] %></label>
                     <% v["options"].each do |o| %>
+                      <% if @html_content_datas[k.to_s] %><% @html_content_datas[k.to_s].values[0].each do |co| %>
+                          <% if co==o %>
+                            <input readonly type="text"  value="<%= o %>" />
+                          <% end %>
+                        <% end %>
+                      <% end %>
                       <p><input type="checkbox" name="[form_p][<%= k.to_s %>][<%= v["name"] %>][]" value="<%= o %>" <% if @html_content_datas[k.to_s] %><% @html_content_datas[k.to_s].values[0].each do |co| %><% if co==o %>checked<% end %><% end %><% end %>/><%= o %></p>
                     <% end if v["options"] %>
                   </li>
@@ -68,7 +82,6 @@
             </ul>
           </div>
         </section>
-        <section class="btn" type="button" onclick="edit_client_resume_valid(this)"><button>确定</button></section>
       <% end %>
     </article>
   </body>

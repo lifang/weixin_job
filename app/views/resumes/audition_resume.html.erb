@@ -22,12 +22,12 @@
       <%@positions_and_resumes.each do |p_and_r|%>
         <tr>
           <td><%=p_and_r.name%></td>
-          <td>负责全面的HR事物与部门协调</td>
-          <td>HR经理</td>
-          <td>负责全面的HR事物与部门协调</td>
-          <td>HR经理</td>
+          <td><%=p_and_r.clint_name%></td>
+          <td><%=p_and_r.client_phone%></td>
+          <td><%=p_and_r.audition_time.strftime("%Y-%m-%d %H:%M")%></td>
+          <td></td>
           <td>
-            <button class="show" title="查看"></button>
+            <button class="show" title="查看" onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)" ></button>
             <button class="refuse" title="拒绝" onclick="change_status(<%=@company.id%>,<%=p_and_r.id%>,1)" ></button>
             <button class="toEmploy scd_btn" onclick="deal_join(<%=@company.id%>,<%=p_and_r.id%>)" name="employInfo" title="安排入职"></button>
           </td>

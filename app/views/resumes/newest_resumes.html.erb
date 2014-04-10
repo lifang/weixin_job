@@ -1,5 +1,4 @@
-<script src="/assets/My97DatePicker/WdatePicker.js" >
-</script>
+
 <div class="main_con2">
   <div class="toolbar">
     <div class="searchBox2">
@@ -27,7 +26,7 @@
           <td><%=p_and_r.created_at.strftime("%Y-%m-%d %H:%M")%></td>
           <td><%=p_and_r.html_content_datas['附件']%></td>
           <td>
-            <button class="show" title="查看"  onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>,1)" ></button>
+            <button class="show" title="查看"  onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)" ></button>
             <button class="refuse" title="拒绝" onclick="change_status(<%=@company.id%>,<%=p_and_r.id%>,1)" ></button>
             <button class="toInterview scd_btn" onclick="deal_audition(<%=@company.id%>,<%=p_and_r.id%>)" name="InterviewInfo" title="安排面试"></button>
           </td>
