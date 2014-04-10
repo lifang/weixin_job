@@ -11,7 +11,6 @@ class ClientResume < ActiveRecord::Base
     status = 1
     msg = ""
     hash.each do |k,v|
-
       if k.to_s == "headimage"
         v.each do |name,img|
           size = img.size

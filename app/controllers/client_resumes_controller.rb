@@ -5,6 +5,8 @@ class ClientResumesController < ApplicationController
   def create
     ClientResume.transaction do
       #ic = Iconv.new("GBK", "utf-8")    #GBK转码utf-8
+      clint_name=""
+      client_phone=""
       tags = params[:form_p]
       hash = tags
       #      tags.each do |k, v|   #message_1"=>{"\xE5\xA7\x93\xE5\x90\x8D"=>"wadawd"}
@@ -29,6 +31,7 @@ class ClientResumesController < ApplicationController
           status, @err_msg = ClientResume.image_and_file_valid(hash)
           if status == 1
             hash.each do |k, v|
+              p 12312312312,k.to_s
               if k.to_s.include?("headimage")
                 v.each do |name, img|
                   status, img_url, @err_msg = ClientResume.upload_headimg(img, company_id, secret_id)
@@ -57,11 +60,25 @@ class ClientResumesController < ApplicationController
                 if status == 0
                   break
                 end
+              elsif k.to_s == "message_1"
+                
+                v.each do |name, file|
+                  clint_name = hash[k][name]
+                  cr.update_attribute("clint_name", clint_name)
+                end
+              elsif k.to_s == "message_2"
+                
+                v.each do |name, file|
+                  client_phone = hash[k][name]
+                  cr.update_attribute("client_phone", client_phone)
+                  
+                end
               end
             end
           end
           if status == 1
             if cr.update_attribute("html_content_datas", hash)
+              
               @err_msg = "简历填写成功!"
             else
               @err_msg = "简历填写失败!"
@@ -98,12 +115,21 @@ class ClientResumesController < ApplicationController
                 if status == 0
                   break
                 end
+              elsif k.to_s == "message_1"
+                v.each do |name, file|
+                  clint_name = hash[k][name]
+                end
+              elsif k.to_s == "message_2"
+
+                v.each do |name, file|
+                  client_phone = hash[k][name]
+                end
               end
             end
           end
           if status == 1
             cr = ClientResume.new(:html_content_datas => hash, :resume_template_id => params[:resume_id], :has_completed => true,
-              :open_id => secret_id, :company_id => company_id)
+              :open_id => secret_id, :company_id => company_id,:clint_name=>clint_name,:client_phone=>client_phone)
             if cr.save
               @err_msg = "简历填写成功!"
             else
@@ -145,7 +171,7 @@ class ClientResumesController < ApplicationController
   end
 
   def update
-    ClientResume.transaction do      
+    ClientResume.transaction do
       ic = Iconv.new("GBK", "utf-8")    #GBK转码utf-8
       tags = params[:form_p]
       hash = tags
