@@ -44,8 +44,7 @@ class ExportsController < ApplicationController   #导出简历
     
     if @client_infs.length>0
       ExportRecord.create(begin_time:start_time,end_time:end_time,company_id:@company.id)
-      xls_content_for @client_in
-fs
+      xls_content_for @client_infs
       @exports = ExportRecord.paginate(page:params[:page],per_page: PerPage,conditions:["company_id = ?",@company.id])
       @text = 1
     else
@@ -59,7 +58,6 @@ fs
     sheet1 = book.create_worksheet :name => "form_datas"
     sheet1.row(0).concat  init_zero_line objs[-1]
     count_row = 1
-   
     objs.each do |obj|
       sheet1.row(count_row)[0] = obj.position_name
       obj.html_content_datas.each_with_index do |a,i|

@@ -1,0 +1,34 @@
+<div class="main_con2">
+  <div class="toolbar">
+    <div class="searchBox2">
+      <%=render 'choice_part', status:@status %>
+    </div>
+  </div>
+  <%if @positions_and_resumes.blank?%>
+    <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+    </div>
+  <%else%>
+    <table class="table1">
+      <tr>
+        <th>职位</th>
+        <th>姓名</th>
+        <th>手机号码</th>
+        <th>入职时间</th>
+        <th>附件</th>
+        <th>操作</th>
+      </tr>
+      <%@positions_and_resumes.each do |p_and_r|%>
+        <tr>
+          <td><%=  p_and_r.name%></td>
+          <td><%=  p_and_r.clint_name%></td>
+          <td><%=  p_and_r.client_phone%></td>
+          <td><%=  p_and_r.join_time.strftime("%Y-%m-%d %H:%M") %></td>
+          <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">附件</a></td>
+          <td>
+            <button class="show" title="查看" onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)"></button>
+          </td>
+        </tr>
+      <%end%>
+    </table>
+  <%end%>
+</div>

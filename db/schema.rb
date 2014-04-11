@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140318071029) do
+ActiveRecord::Schema.define(:version => 20140409081029) do
 
   create_table "cities", :force => true do |t|
     t.integer  "order_index"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(:version => 20140318071029) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.integer  "company_id"
+    t.string   "clint_name"
+    t.string   "client_phone"
   end
 
   create_table "clients", :force => true do |t|
@@ -60,6 +62,8 @@ ActiveRecord::Schema.define(:version => 20140318071029) do
     t.string   "wx_cookie"
     t.string   "wx_login_token"
   end
+
+  add_index "clients", ["open_id"], :name => "by_open_id", :unique => true
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -93,12 +97,19 @@ ActiveRecord::Schema.define(:version => 20140318071029) do
   end
 
   create_table "delivery_resume_records", :force => true do |t|
-    t.integer  "company_id",       :null => false
-    t.integer  "position_id",      :null => false
-    t.integer  "client_resume_id", :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.integer  "company_id",                      :null => false
+    t.integer  "position_id",                     :null => false
+    t.integer  "client_resume_id",                :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "recomender_id"
+    t.integer  "status",           :default => 0
+    t.datetime "audition_time"
+    t.string   "audition_addr"
+    t.string   "remark"
+    t.datetime "join_time"
+    t.string   "join_addr"
+    t.string   "join_remark"
   end
 
   add_index "delivery_resume_records", ["recomender_id"], :name => "index_delivery_resume_records_on_recomender_id"

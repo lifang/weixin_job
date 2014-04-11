@@ -2,13 +2,13 @@
   <div>
     <div class="addItemBtnBar">
       <ul>
-        <li class="scd_btn" name="addInfoItem"><span>信息栏</span></li>
-        <li class="scd_btn" name="addRdoItem"><span>单选框</span></li>
-        <li class="scd_btn" name="addChekItem"><span>复选框</span></li>
-        <li class="scd_btn" name="addSelItem"><span>下拉框</span></li>
-        <li class="scd_btn" name="addTxtItem"><span>纯文本</span></li>
+        <li class="scd_btn" name="addInfoItem" ><span>信息栏</span></li>
+        <li class="scd_btn" name="addRdoItem"  ><span>单选框</span></li>
+        <li class="scd_btn" name="addChekItem" ><span>复选框</span></li>
+        <li class="scd_btn" name="addSelItem"  ><span>下拉框</span></li>
+        <li class="scd_btn" name="addTxtItem"  ><span>纯文本</span></li>
         <li class="userHead" name="addHeadImageItem"><span>头像</span></li>
-        <li class="annex" name="addFileItem"><span>附件</span></li>
+        <li class="annex" name="addFileItem" ><span>附件</span></li>
       </ul>
     </div>
     <div class="phoneVirtual">
@@ -17,7 +17,9 @@
           <% @resume_temp.html_content.each do |k,v| %>
             <% if k.to_s.split("_")[0]=="message" %>
               <div class="infoItem itemBox message_div">
-                <span class="close" onclick="remove_form_item(this, 'message_div')">×</span>
+                <%if  v["name"] != "姓名" && v["name"] != "联系电话" %>
+                  <span class="close" onclick="remove_form_item(this, 'message_div')">×</span>
+                <%end%>
                 <p><label><%= v["name"] %></label><input type="text"/></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%=  "name" %>]" value="<%= v["name"] %>"/>
