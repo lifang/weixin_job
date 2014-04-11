@@ -57,6 +57,42 @@ class LoginsController < ApplicationController
             if resume.save
               ResumeTemplate.get_html(resume)
             end
+            menu1 = Menu.create(name:"我的...",
+              temp_id:0,
+              parent_id:0,
+              company_id:company.id,
+              types:0)
+            menu2 = Menu.create(name:"职位",
+              temp_id:0,
+              parent_id:0,
+              company_id:company.id,
+              types:0)
+            
+            Menu.create(name:"我的简历",
+              temp_id:0,
+              parent_id: menu1.id,
+              company_id:company.id,
+              types:2)
+            Menu.create(name:"我的求职",
+              temp_id:0,
+              parent_id: menu1.id,
+              company_id:company.id,
+              types:0)
+            Menu.create(name:"我的推荐",
+              temp_id:0,
+              parent_id: menu1.id,
+              company_id:company.id,
+              types:0)
+            Menu.create(name:"搜索职位",
+              temp_id:0,
+              parent_id: menu2.id,
+              company_id:company.id,
+              types:1)
+            Menu.create(name:"最新职位",
+              temp_id:0,
+              parent_id: menu2.id,
+              company_id:company.id,
+              types:1)
             flash[:notice] = "注册成功!"
             redirect_to logins_path
           else

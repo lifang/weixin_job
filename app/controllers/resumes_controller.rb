@@ -2,6 +2,7 @@
 class ResumesController < ApplicationController   #简历模板
   before_filter :get_title
   before_filter :has_sign?,:get_company
+  PerPage = 8
   def index
     #@company = Company.find_by_id(params[:company_id].to_i)
     resume_temp = ResumeTemplate.find_by_company_id(@company.id)
@@ -74,7 +75,7 @@ class ResumesController < ApplicationController   #简历模板
              drr.remark,
              drr.join_time,
              drr.join_addr,
-             drr.join_remark")
+             drr.join_remark").paginate(page: params[:page],per_page:PerPage)
       
   end
 
@@ -208,7 +209,7 @@ class ResumesController < ApplicationController   #简历模板
              drr.remark,
              drr.join_time,
              drr.join_addr,
-             drr.join_remark")
+             drr.join_remark").paginate(page: params[:page],per_page:PerPage)
    
   end
   def get_title
