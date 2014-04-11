@@ -56,9 +56,11 @@
           <li class="leftMenuItem <%=is_hover_top?(controller.controller_name) == 2 ? "hover":""%>">职位
             <ul>
               <%=link_to company_positions_path(@company) do%>
-                <li class="leftMenuItem_2 <%= is_hover?("positions")%>">当前职位</li>
+                <li class="leftMenuItem_2 <%=  controller.action_name=="index" ? "hover":""%>">当前职位</li>
               <%end%>
-              <li class="leftMenuItem_2">历史职位</li>
+              <%=link_to history_index_company_positions_path(@company) do%>
+                <li class="leftMenuItem_2 <%= is_hover?("positions/history_index")%>">历史职位</li>
+              <%end%>
             </ul>
           </li>
           <li class="leftMenuItem <%=is_hover_top?(controller.controller_name) == 3 ? "hover":""%>">设置

@@ -54,7 +54,7 @@ match "/weixins/accept_token" => "weixins#accept_token"
     end
     resources :positions do
       collection do
-        get :search_position
+        get :search_position,:history_index
         post :send_resume
       end
       member do

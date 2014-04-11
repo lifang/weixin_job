@@ -7,9 +7,15 @@ class PositionsController < ApplicationController   #招聘职位
   PerPage = 8
 
   def index
-    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
+    time = Time.now.prev_month
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 or status = 2) and created_at>=?",time])
   end
 
+  def history_index
+    time = Time.now.prev_month
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 or status = 2) and created_at <?",time])
+    render 'index'
+  end
   def edit
 
   end
@@ -44,8 +50,8 @@ class PositionsController < ApplicationController   #招聘职位
         if Position.find_by_name_and_company_id(name,@company.id).blank? && @position.save
           address.each do |ad|
             PositionAddressRelation.create(position_id:@position.id,
-                                           work_address_id:ad,
-                                           company_id:@company.id)
+              work_address_id:ad,
+              company_id:@company.id)
           end
           flash[:success] = "新建成功！"
           redirect_to company_positions_path(@company)
@@ -71,15 +77,15 @@ class PositionsController < ApplicationController   #招聘职位
     positions = Position.where(["name=? and company_id = ? and name !=?",name,@company.id,@position.name])
     if positions.length<1 
       if @position&& @position.update_attributes(name:name,
-                                                 requirement:requirement,
-                                                 description:description,
-                                                 position_type_id:types)
+          requirement:requirement,
+          description:description,
+          position_type_id:types)
                                                
         PositionAddressRelation.where(["position_id = ?",@position.id]).destroy_all
         address.each do |ad|
-        PositionAddressRelation.create(position_id:@position.id,
-                                           work_address_id:ad,
-                                           company_id:@company.id)
+          PositionAddressRelation.create(position_id:@position.id,
+            work_address_id:ad,
+            company_id:@company.id)
         end
         flash[:success] = "更新成功！"
         redirect_to company_positions_path(@company)
@@ -151,7 +157,11 @@ class PositionsController < ApplicationController   #招聘职位
     @position = Position.find_by_id(params[:id])
     if @position && @position.update_attribute(:status,status)
       flash[:success] = "#{msg}成功！"
-      redirect_to company_positions_path(@company)
+      if params[:format]=='0'
+        redirect_to company_positions_path(@company)
+      else
+        redirect_to history_index_company_positions_path(@company)
+      end
     else
       flash[:error] = "#{msg}失败，不存在职位，请刷新页面！"
       render 'index'
