@@ -689,8 +689,9 @@ Text
         end
       end
     elsif menu_type == "positions"
+      time = Time.now.prev_month
       position_type = PositionType.find_by_id(temp_id) if temp_id
-      positions = position_type.positions.where(:status => Position::STATUS[:RELEASED]) if position_type
+      positions = position_type.positions.where("status=? and created_at>=?", Position::STATUS[:RELEASED],time) if position_type
       all_positions = "点击查看职位详情\n"
       positions.each do |position|
         message = "/companies/#{@company.id}/positions/#{position.id}"

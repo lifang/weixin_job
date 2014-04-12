@@ -61,12 +61,12 @@ class LoginsController < ApplicationController
               temp_id:0,
               parent_id:0,
               company_id:company.id,
-              types:0)
+              types:3)
             menu2 = Menu.create(name:"职位",
               temp_id:0,
               parent_id:0,
               company_id:company.id,
-              types:0)
+              types:3)
             
             Menu.create(name:"我的简历",
               temp_id:0,
@@ -74,22 +74,22 @@ class LoginsController < ApplicationController
               company_id:company.id,
               types:2)
             Menu.create(name:"我的求职",
-              temp_id:0,
+              temp_id:-1,
               parent_id: menu1.id,
               company_id:company.id,
-              types:0)
+              types:3)
             Menu.create(name:"我的推荐",
-              temp_id:0,
+              temp_id:-2,
               parent_id: menu1.id,
               company_id:company.id,
-              types:0)
+              types:3)
             Menu.create(name:"搜索职位",
-              temp_id:0,
+              temp_id:-3,
               parent_id: menu2.id,
               company_id:company.id,
-              types:1)
+              types:3)
             Menu.create(name:"最新职位",
-              temp_id:0,
+              temp_id:-4,
               parent_id: menu2.id,
               company_id:company.id,
               types:1)
