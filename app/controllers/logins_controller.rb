@@ -83,8 +83,8 @@ class LoginsController < ApplicationController
               parent_id: menu1.id,
               company_id:company.id,
               types:3)
-            Menu.create(name:"搜索职位",
-              temp_id:-3,
+            Menu.create(name:"全部职位",
+              temp_id:Menu::TEMP_TYPES[:search_job],
               parent_id: menu2.id,
               company_id:company.id,
               types:3)
