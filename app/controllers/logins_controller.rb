@@ -74,12 +74,12 @@ class LoginsController < ApplicationController
               company_id:company.id,
               types:2)
             Menu.create(name:"我的求职",
-              temp_id:-1,
+              temp_id:Menu::TEMP_TYPES[:my_jobs],
               parent_id: menu1.id,
               company_id:company.id,
               types:3)
             Menu.create(name:"我的推荐",
-              temp_id:-2,
+              temp_id:Menu::TEMP_TYPES[:my_recommend],
               parent_id: menu1.id,
               company_id:company.id,
               types:3)

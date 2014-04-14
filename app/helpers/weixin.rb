@@ -692,13 +692,33 @@ Text
       time = Time.now.prev_month
       position_type = PositionType.find_by_id(temp_id) if temp_id
       positions = position_type.positions.where("status=? and created_at>=?", Position::STATUS[:RELEASED],time) if position_type
-      all_positions = "点击查看职位详情\n"
+      all_positions = "点击最新职位\n"
       positions.each do |position|
         message = "/companies/#{@company.id}/positions/#{position.id}"
         message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
         all_positions += message
       end if positions
       link = positions.present? ? all_positions : ""
+    elsif menu_type == "no_type"
+      if temp_id == Menu::TEMP_TYPES[:my_recommend]
+
+      elsif temp_id == Menu::TEMP_TYPES[:my_jobs]
+        client_resumes = ClientResume.find_by_open_id_and_company_id(open_id,@company.id)
+        if client_resumes
+          delivery_resume_records = DeliveryResumeRecord.where("client_resume_id = ?",client_resumes.id)
+          ids = delivery_resume_records.map(&:position_id)
+          unless ids.blank?
+            positions = Position.where("id in (?)",ids)
+            all_positions = "我的求职！\n"
+            positions.each do |position|
+              message = "/companies/#{@company.id}/positions/#{position.id}"
+              message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+              all_positions += message
+            end if positions
+            link = positions.present? ? all_positions : ""
+          end
+        end
+      end
     end
     link
   end
