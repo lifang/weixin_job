@@ -149,6 +149,7 @@ module Weixin
     else
       avatar_url, friend_faker_id, nickname = get_avatar_hack(company)  #订阅号 and 未认证服务号
     end
+    nickname = ""
     nickname = nickname.force_encoding 'utf-8'  unless nickname.nil?
     if client
       begin
