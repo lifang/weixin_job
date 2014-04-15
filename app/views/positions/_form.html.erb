@@ -38,7 +38,11 @@
     
     <%if @position && !@position.new_record?%>
       <%i=0%>
-      <span class="scd_btn" name="address" style="text-align: center;">
+      <span class="scd_btn" name="address" style="text-align: center;
+margin: 3px 60px 0 11px;
+width: 212px;
+padding-left: 0px;
+float: right;">
         <% @addr_and_position_relations.each do |aapr|%>
           <%if aapr.position_id==@position.id%>
             <%@work_addresses.each do |wa|%>
@@ -55,7 +59,11 @@
         <%end%>
       </span>
     <%else%>
-      <span class="scd_btn" name="address" style="text-align: center;">请点击选择工作地点</span>
+      <span class="scd_btn" name="address" style="text-align: center;
+margin: 3px 60px 0 11px;
+width: 212px;
+padding-left: 0px;
+float: right;">请点击选择工作地点</span>
     <%end%>
   </p>
   <p>
