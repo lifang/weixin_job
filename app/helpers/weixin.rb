@@ -93,7 +93,6 @@ module Weixin
     pwd = company.app_password
     data_param = 'username=' + account +'&pwd=' + pwd +'&imgcode=''&f=json'
     http = set_http(WEIXIN_URL)
-
     wx_cookie, slave_user, slave_sid, token = "", nil, nil, nil
     http.request_post(WEIXIN_LOGIN_ACTION, data_param, {"x-requested-with" => "XMLHttpRequest",
         "referer" => "https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN"}) {|response|
@@ -150,7 +149,7 @@ module Weixin
     else
       avatar_url, friend_faker_id, nickname = get_avatar_hack(company)  #订阅号 and 未认证服务号
     end
-    nickname = nickname.force_encoding 'utf-8'
+    nickname = nickname.force_encoding 'utf-8'  unless nickname.nil?
     if client
       begin
         client.update_attributes(:avatar_url => avatar_url,:name=> get_name(nickname), :faker_id => friend_faker_id)
