@@ -195,13 +195,7 @@ class ResumesController < ApplicationController   #简历模板
              drr.join_time,
              drr.join_addr,
              drr.join_remark")[0]
-    all_arr = []
-    @client_resume.html_content_datas.each do |hc|
-      arr = []
-      arr << hc[1].keys[0] << hc[1].values[0]
-      all_arr << arr
-    end
-    p all_arr
+    
   end
 
   def destroy

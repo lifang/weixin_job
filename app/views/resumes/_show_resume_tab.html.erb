@@ -9,7 +9,7 @@
     </div>
     <ul>
       <%@client_resume.html_content_datas.each do |ht|%>
-      <li><label><%=ht[1].keys[0].force_encoding("GBK").encode("UTF-8")%></label><span><%=ht[1].values[0]%></span></li>
+      <li><label><%=ht[1].keys[0]%></label><span><%=ht[1].values[0]%></span></li>
       <%end%>
     </ul>
   </div>
