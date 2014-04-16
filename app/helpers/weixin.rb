@@ -669,9 +669,6 @@ Text
 
   #******************************** 同步旧用户数据end *******************************************
 
-
-
-
   #自定义菜单，点击事件，返回对应链接
   def get_link_by_event_key(event_key, open_id)  #resume_5
     menu_type, temp_id = event_key.split("_")
