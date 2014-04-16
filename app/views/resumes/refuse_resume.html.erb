@@ -41,7 +41,7 @@
                   <td><%=p_and_r.client_phone%></td>
                   <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">下载</a></td>
                   <td><div class="aFunc">
-                      <a href="#" class="preview_icon tooltip_html">预览</a>
+                       <a href="/companies/<%=@company.id%>/resumes/<%=p_and_r.client_resume_id%>/show_resumes_new" class="preview_icon tooltip_html" data-remote="true">预览</a>
                       <%=link_to company_resume_path(@company,p_and_r.id),method:'delete',class:"delete_icon",confirm:"是否确定删除？" do%>
                         删除
                       <%end%>
@@ -62,6 +62,5 @@
 <div class="second_bg"></div>
 <%=render 'refuse_tab'%>
 <div class="tab show_resume" style="display:none;">
-  <%=render 'show_resume_tab'%>
 </div>
 

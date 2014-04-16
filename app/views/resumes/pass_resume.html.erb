@@ -44,7 +44,7 @@
                   <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">下载</a></td>
 
                   <td><div class="aFunc">
-                      <a href="#" class="preview_icon tooltip_html">预览</a>
+                       <a href="/companies/<%=@company.id%>/resumes/<%=p_and_r.client_resume_id%>/show_resumes_new" class="preview_icon tooltip_html" data-remote="true">预览</a>
                       <a href="#" class="downLoad_icon tooltip_html">下载</a>
                     </div></td>
                 </tr>
@@ -61,5 +61,4 @@
 </div>
 
 <div class="tab show_resume" style="display:none;">
-  <%=render 'show_resume_tab'%>
 </div>
