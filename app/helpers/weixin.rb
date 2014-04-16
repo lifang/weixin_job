@@ -706,7 +706,7 @@ Text
         delivery_resume_records = DeliveryResumeRecord.
           select("cr.clint_name").
           joins("inner join client_resumes cr on cr.id = delivery_resume_records.client_resume_id").
-          where("delivery_resume_records.recemender_id = ? and delivery_resume_records.company_id = ? ",open_id,@company.id)
+          where("delivery_resume_records.recomender_id = ? and delivery_resume_records.company_id = ? ",open_id,@company.id)
         delivery_resume_records.each do |drr|
           all_positions += drr.clint_name+"\n"
         end if delivery_resume_records
