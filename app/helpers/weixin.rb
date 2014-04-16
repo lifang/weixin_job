@@ -677,7 +677,7 @@ Text
     else
       menu_type = event[0]
     end
-    temp_id = event[-1]
+    temp_id = event[-1].to_i
     link = ""
     if menu_type == "resume"
       rt = ResumeTemplate.find_by_company_id(@company.id)
@@ -701,7 +701,7 @@ Text
         all_positions += message
       end if positions
       link = positions.present? ? all_positions : ""
-    elsif menu_type == "notype"
+    elsif menu_type == "no_type"
       if temp_id == Menu::TEMP_TYPES[:my_recommend]
         delivery_resume_records = DeliveryResumeRecord.
           select("cr.client_name").
