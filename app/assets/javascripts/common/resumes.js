@@ -186,7 +186,7 @@ function create_resume_valid(obj){
         $(obj).parents("form").submit();
     }
 }
-function change_status(company_id,p_and_r_id,status){
+function change_status(obj,company_id,p_and_r_id,status){
     if(confirm("确认拒绝？")){
         $.ajax({
             url:"/companies/"+company_id+"/resumes/"+p_and_r_id+"/change_status",
@@ -194,7 +194,7 @@ function change_status(company_id,p_and_r_id,status){
             dataType:'text',
             success :function(d){
                 if(d==1){
-                    tishi_alert("操作成功！");
+                    tab_function($('.refuse'));
                     location.reload();
                 }else{
                     tishi_alert("操作失败！");
@@ -204,12 +204,29 @@ function change_status(company_id,p_and_r_id,status){
         });
     }
 }
+function tab_function(t){
+    var win_width = $(window).width();
+    var win_height = $(window).height();
+    var doc_width = $(document).width();
+    var doc_height = $(document).height();
+    var layer_height = $(t).height();
+    var layer_width = $(t).width();
+    $(t).css('display','block');
+    $(t).css('top',(doc_height-$(window).scrollTop()-layer_height)/2);
+    $(t).css('left',(win_width-layer_width)/2);
+    $(".close").click(function(){
+        $(this).parent().css("display","none");
+    });
+}
+        
 
-function deal_audition(company_id,p_and_r_id){
+function deal_audition(obj,company_id,p_and_r_id){
     $("#audition_form").attr("action","/companies/"+company_id+"/resumes/"+p_and_r_id+"/deal_audition");
+    tab_function( $(".audition"));
 }
 function deal_join(company_id,p_and_r_id){
     $("#join_form").attr("action","/companies/"+company_id+"/resumes/"+p_and_r_id+"/deal_join");
+    tab_function( $(".join"));
 }
 function submit_audition_form(obj){
     var form = $(obj).parents("#audition_form");
@@ -250,7 +267,7 @@ function submit_join_form(obj){
     form.submit();
 }
 function search_positon_resumes(obj){
-    var form = $(obj).parent();
+    var form = $(obj).parent().parent();
     var postion_id = $(form).find("select[name='postion_id']").val();
     if(postion_id==0){
         tishi_alert("请选择职位！");

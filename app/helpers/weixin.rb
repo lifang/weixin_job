@@ -708,7 +708,7 @@ Text
         link = positions.present? ? all_positions : ""
       elsif temp_id == Menu::TEMP_TYPES[:search_job]
         positions = Position.where("company_id = ? and status=? ",@company.id,Position::STATUS[:RELEASED])
-        all_positions = "点击最新职位\n"
+        all_positions = "点击全部职位\n"
         positions.each do |position|
           message = "/companies/#{@company.id}/positions/#{position.id}"
           message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
@@ -732,6 +732,9 @@ Text
           end
         end
       end
+    end
+    if link==""
+      link="暂无数据"
     end
     link
   end

@@ -1,69 +1,98 @@
 <script src="/assets/My97DatePicker/WdatePicker.js" >
 </script>
-<div class="main_con2">
-  <div class="toolbar">
-    <div class="searchBox2">
+<script src="/assets/jquery-hcheckbox.js" >
+</script>
+<script type="text/javascript">
+  $(function(){
+    $('.cr_input').hcheckbox();
+  })
+</script>
+<div class="area">
+  <div class="title clearAfter">
+    <h1>安排面试</h1>
+    <div class="seek">
       <%=render 'choice_part', status:@status %>
     </div>
   </div>
-  <%if @positions_and_resumes.blank?%>
-    <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+  <div class="content">
+    <div class="manage">
+      <div class="manage_head">
+        <%=render 'ul_manage'%>
+      </div>
+      <div class="manage_body">
+        <div>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="b_table">
+            <thead>
+              <tr>
+                <th><div class="cr_input"><input name="" type="checkbox" value=""><p>全选</p></div></th>
+                <th>投递职位</th>
+                <th>应聘人员姓名</th>
+                <th>手机号码 </th>
+                <th>投递时间</th>
+                <th>附件</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%@positions_and_resumes.each do |p_and_r|%>
+                <tr>
+                  <td><div class="cr_input"><input name="" type="checkbox" value=""><p></p></div></td>
+                  <td><%=p_and_r.name%></td>
+                  <td><%=p_and_r.clint_name%></td>
+                  <td><%=p_and_r.client_phone%></td>
+                  <td><%=p_and_r.audition_time.strftime("%Y-%m-%d %H:%M")%></td>
+                  <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">下载</a></td>
+
+                  <td><div class="aFunc">
+                      <a href="#" class="preview_icon tooltip_html">预览</a>
+                      <a href="javascript:void(0)" class="refuse_icon tooltip_html" onclick="change_status(this,<%=@company.id%>,<%=p_and_r.id%>,1)">拒绝</a>
+                      <a href="javascript:void(0)" class="entry_icon tooltip_html" onclick="deal_join(<%=@company.id%>,<%=p_and_r.id%>)">入职</a>
+                      <a href="#" class="downLoad_icon tooltip_html">下载</a>
+                    </div></td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  <%else%>
-    <table class="table1">
-      <tr>
-        <th>职位</th>
-        <th>姓名</th>
-        <th>手机号码</th>
-        <th>面试时间</th>
-        <th>附件</th>
-        <th>操作</th>
-      </tr>
-      <%@positions_and_resumes.each do |p_and_r|%>
-        <tr>
-          <td><%=p_and_r.name%></td>
-          <td><%=p_and_r.clint_name%></td>
-          <td><%=p_and_r.client_phone%></td>
-          <td><%=p_and_r.audition_time.strftime("%Y-%m-%d %H:%M")%></td>
-          <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">附件</a></td>
-          <td>
-            <button class="show" title="查看" onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)" ></button>
-            <button class="refuse" title="拒绝" onclick="change_status(<%=@company.id%>,<%=p_and_r.id%>,1)" ></button>
-            <button class="toEmploy scd_btn" onclick="deal_join(<%=@company.id%>,<%=p_and_r.id%>)" name="employInfo" title="安排入职"></button>
-          </td>
-        </tr>
-      <%end%>
-    </table>
-  <%end%>
+  </div>
   <div style="margin-top: 19px;">
-    <%=will_paginate @positions_and_resumes,:previous_label=>'上一页',:next_label=>'下一页',style:"width:100%"%>
+    <%=will_paginate @positions_and_resumes,:previous_label=>'上一页',:next_label=>'下一页',style:"width:75%"%>
   </div>
 </div>
 
+
+
+
 <div class="second_bg"></div>
-<div class="second_box second_box_fixed employInfo">
-  <div class="second_content" style="width: 450px;">
-    <span class="close" title="关闭">×</span>
+<%=render 'refuse_tab'%>
+<%=render 'show_resume_tab'%>
+
+<div class="tab join" style="display:none;">
+  <a href="#" class="close">close</a>
+  <form  id ="join_form">
     <h1>安排入职</h1>
-    <form  id ="join_form">
-      <div>
-        <p>
-          <label>时间</label>
-          <input name="join_time" type="text" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
-        </p>
-        <p>
-          <label>地址</label>
-          <input name="join_addr" type="text" />
-        </p>
-        <p style="overflow: hidden; height: auto; margin-top: 3px;">
-          <label style="float: left;">备注</label>
-          <textarea name="join_remark" style=" margin-left: 14px; resize: none; width: 250px; padding: 3px;"></textarea>
-        </p>
+    <div class="tab_content">
+      <div class="interview_resume">
+        <ul class="fill_list">
+          <li><label>入职地点：</label>
+            <input name="join_time" type="text" />
+          </li>
+          <li><label>入职时间：</label>
+            <input name="join_time" type="text" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
+
+          </li>
+          <li><label>备注信息：</label>
+            <textarea name="join_remark" style=" margin-left: 14px; resize: none; width: 250px; padding: 3px;"></textarea>
+          </li>
+        </ul>
       </div>
-      <div class="scdBoxAct">
-        <button type="button" class="orangeBtn" onclick="submit_join_form(this)">确定</button>
-        <button type="button" class="orangeBtn" onclick="cancle_the_box(this)">取消</button>
-      </div>
-    </form>>
-  </div>
+    </div>
+    <div class="tab_btn">
+      <button type="button" onclick="submit_join_form(this)">确定</button>
+      <!--button type="button" class="orangeBtn" onclick="cancle_the_box(this)">取消</button-->
+    </div>
+  </form>
 </div>
+

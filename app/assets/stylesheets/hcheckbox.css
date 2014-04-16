@@ -1,0 +1,27 @@
+p.checkbox {
+	padding-left: 24px;
+	cursor: pointer;
+	background: url(/assets/checkbox_radio.png) no-repeat 0px 0px;
+	line-height: 22px;
+	height: 21px;
+	display: inline-block;
+	vertical-align: middle;
+}
+p.checked {
+	background-position: 0 -44px;
+}
+p.disabled {
+	background-position: 0px 0px;
+}
+.hRadio {
+	padding-left: 22px;
+	display: inline-block;
+	background: url(/assets/checkbox_radio.png) no-repeat 0px 0px;
+	height: 19px;
+	line-height: 20px;
+	cursor: pointer;
+	vertical-align: middle;
+}
+.hRadio_Checked {
+	background-position: 0 -22px;
+}

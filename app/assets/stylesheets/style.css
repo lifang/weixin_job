@@ -675,6 +675,7 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 	margin-right: 10px;
 }
 .aFunc a.preview_icon { background: url(/assets/icon03.png) no-repeat 0px 0px;}
+.aFunc a.delete_icon { background: url(/assets/delete.png) no-repeat -12px -7px;}
 .aFunc a.refuse_icon { background: url(/assets/icon03.png) no-repeat 0px -16px;}
 .aFunc a.refuse_icon_ed { background: url(/assets/icon03.png) no-repeat 0px -32px;}
 .aFunc a.interview_icon { background: url(/assets/icon03.png) no-repeat 0px -48px;}

@@ -1,70 +1,71 @@
 
-<div class="main_con2">
-  <div class="toolbar">
-    <div class="searchBox2">
+<div class="area">
+  <div class="title clearAfter">
+    <h1>最新简历</h1>
+    <div class="seek">
       <%=render 'choice_part', status:@status %>
     </div>
   </div>
-  <%if @positions_and_resumes.blank?%>
-    <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
-    </div>
-  <%else%>
-    <table class="table1">
-      <tr>
-        <th>职位</th>
-        <th>姓名</th>
-        <th>手机号码</th>
-        <th>投递时间</th>
-        <th>附件</th>
-        <th>操作</th>
-      </tr>
-      <%@positions_and_resumes.each do |p_and_r|%>
-        <tr>
-          <td><%=p_and_r.name%></td>
-          <td><%=p_and_r.clint_name%></td>
-          <td><%=p_and_r.client_phone%></td>
-          <td><%=p_and_r.created_at.strftime("%Y-%m-%d %H:%M")%></td>
-          <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">附件</a></td>
-          <td>
-            <button class="show" title="查看"  onclick ="show_resume(<%=@company.id%>,<%=p_and_r.client_resume_id%>)" ></button>
-            <button class="refuse" title="拒绝" onclick="change_status(<%=@company.id%>,<%=p_and_r.id%>,1)" ></button>
-            <button class="toInterview scd_btn" onclick="deal_audition(<%=@company.id%>,<%=p_and_r.id%>)" name="InterviewInfo" title="安排面试"></button>
-          </td>
-        </tr>
+  <div class="content">
+    <div class="list clearAfter">
+      <%if @positions_and_resumes.blank?%>
+        <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+        </div>
+      <%else%>
+
+        <ul>
+          <%@positions_and_resumes.each do |p_and_r|%>
+            <li>
+              <div class="avatar"><img src="<%=p_and_r.html_content_datas['headimage']%>"/></div>
+              <div class="text">
+                <h2><%=p_and_r.name%></h2>
+              </div>
+              <div class="aFunc">
+                <a href="javascript:void(0)" class="preview_icon tooltip_html">预览</a>
+                <a href="javascript:void(0)" class="refuse_icon tooltip_html" onclick="change_status(this,<%=@company.id%>,<%=p_and_r.id%>,1)">拒绝</a>
+                <a href="javascript:void(0)" class="interview_icon tooltip_html" onclick="deal_audition(this,<%=@company.id%>,<%=p_and_r.id%>)">面试</a>
+                <a href="javascript:void(0)" class="entry_icon tooltip_html">入职</a>
+                <a href="javascript:void(0)" class="downLoad_icon tooltip_html">下载</a>
+              </div>
+              <p class="time"><%=p_and_r.created_at.strftime("%Y-%m-%d %H:%M")%></p>
+            </li>
+          <%end%>
+        </ul>
       <%end%>
-    </table>
-  
-  <%end%>
+    </div>
+  </div>
   <div style="margin-top: 19px;">
     <%=will_paginate @positions_and_resumes,:previous_label=>'上一页',:next_label=>'下一页',style:"width:100%"%>
   </div>
-  
 </div>
 
+
 <div class="second_bg"></div>
-<div class="second_box second_box_fixed InterviewInfo">
-  <div class="second_content" style="width: 450px;">
-    <span class="close" title="关闭">×</span>
+<%=render 'refuse_tab'%>
+<div class="tab audition" style="display:none;">
+  <a href="#" class="close">close</a>
+  <form  id ="audition_form">
     <h1>安排面试</h1>
-    <form  id ="audition_form">
-      <div>
-        <p>
-          <label>时间</label>
-          <input name="audition_time" type="text" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
-        </p>
-        <p>
-          <label>地址</label>
-          <input name="audition_addr" type="text" />
-        </p>
-        <p style="overflow: hidden; height: auto; margin-top: 3px;">
-          <label style="float: left;">备注</label>
-          <textarea name="remark" style=" margin-left: 14px; resize: none; width: 250px; padding: 3px;"></textarea>
-        </p>
+    <div class="tab_content">
+      <div class="interview_resume">
+        <ul class="fill_list">
+          <li><label>面试地点：</label>
+            <input name="audition_addr" type="text" />
+          </li>
+          <li><label>面试时间：</label>
+            <input name="audition_time" type="text" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
+
+          </li>
+          <li><label>备注信息：</label>
+            <textarea name="remark" style=" margin-left: 14px; resize: none; width: 250px; padding: 3px;"></textarea>
+          </li>
+        </ul>
       </div>
-      <div class="scdBoxAct">
-        <button type="button" class="orangeBtn" onclick="submit_audition_form(this)">确定</button>
-        <button type="button" class="orangeBtn" onclick="cancle_the_box(this)">取消</button>
-      </div>
-    </form>
-  </div>
+    </div>
+    <div class="tab_btn">
+      <button type="button" onclick="submit_audition_form(this)">确定</button>
+      <!--button type="button" class="orangeBtn" onclick="cancle_the_box(this)">取消</button-->
+    </div>
+  </form>
 </div>
+<%=render 'show_resume_tab'%>

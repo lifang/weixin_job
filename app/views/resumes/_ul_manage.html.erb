@@ -1,0 +1,14 @@
+<ul>
+  <li class=<%= @status == DeliveryResumeRecord::STATUS[:audition] ? "hover" : ""%> >
+    <%= link_to audition_resume_company_resumes_path(@company) do %>
+      安排面试<%end%>
+  </li>
+  <li class=<%= @status == DeliveryResumeRecord::STATUS[:pass] ? "hover" : ""%>>
+    <%= link_to pass_resume_company_resumes_path(@company) do %>
+      安排入职<%end%>
+  </li>
+  <li class=<%= @status == DeliveryResumeRecord::STATUS[:refuse] ? "hover" : ""%>>
+    <%= link_to refuse_resume_company_resumes_path(@company) do %>
+      已经拒绝<%end%>
+  </li>
+</ul>

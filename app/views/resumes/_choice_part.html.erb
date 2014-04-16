@@ -1,18 +1,29 @@
 <script src="/assets/My97DatePicker/WdatePicker.js" >
 </script>
-<form action="/companies/<%=@company.id%>/resumes/choice_position">
-  <input type="hidden" name="status" value="<%=status%>" />
-  <div class="selectBox">
-    <span class="search_position">选择职位</span>
-    <div class="openDownIcon"></div>
-    <select name="postion_id" onclick="show_the_position(this)">
-      <option value="0">选择职位</option>
-      <%@positions.each do |position|%>
-        <option value="<%=position.id%>"><%=position.name%></option>
-      <%end%>
-    </select>
-  </div>
-  <input name="start" type="text" placeholder="时间起" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
-  <input name="end" type="text" placeholder="时间止" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
-  <button type="button" onclick="search_positon_resumes(this)" class="orangeBtn">查询</button>
-</form>
+
+<div class="inquire">
+  <ul>
+    <form action="/companies/<%=@company.id%>/resumes/choice_position">
+      <input type="hidden" name="status" value="<%=status%>" />
+      <li>
+        <div class="select_box">
+          <div class="select_tag"><span>选择词性</span> <input name="" type="text" value="0" class="tag_input"/></div>
+          <ul class="select_ul">
+            <%@positions.each do |position|%>
+              <li><%=position.name%><input name="" type="text" value="<%=position.id%>"/></li>
+            <%end%>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <input name="start" type="text" placeholder="时间起" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
+      </li>
+      <li>
+        <input name="end" type="text" placeholder="时间止" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
+      </li>
+      <li>
+        <button type="button" onclick="search_positon_resumes(this)" class="orangeBtn">查询</button>
+      </li>
+    </form>
+  </ul>
+</div>

@@ -22,7 +22,7 @@ function tabFunc(c,t){
 	});
 }
 $(function(){
-	tabFunc("a.preview_icon",".tab");	
+	//tabFunc("a.preview_icon",".tab");
 })
 
 //登录默认值
@@ -141,13 +141,13 @@ $(function(){
 
 /*manage_body 切换 管理简历*/
 $(function(){
-	$(".manage_head li:first").addClass("hover");
+//	$(".manage_head li:first").addClass("hover");
 	$(".manage_body > div").not(":first").hide();
-	$(".manage_head li").unbind("click").bind("click", function(){
-		$(this).addClass("hover").siblings().removeClass("hover");
-		var index = $(".manage_head li").index( $(this) );
-		$(".manage_body > div").eq(index).fadeIn("slow").siblings().hide();
-   });
+//	$(".manage_head li").unbind("click").bind("click", function(){
+//		$(this).addClass("hover").siblings().removeClass("hover");
+//		var index = $(".manage_head li").index( $(this) );
+//		$(".manage_body > div").eq(index).fadeIn("slow").siblings().hide();
+//   });
 })
 
 //table偶数行变色

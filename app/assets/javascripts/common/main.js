@@ -44,7 +44,7 @@ $(function(){
         var table = $(this).parents("table");
         var i = table.find("tr").index($(this));
         if(i % 2 ==1 && i != 0){
-            $(this).css("background","#dcdada");
+            //$(this).css("background","#dcdada");
         }
     });
     $("#close_flash").click(function() {
