@@ -671,7 +671,13 @@ Text
 
   #自定义菜单，点击事件，返回对应链接
   def get_link_by_event_key(event_key, open_id)  #resume_5
-    menu_type, temp_id = event_key.split("_")
+    event = event_key.split("_")
+    if(event.length>2)
+      menu_type = event[0...-1].join("_")
+    else
+      menu_type = event[0]
+    end
+    temp_id = event[-1]
     link = ""
     if menu_type == "resume"
       rt = ResumeTemplate.find_by_company_id(@company.id)
@@ -687,8 +693,7 @@ Text
       end
     elsif menu_type == "positions"
       time = Time.now.prev_month
-      position_type = PositionType.find_by_id(temp_id) if temp_id
-      positions = position_type.positions.where("status=? and created_at>=? and company_id = ?", Position::STATUS[:RELEASED],time,@company.id) if position_type
+      positions = Position.where("status=? and created_at>=? and company_id = ?", Position::STATUS[:RELEASED],time,@company.id)
       all_positions = "点击最新职位\n"
       positions.each do |position|
         message = "/companies/#{@company.id}/positions/#{position.id}"

@@ -147,7 +147,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     position: absolute;
     top: 100px;
 }
-.itemBox { padding: 10px; color: #6E6E6E; position: relative; margin-bottom: 5px; background: #ccc;}
+.itemBox { padding: 10px; color: #6E6E6E; position: relative; margin-bottom: 5px; }
 .itemBox:hover { box-shadow: 0 0 3px rgba(0,0,0,0.3) inset;}
 .itemBox .close {
     /*    background: #7f7e7e;*/
@@ -155,8 +155,8 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     display: block;
     font-size: 24px;
     font-weight: bold;
-    height: 20px;
-    width: 18px;
+    height: 30px;
+    width: 30px;
     line-height: 18px;
     position: absolute;
     right: 0;
@@ -173,7 +173,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 .imgItem input[type="file"] { color: #6E6E6E;width: 200px;}
 
-.profileExplain { float:left; margin: 20px; width: 500px; background: #fff; padding: 10px; border-radius: 5px; box-shadow: 0 0 3px rgba(0,0,0,0.3);}
+.profileExplain { float:left; margin: 20px; width: 430px; background: #fff; padding: 10px; border-radius: 5px; box-shadow: 0 0 3px rgba(0,0,0,0.3);}
 .profileExplain h1 { border-bottom: 1px solid #ccc; font-size: 18px; font-weight: normal; text-align: center;}
 .profileExplain li { padding: 20px; border-bottom: 1px dashed #7c7c7c; background: url(../assets/explain_close.png) no-repeat 0 23px; background-size: 15px 15px;}
 .profileExplain li h2 { font-size: 16px;}
@@ -265,8 +265,8 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .second_content .close {
     font-size: 28px;
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     line-height: 15px;
     position: absolute;
     right: 12px;
@@ -392,12 +392,12 @@ input {font-family:"微软雅黑"; border: none;}
 button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 
 .clearAfter:after {
-	display: block;
-	overflow:hidden;
-	clear: both;
-	height:0;
-	visibility:hidden;
-	content:".";
+    display: block;
+    overflow:hidden;
+    clear: both;
+    height:0;
+    visibility:hidden;
+    content:".";
 }
 
 /*pageTurn----*/
@@ -412,91 +412,91 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 .tooltip_box { position: absolute; z-index: 20000; }
 .tooltip_next {
     background: #FFF;
-	border: 1px #666666 solid;
-	box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-	border-radius: 0.2em;
-	-moz-border-radius: 0.2em;
-	-webkit-border-radius: 0.2em;
-	line-height: 25px;
-	text-align: center;
-	padding: 5px 10px;
-	color: #333;
-	max-width: 300px;
-	word-break:break-all;
-	word-wrap:break-word;
+    border: 1px #666666 solid;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+    border-radius: 0.2em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    line-height: 25px;
+    text-align: center;
+    padding: 5px 10px;
+    color: #333;
+    max-width: 300px;
+    word-break:break-all;
+    word-wrap:break-word;
 }
 
 /*fill_list*/
 .fill_list {}
 .fill_list li { margin-bottom: 10px;}
 .fill_list label {
-	width: 85px;
-	height: 30px;
-	line-height: 30px;
-	display: inline-block;
-	text-align: right;
-	float: left;
+    width: 85px;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    text-align: right;
+    float: left;
 }
 .fill_list input {
-	height: 30px;
-	line-height: 30px;
-	border-radius: 5px;
-	border: 1px #dde2e7 solid;
-	padding: 0 5px;
-	width: 200px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    padding: 0 5px;
+    width: 200px;
 }
 .fill_list textarea {
-	width: 200px;
-	height: 150px;
-	border-radius: 5px;
-	border: 1px #dde2e7 solid;
-	padding: 0 5px;
+    width: 200px;
+    height: 150px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    padding: 0 5px;
 }
 
 /*login*/
 .login { width: 500px; margin: 50px auto;}
 .login .logo {
-	width: 260px;
-	height: 140px;
-	margin: 50px auto;
-	background: url(/assets/login_logo.png) no-repeat;
-	text-indent: -999px;
-	overflow: hidden;
+    width: 260px;
+    height: 140px;
+    margin: 50px auto;
+    background: url(/assets/login_logo.png) no-repeat;
+    text-indent: -999px;
+    overflow: hidden;
 }
 .login_box { width: 480px; padding: 10px; background: url(/assets/bg_w.png) repeat; border-radius: 10px}
 .login_box h1 { font-size: 24px; line-height: 48px; text-align: center; color: #FFF;}
 .login_box ul { margin: 20px 80px;}
 .login_box ul li {
-	height: 40px;
-	line-height: 40px;
-	background: url(/assets/bg_w.png) repeat;
-	border-radius: 10px;
-	margin: 10px 0;
+    height: 40px;
+    line-height: 40px;
+    background: url(/assets/bg_w.png) repeat;
+    border-radius: 10px;
+    margin: 10px 0;
 }
 .login_box label.user_name, .login_box label.user_password {
-	width: 22px;
-	height: 22px;
-	display: block;
-	text-indent: -999px;
-	overflow: hidden;
-	margin: 9px 10px 0px 10px;
-	float: left;
+    width: 22px;
+    height: 22px;
+    display: block;
+    text-indent: -999px;
+    overflow: hidden;
+    margin: 9px 10px 0px 10px;
+    float: left;
 }
 .login_box label.user_name {
-	background: url(/assets/icon01.png) no-repeat 0px 0px;
+    background: url(/assets/icon01.png) no-repeat 0px 0px;
 }
 .login_box label.user_password {
-	background: url(/assets/icon01.png) no-repeat 0px -22px;
+    background: url(/assets/icon01.png) no-repeat 0px -22px;
 }
 .login_box input {
-	float: left;
-	margin-top: 1px;
-	height: 35px;
-	line-height: 35px;
-	width: 260px;
-	border: none;
-	background: none;
-	color: #FFF;
+    float: left;
+    margin-top: 1px;
+    height: 35px;
+    line-height: 35px;
+    width: 260px;
+    border: none;
+    background: none;
+    color: #FFF;
 }
 .login_box li.btn { margin-top: 40px; background: #5bfbfe;}
 .login_box li.btn button { width: 100%; background: none; border: none; color: #197477; font-size: 16px;}
@@ -504,10 +504,10 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 /*wrap*/
 .wrap { margin: 20px; position: relative; background: #273946; border-radius: 10px 0 0 10px;}
 .left {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 250px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 250px;
 
 }
 .right { margin-left: 250px; background: #edf1f2; border-radius: 0 10px 10px 0;}
@@ -516,24 +516,24 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 
 
 .logo {
-	width: 150px;
-	height: 70px;
-	margin: 0 auto;
-	text-indent: -999px;
-	overflow: hidden;
-	background: url(/assets/logo.png) no-repeat;
+    width: 150px;
+    height: 70px;
+    margin: 0 auto;
+    text-indent: -999px;
+    overflow: hidden;
+    background: url(/assets/logo.png) no-repeat;
 }
 
 .nav {}
 .nav .nav_list { color: #FFF;}
 .nav .nav_list p {
-	padding-left: 70px;
-	height: 60px;
-	line-height: 60px;
-	font-size: 16px;
-	border-left: 2px #273946 solid;
-	cursor: pointer;
-	position: relative;
+    padding-left: 70px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    border-left: 2px #273946 solid;
+    cursor: pointer;
+    position: relative;
 }
 .nav .hover p { background-color: #182734; border-left: 2px #5bfbfe solid;}
 .nav .nav_list p.resume {background: url(/assets/icon02.png) no-repeat 30px 0px;}
@@ -543,29 +543,29 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 .nav .nav_list ul.menu { background: #0f1922; border-left: 1px #5bfbfe solid;}
 .nav .nav_list ul.menu li {}
 .nav .nav_list ul.menu li a {
-	display: block;
-	height: 40px;
-	line-height: 40px;
-	padding-left: 70px;
-	color: #FFF;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 70px;
+    color: #FFF;
 }
 .nav .nav_list ul.menu li a.hover { background: #4dbd74;}
 
 .user_info {
-	border-bottom: 1px #182734 solid;
-	padding: 10px 25px;
-	width: 200px;
-	overflow: hidden;
+    border-bottom: 1px #182734 solid;
+    padding: 10px 25px;
+    width: 200px;
+    overflow: hidden;
 }
 .user_info .user_info_name { height: 32px; line-height: 32px; color: #445b6c; float: left;}
 .user_info .user_info_name img { width: 32px; height: 32px; border-radius: 50%; float: left; margin-right: 10px;}
 .user_info .out {
-	width: 18px;
-	height: 18px;
-	display: block;
-	float: right;
-	background: url(/assets/out.png) no-repeat;
-	margin-top: 7px;
+    width: 18px;
+    height: 18px;
+    display: block;
+    float: right;
+    background: url(/assets/out.png) no-repeat;
+    margin-top: 7px;
 }
 
 /*title*/
@@ -574,74 +574,74 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 .seek { float:right; height: 33px; padding-top: 7px;}
 
 .search {
-	height: 30px;
-	line-height: 30px;
-	border-radius: 5px;
-	border: 1px #dde2e7 solid;
-	padding: 0 5px;
-	background: #FFF;
-	width: 300px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    padding: 0 5px;
+    background: #FFF;
+    width: 300px;
 }
 .search input { width: 278px; height: 30px; line-height: 30px;}
 .search button {
-	width: 22px;
-	height: 22px;
-	background: url(/assets/search.png) no-repeat;
-	text-indent: -999px;
-	overflow: hidden;
+    width: 22px;
+    height: 22px;
+    background: url(/assets/search.png) no-repeat;
+    text-indent: -999px;
+    overflow: hidden;
 }
 
 .inquire {color:#506470;}
 .inquire li { float: left; margin: 0 5px;}
 
 .inquire li input {
-	height: 30px;
-	line-height: 30px;
-	border-radius: 5px;
-	border: 1px #dde2e7 solid;
-	padding: 0 5px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    padding: 0 5px;
 }
 .inquire li button {
-	height: 30px;
-	border-radius: 5px;
-	background: #3cc0c4;
-	border: none;
-	color: #FFF;
-	padding: 0 20px;
+    height: 30px;
+    border-radius: 5px;
+    background: #3cc0c4;
+    border: none;
+    color: #FFF;
+    padding: 0 20px;
 }
 /*select*/
 .select_box {
-	width: 150px;
-	line-height: 30px;
-	display: inline-block;
-	padding: 0 10px;
-	border-radius: 5px;
-	border: 1px #dde2e7 solid;
-	background: #FFF;
-	position: relative;
+    width: 150px;
+    line-height: 30px;
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    background: #FFF;
+    position: relative;
 }
 .select_box input { display: none;}
 .select_tag { height: 30px; cursor: pointer; background: url(/assets/select.png) no-repeat right center;}
 .select_tag span {
-	width: 150px;
-	display: inline-block;
-	word-break:keep-all;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
+    width: 150px;
+    display: inline-block;
+    word-break:keep-all;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 .select_ul {
-	display: none;
-	margin-bottom: 5px;
-	padding: 5px 10px;
-	z-index:1000;
-	position: absolute;
-	background: #FFF;
-	width: 150px;
-	border-radius: 5px;
-	border: 1px #dde2e7 solid;
-	left: 0px;
-	top: 32px;
+    display: none;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    z-index:1000;
+    position: absolute;
+    background: #FFF;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    left: 0px;
+    top: 32px;
 }
 .select_ul li { float: none; margin: 0; padding: 0 5px; cursor: pointer;}
 .select_ul li:hover, .select_ul li.hover { background: #F6F7F8;}
@@ -651,14 +651,14 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 
 .list {}
 .list li {
-	width: 400px;
-	background: #f6f7f8;
-	border-radius: 10px;
-	overflow: hidden;
-	padding: 10px;
-	position: relative;
-	display: inline-block;
-	margin: 20px;
+    width: 400px;
+    background: #f6f7f8;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    display: inline-block;
+    margin: 20px;
 }
 .list li .avatar { width: 40px; float: left; margin-right: 20px;}
 .list li .avatar img { width: 40px; height: 40px; border-radius: 50%;}
@@ -667,12 +667,12 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 /*功能操作*/
 .aFunc { height: 16px; font-size: 0; display: inline-block;}
 .aFunc a {
-	width: 16px;
-	height: 16px;
-	display: inline-block;
-	text-indent: -999px;
-	overflow: hidden;
-	margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    text-indent: -999px;
+    overflow: hidden;
+    margin-right: 10px;
 }
 .aFunc a.preview_icon { background: url(/assets/icon03.png) no-repeat 0px 0px;}
 .aFunc a.delete_icon { background: url(/assets/delete.png) no-repeat -12px -7px;}
@@ -687,45 +687,45 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 
 /*tab*/
 .tab {
-	padding: 10px 20px;
-	background: #FFF;
-	border-radius: 10px;
-	box-shadow: 0px 0px 5px rgba(0,0,0,0.6);
-	position: absolute;
+    padding: 10px 20px;
+    background: #FFF;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.6);
+    position: absolute;
 }
 .close {
-	width: 30px;
-	height: 30px;
-	display: block;
-	background: url(/assets/close.png) no-repeat;
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	text-indent: -999px;
-	overflow: hidden;
+    width: 30px;
+    height: 30px;
+    display: block;
+    background: url(/assets/close.png) no-repeat;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    text-indent: -999px;
+    overflow: hidden;
 }
 .x {
-	width: 10px;
-	height: 10px;
-	display: block;
-	background: url(/assets/x.png) no-repeat;
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	text-indent: -999px;
-	overflow: hidden;
+    width: 10px;
+    height: 10px;
+    display: block;
+    background: url(/assets/x.png) no-repeat;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    text-indent: -999px;
+    overflow: hidden;
 }
 
 .tab h1 { font-size: 18px; font-weight:normal; line-height: 36px;}
 .tab_content {}
 .tab_btn { text-align: center; margin: 10px 0;}
 .tab_btn button {
-	height: 30px;
-	background: #4dbd74;
-	border-radius: 5px;
-	display: inline-block;
-	color: #FFF;
-	padding: 0px 50px;
+    height: 30px;
+    background: #4dbd74;
+    border-radius: 5px;
+    display: inline-block;
+    color: #FFF;
+    padding: 0px 50px;
 }
 .tab_hint { text-align: right;}
 
@@ -737,21 +737,21 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 .tab .user p { font-size: 12px; color:#b2b2b2;}
 .tab .see_resume ul { display: block; overflow: hidden;}
 .tab .see_resume li {
-	width: 250px;
-	background: #fafafa;
-	margin: 10px;
-	border-radius: 10px;
-	padding: 15px;
-	float: left;
+    width: 250px;
+    background: #fafafa;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 15px;
+    float: left;
 }
 .tab .see_resume li label { display: inline-block; width: 100px; text-align: right; float: left;}
 .tab .see_resume li span {
-	width: 150px;
-	display: block;
-	word-break:keep-all;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
+    width: 150px;
+    display: block;
+    word-break:keep-all;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 /*tab拒绝简历*/
@@ -775,11 +775,11 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 
 /*简历模版*/
 .formOption {
-	border: 2px #ebeff1 solid;
-	border-radius: 10px;
-	padding: 10px;
-	overflow: hidden;
-	margin-bottom: 20px;
+    border: 2px #ebeff1 solid;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
 }
 .formOption li { width: 87px; height: 76px; display: inline-block; margin: 0 24px;}
 .formOption li a {width: 87px; height: 76px; display: block; text-indent: -999px; overflow: hidden;}
@@ -792,30 +792,30 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 .formOption li a.fo_7 { background: url(/assets/formOption.png) no-repeat -701px 0px;}
 
 .template {
-	border: 2px #3cc0c4 solid;
-	border-radius: 10px;
-	padding: 10px;
-	overflow: hidden;
-	float: left;
-	width: 400px;
+    border: 2px #3cc0c4 solid;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: hidden;
+    float: left;
+    width: 400px;
 }
 .temp_explain {float: left; margin-left: 50px;}
 
 .info_bar, .radio_bar { padding: 10px; margin-bottom: 10px; position: relative; background: #fafafa; border-radius: 10px;}
 .info_bar label {
-	width: 100px;
-	display: inline-block;
-	text-align: right;
-	height: 30px;
-	line-height: 30px;
+    width: 100px;
+    display: inline-block;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
 }
 .info_bar input[type="text"], .radio_bar input[type="text"] {
-	height: 30px;
-	line-height: 30px;
-	border-radius: 5px;
-	border: 1px #dde2e7 solid;
-	padding: 0 5px;
-	width: 245px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    padding: 0 5px;
+    width: 245px;
 }
 
 .radio_bar h2 { font-size: 16px; font-weight:normal; line-height: 32px;}

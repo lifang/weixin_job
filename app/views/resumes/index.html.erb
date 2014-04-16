@@ -1,18 +1,38 @@
-<div class="main_con2">
-  <div>
-    <div class="addItemBtnBar">
+<div class="area">
+  <div class="title clearAfter">
+    <h1>简历模版</h1>
+    <div class="seek">
+      <div class="search">
+        <input name="" type="text"><button>搜索</button>
+      </div>
+    </div>
+  </div>
+  <div class="content clearAfter">
+    <div class="formOption">
       <ul>
-        <li class="scd_btn" name="addInfoItem" ><span>信息栏</span></li>
-        <li class="scd_btn" name="addRdoItem"  ><span>单选框</span></li>
-        <li class="scd_btn" name="addChekItem" ><span>复选框</span></li>
-        <li class="scd_btn" name="addSelItem"  ><span>下拉框</span></li>
-        <li class="scd_btn" name="addTxtItem"  ><span>纯文本</span></li>
-        <li class="userHead" name="addHeadImageItem"><span>头像</span></li>
-        <li class="annex" name="addFileItem" ><span>附件</span></li>
+        <li class="scd_btn" name="addInfoItem" ><a href="#" class="fo_1 tooltip_html">信息栏</a></li>
+        <li class="scd_btn" name="addRdoItem"  ><a href="#" class="fo_2 tooltip_html">单选框</a></li>
+        <li class="scd_btn" name="addChekItem" ><a href="#" class="fo_3 tooltip_html">复选框</a></li>
+        <li class="scd_btn" name="addSelItem"  ><a href="#" class="fo_4 tooltip_html">下拉框</a></li>
+        <li class="scd_btn" name="addTxtItem"  ><a href="#" class="fo_5 tooltip_html">纯文本</a></li>
+        <li class="userHead" name="addHeadImageItem"><a href="#" class="fo_6 tooltip_html">头像</a></li>
+        <li class="annex" name="addFileItem" ><a href="#" class="fo_7 tooltip_html">附件</a></li>
+        
       </ul>
     </div>
-    <div class="phoneVirtual">
-      <%= form_tag company_resume_path(@company, @resume_temp), :method => :put do %>
+
+    <div class="template">
+      <!--div class="info_bar">
+        <a href="#" class="x">close</a>
+        <label>信息栏：</label><input name="" type="text">
+      </div>
+      <div class="radio_bar">
+        <a href="#" class="x">close</a>
+        <h2>这是单选栏</h2>
+        <span class="cr_input"><input name="" type="radio" value=""><p></p></span>
+        <input name="" type="text">
+      </div-->
+     <%= form_tag company_resume_path(@company, @resume_temp), :method => :put do %>
         <div id="form_div">
           <% @resume_temp.html_content.each do |k,v| %>
             <% if k.to_s.split("_")[0]=="message" %>
@@ -104,6 +124,8 @@
           </a>
         </div>
       <% end %>
+
+
     </div>
     <div class="profileExplain">
       <h1>功能说明</h1>
@@ -135,6 +157,10 @@
       </ul>
     </div>
   </div>
+
 </div>
+
+
+
 <div class="second_bg"></div>
 <%= render "add_form_item" %>

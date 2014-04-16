@@ -174,6 +174,10 @@ class ResumesController < ApplicationController   #简历模板
     render 'client_resumes/edit'
   end
 
+  def show_resumes_new
+    
+  end
+
   def destroy
     @deliveryresumerecord = DeliveryResumeRecord.find_by_id(params[id])
     if @deliveryresumerecord

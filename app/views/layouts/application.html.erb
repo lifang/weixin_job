@@ -35,7 +35,8 @@
                   <%end%>
                 </li>
                 <li>
-                  <%= link_to audition_resume_company_resumes_path(@company),:class=>( @status == DeliveryResumeRecord::STATUS[:audition] ? "hover" : "") do %>
+                  <%= link_to audition_resume_company_resumes_path(@company),:class=>( (@status == DeliveryResumeRecord::STATUS[:audition]||
+                      @status == DeliveryResumeRecord::STATUS[:refuse] || @status == DeliveryResumeRecord::STATUS[:pass])? "hover" : "") do %>
                     管理简历<%end%>
                 </li>
                 <li><%= link_to company_resumes_path(@company),:class=>(is_hover?("resumes") if controller.action_name == 'index') do %>
@@ -44,7 +45,7 @@
             </div>
             <div class="nav_list <%=is_hover_top?(controller.controller_name) == 2 ? "hover":""%>"><p class="position">职位</p>
               <ul class="menu" style="display: <%=is_hover_top?(controller.controller_name) == 2 ? "block":"none"%>;">
-                <li><%=link_to company_positions_path(@company),:class=>(controller.action_name=="index" ? "hover":"") do%>
+                <li><%=link_to company_positions_path(@company),:class=>((controller.action_name=="index" && controller.controller_name==("positions")) ? "hover":"") do%>
                     当前职位<%end%></li>
                 <li><%=link_to history_index_company_positions_path(@company),:class=>(is_hover?("positions/history_index")) do%>
                     历史职位<%end%></li>
@@ -80,7 +81,6 @@
         <%=yield%>
       </div>
     </div>
-
     <%= render "/shared/tishi_alert" %>
   </body>
 </html>

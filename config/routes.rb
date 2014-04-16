@@ -49,7 +49,7 @@ match "/weixins/accept_token" => "weixins#accept_token"
           :audition_resume,:refuse_resume,:pass_resume,:show_resume
       end
       member do
-        get :change_status,:deal_audition,:deal_join
+        get :change_status,:deal_audition,:deal_join,:show_resumes_new
       end
     end
     resources :positions do
