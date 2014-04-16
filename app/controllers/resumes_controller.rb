@@ -175,7 +175,33 @@ class ResumesController < ApplicationController   #简历模板
   end
 
   def show_resumes_new
-    
+    #client_resume = ClientResume.find_by_id(params[:id])
+    @client_resume = ClientResume.
+      where(["client_resumes.id= ? ",params[:id]]).
+      joins("inner join delivery_resume_records drr on drr.client_resume_id = client_resumes.id").
+      joins("inner join positions p on drr.position_id = p.id ").
+      select("drr.id,p.name,
+             p.id position_id,
+             client_resumes.id client_resume_id,
+             client_resumes.html_content_datas,
+             client_resumes.clint_name,
+             client_resumes.client_phone,
+             drr.created_at,
+             drr.updated_at,
+             drr.status,
+             drr.audition_time,
+             drr.audition_addr,
+             drr.remark,
+             drr.join_time,
+             drr.join_addr,
+             drr.join_remark")[0]
+    all_arr = []
+    @client_resume.html_content_datas.each do |hc|
+      arr = []
+      arr << hc[1].keys[0] << hc[1].values[0]
+      all_arr << arr
+    end
+    p all_arr
   end
 
   def destroy

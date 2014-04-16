@@ -21,7 +21,7 @@
                 <h2><%=p_and_r.name%></h2>
               </div>
               <div class="aFunc">
-                <a href="/companies/2/resumes/" class="preview_icon tooltip_html">预览</a>
+                <a href="/companies/<%=@company.id%>/resumes/<%=p_and_r.client_resume_id%>/show_resumes_new" class="preview_icon tooltip_html" data-remote="true">预览</a>
                 <a href="javascript:void(0)" class="refuse_icon tooltip_html" onclick="change_status(this,<%=@company.id%>,<%=p_and_r.id%>,1)">拒绝</a>
                 <a href="javascript:void(0)" class="interview_icon tooltip_html" onclick="deal_audition(this,<%=@company.id%>,<%=p_and_r.id%>)">面试</a>
                 <a href="javascript:void(0)" class="downLoad_icon tooltip_html">下载</a>
@@ -68,5 +68,4 @@
   </form>
 </div>
 <div class="tab show_resume" style="display:none;">
-  <%=render 'show_resume_tab'%>
 </div>

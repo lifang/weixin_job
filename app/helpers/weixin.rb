@@ -701,7 +701,7 @@ Text
         all_positions += message
       end if positions
       link = positions.present? ? all_positions : ""
-    elsif menu_type == "no_type"
+    elsif menu_type == "notype"
       if temp_id == Menu::TEMP_TYPES[:my_recommend]
         delivery_resume_records = DeliveryResumeRecord.
           select("cr.client_name").
