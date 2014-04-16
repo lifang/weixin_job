@@ -16,83 +16,84 @@
         </div>
       </div>
     <% end %>
-    <div class="header">
-      <div class="logo">微招聘</div>
-      <div class="userInfo">
-        <span><%= cookies[:company_account] %></span>
-        <ul>
-          <li>1</li>
-          <li>1</li>
-        </ul>
+
+
+    <div class="wrap">
+      <div class="left">
+        <div class="area">
+          <div class="logo">微招聘</div>
+          <div class="user_info">
+            <div class="user_info_name"><img src="/assets/tx.jpg"/><span><%= cookies[:company_account] %></span></div>
+            <a href="/logins/sign_out" title="退出" class="out"></a>
+          </div>
+          <div class="nav">
+            <div class="nav_list <%=is_hover_top?(controller.controller_name) == 1 ? "hover":""%>"><p class="resume">简历</p>
+              <ul class="menu" style="display: <%=is_hover_top?(controller.controller_name) == 1 ? "block":"none"%>;">
+                <li>
+                  <%= link_to newest_resumes_company_resumes_path(@company),:class=>(@status == DeliveryResumeRecord::STATUS[:newest] ? "hover" : "") do %>
+                    最新简历
+                  <%end%>
+                </li>
+                <li>
+                  <%= link_to audition_resume_company_resumes_path(@company),:class=>( @status == DeliveryResumeRecord::STATUS[:audition] ? "hover" : "") do %>
+                    管理简历<%end%>
+                </li>
+                <li><%= link_to company_resumes_path(@company),:class=>(is_hover?("resumes") if controller.action_name == 'index') do %>
+                    简历模版<%end%></li>
+              </ul>
+            </div>
+            <div class="nav_list <%=is_hover_top?(controller.controller_name) == 2 ? "hover":""%>"><p class="position">职位</p>
+              <ul class="menu" style="display: <%=is_hover_top?(controller.controller_name) == 2 ? "block":"none"%>;">
+                <li><%=link_to company_positions_path(@company),:class=>(controller.action_name=="index" ? "hover":"") do%>
+                    当前职位<%end%></li>
+                <li><%=link_to history_index_company_positions_path(@company),:class=>(is_hover?("positions/history_index")) do%>
+                    历史职位<%end%></li>
+              </ul>
+            </div>
+            <div class="nav_list <%=is_hover_top?(controller.controller_name) == 3 ? 'hover':''%>"><p class="set ">设置</p>
+              <ul class="menu" style="display: <%=is_hover_top?(controller.controller_name) == 3 ? "block":"none"%>;">
+                <li><%= link_to "/companies/show?company_id=#{@company.id}",class:is_hover?('companies/show') do %>
+                   设置
+                <% end %></li>
+                <li ><%=link_to company_company_profiles_path(@company),class:is_hover?('company_profiles') do%>
+                  公司简介
+                <%end%></li>
+                 <li><%=link_to company_position_types_path(@company),class:is_hover?('position_types') do%>
+                 职位类别
+                <%end%></li>
+                <li ><%= link_to company_address_settings_path(@company),class: is_hover?('address_settings') do %>
+                  工作地点管理
+                <% end %></li>
+                <li ><%= link_to company_menus_path(@company),class:is_hover?('menus') do %>
+                  菜单
+                <% end %></li>
+                <li ><%= link_to company_app_managements_path(@company),class:is_hover?('app_managements') do %>
+                  APP管理
+                <% end %></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="right">
+        <%=yield%>
       </div>
     </div>
-    <div class="main">
-      <div class="leftMenu">
-        <ul>
 
-          <!--**********************************************************************-->
-          <li class="leftMenuItem <%=is_hover_top?(controller.controller_name) == 1 ? "hover":""%>">简历
-            <ul>
-              <%= link_to newest_resumes_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:newest] ? "hover" : ""%>">最新简历</li>
-              <% end %>
-              <%= link_to audition_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:audition] ? "hover" : ""%>">面试简历</li>
-              <% end %>
-              <%= link_to  pass_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:pass] ? "hover" : ""%>">入职简历</li>
-              <% end %>
-              <%= link_to refuse_resume_company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= @status == DeliveryResumeRecord::STATUS[:refuse] ? "hover" : ""%>">已拒绝简历</li>
-              <% end %>
-              <%= link_to company_resumes_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("resumes") if controller.action_name == 'index'%>">简历模板</li>
-              <% end %>
-              <%= link_to company_exports_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("exports")%>">下载简历</li>
-              <%end%>
-            </ul>
-          </li>
-          <li class="leftMenuItem <%=is_hover_top?(controller.controller_name) == 2 ? "hover":""%>">职位
-            <ul>
-              <%=link_to company_positions_path(@company) do%>
-                <li class="leftMenuItem_2 <%=  controller.action_name=="index" ? "hover":""%>">当前职位</li>
-              <%end%>
-              <%=link_to history_index_company_positions_path(@company) do%>
-                <li class="leftMenuItem_2 <%= is_hover?("positions/history_index")%>">历史职位</li>
-              <%end%>
-            </ul>
-          </li>
-          <li class="leftMenuItem <%=is_hover_top?(controller.controller_name) == 3 ? "hover":""%>">设置
-            <ul>
-              <%= link_to "/companies/show?company_id=#{@company.id}" do %>
-                <li class="leftMenuItem_2 <%= is_hover?("companies/show") %>">设置</li>
-              <% end %>
-              <%=link_to company_company_profiles_path(@company) do%>
-                <li class="leftMenuItem_2 <%= is_hover?("company_profiles")%>">公司简介</li>
-              <%end%>
-              <%=link_to company_position_types_path(@company) do%>
-                <li class="leftMenuItem_2 <%= is_hover?("position_types") %>">职位类别</li>
-              <%end%>
-              <%= link_to company_address_settings_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("address_settings")%>">工作地点管理</li>
-              <% end %>
-              <%= link_to company_menus_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("menus")%>">菜单</li>
-              <% end %>
-              <%= link_to company_app_managements_path(@company) do %>
-                <li class="leftMenuItem_2 <%= is_hover?("app_managements")%>">APP管理</li>
-              <% end %>
-            </ul>
-          </li>
-          <a href="/logins/sign_out">
-            <li class="leftMenuItem">注销</li>
-          </a>
 
-        </ul>
-      </div>
-      <%= yield %>
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
     <%= render "/shared/tishi_alert" %>
   </body>
 </html>
