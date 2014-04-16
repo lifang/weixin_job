@@ -704,11 +704,11 @@ Text
     elsif menu_type == "no_type"
       if temp_id == Menu::TEMP_TYPES[:my_recommend]
         delivery_resume_records = DeliveryResumeRecord.
-          select("cr.client_name").
-          joins("inner join client_resumes cr on cr.id = delivery_resume_records.cient_resume_id").
+          select("cr.clint_name").
+          joins("inner join client_resumes cr on cr.id = delivery_resume_records.client_resume_id").
           where("delivery_resume_records.recemender_id = ? and delivery_resume_records.company_id = ? ",open_id,@company.id)
         delivery_resume_records.each do |drr|
-          all_positions += drr.client_name+"\n"
+          all_positions += drr.clint_name+"\n"
         end if delivery_resume_records
         link = positions.present? ? all_positions : ""
       elsif temp_id == Menu::TEMP_TYPES[:search_job]
