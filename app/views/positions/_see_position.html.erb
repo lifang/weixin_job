@@ -1,0 +1,29 @@
+<a href="#" class="close">close</a>
+<h1>查看职位</h1>
+<div class="tab_content">
+  <div class="see_job">
+    <ul>
+      <li style="display: inline-block; width: 260px; margin-right: 15px;"><label>职位类别：</label><span><%= find_name_from  @position_types,@position.position_type_id %></span></li>
+      <li style="display: inline-block; width: 260px;"><label>职位名称：</label><span><%=@position.name%></span></li>
+      <li><label>工作地点：</label>
+        <%@addr_and_position_relations.each do |aapr|%>
+          <%if aapr.position_id==@position.id%>
+            <%@work_addresses.each do |wa|%>
+              <%if wa.id == aapr.work_address_id%>
+                <span><%=get_address_name wa%></span>
+              <%end%>
+            <%end%>
+          <%end%>
+        <%end%>
+        </li>
+      <li>
+        <p>职位描述：</p>
+        <p><%=raw @position.description %></p>
+      </li>
+      <li>
+        <p>任职要求：</p>
+        <p><%=raw @position.requirement %></p>
+      </li>
+    </ul>
+  </div>
+</div>

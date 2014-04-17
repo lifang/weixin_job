@@ -1,0 +1,107 @@
+
+<script type="text/javascript">
+  $(function(){
+    $('.cr_input').hradio();
+  })
+  //职位-选择地址
+  $(function(){
+    $(".positionPicker").click(function(){
+      $(this).toggleClass("hover");
+    })
+  });
+  $(function(){
+    $(".select_tag").click(function() {
+      $(this).parent(".select_box").find("ul").toggle();
+    });
+    $(".select_box ul li").click(function() {
+      $(this).addClass("hover").siblings().removeClass("hover");
+      var text = $(this).html();
+      var $val = $(this).find("input").val();
+      $(this).parents(".select_box").find(".select_tag span").html(text);
+      $(this).parents(".select_box").find("input.tag_input").val($val);
+      $(this).parents(".select_box").find(".select_tag span input").attr("name","positions[types]")
+      $(this).parents(".select_box").find("ul").hide();
+    });
+
+    $(document).bind('click', function(e) {
+      var $clicked = $(e.target);
+      if (! $clicked.parents().hasClass("select_box"))
+        $(".select_box ul").hide();
+
+    });
+
+  });
+   
+</script>
+<a href="#" class="close">close</a>
+<%=form_for(:positions,url:company_positions_path(@company)) do%>
+  <input type="hidden" class="id" name="positions[id]" value="<%=@position.id if @position%>" />
+  <h1>新建职位</h1>
+  <div class="tab_content">
+    <div class="new_job">
+      <ul>
+        <li style="display: inline-block; width: 260px; margin-right: 15px;">
+          <label>职位类别：</label>
+          <div class="select_box" style="position: absolute; top: 4px; background: #fafafa; margin-left: 4px;">
+            <div class="select_tag"><span>选择词性<input name="" type="text" value="0"/></span> <input  name="" type="text" value="" class="tag_input" /></div>
+            <ul class="select_ul">
+              <%@position_types.each do |pt|%>
+                <li><%=pt.name%><input name="" type="text" value="<%=pt.id%>"/></li>
+              <%end%>
+            </ul>
+          </div>
+        </li>
+        <li style="display: inline-block; width: 260px;">
+          <label>职位名称：</label>
+          <input id="position_name" name="positions[name]" type="text"/>
+        </li>
+        <li style="width: 140px;">
+          <label>工作地点：</label>
+          <input type="hidden" style="width: 160px;" id="work_place" />
+          <div class="positionPicker">
+            <div class="pickerBox">
+              <div class="pickerBoxCorner"></div>
+              <ul class="pickerArea">
+                <%@work_addresses.each do |wa|%>
+                  <li class="cr_input">
+                    <input type="radio" value="<%=wa.id%>"  style="display: none;" />
+                    <p class="hRadio"><%=get_address_name wa%>
+                      <input type="hidden" name value="<%=wa.id%>" />
+                    </p>
+                  </li>
+                <%end%>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li>
+          <p>职位描述：</p>
+          <textarea class="k_editor_id" name="positions[description]"  onkeydown='character_limit(this,250)' onkeyup='character_limit(this,250)'></textarea>
+
+        </li>
+        <li>
+          <p>任职要求：</p>
+          <textarea class="k_editor_id" name="positions[description]"  onkeydown='character_limit(this,250)' onkeyup='character_limit(this,250)'></textarea>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab_btn">
+    <button class="green_btn" type="button" onclick="check_position()">确定</button>
+  </div>
+<%end%>
+<script>
+  KindEditor.create('.k_editor_id', {
+    width : '540px',
+    minWidth : '380px',
+    items : ['source',
+      'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+      'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist'],
+    afterCreate : function() {
+      this.sync();
+    },
+    afterBlur: function(){
+      this.sync();
+    }//同步KindEditor的值到textarea文本框
+  });
+</script>

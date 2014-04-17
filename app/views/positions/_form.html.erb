@@ -47,7 +47,7 @@ float: right;">
           <%if aapr.position_id==@position.id%>
             <%@work_addresses.each do |wa|%>
               <%if wa.id == aapr.work_address_id%>
-                <%=get_address_name wa%><br/>
+                <%=get_address_name wa%>
                 <input type="hidden" name="address_id[]" value="<%=wa.id%>" />
                 <%i+=1%>
               <%end%>

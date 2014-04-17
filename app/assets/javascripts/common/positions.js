@@ -35,11 +35,12 @@ function character_limit(obj,num){
 }
 
 function check_position(){
-    if($("#types").val()==0 || $("#types").val()== null ){
+    var select_val = $(".new_job").find(".select_tag span").find("input").val();
+    if(select_val =="" || select_val == null ){
         tishi_alert('请选择职位类型！');
         return false;
     }
-    var name = $.trim( $(".jobInfo").find('input[type=text]').val())
+    var name = $.trim( $(".new_job").find('#position_name').val())
     if(name == ""){
         tishi_alert("名称不能为空！");
         return false;
@@ -48,8 +49,9 @@ function check_position(){
         tishi_alert("名称不能超过15个字！");
         return false;
     }
-    var place = $.trim($(".jobInfo").find(".place span").text());
-    if(place == "请点击选择工作地点"){
+    var place = $.trim($("#work_place").val());
+    var hRadio_Checked = $(".pickerArea").find(".hRadio_Checked");
+    if( hRadio_Checked.length==0){
         tishi_alert("请点击选择工作地点！");
         return false;
     }
@@ -72,7 +74,7 @@ function check_position(){
         tishi_alert("任职要求不能大于500字！");
         return false;
     }
-    $(".jobInfo").children("form").submit();
+    $(".create_position").children("form").submit();
 }
 
 function search_position(obj,url){

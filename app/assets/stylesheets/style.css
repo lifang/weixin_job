@@ -675,7 +675,6 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
     margin-right: 10px;
 }
 .aFunc a.preview_icon { background: url(/assets/icon03.png) no-repeat 0px 0px;}
-.aFunc a.delete_icon { background: url(/assets/delete.png) no-repeat -12px -7px;}
 .aFunc a.refuse_icon { background: url(/assets/icon03.png) no-repeat 0px -16px;}
 .aFunc a.refuse_icon_ed { background: url(/assets/icon03.png) no-repeat 0px -32px;}
 .aFunc a.interview_icon { background: url(/assets/icon03.png) no-repeat 0px -48px;}
@@ -822,7 +821,112 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 
 .radio_bar .cr_input { width: 50px; display: inline-block; text-align: right;}
 
+.bar_list { margin: 10px 0;}
 
+.tab_templateInfo_bar { margin: 10px 0; position: relative;}
+.tab_templateInfo_bar label {
+	width: 150px;
+	display: inline-block;
+	text-align: right;
+	height: 30px;
+	line-height: 30px;
+	float: left;
+}
+.tab_templateInfo_bar input {
+	height: 30px;
+	line-height: 30px;
+	border-radius: 5px;
+	border: 1px #dde2e7 solid;
+	padding: 0 5px;
+	width: 245px;
+}
+
+
+/* 职位 */
+.show_icon { background: url(/assets/actionIcon_1.png) no-repeat -12px center;}
+.edit_icon { background: url(/assets/actionIcon_1.png) no-repeat -42px center;}
+.delete_icon { background: url(/assets/actionIcon_1.png) no-repeat -73px center;}
+.publish_icon { background: url(/assets/actionIcon_1.png) no-repeat -99px center;}
+.show_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -12px center;}
+.edit_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -42px center;}
+.delete_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -73px center;}
+.publish_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -99px center;}
+
+.num {
+	background: #4dbd74;
+	color: #fff;
+	display: block;
+	width: 30px;
+	height: 20px;
+	border-radius: 10px;
+	text-align: center;
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
+.list li .jobClass { position: absolute; right: 10px; bottom: 30px; color:#b2b2b2;}
+
+.see_job { width: 600px; overflow: hidden;}
+.see_job ul { display: block; overflow: hidden;}
+.see_job li {
+	background: #fafafa;
+	line-height: 24px;
+	margin: 10px 0;
+	border-radius: 10px;
+	padding: 8px 15px;
+}
+.new_job { width: 600px; overflow: hidden;}
+.new_job ul { display: block; overflow: hidden;}
+.new_job li {
+	line-height: 24px;
+	border-radius: 10px;
+	padding: 8px 15px;
+	position: relative;
+}
+.new_job li input { background: #fafafa; padding: 6px; border: 1px solid #DDE2E7; border-radius: 5px;}
+.new_job li textarea {
+	background: #fafafa;
+	resize: none;
+	border: 0;
+	width: 518px;
+	height: 120px;
+	border: 1px solid #DDE2E7;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: 10px;
+}
+
+input.search { width: 250px;}
+.inquire li button.searchBtn {
+	display: block;
+	border: 0;
+	width: 30px;
+	height: 30px;
+	padding: 0;
+	background: url(/assets/search.png) no-repeat 0 center #fff;
+	position: absolute;
+	top: 1px;
+	right: 1px;
+}
+.positionPicker {
+	float: right;
+	width: 44px;
+	height: 33px;
+	border-radius: 5px;
+	background: url(/assets/positionPicker.png) 1px 5px no-repeat #c8d2d7;
+	position: relative;
+	cursor: pointer;
+}
+.positionPicker.hover .pickerBox { display: block;}
+.pickerBox { position: absolute; left: 50px; width: 270px; z-index: 99; display: none;}
+.pickerBoxCorner {
+	width: 21px;
+	height: 31px;
+	background: url(/assets/corner.png) no-repeat -6px 7px;
+	position: absolute;
+}
+.pickerArea { border: 1px solid #DDE2E7; border-radius: 5px; margin-left: 20px;background: white;}
+.pickerArea p { display: block; margin-top: 3px;}
 
 
 

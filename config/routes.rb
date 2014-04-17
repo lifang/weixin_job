@@ -54,11 +54,11 @@ match "/weixins/accept_token" => "weixins#accept_token"
     end
     resources :positions do
       collection do
-        get :search_position,:history_index
+        get :search_position,:history_index,:create_position
         post :send_resume
       end
       member do
-        get :release,:dis_release
+        get :release,:dis_release,:see_position,:edit_position
       end
     end
     resources :menus

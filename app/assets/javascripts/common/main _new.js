@@ -154,3 +154,10 @@ $(function(){
 $(function(){
 	$(".b_table > tbody > tr:odd").addClass("tbg");
 });
+//职位-选择地址
+$(function(){
+	$(".positionPicker").click(function(){
+		$(this).toggleClass("hover");
+          
+	})
+});

@@ -1,43 +1,46 @@
 (function($){
-	$.fn.hcheckbox=function(options){
-		$(':checkbox+p',this).each(function(){
-			$(this).addClass('checkbox');
+    $.fn.hcheckbox=function(options){
+        $(':checkbox+p',this).each(function(){
+            $(this).addClass('checkbox');
             if($(this).prev().is(':disabled')==false){
                 if($(this).prev().is(':checked'))
-				    $(this).addClass("checked");
+                    $(this).addClass("checked");
             }else{
                 $(this).addClass('disabled');
             }
-		}).click(function(event){
-				if(!$(this).prev().is(':checked')){
-				    $(this).addClass("checked");
-                    $(this).prev()[0].checked = true;
-                }
-                else{
-                    $(this).removeClass('checked');			
-                    $(this).prev()[0].checked = false;
-                }
-                event.stopPropagation();
-			}
-		).prev().hide();
-	}
+        }).click(function(event){
+            if(!$(this).prev().is(':checked')){
+                $(this).addClass("checked");
+                $(this).prev()[0].checked = true;
+            }
+            else{
+                $(this).removeClass('checked');
+                $(this).prev()[0].checked = false;
+            }
+            event.stopPropagation();
+        }
+        ).prev().hide();
+    }
 
     $.fn.hradio = function(options){
         var self = this;
         return $(':radio+p',this).each(function(){
             $(this).addClass('hRadio');
-            if($(this).prev().is(":checked"))
+            if($(this).prev().is(":checked")){
                 $(this).addClass('hRadio_Checked');
+            }
         }).click(function(event){
             $(this).siblings().removeClass("hRadio_Checked");
             if(!$(this).prev().is(':checked')){
-				$(this).addClass("hRadio_Checked");
+                $(this).find("input[type=hidden]").attr("name","address_id[]");
+                $(this).addClass("hRadio_Checked");
                 $(this).prev()[0].checked = true;
             }
-			 else{
-                    $(this).removeClass('hRadio_Checked');			
-                    $(this).prev()[0].checked = false;
-                }
+            else{
+                $(this).find("input[type=hidden]").removeAttr("name");
+                $(this).removeClass('hRadio_Checked');
+                $(this).prev()[0].checked = false;
+            }
                
             event.stopPropagation();
         })
