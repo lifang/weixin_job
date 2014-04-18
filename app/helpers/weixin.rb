@@ -91,31 +91,38 @@ module Weixin
   def login_to_weixin(company)
     account = company.app_account
     pwd = company.app_password
-    data_param = 'username=' + account +'&pwd=' + pwd +'&imgcode=''&f=json'
-    http = set_http(WEIXIN_URL)
-    wx_cookie, slave_user, slave_sid, token = "", nil, nil, nil
-    http.request_post(WEIXIN_LOGIN_ACTION, data_param, {"x-requested-with" => "XMLHttpRequest",
-        "referer" => "https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN"}) {|response|
-      res_data = JSON response.body   #   {"Ret"=>302, "ErrMsg"=>"/cgi-bin/home?t=home/index&lang=zh_CN&token=155671926", "ShowVerifyCode"=>0,"ErrCode"=>0, "WtloginErrCode"=>0}
-      if res_data["ErrCode"] == 0
-        wx_cookie_str = response['set-cookie']  #获取cookie的值
-        #"slave_user=gh_91dc23d9899e; Path=/; Secure; HttpOnly, slave_sid=NjJyWU9CMllLYWNRS0w4Tk05YXk3NlRjR09MZVQzOUFNSGRVR3lEcG1Pc1lYS1BPMEZ5dVduNGdCQnRVYnZHRnpOdlF3UmllRVVRak50ZlZmTWs3TkZ1YmhLQWxJWWR3RXRWMXhxSzRPdkZFSjFLRUNiblFrcHB6c1ZkdHVNWE0=; Path=/; Secure; HttpOnly"
-        slave_user = wx_cookie_str.scan(/slave_user=(\w+);/).flatten[0]  #当前登录用户
-        slave_sid = wx_cookie_str.scan(/slave_sid=(\w+=)/).flatten[0] #当前登录用户id
 
-        wx_cookie = "slave_user=#{slave_user}; slave_sid=#{slave_sid};"
-        msg =res_data["ErrMsg"]
-        token = msg.scan(/token=(\d+)/).flatten[0] #登录后的token
+    if account.present? && pwd.present?
+      data_param = 'username=' + account +'&pwd=' + pwd +'&imgcode=''&f=json'
+      http = set_http(WEIXIN_URL)
 
-        gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
-        gzh_client.update_attributes(:wx_login_token => token, :wx_cookie => wx_cookie) #更新公众号faker_id
+      wx_cookie, slave_user, slave_sid, token = "", nil, nil, nil
+      http.request_post(WEIXIN_LOGIN_ACTION, data_param, {"x-requested-with" => "XMLHttpRequest",
+          "referer" => "https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN"}) {|response|
+        res_data = JSON response.body   #   {"Ret"=>302, "ErrMsg"=>"/cgi-bin/home?t=home/index&lang=zh_CN&token=155671926", "ShowVerifyCode"=>0,"ErrCode"=>0, "WtloginErrCode"=>0}
+        if res_data["ErrCode"] == 0
+          wx_cookie_str = response['set-cookie']  #获取cookie的值
+          #"slave_user=gh_91dc23d9899e; Path=/; Secure; HttpOnly, slave_sid=NjJyWU9CMllLYWNRS0w4Tk05YXk3NlRjR09MZVQzOUFNSGRVR3lEcG1Pc1lYS1BPMEZ5dVduNGdCQnRVYnZHRnpOdlF3UmllRVVRak50ZlZmTWs3TkZ1YmhLQWxJWWR3RXRWMXhxSzRPdkZFSjFLRUNiblFrcHB6c1ZkdHVNWE0=; Path=/; Secure; HttpOnly"
+          slave_user = wx_cookie_str.scan(/slave_user=(\w+);/).flatten[0]  #当前登录用户
+          slave_sid = wx_cookie_str.scan(/slave_sid=(\w+=)/).flatten[0] #当前登录用户id
+
+          wx_cookie = "slave_user=#{slave_user}; slave_sid=#{slave_sid};"
+          msg =res_data["ErrMsg"]
+          token = msg.scan(/token=(\d+)/).flatten[0] #登录后的token
+
+          gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
+          gzh_client.update_attributes(:wx_login_token => token, :wx_cookie => wx_cookie) #更新公众号faker_id
+        else
+          message = "login error"
+          return false
+        end
+      }
+
+      if slave_user && slave_sid && token
+        return [token, wx_cookie]
       else
-        message = "login error"
         return false
       end
-    }
-    if slave_user && slave_sid && token
-      return [token, wx_cookie]
     else
       return false
     end
@@ -151,6 +158,7 @@ module Weixin
     end
     nickname = ""
     nickname = nickname.force_encoding 'utf-8'  unless nickname.nil?
+
     if client
       begin
         client.update_attributes(:avatar_url => avatar_url,:name=> get_name(nickname), :faker_id => friend_faker_id)
@@ -377,32 +385,33 @@ module Weixin
   #保存语音消息 hack
   def get_voice_path_or_faker_id(company, flag)
     gzh_client = Client.find_by_company_id_and_types(company.id, Client::TYPES[:ADMIN]) #公众号client
-    wx_token = gzh_client.wx_login_token
-    wx_cookie = gzh_client.wx_cookie
-    newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie)
-    if !newest_msg_id
-      login_info = login_to_weixin(company)
-      if login_info.present?
-        wx_token, wx_cookie = login_info
-        newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie)
-        if newest_msg_id.present? && flag == "voice"
-          #download 语音消息
+    if gzh_client
+      wx_token = gzh_client.wx_login_token
+      wx_cookie = gzh_client.wx_cookie
+      newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie)
+      if !newest_msg_id
+        login_info = login_to_weixin(company)
+        if login_info.present?
+          wx_token, wx_cookie = login_info
+          newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie)
+          if newest_msg_id.present? && flag == "voice"
+            #download 语音消息
+            message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
+            return message_path #返回保存下来的音频路径
+          else
+            return faker_id  #返回 faker_id
+          end
+        end
+      else
+        #download 语音消息
+        if flag == "voice"
           message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
-          return message_path #返回保存下来的音频路径
+          return message_path  #返回保存下来的音频路径
         else
           return faker_id  #返回 faker_id
         end
       end
-    else
-      #download 语音消息
-      if flag == "voice"
-        message_path = download_voice_message(newest_msg_id,wx_token, wx_cookie)
-        return message_path  #返回保存下来的音频路径
-      else
-        return faker_id  #返回 faker_id
-      end
     end
-
   end
 
 
