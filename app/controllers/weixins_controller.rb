@@ -18,10 +18,10 @@ class WeixinsController < ApplicationController
         client = Client.find_by_open_id(open_id)
 
         if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
+          create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
           return_app_regist_link  #返回app登记链接
           save_client_info(open_id, @company) #新建client记录，保存头像，nick_name, faker_id, open_id
         
-          create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
         elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
        
           #完善用户信息
