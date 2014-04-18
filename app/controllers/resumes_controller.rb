@@ -2,6 +2,7 @@
 class ResumesController < ApplicationController   #简历模板
   before_filter :get_title
   before_filter :has_sign?,:get_company
+  skip_before_filter :has_sign?,only:[:down_load_file]
   PerPage = 1
   def index
     #@company = Company.find_by_id(params[:company_id].to_i)
@@ -197,7 +198,11 @@ class ResumesController < ApplicationController   #简历模板
              drr.join_remark")[0]
     
   end
-
+  def down_load_file
+    file_path = params[:file_path]
+    file_path = Rails.root.to_s + "/public#{file_path}"
+    send_file file_path
+  end
   def destroy
     @deliveryresumerecord = DeliveryResumeRecord.find_by_id(params[id])
     if @deliveryresumerecord

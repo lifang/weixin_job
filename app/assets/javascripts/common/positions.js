@@ -120,3 +120,7 @@ function add_work_address(obj,company_id){
     span.html(str);
     add_menu_cancel(obj)
 }
+
+function show_new_position_type(){
+    tab_function($(".new_position_type"));
+}

@@ -1,65 +1,53 @@
-<div class="main_box">
-  <div class="main_con">
-    <div class="companyInfo">
-      <li>
-        <label>公司名称</label>
-        <span><%= @company.name %></span>
-        <a class="scd_btn" name="companyInfoEdit">编辑</a>
-        &nbsp;&nbsp;&nbsp;<a class="sync_user" data-url="<%= synchronize_old_users_companies_path + "?company_id=#{@company.id}" %>">同步微信公众号关注者数据</a>
-      </li>
-      <li>
-        <label>公众账号类型</label>
-        <span><%= @company.app_type.nil? ? "未配置" : @company.app_type.to_i==0 ? "订阅号" : "服务号" %></span>
-      </li>
-      <li>
-        <label>是否认证</label>
-        <span><%= @company.app_service_certificate ? "已认证" : "未认证" %></span>
-      </li>
-      <li>
-        <label>公众号token</label>
-        <span><%= @company.cweb %></span>
-      </li>
-      <li>
-        <label>公众号AppId</label>
-        <span><%= @company.app_id %></span>
-      </li>
-      <li>
-        <label>公众号AppSecret</label>
-        <span><%= @company.app_secret %></span>
-      </li>
-      <li class="yes">
-        <label>是否配置APP</label>
-        <span><%= @company.has_app ? "是" : "否" %></span>
-        <a class="scd_btn" name="appInfoEdit">修改</a>
-        <div class="appInfo">
-          <span class="angle">▲</span>
-          <ul>
-            <li>
-              <label>APP账号</label>
-              <span><%= @company.has_app ? @company.app_account : "" %></span>
-            </li>
-            <li>
-              <label>APP密码</label>
-              <span><%= @company.has_app ? "******" : "" %></span>
-            </li>           
-          </ul>
+<div class="area">
+  <div class="title clearAfter">
+    <h1>系统设置</h1>
+    <div class="seek">
+      <div class="search">
+        <input name="" type="text"/><button>搜索</button>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="setBox">
+      <ul>
+        <li><p>公司名称:<%= @company.name %></p><a href="javascript:void(0)" class="edit_icon" onclick="show_companyInfo()"></a></li>
+        <li><p>公众账号类型:<%= @company.app_type.nil? ? "未配置" : @company.app_type.to_i==0 ? "订阅号" : "服务号" %></p></li>
+        <li><p>公众账号token:<%= @company.cweb %></p></li>
+        <li><p>公众账AppSecret:<%= @company.app_secret %></p></li>
+      </ul>
+      <div class="setBox2">
+        <div class="cr_input">
+          <input type="checkbox" value="" name="" style="display: none;"/>
+          <p class="checkbox"><a class="sync_user" data-url="<%= synchronize_old_users_companies_path + "?company_id=#{@company.id}" %>">同步微信公众号关注者数据</a></p>
         </div>
-      </li>
+        <ul>
+          <li><p>是否认证:<%= @company.app_service_certificate ? "已认证" : "未认证" %></p></li>
+          <li><p>公众号AppId:<%= @company.app_id %></p></li>
+          <li><p>是否配置App:<%= @company.has_app ? "是" : "否" %></p><a href="javascript:void(0)" class="edit_icon" onclick="show_appInfoEdit()"></a></li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <img src="/assets/process.png" />
-    </div>
+    <img src="/assets/process.png" />
   </div>
 </div>
 
 
-<div class="second_bg"></div>
-<div class="second_box second_box_fixed companyInfoEdit">
+
+
+
+
+
+
+<!--div class="second_bg"></div-->
+<div class="second_box second_box_fixed companyInfoEdit"
+     style="border-radius: 10px;width: 74%;margin: 114px auto 50px;">
   <%= form_tag company_path(@company), :method => :put do %>
-    <div class="second_content" style="width: 450px;">
+    <div class="second_content" style="width: 474px;
+border-radius: 10px;background-color: white;color:#506470;
+box-shadow: 0px 0px 5px rgba(0,0,0,0.6);">
       <span class="close" title="关闭">×</span>
-      <h1>公司信息编辑</h1>
-      <div>
+      <h1 style="background:white;">公司信息编辑</h1>
+      <div class="div_class">
         <p>
           <label>公司名称</label>
           <input type="text" name="company_name" id="company_name" value="<%= @company.name %>" />
@@ -96,18 +84,19 @@
       <input type="hidden" name="edit_type" value="0"/>
       <input type="hidden" name="company_id" value="<%= @company.id %>"/>
       <div class="scdBoxAct">
-        <button class="orangeBtn" type="button" onclick="edit_company_valid(this,0)">确定</button>
-        <button class="orangeBtn" type="button" onclick="edit_company_cancel(this)">取消</button>
+        <button class="green_btn" type="button" onclick="edit_company_valid(this,0)">确定</button>
       </div>
     </div>
   <% end %>
 </div>
 
 <%= form_tag company_path(@company), :method => :put do %>
-  <div class="second_box second_box_fixed appInfoEdit">
-    <div class="second_content" style="width: 500px;">
+  <div class="second_box second_box_fixed appInfoEdit" style="border-radius: 10px;width: 74%;margin: 114px auto 50px;">
+    <div class="second_content" style="width: 500px;width: 474px;
+border-radius: 10px;background-color: white;color:#506470;
+box-shadow: 0px 0px 5px rgba(0,0,0,0.6);">
       <span class="close" title="关闭">×</span>
-      <h1>APP信息修改</h1>
+      <h1 style="background:white;">APP信息修改</h1>
       <div id="edit_app_div">
         <% if @company.has_app %>
           <p id="edit_app_notice_p" class="setting_notice">
@@ -135,8 +124,7 @@
       <input type="hidden" name="edit_type" value="1"/>
       <input type="hidden" name="company_id" value="<%= @company.id %>"/>
       <div class="scdBoxAct">
-        <button class="orangeBtn" type="button" onclick="edit_company_valid(this,1)">确定</button>
-        <button class="orangeBtn" type="button" onclick="edit_company_cancel(this)">取消</button>
+        <button class="green_btn" type="button" onclick="edit_company_valid(this,1)">确定</button>
       </div>
     </div>
   </div>

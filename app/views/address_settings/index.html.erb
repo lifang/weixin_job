@@ -1,71 +1,86 @@
-<div class="main_con2">
-  <div>
-    <div class="toolbar">
-      <button class="white_btn_for_a" name="newWorkplace" style=" float: left; margin: 25px 50px;" onclick="new_addre_button()">新建工作地点</button>
-    </div>
-    <% if @addresses.any?  %>
-      <div class="workplaceBox">
-        <table class="table1">
-          <tr>
-            <th>省市</th>
-            <th>详细地址</th>
-            <th>操作</th>
-          </tr>
-          <% @addresses.each do |a| %>
-            <tr>
-              <td><%= a.pname %><%= a.cname %></td>
-              <td><%= a.address %></td>
-              <td>
-                <a href="/companies/<%= @company.id %>/address_settings/<%= a.wid %>" data-confirm="确定删除此地点?" data-method="delete"><button class="delete" title="删除"></button></a>
-                <button class="edit" title="编辑" onclick="edit_address(<%= @company.id %>, <%= a.wid %>)"></button>
-              </td>
-            </tr>
-          <% end %>
-        </table>
+<div class="area">
+  <div class="title clearAfter">
+    <h1>工作地址</h1>
+    <div class="seek">
+      <div class="inquire">
+        <ul>
+          <li>
+            <button onclick="new_addre_button()">新建地址</button>
+          </li>
+        </ul>
       </div>
-    <% else %>
+    </div>
+  </div>
+  <div class="content">
+    <div class="list clearAfter">
+      <% if @addresses.any?  %>
+      <ul>
+        <% @addresses.each do |a| %>
+        <li>
+          <div class="text">
+            <h2 style="line-height: 48px; padding-left: 10px;"><%= a.pname %> <%= a.cname %> <%= a.address %></h2>
+          </div>
+          <div class="aFunc" style=" float: right;">
+            <a href="javascript:void(0);" class="edit_icon tooltip_html" onclick="edit_address(<%= @company.id %>, <%= a.wid %>)">编辑</a>
+            <a href="/companies/<%= @company.id %>/address_settings/<%= a.wid %>" class="delete_icon tooltip_html" data-confirm="确定删除此地点?" data-method="delete">删除</a>
+          </div>
+        </li>
+        <%end%>
+      </ul>
+      <% else %>
       <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
       </div>
     <% end %>
-    <%= will_paginate @addresses,:class=>"page",:previous_label=>"上一页",:next_label=>"下一页" unless  @addresses.blank?%>
+
+    </div>
+  </div>
+  <div class="pageTurn">
+     <%= will_paginate @addresses,:class=>"page",:previous_label=>"上一页",:next_label=>"下一页" unless  @addresses.blank?%>
   </div>
 </div>
 
-<div class="second_bg"></div>
-<div class="second_box second_box_fixed newWorkplace" id="new_addre_div">
-  <div class="second_content" style="width: 450px;">
-    <span class="close" title="关闭">×</span>
-    <h1>新建工作地点</h1>
-    <%= form_tag company_address_settings_path(@company), :method => :post do %>
-      <div>
-        <p>
-          <label>选择城市</label>
-          <select class="sheng" onchange="address_search_city(this, <%= @company.id %>, 0)">
-            <% @provinces.each do |p| %>
-              <option value="<%= p.id %>"><%= p.name %></option>
-            <% end if @provinces.any? %>
-          </select>
-          <select class="shi" id="new_address_select_city" name="new_address_select_city">
-            <option value="0">----</option>
-            <% @cities.each do |c| %>
-              <option value="<%= c.id %>"><%= c.name %></option>
-            <% end if @cities && @cities.any?%>
-          </select>
-        </p>
-        <p>
-          <label>详细地址</label>
-          <input type="text" name="new_addre"/>
-        </p>
-      </div>
-      <div class="scdBoxAct">
-        <button class="orangeBtn" type="button" onclick="address_valid(this,0)">确定</button>
-        <button class="orangeBtn" type="button" onclick="address_cancel(this)">取消</button>
-      </div>
-    <% end %>
-  </div>
+
+<div class="tab  second_box_fixed newWorkplace" id="edit_addre_div" style="display:none;">
+
 </div>
 
-<div class="second_box second_box_fixed newWorkplace" id="edit_addre_div">
+<div class="tab new_address" style="display:none;">
+  <a href="#" class="close">close</a>
+  <h1>新建地址</h1>
+  <%= form_tag company_address_settings_path(@company), :method => :post do %>
+  <div class="tab_content">
+    <div class="new_position">
+      <ul>
+        <li style="display: inline-block; width: 250px;">
+          <label>省：</label>
+          <div class="select_box" style="position: absolute; top: 4px; background: #fafafa; margin-left: 4px;">
+            <div class="select_tag" id="new_address_province"><span>选择词性</span> <input name="" type="text" value="" class="tag_input"></div>
+            <ul class="select_ul">
+              <% @provinces.each do |p| %>
+              <li onclick="address_search_city(this, <%= @company.id %>, 0)"><%=p.name%><input name="" type="text" value="<%=p.id%>"/></li>
+              <%end%>
+            </ul>
+          </div>
+        </li>
+        <li style="display: inline-block; width: 250px; margin-left: -40px;">
+          <label>市：</label>
+          <div class="select_box" style="position: absolute; top: 4px; background: #fafafa; margin-left: 4px;">
+            <div class="select_tag" id="new_address_city"><span>---</span> <input name="" type="text" value="0" class="tag_input"></div>
+            <ul class="select_ul" id="new_address_select_city">
+            </ul>
+          </div>
+        </li>
+        <li>
+          <label>工作地点：</label>
+          <input type="text" style="width: 403px;" name="new_addre" />
+        </li>
+      </ul>
 
+    </div>
+  </div>
+  <div class="tab_btn">
+    <button class="green_btn" type="button" onclick="address_valid(this,0)">确定</button>
+  </div>
+  <%end%>
 </div>
 

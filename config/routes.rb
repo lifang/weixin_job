@@ -19,7 +19,7 @@ WeixinJob::Application.routes.draw do
 match "/get_token", :to => "app_managements#get_token", :as => "get_token", via: 'get'
 match '/submit_redirect' => 'app_managements#submit_redirect', :as => :submit_redirect, :via => :get
 match "/weixins/accept_token" => "weixins#accept_token"
-
+match "/down_load_file" => "resumes#down_load_file"
   resources :logins do
     collection do
       post :valid
