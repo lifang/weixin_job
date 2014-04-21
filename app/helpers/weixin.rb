@@ -8,8 +8,8 @@ module Weixin
   Weixin_resource = "/public/companies/%d/weixin_resource/" #微信资源路径
   #认证服务号
   #MW_URL = "http://wzp.comdosoft.com" #服务器地址
-  #MW_URL = "http://wzpapp.gankao.co" #服务器地址
-  MW_URL = "http://116.255.202.123" #服务器地址
+  MW_URL = "http://nwzp.gankao.co" #服务器地址
+  #MW_URL = "http://116.255.202.123" #服务器地址
   WEIXIN_OPEN_URL = "https://api.weixin.qq.com"  #微信api地址
   WEIXIN_DOWNLOAD_URL = "http://file.api.weixin.qq.com"  #微信文件地址
   DOWNLOAD_RESOURCE_ACTION = "/cgi-bin/media/get?access_token=%s&media_id=%s"  #微信下载资源 action
