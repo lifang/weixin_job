@@ -14,7 +14,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     border-radius: 5px;
     display: inline-block;
     color: #FFF;
-    padding: 0px 50px;
+    padding: 0px 40px;
     margin: 0 10px;
     background: #4dbd74
 }
@@ -92,7 +92,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .publish:hover { background-position: -4px -81px;}
 .publish.fabu{ background-position: -4px -41px; cursor: default;}
 
-.jobInfo { background: #a8a7a7; float: left; margin: 50px; min-height: 300px; width: 380px;}
+.jobInfo {  float: left; margin: 50px; min-height: 300px; width: 380px;}
 .jobInfo p { line-height: 36px; overflow: hidden; padding: 5px 0;}
 .jobInfo p label { width: 80px; text-align: right; display: inline-block;}
 .jobInfo p input { margin: 0px 40px 0px 20px; border: 0; padding: 5px; width: 210px;}
@@ -190,8 +190,10 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .profileExplain li.open img, .profileExplain li.open p { display: block;}
 
 /* 公司简介 */
-.tuwenImg { width: 370px; min-height: 150px; background: #ccc; margin: 0 auto;}
-.tuwenImg span{display: block;width: 366px;height: 150px;margin: auto;line-height: 12;text-align: center;cursor: pointer;}
+.tuwenImg { width: 370px; min-height: 150px; background: white; margin: 0 auto;}
+.tuwenImg span{
+    border: 1px solid #c2c2c2;margin-left: -5px;border-radius: 5px;
+    display: block;width: 370px;height: 150px;line-height: 12;text-align: center;cursor: pointer;}
 .tuwenBox textarea { width: 360px; height: 60px; resize: none; border: 1px solid #c2c2c2; padding: 5px; display: block; margin: 5px auto 0;}
 .tuwenBox { position: relative; padding: 5px 0;}
 .tuwenBox:hover { box-shadow: 0 0 5px #fff inset;}
@@ -855,7 +857,7 @@ button.gray_btn { background: #b6c2c9; }
     padding: 10px;
     overflow: hidden;
     float: left;
-    width: 400px;
+    width: 480px;
 }
 .temp_explain {float: left; margin-left: 50px;}
 

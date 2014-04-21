@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -7,8 +8,7 @@
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
   </head>
-
-  <body style="background: #373F42;">
+  <body>
     <% if flash[:notice] %>
       <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
         <div style="font-size:20px;margin: 200px auto;width: 300px;background: #373f42;;padding: 20px;">
@@ -17,28 +17,33 @@
         </div>
       </div>
     <% end %>
-    <%= form_tag logins_path(@company), :method => :post do %>
-      <div class="loginBox">
-        <h1>微招聘注册</h1>
-        <div class="loginForm">
-          <p>
-            <label>公司名称</label>
-            <input type="text" name="comp_name" id="regist_comp_name"/>
-          </p>
-          <p>
-            <label>用户名</label>
-            <input type="text" name="comp_account" id="regist_comp_account"/>
-          </p>
-          <p>
-            <label>密码</label>
-            <input type="password" name="comp_password" id="regist_comp_password"/>
-          </p>
-          <p>
-            <button class="loginBtn orangeBtn"  type="button" onclick="regist_valid(this)" style="margin-left:90px;">注册</button>
-            <a class="register" href="/">返回登陆</a>
-          </p>
+    <div class="login">
+      <%= form_tag logins_path(@company), :method => :post do %>
+        <div class="logo">微招聘</div>
+        <div class="login_box">
+          <h1>用户注册</h1>
+          <ul>
+            <li>
+              <label class="user_name">公司名称：</label>
+              <input type="text" name="comp_name" id="regist_comp_name" value="">
+            </li>
+            <li>
+              <label class="user_name">用户名：</label>
+              <input name="comp_account" type="text"  id="regist_comp_account" value="">
+            </li>
+            <li>
+              <label class="user_password">密码：</label>
+              <input name="comp_password" type="password" id="regist_comp_password" value="">
+            </li>
+            <li class="btn">
+               <button  type="button" onclick="regist_valid(this)" >注册</button>
+               <a class="register" href="/">返回登陆</a>
+            </li>
+          </ul>
         </div>
-      </div>
-    <% end %>
+      <%end%>
+    </div>
+    <%= render "/shared/tishi_alert" %>
   </body>
 </html>
+

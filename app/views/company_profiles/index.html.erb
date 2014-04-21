@@ -5,7 +5,9 @@
       <div class="inquire">
         <ul>
           <li>
-            <button>新建微网页</button>
+            <%=link_to new_company_company_profile_path(@company) do%>
+              <button>新建微网页</button>
+            <%end%>
           </li>
           <!--li style="position: relative;">
             <input type="text" class="search" >
@@ -18,72 +20,76 @@
   <div class="content">
     <div class="list clearAfter">
       <%if @company_profiles.blank?%>
-      <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
-      </div>
-    <%else%>
-      <ul>
-        <%@company_profiles.each do |cp|%>
-        <li style="width: 200px;">
-          <div class="text">
-            <h2><%=cp.title%></h2>
-          </div>
-          <div class="aFunc" style=" float: right;">
-            <a href="#" class="edit_icon tooltip_html">编辑</a>
-            <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？", class:"delete_icon tooltip_html" do%>
-                删除
-            <%end%>
-          </div>
-        </li>
-        <%end%>
-      </ul>
-      <%end%>
-    </div>
-  </div>
-  <div class="pageTurn">
-   
-  </div>
-</div>
-
-<div class="main_con2">
-  <div>
-    <div class="toolbar">
-      <div class="toolBox">
-        <%=link_to new_company_company_profile_path(@company) do%>
-          <button>创建简介</button>
-        <%end%>
-      </div>
-      <div class="searchTool">
-        <div class="searchBox">
+        <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+        </div>
+      <%else%>
+        <ul>
+          <%@company_profiles.each do |cp|%>
+            <li style="width: 200px;">
+              <div class="text">
+                <h2><%=cp.title%></h2>
+              </div>
+              <div class="aFunc" style=" float: right;">
+                <%=link_to edit_company_company_profile_path(@company,cp.id),class:"edit_icon tooltip_html" do%>
+                    编辑
+                  <%end%>
+                  <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？", class:"delete_icon tooltip_html" do%>
+                      删除
+                    <%end%>
+                    <a href="<%=cp.file_path%>" target="_blank" class="show_icon">
+                    </a>
+                  </div>
+                </li>
+              <%end%>
+            </ul>
+          <%end%>
         </div>
       </div>
-    </div>
-    <%if @company_profiles.blank?%>
-      <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
-      </div>
-    <%else%>
-      <table class="table1">
-        <tr>
-          <th>模块名称</th>
-          <th>操作</th>
-        </tr>
-        <%@company_profiles.each do |cp|%>
-          <tr>
-            <td><%=cp.title%></td>
-            <td>
-              <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？" do%>
-                <button class="delete" title="删除"></button>
-              <%end%>
-              <%=link_to edit_company_company_profile_path(@company,cp.id) do%>
-                <button class="edit" title="编辑"></button>
-              <%end%>
-              <a href="<%=cp.file_path%>" target="_blank" >
-                <button class="show" title="浏览"></button>
-              </a>
-            </td>
-          </tr>
-        <%end%>
-      </table>
-    <%end%>
+      <div class="pageTurn">
 
-  </div>
-</div>
+      </div>
+    </div>
+
+    <div class="main_con2">
+      <div>
+        <div class="toolbar">
+          <div class="toolBox">
+            <%=link_to new_company_company_profile_path(@company) do%>
+              <button>创建简介</button>
+            <%end%>
+          </div>
+          <div class="searchTool">
+            <div class="searchBox">
+            </div>
+          </div>
+        </div>
+        <%if @company_profiles.blank?%>
+          <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+          </div>
+        <%else%>
+          <table class="table1">
+            <tr>
+              <th>模块名称</th>
+              <th>操作</th>
+            </tr>
+            <%@company_profiles.each do |cp|%>
+              <tr>
+                <td><%=cp.title%></td>
+                <td>
+                  <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？" do%>
+                    <button class="delete" title="删除"></button>
+                  <%end%>
+                  <%=link_to edit_company_company_profile_path(@company,cp.id) do%>
+                    <button class="edit" title="编辑"></button>
+                  <%end%>
+                  <a href="<%=cp.file_path%>" target="_blank" >
+                    <button class="show" title="浏览"></button>
+                  </a>
+                </td>
+              </tr>
+            <%end%>
+          </table>
+        <%end%>
+
+      </div>
+    </div>
