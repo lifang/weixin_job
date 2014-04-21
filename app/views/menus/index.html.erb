@@ -2,34 +2,28 @@
   <div class="title clearAfter">
     <h1>微信公众号自定义菜单</h1>
     <div class="seek">
-    
+
     </div>
   </div>
   <div class="content" style="position: relative;">
     <div class="menuLv2_box">
       <span>二级菜单(最多5个)</span>
-      <ul style="left: 150px;">
-        <li><a href="#" class="add">+</a></li>
-        <li><p>1-1</p></li>
-        <li><p>1-2</p></li>
-        <li><p>1-3</p></li>
-      </ul>
-      <ul style="left: 270px;">
-        <li><a href="#" class="add">+</a></li>
-        <li><p>2-1</p></li>
-        <li><p>2-2</p></li>
-      </ul>
-      <ul style="left: 390px;">
-        <li><a href="#" class="add">+</a></li>
-        <li><p>3-1</p></li>
-      </ul>
+      <% @father_menus.each_with_index do |fm,index| %>
+        <ul style="left: <%=150+index*120%>px;">
+          <li><a href="#" class="add">+</a></li>
+          <% @child_menus[fm.id.to_s].each do |cm| %>
+            <li><p><%= cm.name %></p></li>
+          <%end if @child_menus[fm.id.to_s]%>
+        </ul>
+      <%end%>
     </div>
     <div class="menuLv1_box">
       <span>一级菜单(最多3个)</span>
       <ul>
-        <li><p>1</p></li>
-        <li><p>2</p></li>
-        <li><a href="#" class="add">+</a></li>
+        <% @father_menus.each do |fm| %>
+          <li><p><%= fm.name %></p></li>
+        <%end%>
+        <li><a href="#" class="add" onclick="add_menu_new(1,0,<%=@father_menus.length%>)">+</a></li>
       </ul>
     </div>
     <img src="/assets/menu_temp.png" style="position: absolute; top: 20px; right: 20px;" />
@@ -37,158 +31,89 @@
 </div>
 
 
-<div class="main_con2">
-  <div>
-    <div class="menuMakerTit">
-      <h1>设置微信公众号自定义菜单</h1>
-      <img src="/assets/menuMaker.png" />
-    </div>
-    <div class="menuMakerDtl">
-      <ul class="menuLv1">
-        <% @father_menus.each do |fm| %>
-          <li>
-            <div class="menu_item">
-              <span class="scd_btn_1" name="menuInfo" onclick="edit_menu(1, 0, <%= fm.temp_id %>, '<%= fm.name %>', <%= fm.types %>, <%= fm.id %>)" style="cursor: pointer;"><%= fm.name %></span>
-              <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= fm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
-            </div>
-            <ul class="menuLv2">
-              <% @child_menus[fm.id.to_s].each do |cm| %>
-                <li>
-                  <div class="menu_item">
-                    <span class="scd_btn_1" name="menuInfo" onclick="edit_menu(2, <%= fm.id %>, <%=  cm.temp_id %>, '<%= cm.name %>', <%= cm.types %>, <%= cm.id %>)" style="cursor: pointer;"><%= cm.name %></span><img src="/assets/menuLv2_1.png" />
-                    <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
-                  </div>
-                </li>
-              <% end if @child_menus[fm.id.to_s] %>
-              <button class="addMenuItem" onclick="add_menu(2,<%= fm.id %>, <%= @child_menus[fm.id.to_s].nil? ? 0 : @child_menus[fm.id.to_s].length %>)">+</button>
-            </ul>
-          </li>
-        <% end if @father_menus %>
-        <button class="addMenuItem" onclick="add_menu(1,0,<%= @father_menus.nil? ? 0 : @father_menus.length %>)">+</button>
-      </ul>
-    </div>
-    <div class="profileExplain" style="left: 650px;width: 400px;">
-      <h1>功能说明</h1>
 
+<div class="tab add_menu_new">
+  <a href="#" class="close">close</a>
+  <h1>添加菜单项</h1>
+  <div class="tab_content">
+    <div class="new_job">
       <ul>
-        设定微信公众号自定义菜单
         <li>
-          <h2>最左边的对应着微信的主菜单（最多3个）</h2>
-          <img src="/assets/weixin1.png" width="300"/>
+          <label>菜单名称：</label>
+          <input type="text" id="menu_name"/>
         </li>
         <li>
-          <h2>然后每个主菜单的分支对应微信的主菜单的分支（最多5个）</h2>
-          <img src="/assets/weixin2.png" width="300" />
+          <label>指向地址：</label>
+          <div class="linkPicker">
+            <ul class="tab_1">
+              <li class="hover">微网页</li>
+              <li>职位</li>
+              <li>其他</li>
+            </ul>
+            <ul class="tabDiv_1 hover">
+              <li><div class="cr_input"><input name="website_page" type="radio" value=""><p>我的简历</p></div></li>
+              <li><div class="cr_input"><input name="website_page" type="radio" value=""><p>公司介绍</p></div></li>
+              <li><div class="cr_input"><input name="website_page" type="radio" value=""><p>xx职位介绍</p></div></li>
+            </ul>
+            <div class="tabDiv_1">
+              <ul class="tab_2">
+                <li class="hover">全部</li>
+                <li>最新</li>
+                <li>职位类别</li>
+              </ul>
+              <ul class="tabDiv_2 hover">
+                <li><div class="cr_input"><input name="all_position" type="radio" value=""><p>采购</p></div></li>
+                <li><div class="cr_input"><input name="all_position" type="radio" value=""><p>人事</p></div></li>
+                <li><div class="cr_input"><input name="all_position" type="radio" value=""><p>开发</p></div></li>
+              </ul>
+              <ul class="tabDiv_2">
+                <li><div class="cr_input"><input name="newest_position" type="radio" value=""><p>采购</p></div></li>
+                <li><div class="cr_input"><input name="newest_position" type="radio" value=""><p>人事</p></div></li>
+                <li><div class="cr_input"><input name="newest_position" type="radio" value=""><p>开发</p></div></li>
+              </ul>
+              <ul class="tabDiv_2">
+                <li><div class="cr_input"><input name="position_type" type="radio" value=""><p>采购类</p></div></li>
+                <li><div class="cr_input"><input name="position_type" type="radio" value=""><p>人事类</p></div></li>
+                <li><div class="cr_input"><input name="position_type" type="radio" value=""><p>开发类</p></div></li>
+              </ul>
+            </div>
+            <ul class="tabDiv_1">
+              <li><div class="cr_input"><input name="" type="radio" value=""><p>我的简历</p></div></li>
+              <li><div class="cr_input"><input name="" type="radio" value=""><p>公司介绍</p></div></li>
+              <li style="width: auto;"><div class="cr_input">
+                  <input name="" type="radio" value="">
+                  <p>外部链接</p>
+                  <input type="text" style="margin: 0 13px; width: 320px;">
+                </div></li>
+            </ul>
+          </div>
         </li>
       </ul>
     </div>
   </div>
-</div>
-
-
-<div class="second_bg"></div>
-
-<!--新建菜单-->
-<div class="second_box second_box_fixed menuInfo" id="add_menu_div">
-  <div class="second_content" style="width: 450px;">
-    <span class="close" title="关闭">×</span>
-    <h1 name="add_menu_h1"></h1>
-    <div class="largeCon">
-      <p>
-        <label>菜单名称</label>
-        <input type="text" name="menu_name"/>
-      </p>
-      <% if @resume_tmp %>
-        <p>
-          <label>公司简历</label>
-          <span><%= @company.name %>公司简历</span>
-          <span class="check" onclick="add_selected(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="menu_type" value="2"/>
-            <input type="hidden" name="temp_id" value="<%= @resume_tmp.id %>"/>
-          </span>
-        </p>
-      <% end %>
-      <% @positions.each do |p| %>
-        <p>
-          <label>公司职位</label>
-          <span><%= p.name %></span>
-          <span class="check" onclick="add_selected(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="menu_type" value="1"/>
-            <input type="hidden" name="temp_id" value="<%= p.id %>"/>
-          </span>
-        </p>
-      <% end if @positions %>
-      <% @comp_profiles.each do |cp| %>
-        <p>
-          <label>公司简介</label>
-          <span><%= cp.title %></span>
-          <span class="check" onclick="add_selected(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="menu_type" value="0"/>
-            <input type="hidden" name="temp_id" value="<%= cp.id %>"/>
-            <input type="hidden" name="file_path" value="<%= cp.file_path %>"/>
-          </span>
-        </p>
-      <% end if @comp_profiles %>
-    </div>    
-    <div class="scdBoxAct">
-      <button class="orangeBtn" onclick="add_menu_commit(<%= @company.id %>)">确定</button>
-      <button class="orangeBtn" onclick="add_menu_cancel(this)">取消</button>
-    </div>
+  <div class="tab_btn">
+    <button class="green_btn">确定</button>
   </div>
 </div>
 
-<!--编辑菜单-->
-<div class="second_box second_box_fixed menuInfo" id="edit_menu_div">
-  <div class="second_content" style="width: 450px;">
-    <span class="close" title="关闭">×</span>
-    <h1 name="edit_menu_h1"></h1>
-    <div class="largeCon">
-      <p>
-        <label>菜单名称</label>
-        <input type="text" name="edit_menu_name"/>
-      </p>
-      <% if @resume_tmp %>
-        <p>
-          <label>公司简历</label>
-          <span><%= @company.name %>公司简历</span>
-          <span class="check" onclick="add_selected(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="menu_type" value="2"/>
-            <input type="hidden" name="temp_id" value="<%= @resume_tmp.id %>"/>
-          </span>
-        </p>
-      <% end %>
-      <% @positions.each do |p| %>
-        <p>
-          <label>公司职位</label>
-          <span><%= p.name %></span>
-          <span class="check" onclick="add_selected(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="menu_type" value="1"/>
-            <input type="hidden" name="temp_id" value="<%= p.id %>"/>
-          </span>
-        </p>
-      <% end if @positions %>
-      <% @comp_profiles.each do |cp| %>
-        <p>
-          <label>公司简介</label>
-          <span><%= cp.title %></span>
-          <span class="check" onclick="add_selected(this)">
-            <span class="checkPoint"></span>
-            <input type="hidden" name="menu_type" value="0"/>
-            <input type="hidden" name="temp_id" value="<%= cp.id %>"/>
-            <input type="hidden" name="file_path" value="<%= cp.file_path %>"/>
-          </span>
-        </p>
-      <% end if @comp_profiles %>
-    </div>
-    <div class="scdBoxAct">
-      <button class="orangeBtn" onclick="edit_menu_commit(<%= @company.id %>)">确定</button>
-      <button class="orangeBtn" onclick="add_menu_cancel(this)">取消</button>
-    </div>
-  </div>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

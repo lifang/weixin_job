@@ -892,7 +892,7 @@ button.gray_btn { background: #b6c2c9; }
     padding: 8px 15px;
 }
 .new_job { width: 600px; overflow: hidden;}
-.new_job ul { display: block; overflow: hidden;}
+.new_job ul { }
 .new_job li {
     line-height: 24px;
     border-radius: 10px;
