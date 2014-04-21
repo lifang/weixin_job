@@ -154,3 +154,28 @@ $(function(){
 $(function(){
 	$(".b_table > tbody > tr:odd").addClass("tbg");
 });
+//职位-选择地址
+$(function(){
+	$(".positionPicker").click(function(){
+		$(this).toggleClass("hover");
+          
+	})
+});
+
+//菜单弹窗tab
+$(function(){
+	$(".tab_1").on("click","li",function(){
+		$(".tab_1 li").removeClass("hover");
+		$(this).addClass("hover");
+		var i = $(".tab_1 li").index($(this));
+		$(".tabDiv_1").removeClass("hover");
+		$(".tabDiv_1").eq(i).addClass("hover");
+	})
+	$(".tab_2").on("click","li",function(){
+		$(".tab_2 li").removeClass("hover");
+		$(this).addClass("hover");
+		var i = $(".tab_2 li").index($(this));
+		$(".tabDiv_2").removeClass("hover");
+		$(".tabDiv_2").eq(i).addClass("hover");
+	})
+});

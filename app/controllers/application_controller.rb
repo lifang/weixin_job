@@ -74,4 +74,7 @@ class ApplicationController < ActionController::Base
     content_hash_json
   end
 
+ 
+
+
 end

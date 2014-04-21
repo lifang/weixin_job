@@ -66,3 +66,11 @@ $(function(){
         })
     })
 })
+
+function show_companyInfo(){
+    $(".companyInfoEdit").show();
+}
+
+function show_appInfoEdit(){
+    $(".appInfoEdit").show();
+}

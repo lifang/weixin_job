@@ -21,6 +21,17 @@ function add_menu(level, parent_id, menu_length){
         }
     }
 }
+function add_menu_new(level, parent_id, menu_length){
+    if(level==1){
+        if(menu_length >= 3){
+           tishi_alert("每个一级菜单最多只能保持3个!");
+        }else{
+            tab_function($(".add_menu_new"));
+        }
+    }else{
+        
+    }
+}
 
 function add_selected(obj){
     if($(obj).attr("class")=="check checked"){

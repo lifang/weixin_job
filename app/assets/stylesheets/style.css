@@ -276,7 +276,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .second_content p { position: relative;}
 .second_content p .close { display: none;}
 .second_content p:hover .close { display: block;}
-.second_content p { line-height: 36px;}
+.second_content p { line-height: 36px;margin-left: 25px;}
 .second_content p label { display: inline-block; width: 150px; text-align: right;}
 .second_content p input[type="text"] { padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
 .second_content p input[type="radio"] { margin-left: 10px; width: 35px; }
@@ -389,7 +389,23 @@ body { background: #15465e; font-family:"微软雅黑", "宋体", Arial; font-si
 li { list-style: none;}
 a { text-decoration: none;}
 input {font-family:"微软雅黑"; border: none;}
+.div_class p input{
+    background: #fafafa;
+    padding: 6px;
+    border: 1px solid #DDE2E7;
+    border-radius: 5px;
+}
 button {font-family:"微软雅黑"; cursor: pointer; border: none;}
+button.green_btn, button.gray_btn {
+    height: 30px;
+    border-radius: 5px;
+    display: inline-block;
+    color: #FFF;
+    padding: 0px 50px;
+    margin: 0 10px;
+}
+button.green_btn { background: #4dbd74; }
+button.gray_btn { background: #b6c2c9; }
 
 .clearAfter:after {
     display: block;
@@ -675,7 +691,6 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
     margin-right: 10px;
 }
 .aFunc a.preview_icon { background: url(/assets/icon03.png) no-repeat 0px 0px;}
-.aFunc a.delete_icon { background: url(/assets/delete.png) no-repeat -12px -7px;}
 .aFunc a.refuse_icon { background: url(/assets/icon03.png) no-repeat 0px -16px;}
 .aFunc a.refuse_icon_ed { background: url(/assets/icon03.png) no-repeat 0px -32px;}
 .aFunc a.interview_icon { background: url(/assets/icon03.png) no-repeat 0px -48px;}
@@ -821,6 +836,208 @@ button {font-family:"微软雅黑"; cursor: pointer; border: none;}
 .radio_bar h2 { font-size: 16px; font-weight:normal; line-height: 32px;}
 
 .radio_bar .cr_input { width: 50px; display: inline-block; text-align: right;}
+
+.bar_list { margin: 10px 0;}
+
+.tab_templateInfo_bar { margin: 10px 0; position: relative;}
+.tab_templateInfo_bar label {
+    width: 150px;
+    display: inline-block;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+    float: left;
+}
+.tab_templateInfo_bar input {
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px #dde2e7 solid;
+    padding: 0 5px;
+    width: 245px;
+}
+
+
+/* 职位 */
+.show_icon { background: url(/assets/actionIcon_1.png) no-repeat -12px center;}
+.edit_icon { background: url(/assets/actionIcon_1.png) no-repeat -42px center;}
+.delete_icon { background: url(/assets/actionIcon_1.png) no-repeat -73px center;}
+.publish_icon { background: url(/assets/actionIcon_1.png) no-repeat -99px center;}
+.show_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -12px center;}
+.edit_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -42px center;}
+.delete_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -73px center;}
+.publish_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -99px center;}
+
+.num {
+    background: #4dbd74;
+    color: #fff;
+    display: block;
+    width: 30px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+.list li .jobClass { position: absolute; right: 10px; bottom: 30px; color:#b2b2b2;}
+
+.see_job { width: 600px; overflow: hidden;}
+.see_job ul { display: block; overflow: hidden;}
+.see_job li {
+    background: #fafafa;
+    line-height: 24px;
+    margin: 10px 0;
+    border-radius: 10px;
+    padding: 8px 15px;
+}
+.new_job { width: 600px; overflow: hidden;}
+.new_job ul { }
+.new_job li {
+    line-height: 24px;
+    border-radius: 10px;
+    padding: 8px 15px;
+    position: relative;
+}
+.new_job li input { background: #fafafa; padding: 6px; border: 1px solid #DDE2E7; border-radius: 5px;}
+.new_job li textarea {
+    background: #fafafa;
+    resize: none;
+    border: 0;
+    width: 518px;
+    height: 120px;
+    border: 1px solid #DDE2E7;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+input.search { width: 250px;}
+.inquire li button.searchBtn {
+    display: block;
+    border: 0;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    background: url(/assets/search.png) no-repeat 0 center #fff;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+}
+.positionPicker {
+    float: right;
+    width: 44px;
+    height: 33px;
+    border-radius: 5px;
+    background: url(/assets/positionPicker.png) 1px 5px no-repeat #c8d2d7;
+    position: relative;
+    cursor: pointer;
+}
+.positionPicker.hover .pickerBox { display: block;}
+.pickerBox { position: absolute; left: 50px; width: 270px; z-index: 99; display: none;}
+.pickerBoxCorner {
+    width: 21px;
+    height: 31px;
+    background: url(/assets/corner.png) no-repeat -6px 7px;
+    position: absolute;
+}
+.pickerArea { border: 1px solid #DDE2E7; border-radius: 5px; margin-left: 20px;background: white;}
+.pickerArea p { display: block; margin-top: 3px;}
+
+
+/* 设置 */
+.new_position { width: 560px;}
+.new_position li {
+    line-height: 24px;
+    border-radius: 10px;
+    padding: 8px 15px;
+    position: relative;
+    margin: 10px 0;
+}
+.new_position li label { width: 75px; text-align: right; display: inline-block;}
+.new_position li input { background: #fafafa; padding: 6px; border: 1px solid #DDE2E7; border-radius: 5px;}
+
+.setBox { border: 1px solid #dbdbdb; border-radius: 10px; margin: 10px; padding: 10px; overflow: hidden; margin-bottom: 30px;}
+.setBox ul { float: left; width: 350px;}
+.setBox li p { width: 300px; background: #f6f7f8; padding: 10px; border-radius: 5px; margin-bottom: 10px;}
+.setBox li a.edit_icon  {
+    width: 16px;
+    height: 16px;
+    text-indent: -999px;
+    overflow: hidden;
+    float: right;
+    margin-top: -37px;
+}
+.setBox2 { float: left; margin-left: 70px;}
+.setBox2 .cr_input { padding: 9px; margin-left: -45px; margin-bottom: 10px;}
+.setBox2 .cr_input .checkbox { padding-left: 35px;}
+
+.new_position.info { width: auto;}
+.new_position.info li { margin: 0;}
+.new_position.info label { width: 135px;}
+.new_position.info input[type="text"] { width: 200px;}
+
+.menuLv2_box { height: 200px; position: relative; overflow: hidden;}
+.menuLv2_box span {
+    background: url("../assets/menuLv2_span.png") no-repeat 70px 0;
+    float: left;
+    padding: 80px 60px 80px 0;
+    width: 70px;
+    text-align: center;
+}
+.menuLv2_box ul { position: absolute; bottom: 0;}
+.menuLv2_box li { width: 120px;}
+.menuLv2_box li p { line-height: 35px; margin: 5px; background: #d6dee2; text-align: center; border-radius: 3px;}
+.menuLv2_box li a.add {
+    display: block;
+    width: 35px;
+    height: 35px;
+    line-height: 28px;
+    background: #e7ecee;
+    border-radius: 3px;
+    text-align: center;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0 auto;
+}
+.menuLv1_box { height: 30px; line-height: 30px; margin-bottom: 10px;}
+.menuLv1_box span {
+    float: left;
+    width: 130px;
+    text-align: center;
+    margin: 5px;
+}
+.menuLv1_box ul { float: left; margin-left: 10px;}
+.menuLv1_box li { width: 120px; float: left;}
+.menuLv1_box li p { line-height: 35px; margin: 5px; background: #b6c2c9; text-align: center; border-radius: 3px;}
+.menuLv1_box li a.add {
+    display: block;
+    width: 35px;
+    height: 35px;
+    line-height: 28px;
+    background: #e7ecee;
+    border-radius: 3px;
+    text-align: center;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 5px;
+}
+
+.linkPicker li { border-radius: 0;}
+.tab_1 { overflow: hidden;}
+.tab_1 li { border-bottom: 1px solid #e4e9ed; float: left; width: 160px; text-align: center;}
+.tab_1 li:hover,.tab_1 li.hover { border-bottom: 1px solid #3cc0c4;}
+.tabDiv_1,.tabDiv_2 { display: none;}
+.tabDiv_1.hover,.tabDiv_2.hover { display: block;}
+.tabDiv_1 li { display: inline-block; margin: 10px 26px; text-indent: 20px; width: 200px; border-bottom: 1px solid #ebeff1;}
+
+.tab_2 { overflow: hidden; border: 1px solid #f3f3f3; width: 516px; margin: 0 auto; border-radius: 5px; margin-top: 10px;}
+.tab_2 li { border: 0; float: left; width: 172px; text-align: center; padding: 5px 0; margin: 0; text-indent: 0;}
+.tab_2 li:hover,.tab_2 li.hover { background: #3bc0c3; color: #fff; border-radius: 5px; box-shadow: 0 0 1px rgba(0,0,0,0.3);}
+
+
 
 
 

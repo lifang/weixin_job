@@ -44,7 +44,7 @@ class Company < ActiveRecord::Base
         this_second_menus.each do |sm|
           template_name = Menu::TYPE_NAMES[sm.types]
           second_level_menu << (template_name == "company_profile" ?
-              {:type => "view", :name => sm.name, :url => ApplicationHelper::MW_URL + sm.file_path.to_s}:
+              {:type => "view", :name => sm.name, :url => sm.file_path.present? ? (sm.file_path.include?("http://") ? sm.file_path : ApplicationHelper::MW_URL + sm.file_path.to_s) : ""}:
               {:type => "click", :name => sm.name, :key => "#{template_name}_#{sm.temp_id}" })
         end
         #一级菜单
@@ -55,10 +55,18 @@ class Company < ActiveRecord::Base
       else  #如果没有二级菜单
         #一级菜单
         template_name = Menu::TYPE_NAMES[om.types]
-        one_level_menu = {:type => "click",
-          :name => om.name,
-          :key => "#{template_name}_#{om.temp_id}"
-        }
+        if template_name == 'company_profile'
+           one_level_menu = {:type => "view",
+            :name => om.name,
+            :url => om.file_path.present? ? (om.file_path.include?("http://") ? om.file_path : ApplicationHelper::MW_URL + om.file_path.to_s) : ""
+          }
+        else
+          one_level_menu = {:type => "click",
+            :name => om.name,
+            :key => "#{template_name}_#{om.temp_id}"
+          }
+        end
+
       end
 
       menu_hash[:button] << one_level_menu

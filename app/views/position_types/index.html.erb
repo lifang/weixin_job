@@ -1,41 +1,58 @@
-<div class="main_con2">
-  <div>
-    <div class="toolbar">
-      <button class="white_btn_for_a scd_btn" name="newJobCategory" style=" float: left; margin: 25px 50px;">新建职位类别</button>
-    </div>
-    <div class="JobCategoryBox">
-      <%@position_types.each do |p_t|%>
-        <p><%=p_t.name%>
-          <%=link_to company_position_type_path(@company,p_t),confirm:"确定删除？",method:'delete' do%>
-          <span class="close" title="关闭">×</span>
-          <%end%>
-        </p>
-      <%end%>
-      <%if @position_types.blank? %>
-        <div style="text-align:center; font-size: 14px;"> 暂无职位类别
-        </div>
-      <%end%>
+<div class="area">
+  <div class="title clearAfter">
+    <h1>职位类别</h1>
+    <div class="seek">
+      <div class="inquire">
+        <ul>
+          <li>
+            <button onclick="show_new_position_type()">新建职位类别</button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+  <div class="content">
+    <div class="list clearAfter">
+      <ul>
+        <%@position_types.each do |p_t|%>
+          <li style="width: 200px;">
+            <div class="text">
+              <h2><%=p_t.name%></h2>
+            </div>
+            <div class="aFunc" style=" float: right;">
+              <%=link_to company_position_type_path(@company,p_t),confirm:"确定删除？",method:'delete',class:"delete_icon tooltip_html" do%>
+                  删除
+                <%end%>
+              </div>
+            </li>
+          <%end%>
+          <%if @position_types.blank? %>
+            <div style="text-align:center; font-size: 14px;"> 暂无职位类别
+            </div>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-<div class="second_bg"></div>
-<div class="second_box second_box_fixed newJobCategory">
-  <div class="second_content" style="width: 450px;">
-    <span class="close" title="关闭">×</span>
+
+  <div class="tab new_position_type" style="display:none;">
+    <a href="#" class="close">close</a>
     <h1>新建职位类别</h1>
     <%=form_for(:position_types,url:company_position_types_path(@company)) do |f|%>
-      <div>
-        <p>
-          <label>类别名称</label>
-          <input type="text" id="name" name="name"/>
-        </p>
+    <div class="tab_content">
+      <div class="new_position" style=" width: auto;">
+        <ul>
+          <li style="margin: 0;">
+            <label style="width: 100px;">职位类别名称：</label>
+            <input type="text"  id="name" name="name" />
+          </li>
+        </ul>
       </div>
-      <div class="scdBoxAct">
-        <button type="button" class="orangeBtn" onclick="submit_position_types(this)">确定</button>
-        <button type="button" class="orangeBtn" onclick="cancel_position_types(this)">取消</button>
-      </div>
-  <%end%>
-
+    </div>
+    <div class="tab_btn">
+      <button class="green_btn" style="margin-left: 90px;" type="button" onclick="submit_position_types(this)">确定</button>
+    </div>
+    <%end%>
   </div>
-</div>
+

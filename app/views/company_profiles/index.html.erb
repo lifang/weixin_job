@@ -1,3 +1,47 @@
+<div class="area">
+  <div class="title clearAfter">
+    <h1>微网页</h1>
+    <div class="seek">
+      <div class="inquire">
+        <ul>
+          <li>
+            <button>新建微网页</button>
+          </li>
+          <!--li style="position: relative;">
+            <input type="text" class="search" >
+            <button class="searchBtn"></button>
+          </li-->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="list clearAfter">
+      <%if @company_profiles.blank?%>
+      <div style="text-align:center; font-size: 14px;margin-top: 50px;"> 暂无数据
+      </div>
+    <%else%>
+      <ul>
+        <%@company_profiles.each do |cp|%>
+        <li style="width: 200px;">
+          <div class="text">
+            <h2><%=cp.title%></h2>
+          </div>
+          <div class="aFunc" style=" float: right;">
+            <a href="#" class="edit_icon tooltip_html">编辑</a>
+            <a href="#" class="delete_icon tooltip_html">删除</a>
+          </div>
+        </li>
+        <%end%>
+      </ul>
+      <%end%>
+    </div>
+  </div>
+  <div class="pageTurn">
+   
+  </div>
+</div>
+
 <div class="main_con2">
   <div>
     <div class="toolbar">

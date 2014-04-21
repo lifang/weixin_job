@@ -1,7 +1,6 @@
 <% if @status == 0 %>
 tishi_alert("数据错误!");
 <% else %>
-$(".second_bg").show();
 $("#edit_addre_div").html("<%= j(render :partial => "edit_form") %>");
 $("#edit_addre_div").show();
 <% end %>

@@ -20,7 +20,7 @@ class Api::MessagesController < ApplicationController
           :content => message.content, :status => message.status ? 0 : 1,
           :date => message.created_at.nil? ? nil : message.created_at.strftime("%Y-%m-%d %H:%M"),
           :message_type => message.message_type, :message_path => MW_URL + message.message_path.to_s,
-          :voice_type => mess.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
+          :voice_type => message.message_type == Message::MSG_TYPE[:voice] ? (mess.message_path && mess.message_path.include?(".mp3") ? "mp3" : "amr") : nil
         }
         if types == Message::TYPES[:remind] #如果是提醒，则要将has_new_record设为1
           person = Client.find_by_id(to_user)

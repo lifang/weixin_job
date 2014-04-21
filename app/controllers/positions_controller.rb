@@ -4,16 +4,20 @@ class PositionsController < ApplicationController   #招聘职位
   before_filter :get_company,only:[:show,:send_resume]
   skip_before_filter :has_sign? ,only:[:show,:send_resume]
   before_filter :get_title,:get_position_type,:get_positions,:get_work_addresses
-  PerPage = 8
+  PerPage = 3
 
   def index
     time = Time.now.prev_month
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 or status = 2) and created_at>=?",time])
+    delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
+    @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
   end
 
   def history_index
     time = Time.now.prev_month
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 or status = 2) and created_at <?",time])
+    delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
+    @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
     render 'index'
   end
   def edit
@@ -57,7 +61,7 @@ class PositionsController < ApplicationController   #招聘职位
           redirect_to company_positions_path(@company)
         else
           flash[:error] = "新建失败！职位已经存在！"
-          render 'new'
+          redirect_to company_positions_path(@company)
         end
       end
     else
@@ -140,7 +144,10 @@ class PositionsController < ApplicationController   #招聘职位
   
   def search_position
     p = params[:position]
-    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%")||[]
+    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%").paginate(page:params[:page],per_page: PerPage)||[]
+    delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
+    @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
+ 
     render 'index'
   end
 
@@ -175,7 +182,27 @@ class PositionsController < ApplicationController   #招聘职位
       joins("left join cities c2 on c1.parent_id = c2.id").
       where(["work_addresses.company_id = ?",@company.id])||[]
   end
-  
+
+  def see_position
+    @position = Position.where("(status =1 or status = 2) and id=?",params[:id])[0]
+    if @position.blank?
+      @status = 0
+    else
+      @status = 1
+    end
+  end
+
+  def create_position
+    @position = Position.new
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
+  end
+
+  def edit_position
+    
+    @position = Position.find_by_id( params[:id])
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage,conditions:"status =1 or status = 2")
+  end
+
   def get_positions
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:"status =1 or status = 2")
   end
