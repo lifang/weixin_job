@@ -111,7 +111,7 @@ class CompanyProfilesController < ApplicationController
   end
 
   def get_title
-    @title = "公司简介"
+    @title = "微网页"
   end
   private
   def destroy_file file_path

@@ -4,9 +4,17 @@ class MenusController < ApplicationController   #菜单
   before_filter :get_title
   def index
     @resume_tmp = ResumeTemplate.find_by_company_id(@company.id)
-    @positions = PositionType.select("id,name").where(["company_id =?", @company.id])
+    @positions = Position.where(["(status =1 or status = 2) and company_id =?", @company.id])
+    time = Time.now.prev_month
+    @newest_positions = []
+    @positions.each do |position|
+      if position.created_at >= time
+        @newest_positions << position
+      end
+    end
+    @position_types = PositionType.where(["company_id = ?", @company.id])
     @comp_profiles = CompanyProfile.select("id,title,file_path").where(["company_id = ?", @company.id])
-    menus = Menu.where(["company_id = ?", @company.id]).group_by{|m|m.parent_id.to_s}
+    menus = Menu.where(["company_id = ?", @company.id]).group_by{|m| m.parent_id.to_s}
     @father_menus = menus["0"]
     @child_menus = menus.except("0")
   end

@@ -29,7 +29,9 @@
           </div>
           <div class="aFunc" style=" float: right;">
             <a href="#" class="edit_icon tooltip_html">编辑</a>
-            <a href="#" class="delete_icon tooltip_html">删除</a>
+            <%=link_to  company_company_profile_path(@company,cp.id),method: :delete,confirm:"确定删除？", class:"delete_icon tooltip_html" do%>
+                删除
+            <%end%>
           </div>
         </li>
         <%end%>

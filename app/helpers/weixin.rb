@@ -701,15 +701,35 @@ Text
         end
       end
     elsif menu_type == "positions"
-      time = Time.now.prev_month
-      positions = Position.where("status=? and created_at>=? and company_id = ?", Position::STATUS[:RELEASED],time,@company.id)
-      all_positions = "点击最新职位\n"
-      positions.each do |position|
-        message = "/companies/#{@company.id}/positions/#{position.id}"
-        message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
-        all_positions += message
-      end if positions
-      link = positions.present? ? all_positions : ""
+      if temp_id == Menu::TEMP_TYPES[:search_job]
+        positions = Position.where("company_id = ? and status=? ",@company.id,Position::STATUS[:RELEASED])
+        all_positions = "点击全部职位\n"
+        positions.each do |position|
+          message = "/companies/#{@company.id}/positions/#{position.id}"
+          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+          all_positions += message
+        end if positions
+        link = positions.present? ? all_positions : ""
+      elsif temp_id == Menu::TEMP_TYPES[:newest]
+        time = Time.now.prev_month
+        positions = Position.where("status=? and created_at>=? and company_id = ?", Position::STATUS[:RELEASED],time,@company.id)
+        all_positions = "点击最新职位\n"
+        positions.each do |position|
+          message = "/companies/#{@company.id}/positions/#{position.id}"
+          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+          all_positions += message
+        end if positions
+        link = positions.present? ? all_positions : ""
+      else
+        position_type = PositionType.find_by_id[temp_id]
+        positions = position_type.positions
+        positions.each do |position|
+          message = "/companies/#{@company.id}/positions/#{position.id}"
+          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+          all_positions += message
+        end if positions
+        link = positions.present? ? all_positions : ""
+      end
     elsif menu_type == "no_type"
       if temp_id == Menu::TEMP_TYPES[:my_recommend]
         delivery_resume_records = DeliveryResumeRecord.

@@ -73,7 +73,8 @@ class LoginsController < ApplicationController
               parent_id: menu1.id,
               company_id:company.id,
               types:2)
-            Menu.create(name:"我的求职",
+            Menu.create(
+              name:"我的求职",
               temp_id:Menu::TEMP_TYPES[:my_jobs],
               parent_id: menu1.id,
               company_id:company.id,
@@ -87,9 +88,9 @@ class LoginsController < ApplicationController
               temp_id:Menu::TEMP_TYPES[:search_job],
               parent_id: menu2.id,
               company_id:company.id,
-              types:3)
+              types:1)
             Menu.create(name:"最新职位",
-              temp_id:-4,
+              temp_id: Menu::TEMP_TYPES[:newest],
               parent_id: menu2.id,
               company_id:company.id,
               types:1)

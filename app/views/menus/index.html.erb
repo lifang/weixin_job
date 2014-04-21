@@ -9,19 +9,23 @@
     <div class="menuLv2_box">
       <span>二级菜单(最多5个)</span>
       <% @father_menus.each_with_index do |fm,index| %>
-        <ul style="left: <%=150+index*120%>px;">
-          <li><a href="#" class="add">+</a></li>
+        <ul class ="menu_ul" style="left: <%=150+index*120%>px;">
+          <li><a href="#" class="add" onclick="add_menu_new(2,<%=fm.id%>,<%=@child_menus[fm.id.to_s].nil? ? 0:@child_menus[fm.id.to_s].length%>)">+</a></li>
           <% @child_menus[fm.id.to_s].each do |cm| %>
-            <li><p><%= cm.name %></p></li>
+          <li>
+            <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
+            <p><%= cm.name %></p></li>
           <%end if @child_menus[fm.id.to_s]%>
         </ul>
       <%end%>
     </div>
     <div class="menuLv1_box">
       <span>一级菜单(最多3个)</span>
-      <ul>
+      <ul class ="menu_ul">
         <% @father_menus.each do |fm| %>
-          <li><p><%= fm.name %></p></li>
+          <li>
+            <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= fm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
+            <p><%= fm.name %></p></li>
         <%end%>
         <li><a href="#" class="add" onclick="add_menu_new(1,0,<%=@father_menus.length%>)">+</a></li>
       </ul>
@@ -32,7 +36,8 @@
 
 
 
-<div class="tab add_menu_new">
+<div class="tab add_menu_new" style="display:none;">
+  <input type="hidden" name="parent_id" value />
   <a href="#" class="close">close</a>
   <h1>添加菜单项</h1>
   <div class="tab_content">
@@ -51,40 +56,24 @@
               <li>其他</li>
             </ul>
             <ul class="tabDiv_1 hover">
-              <li><div class="cr_input"><input name="website_page" type="radio" value=""><p>我的简历</p></div></li>
-              <li><div class="cr_input"><input name="website_page" type="radio" value=""><p>公司介绍</p></div></li>
-              <li><div class="cr_input"><input name="website_page" type="radio" value=""><p>xx职位介绍</p></div></li>
+              <%@comp_profiles.each do|cp|%>
+                <li><div class="cr_input"><input name="website_page" type="radio" value="<%=cp.id%>" checked/><p><%=cp.title%></p></div></li>
+              <%end%>
             </ul>
-            <div class="tabDiv_1">
-              <ul class="tab_2">
-                <li class="hover">全部</li>
-                <li>最新</li>
-                <li>职位类别</li>
-              </ul>
-              <ul class="tabDiv_2 hover">
-                <li><div class="cr_input"><input name="all_position" type="radio" value=""><p>采购</p></div></li>
-                <li><div class="cr_input"><input name="all_position" type="radio" value=""><p>人事</p></div></li>
-                <li><div class="cr_input"><input name="all_position" type="radio" value=""><p>开发</p></div></li>
-              </ul>
-              <ul class="tabDiv_2">
-                <li><div class="cr_input"><input name="newest_position" type="radio" value=""><p>采购</p></div></li>
-                <li><div class="cr_input"><input name="newest_position" type="radio" value=""><p>人事</p></div></li>
-                <li><div class="cr_input"><input name="newest_position" type="radio" value=""><p>开发</p></div></li>
-              </ul>
-              <ul class="tabDiv_2">
-                <li><div class="cr_input"><input name="position_type" type="radio" value=""><p>采购类</p></div></li>
-                <li><div class="cr_input"><input name="position_type" type="radio" value=""><p>人事类</p></div></li>
-                <li><div class="cr_input"><input name="position_type" type="radio" value=""><p>开发类</p></div></li>
-              </ul>
-            </div>
             <ul class="tabDiv_1">
-              <li><div class="cr_input"><input name="" type="radio" value=""><p>我的简历</p></div></li>
-              <li><div class="cr_input"><input name="" type="radio" value=""><p>公司介绍</p></div></li>
-              <li style="width: auto;"><div class="cr_input">
-                  <input name="" type="radio" value="">
+              <li><div class="cr_input"><input name="position_type" type="radio" value="<%=Menu::TEMP_TYPES[:search_job]%>" checked/><p>全部职位</p></div></li>
+              <li><div class="cr_input"><input name="position_type" type="radio" value="<%=Menu::TEMP_TYPES[:search_job]%>" /><p>最新职位</p></div></li>
+              <%@position_types.each do |pt|%>
+                <li><div class="cr_input"><input name="position_type" type="radio" value="<%=pt.id%>" /><p><%=pt.name%></p></div></li>
+              <%end%>
+            </ul>
+            <ul class="tabDiv_1">
+              <li style="width: auto;">
+                <div class="cr_input">
                   <p>外部链接</p>
-                  <input type="text" style="margin: 0 13px; width: 320px;">
-                </div></li>
+                  <input type="text" id="out_link" style="margin: 0 13px; width: 320px;" />
+                </div>
+              </li>
             </ul>
           </div>
         </li>
@@ -92,7 +81,7 @@
     </div>
   </div>
   <div class="tab_btn">
-    <button class="green_btn">确定</button>
+    <button class="green_btn" button="type" onclick="menu_new_commit(<%=@company.id%>)">确定</button>
   </div>
 </div>
 

@@ -9,7 +9,15 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 .cf:after { clear: both; content:"."; display: block; height: 0; overflow: hidden; visibility:hidden;}
 
-.orangeBtn { padding: 5px; width: 120px; border: 0; background: #f9651b; color: #f2f2f2;}
+.orangeBtn {
+    height: 30px;
+    border-radius: 5px;
+    display: inline-block;
+    color: #FFF;
+    padding: 0px 50px;
+    margin: 0 10px;
+    background: #4dbd74
+}
 
 /* login */
 
@@ -221,8 +229,8 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 .menuMakerDtl li ul { margin-top: -55px; margin-left: 200px;}
 .menuMakerDtl li span { display: block; line-height: 45px; width: 160px; background: #ff8d00; color: #fff; margin: 5px; text-align: center; position: relative;}
-.menuMakerDtl li a.close_1 {
-    color: #f2f2f2;
+.menuMakerDtl  li a.close_1 {
+    color: #464646;
     font-size: 24px;
     font-weight: bold;
     height: 20px;
@@ -233,7 +241,37 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     top: 3px;
     display: none;
     cursor: pointer;
+
 }
+.optBox span.close_1 {
+    color: #464646;
+    font-size: 24px;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    position: absolute;
+    right: 1px;
+    top: 3px;
+    display: none;
+    cursor: pointer;
+
+}
+.menu_ul li a.close_1 {
+    color: #464646;
+    font-size: 24px;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    position: absolute;
+    display: none;
+    cursor: pointer;
+    margin-left: 100px;
+    margin-top: 2px;
+}
+.optBox:hover span.close_1 { display: block;}
+.menu_ul li:hover a.close_1 { display: block;}
 .menuMakerDtl .menu_item:hover  a.close_1 { display: block;}
 .menu_item { display: inline-block; position: relative;}
 
@@ -251,17 +289,18 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 /* second_box */
 .second_bg { width:100%; height:100%; z-index:98; position: fixed; top:0; opacity: 0.3; filter: alpha(opacity=30); background: #fff; display: none;}
-.second_box { width:100%; height:100%; z-index:99; position: absolute; top:0; display: none; }
+.second_box { width:75%; height:100%; z-index:99; position: absolute; top:0; display: none; }
 .second_box.second_box_fixed { position: fixed;}
 .second_box_fixed .second_content .largeCon { max-height: 200px; overflow: auto;}
 .second_content {
-    background-color: #373f42;
+    background-color: white;
     overflow: auto;
     margin: 114px auto 50px;
     position: relative;
-    color: #f2f2f2;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.6);
 }
-.second_content h1 { line-height: 40px; background: #373f42; text-indent: 30px; font-size: 18px; padding-top: 10px;}
+.second_content h1 { line-height: 40px; background: white; text-indent: 30px; font-size: 18px; padding-top: 10px;}
 .second_content .close {
     font-size: 28px;
     display: block;
@@ -276,9 +315,13 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .second_content p { position: relative;}
 .second_content p .close { display: none;}
 .second_content p:hover .close { display: block;}
-.second_content p { line-height: 36px;margin-left: 25px;}
+.second_content p { line-height: 36px;margin-left: -10px;}
 .second_content p label { display: inline-block; width: 150px; text-align: right;}
-.second_content p input[type="text"] { padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
+.second_content p input[type="text"] {
+    background: #fafafa;
+    border: 1px solid #DDE2E7;
+    border-radius: 5px;
+    padding: 3px; margin-left: 10px; width: 250px; height: 20px;}
 .second_content p input[type="radio"] { margin-left: 10px; width: 35px; }
 .scdBoxAct { margin: 10px 0; text-align: center; }
 
@@ -304,7 +347,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .labRight { overflow: hidden;}
 .radioBox1 { position: relative; height: 36px;}
 .radioBox1 input[type="radio"] { width: 30px;}
-.radioBox1 input[type="text"] { height: 20px; padding: 3px; width: 250px;}
+.radioBox1 input[type="text"] { height: 20px; padding: 3px; width: 250px;border: 1px solid #DDE2E7;}
 .radioSpan { display: inline-block; width: 20px; height: 20px; background: url(../assets/radio_icon.png) no-repeat -5px -3px; position: absolute; left: 0; top: 11px;}
 .radioSpan:hover { background-position: -5px -33px;}
 .check .radioSpan { background-position: -5px -63px;}
@@ -315,7 +358,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .warnTit .time { display: block; width: 25px; height: 25px; background: url(../assets/warnArea.png) no-repeat -3px -1px; position: absolute; left: 10px; top: 9px; cursor: pointer;}
 .warnTit .cont { display: block; width: 25px; height: 25px; background: url(../assets/warnArea.png) no-repeat -36px -2px; position: absolute; left: 45px; top: 9px; cursor: pointer;}
 .warnTit .space { display: block; width: 30px; height: 25px; background: url(../assets/warnArea.png) no-repeat -67px -2px; position: absolute; left: 80px; top: 9px; cursor: pointer;}
-.warnTxt textarea { width: 390px; height: 85px; resize: none; border: 0; padding: 5px;}
+.warnTxt textarea { width: 388px; height: 73px; resize: none; border: 1px solid #DDE2E7; padding: 5px;}
 .addcontarea { margin: 30px 20px 0; border: 1px solid #ccc; background: #fff; width: 245px; height: 75px; padding: 5px; resize: none;}
 .addrpick { padding: 5px; cursor: pointer;}
 .addrpick.check,.addrpick:hover { background: #c2c2c2; color: #fff;}
@@ -388,7 +431,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 body { background: #15465e; font-family:"微软雅黑", "宋体", Arial; font-size: 14px; color:#506470;}
 li { list-style: none;}
 a { text-decoration: none;}
-input {font-family:"微软雅黑"; border: none;}
+input {font-family:"微软雅黑"; border: 1px solid #DDE2E7;}
 .div_class p input{
     background: #fafafa;
     padding: 6px;
