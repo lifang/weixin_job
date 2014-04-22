@@ -262,7 +262,7 @@ span.close_1 {
 .menu_ul li a.close_1 {
     color: #464646;
     font-size: 24px;
-    font-weight: bold;
+    font-weight: bold;F
     height: 20px;
     width: 20px;
     line-height: 20px;
@@ -272,7 +272,7 @@ span.close_1 {
     margin-left: 100px;
     margin-top: 2px;
 }
-.optBox:hover span.close_1,.infoItem:hover span.close_1 { display: block;}
+.optBox:hover span.close_1,.itemBox:hover span.close_1 { display: block;}
 .menu_ul li:hover a.close_1 { display: block;}
 .menuMakerDtl .menu_item:hover  a.close_1 { display: block;}
 .menu_item { display: inline-block; position: relative;}
@@ -374,7 +374,7 @@ span.close_1 {
     bottom: 0;
     text-align: center;
     padding: 3px;
-    width: 430px;
+    width: 75%;
 }
 .jobInfo .place label { float: left;}
 .jobInfo .place span { background: #fff; margin: 3px 40px 0 24px; padding: 5px; width: 210px; float: left; line-height: 20px;}

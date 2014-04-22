@@ -29,14 +29,14 @@
 }
 
 .digg_pagination {
-    
+
     cursor: default;
     /* self-clearing method: */ }
-.pagination { display: block;text-align: center; background: white;}
+.pagination { display: block;text-align: center; }
 .digg_pagination a, .digg_pagination span, .digg_pagination em {
     padding: 0.2em 0.5em;
     display: inline-block;
-    
+
     margin-right: 1px; }
 .digg_pagination .disabled {
     color: #999999;
@@ -49,8 +49,8 @@
     border: 0px solid #0683b1; }
 .digg_pagination a {
     text-decoration: none;
-    color: #0683b1;
-    border: 1px solid #9aafe5; }
+    background: #dbdbdb;
+     }
 .digg_pagination a:hover, .digg_pagination a:focus {
     color: #000033;
     border-color: #000033; }
