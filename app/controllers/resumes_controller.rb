@@ -118,7 +118,7 @@ class ResumesController < ApplicationController   #简历模板
 
   def choice_position
     status = params[:status].to_i
-    postion_id = params[:postion_id]
+    postion_id = params[:position_id]
     start_time = params[:start]
     end_time = params[:end]
     case status
@@ -215,13 +215,31 @@ class ResumesController < ApplicationController   #简历模板
     end
   end
   private
-  def get_positions_and_resumes position_id,start_time,end_time,status
+  def get_positions_and_resumes  position_id,start_time,end_time,status
     @title+="-最新简历"
     @status = status
     @positions = @company.positions.where("status = 2")
+    arr=[""]
+    arr << status
+    str="drr.status= ? "
+    if start_time!=""
+      str+="and drr.created_at >= ? "
+      arr<< start_time
+    end
+    if end_time !=""
+      str+="and drr.created_at <= ? "
+      arr<< end_time
+    end
+    if position_id != '0'
+      str +="and p.id = ? "
+      arr<< position_id
+    end
+    arr[0]= str
 
+    p 111111111111111111111111111111,arr
+    
     @positions_and_resumes =  ClientResume.
-      where(["drr.status= ? and drr.created_at >= ? and drr.created_at <= ? and p.id = ?",status,start_time,end_time,position_id ]).
+      where(arr).
       joins("inner join delivery_resume_records drr on drr.client_resume_id = client_resumes.id").
       joins("inner join positions p on drr.position_id = p.id ").
       select("drr.id,p.name,

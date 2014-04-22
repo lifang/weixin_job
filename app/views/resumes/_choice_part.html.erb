@@ -7,7 +7,7 @@
       <input type="hidden" name="status" value="<%=status%>" />
       <li>
         <div class="select_box">
-          <div class="select_tag"><span>选择词性</span> <input name="" type="text" value="0" class="tag_input"/></div>
+          <div class="select_tag"><span>选择词性</span> <input name="position_name" type="text" value="0" class="tag_input"/></div>
           <ul class="select_ul">
             <%@positions.each do |position|%>
               <li><%=position.name%><input name="" type="text" value="<%=position.id%>"/></li>

@@ -268,19 +268,12 @@ function submit_join_form(obj){
 }
 function search_positon_resumes(obj){
     var form = $(obj).parent().parent();
-    var postion_id = $(form).find("select[name='postion_id']").val();
-    if(postion_id==0){
-        tishi_alert("请选择职位！");
-        return false;
-    }
+    $(".select_tag").find("input").attr("name","position_id");
+    var postion_id = $(form).find("input[name='position_id']").val();
     var start = $(form).find("input[name='start']").val();
-    if(start==""){
-        tishi_alert("开始时间不能为空！");
-        return false;
-    }
     var end = $(form).find("input[name='end']").val();
-    if(end==""){
-        tishi_alert("结束时间不能为空！");
+    if(end==""&&postion_id==0&&start==""){
+        tishi_alert("请至少选择一个条件！");
         return false;
     }
     form.submit();
