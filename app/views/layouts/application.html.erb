@@ -10,9 +10,9 @@
   <body>
     <% flash.each do |name, msg| %>
       <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
-        <div style="font-size:20px;margin: 200px auto;width: 300px;background: #373f42;;padding: 20px;">
-          <span class="close" id="close_flash" style="float:right;" ></span>
-          <div class="alert_h" style="color:white;"><%=msg%></div>
+        <div style="font-size:20px;margin: 200px auto;width: 300px;background: white;;padding: 20px;box-shadow: 0px 0px 5px rgba(0,0,0,0.6);">
+          <span class="close_1" id="close_flash" style="float:right;" >x</span>
+          <div class="alert_h" ><%=msg%></div>
         </div>
       </div>
     <% end %>

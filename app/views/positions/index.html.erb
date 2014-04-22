@@ -54,7 +54,7 @@
                           发布
                         <%end%>
                       <%elsif position.status == 2%>
-                        <%=link_to dis_release_company_position_path(@company,position,(controller.action_name=='index'? 0 : 1)),class:"publish_icon tooltip_html" do%>
+                        <%=link_to dis_release_company_position_path(@company,position,(controller.action_name=='index'? 0 : 1)),class:"have_publish_icon tooltip_html" do%>
                             取消发布
                           <%end%>
                         <%end%>

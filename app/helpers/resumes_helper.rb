@@ -10,4 +10,13 @@ module ResumesHelper
     end
     ""
   end
+  def is_have_headimage? hash
+    hash.each do |h|
+      if h[0].include?("headimage")
+        return h[1].values[0]
+      end
+    end
+    ""
+  end
+
 end

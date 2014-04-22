@@ -912,6 +912,7 @@ button.gray_btn { background: #b6c2c9; }
 .edit_icon { background: url(/assets/actionIcon_1.png) no-repeat -42px center;}
 .delete_icon { background: url(/assets/actionIcon_1.png) no-repeat -73px center;}
 .publish_icon { background: url(/assets/actionIcon_1.png) no-repeat -99px center;}
+.have_publish_icon { background: url(/assets/actionIcon_2.png) no-repeat -99px center;}
 .show_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -12px center;}
 .edit_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -42px center;}
 .delete_icon:hover { background: url(/assets/actionIcon_2.png) no-repeat -73px center;}

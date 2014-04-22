@@ -16,7 +16,7 @@
         <ul>
           <%@positions_and_resumes.each do |p_and_r|%>
             <li>
-              <div class="avatar"><img src="<%=p_and_r.html_content_datas['headimage']%>"/></div>
+              <div class="avatar"><img src="<%=is_have_headimage? p_and_r.html_content_datas%>"/></div>
               <div class="text">
                 <h2><%=p_and_r.name%></h2>
               </div>
