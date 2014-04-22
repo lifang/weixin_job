@@ -245,7 +245,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     cursor: pointer;
 
 }
-.optBox span.close_1 {
+span.close_1 {
     color: #464646;
     font-size: 24px;
     font-weight: bold;
@@ -272,7 +272,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
     margin-left: 100px;
     margin-top: 2px;
 }
-.optBox:hover span.close_1 { display: block;}
+.optBox:hover span.close_1,.infoItem:hover span.close_1 { display: block;}
 .menu_ul li:hover a.close_1 { display: block;}
 .menuMakerDtl .menu_item:hover  a.close_1 { display: block;}
 .menu_item { display: inline-block; position: relative;}
@@ -534,7 +534,11 @@ button.gray_btn { background: #b6c2c9; }
     border-radius: 10px;
     margin: 10px 0;
 }
-.login_box label.user_name, .login_box label.user_password {
+.login_box label.company { 
+    background: url(/assets/company.png) no-repeat 0px 0px;
+}
+
+.login_box label.user_name, .login_box label.user_password, .login_box label.company{
     width: 22px;
     height: 22px;
     display: block;
@@ -611,7 +615,7 @@ button.gray_btn { background: #b6c2c9; }
     color: #FFF;
 }
 .nav .nav_list ul.menu li a.hover { background: #4dbd74;}
-
+.nav .nav_list p.information {background: url(/assets/information.png) no-repeat 30px 20px;}
 .user_info {
     border-bottom: 1px #182734 solid;
     padding: 10px 25px;

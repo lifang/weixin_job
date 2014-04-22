@@ -26,6 +26,7 @@ function add_tag_p(name,obj){
     }
 
 }
+
 function add_form_item(name,obj,company_id){
     var arr = new Array;
     $("."+name).find("input[name='k_name']").each(function(){

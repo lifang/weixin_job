@@ -36,7 +36,7 @@
                 </li>
                 <li>
                   <%= link_to audition_resume_company_resumes_path(@company),:class=>( (@status == DeliveryResumeRecord::STATUS[:audition]||
-                      @status == DeliveryResumeRecord::STATUS[:refuse] || @status == DeliveryResumeRecord::STATUS[:pass])? "hover" : "") do %>
+                        @status == DeliveryResumeRecord::STATUS[:refuse] || @status == DeliveryResumeRecord::STATUS[:pass])? "hover" : "") do %>
                     管理简历<%end%>
                 </li>
                 <li><%= link_to company_resumes_path(@company),:class=>(is_hover?("resumes") if controller.action_name == 'index') do %>
@@ -51,36 +51,40 @@
                     历史职位<%end%></li>
               </ul>
             </div>
-            <div class="nav_list <%=is_hover_top?(controller.controller_name) == 3 ? 'hover':''%>"><p class="set ">设置</p>
-              <ul class="menu" style="display: <%=is_hover_top?(controller.controller_name) == 3 ? "block":"none"%>;">
-                <li><%= link_to "/companies/show?company_id=#{@company.id}",class:is_hover?('companies/show') do %>
-                   设置
-                <% end %></li>
-                <li ><%=link_to company_company_profiles_path(@company),class:is_hover?('company_profiles') do%>
-                  微网页
-                <%end%></li>
-                 <li><%=link_to company_position_types_path(@company),class:is_hover?('position_types') do%>
-                 职位类别
-                <%end%></li>
-                <li ><%= link_to company_address_settings_path(@company),class: is_hover?('address_settings') do %>
-                  工作地点管理
-                <% end %></li>
-                <li ><%= link_to company_menus_path(@company),class:is_hover?('menus') do %>
-                  菜单
-                <% end %></li>
-                <li ><%= link_to company_app_managements_path(@company),class:is_hover?('app_managements') do %>
-                  APP管理
-                <% end %></li>
-              </ul>
-            </div>
-          </div>
+            <div class="nav_list  <%=is_hover_top?(controller.controller_name) == 4 ? 'hover':''%>">
+              <p class="information">
+                <%=link_to company_company_profiles_path(@company), style:"color: #fff;",class:is_hover?('company_profiles') do%>
+                    资讯
+                  <%end%>
+                </p>
+              </div>
+              <div class="nav_list <%=is_hover_top?(controller.controller_name) == 3 ? 'hover':''%>"><p class="set ">设置</p>
+                <ul class="menu" style="display: <%=is_hover_top?(controller.controller_name) == 3 ? "block":"none"%>;">
+                  <li><%= link_to "/companies/show?company_id=#{@company.id}",class:is_hover?('companies/show') do %>
+                        设置
+                      <% end %></li>
+                      <li><%=link_to company_position_types_path(@company),class:is_hover?('position_types') do%>
+                            职位类别
+                          <%end%></li>
+                        <li ><%= link_to company_address_settings_path(@company),class: is_hover?('address_settings') do %>
+                              工作地点管理
+                            <% end %></li>
+                          <li ><%= link_to company_menus_path(@company),class:is_hover?('menus') do %>
+                                菜单
+                              <% end %></li>
+                            <li ><%= link_to company_app_managements_path(@company),class:is_hover?('app_managements') do %>
+                                  APP管理
+                                <% end %></li>
+                            </ul>
+                          </div>
+                        </div>
 
-        </div>
-      </div>
-      <div class="right">
-        <%=yield%>
-      </div>
-    </div>
-    <%= render "/shared/tishi_alert" %>
-  </body>
-</html>
+                      </div>
+                    </div>
+                    <div class="right">
+                      <%=yield%>
+                    </div>
+                  </div>
+                  <%= render "/shared/tishi_alert" %>
+                </body>
+              </html>
