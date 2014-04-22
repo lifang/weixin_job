@@ -24,7 +24,6 @@
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="b_table">
             <thead>
               <tr>
-                <th><div class="cr_input"><input name="" type="checkbox" value=""><p>全选</p></div></th>
                 <th>投递职位</th>
                 <th>应聘人员姓名</th>
                 <th>手机号码 </th>
@@ -35,7 +34,6 @@
             <tbody>
               <%@positions_and_resumes.each do |p_and_r|%>
                 <tr>
-                  <td><div class="cr_input"><input name="" type="checkbox" value=""><p></p></div></td>
                   <td><%=p_and_r.name%></td>
                   <td><%=p_and_r.clint_name%></td>
                   <td><%=p_and_r.client_phone%></td>

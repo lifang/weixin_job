@@ -181,7 +181,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 
 .imgItem input[type="file"] { color: #6E6E6E;width: 200px;}
 
-.profileExplain { float:left; margin: 20px; width: 430px; background: #fff; padding: 10px; border-radius: 5px; box-shadow: 0 0 3px rgba(0,0,0,0.3);}
+.profileExplain { float:left; margin: 20px; width: 370px; background: #fff; padding: 10px; border-radius: 5px; box-shadow: 0 0 3px rgba(0,0,0,0.3);}
 .profileExplain h1 { border-bottom: 1px solid #ccc; font-size: 18px; font-weight: normal; text-align: center;}
 .profileExplain li { padding: 20px; border-bottom: 1px dashed #7c7c7c; background: url(../assets/explain_close.png) no-repeat 0 23px; background-size: 15px 15px;}
 .profileExplain li h2 { font-size: 16px;}
