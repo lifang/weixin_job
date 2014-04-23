@@ -220,14 +220,26 @@ class ResumesController < ApplicationController   #简历模板
     @status = status
     @positions = @company.positions.where("status = 2")
     arr=[""]
-    arr << status
-    str="drr.status= ? "
+    arr << status << @company.id
+    str="drr.status= ? and drr.company_id= ? "
     if start_time!=""
-      str+="and drr.created_at >= ? "
+      if status == DeliveryResumeRecord::STATUS[:audition]
+        str+="and drr.audition_time >= ? "
+      elsif status == DeliveryResumeRecord::STATUS[:pass]
+        str+="and drr.join_time >= ? "
+      else 
+        str+="and drr.created_at >= ? "
+      end
       arr<< start_time
     end
     if end_time !=""
-      str+="and drr.created_at <= ? "
+      if status == DeliveryResumeRecord::STATUS[:audition]
+        str+="and drr.audition_time <= ? "
+      elsif status == DeliveryResumeRecord::STATUS[:pass]
+        str+="and drr.join_time <= ? "
+      else
+        str+="and drr.created_at <= ? "
+      end
       arr<< end_time
     end
     if position_id != '0'
