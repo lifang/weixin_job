@@ -11,9 +11,10 @@
   <body>
     <% if flash[:notice] %>
       <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
-        <div style="font-size:20px;margin: 200px auto;width: 300px;background: white;border-radius: 5px;padding: 20px;box-shadow: 0px 0px 5px rgba(0,0,0,0.6);">
-          <span class="close" id="close_flash" style="float:right;" ></span>
-          <div class="alert_h"><%=  flash[:notice]%></div>
+        <div style="font-size:20px;margin: 200px auto;width: 300px;background: white;border-radius: 5px;;padding: 20px;box-shadow: 0px 0px 5px rgba(0,0,0,0.6);">
+          <div class="alert_h">
+            <span class="close" id="close_flash" style="float:right;position: inherit;margin: -34px -59px;" ></span>
+            <%=  flash[:notice] %></div>
         </div>
       </div>
     <% end %>
@@ -25,15 +26,15 @@
           <ul>
             <li>
               <label class="company">公司名称：</label>
-              <input type="text" name="comp_name" id="regist_comp_name" value="">
+              <input type="text" name="comp_name" id="regist_comp_name" placeholder="公司名" value="">
             </li>
             <li>
               <label class="user_name">用户名：</label>
-              <input name="comp_account" type="text"  id="regist_comp_account" value="">
+              <input name="comp_account" type="text"  id="regist_comp_account" placeholder="用户名" value="">
             </li>
             <li>
               <label class="user_password">密码：</label>
-              <input name="comp_password" type="password" id="regist_comp_password" value="">
+              <input name="comp_password" type="password" id="regist_comp_password" placeholder="密码" value="">
             </li>
             <li class="btn" style="width: 250px;">
                <button  type="button" onclick="regist_valid(this)" >注册</button>

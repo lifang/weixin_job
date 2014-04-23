@@ -134,27 +134,6 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .tuwenBox:hover .close { display: block;}
 
 /* 生成菜单 */
-.menuMakerTit { height: 84px; background: #7d9199; position: relative;}
-.menuMakerTit h1 { line-height: 84px; margin: 0; font-size: 18px; color: #fff; padding-left: 50px;}
-.menuMakerTit img { position: absolute; bottom: 0; left: 297px; padding: 5px;}
-.menuMakerDtl { background: #fff; padding-left: 175px;float: left; width:440px}
-.menuMakerDtl ul { position: relative}
-.menuMakerDtl .menuLv1 { background: url(../assets/menuLv1.png) 116px 0px repeat-y; padding: 50px;}
-.menuMakerDtl .menuLv2 { padding-bottom: 50px; }
-.menuLv2 li { position: relative;}
-.menuLv2 li img { position: absolute; top: 22px; left: -33px;}
-.addMenuItem {
-    background: url(../assets/menuAdd.png) no-repeat;
-    width: 36px;
-    height: 50px;
-    border: 0;
-}
-.menuMakerDtl .menuLv1 button { position: absolute; left: 111px; font-size: 0;}
-.menuMakerDtl .menuLv2 button { position: absolute; left: -35px; font-size: 0; bottom: -13px;}
-.menuMakerDtl li {}
-
-.menuMakerDtl li ul { margin-top: -55px; margin-left: 200px;}
-.menuMakerDtl li span { display: block; line-height: 45px; width: 160px; background: #ff8d00; color: #fff; margin: 5px; text-align: center; position: relative;}
 .menuMakerDtl  li a.close_1 {
     color: #464646;
     font-size: 24px;
@@ -198,8 +177,7 @@ span.close_1 {
 }
 .optBox:hover span.close_1,.itemBox:hover span.close_1 { display: block;}
 .menu_ul li:hover a.close_1 { display: block;}
-.menuMakerDtl .menu_item:hover  a.close_1 { display: block;}
-.menu_item { display: inline-block; position: relative;}
+
 
 /* 导出简历 */
 .resumeDownloadTit { height: 84px; background: #7d9199;}

@@ -10,7 +10,7 @@
     <ul>
       <%@client_resume.html_content_datas.each do |ht|%>
         <%if ht[0].include?("headimage")%>
-          <li><label><%=ht[1].keys[0]%>：</label><span><img src="<%=ht[1].values[0]%>"/></span></li>
+          <li><label><%=ht[1].keys[0]%>：</label><span><img width="100" height="100" src="<%=ht[1].values[0]%>"/></span></li>
         <%elsif ht[0].include?("file")%>
           <li><label><%=ht[1].keys[0]%>：</label>
             <span>
@@ -20,6 +20,7 @@
         <%else%>
           <li><label><%=ht[1].keys[0]%>：</label><span><%=ht[1].values[0]%></span></li>
         <%end%>
-      </ul>
-    </div>
+      <%end%>
+    </ul>
   </div>
+</div>
