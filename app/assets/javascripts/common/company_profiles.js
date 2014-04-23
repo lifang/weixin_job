@@ -23,7 +23,7 @@ function change_file(obj){
     var old_img_url = $(tuwens[index]).find(".tuwenImg").css("background-image");
     $(obj).parent().find("#index").val(index);
     $(obj).parent().find("#old_img").val(old_img_url);
-    $(obj).parent().submit();
+    $(obj).parent().find("input[type=submit]").click();
 }
 function submit_comany_profiles(){
     $(".img_area").html("");

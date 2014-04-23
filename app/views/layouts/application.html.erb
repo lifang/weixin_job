@@ -16,8 +16,6 @@
         </div>
       </div>
     <% end %>
-
-
     <div class="wrap">
       <div class="left">
         <div class="area">
@@ -63,28 +61,28 @@
                   <li><%= link_to "/companies/show?company_id=#{@company.id}",class:is_hover?('companies/show') do %>
                         设置
                       <% end %></li>
-                      <li><%=link_to company_position_types_path(@company),class:is_hover?('position_types') do%>
-                            职位类别
-                          <%end%></li>
-                        <li ><%= link_to company_address_settings_path(@company),class: is_hover?('address_settings') do %>
-                              工作地点管理
+                    <li><%=link_to company_position_types_path(@company),class:is_hover?('position_types') do%>
+                          职位类别
+                        <%end%></li>
+                      <li ><%= link_to company_address_settings_path(@company),class: is_hover?('address_settings') do %>
+                            工作地点管理
+                          <% end %></li>
+                        <li ><%= link_to company_menus_path(@company),class:is_hover?('menus') do %>
+                              菜单
                             <% end %></li>
-                          <li ><%= link_to company_menus_path(@company),class:is_hover?('menus') do %>
-                                菜单
+                          <li ><%= link_to company_app_managements_path(@company),class:is_hover?('app_managements') do %>
+                                APP管理
                               <% end %></li>
-                            <li ><%= link_to company_app_managements_path(@company),class:is_hover?('app_managements') do %>
-                                  APP管理
-                                <% end %></li>
-                            </ul>
-                          </div>
+                          </ul>
                         </div>
-
                       </div>
-                    </div>
-                    <div class="right">
-                      <%=yield%>
+
                     </div>
                   </div>
-                  <%= render "/shared/tishi_alert" %>
-                </body>
-              </html>
+                  <div class="right">
+                    <%=yield%>
+                  </div>
+                </div>
+                <%= render "/shared/tishi_alert" %>
+              </body>
+            </html>
