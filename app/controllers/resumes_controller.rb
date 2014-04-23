@@ -127,7 +127,7 @@ class ResumesController < ApplicationController   #简历模板
       render 'newest_resumes'
     when DeliveryResumeRecord::STATUS[:refuse]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:refuse]
-      render 'refuse_resume'
+      render 'refuse_resume' 
     when DeliveryResumeRecord::STATUS[:audition]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:audition]
       render 'audition_resume'
@@ -235,9 +235,7 @@ class ResumesController < ApplicationController   #简历模板
       arr<< position_id
     end
     arr[0]= str
-
-    p 111111111111111111111111111111,arr
-    
+    p 11111111111111111111111,arr
     @positions_and_resumes =  ClientResume.
       where(arr).
       joins("inner join delivery_resume_records drr on drr.client_resume_id = client_resumes.id").
