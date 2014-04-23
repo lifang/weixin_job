@@ -24,7 +24,7 @@
                 <a href="/companies/<%=@company.id%>/resumes/<%=p_and_r.client_resume_id%>/show_resumes_new" class="preview_icon tooltip_html" data-remote="true">预览</a>
                 <a href="javascript:void(0)" class="refuse_icon tooltip_html" onclick="change_status(this,<%=@company.id%>,<%=p_and_r.id%>,1)">拒绝</a>
                 <a href="javascript:void(0)" class="interview_icon tooltip_html" onclick="deal_audition(this,<%=@company.id%>,<%=p_and_r.id%>)">面试</a>
-                <a href="<%=(is_have_file? p_and_r.html_content_datas)=="" ? "javascript:void(0)":"/down_load_file?file_path=#{(is_have_file? p_and_r.html_content_datas)}" %>" class="downLoad_icon tooltip_html">下载</a>
+                <a href="<%=(is_have_file? p_and_r.html_content_datas)=="" ? "javascript:tishi_alert('暂无简历！')":"/down_load_file?file_path=#{(is_have_file? p_and_r.html_content_datas)}" %>" class="downLoad_icon tooltip_html">下载</a>
               </div>
               <p class="time"><%=p_and_r.created_at.strftime("%Y-%m-%d %H:%M")%></p>
             </li>

@@ -10,15 +10,15 @@
     <ul>
       <%@client_resume.html_content_datas.each do |ht|%>
         <%if ht[0].include?("headimage")%>
-          <li><label><%=ht[1].keys[0]%>：</label><span><img width="100" height="100" src="<%=ht[1].values[0]%>"/></span></li>
+          <li><label><%=123%>：</label><span><img width="100" height="100" src="<%=ht[1].values[0]%>"/></span></li>
         <%elsif ht[0].include?("file")%>
-          <li><label><%=ht[1].keys[0]%>：</label>
+          <li><label><%=123%>：</label>
             <span>
-              <a href="<%="/down_load_file?file_path=#{ht[1].values[0]}" %>" >下载</a>
+              <a href="<%="/down_load_file?file_path=#{12123}" %>" >下载</a>
             </span>
           </li>
         <%else%>
-          <li><label><%=ht[1].keys[0]%>：</label><span><%=ht[1].values[0]%></span></li>
+          <li><label><%=123%>：</label><span><%=ht[1].values[0]%></span></li>
         <%end%>
       <%end%>
     </ul>

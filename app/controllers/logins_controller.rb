@@ -88,12 +88,12 @@ class LoginsController < ApplicationController
               temp_id:Menu::TEMP_TYPES[:search_job],
               parent_id: menu2.id,
               company_id:company.id,
-              types:1)
+              types:2)
             Menu.create(name:"最新职位",
               temp_id: Menu::TEMP_TYPES[:newest],
               parent_id: menu2.id,
               company_id:company.id,
-              types:1)
+              types:2)
             flash[:notice] = "注册成功!"
             redirect_to logins_path
           else

@@ -39,7 +39,7 @@
                   <td><%=p_and_r.clint_name%></td>
                   <td><%=p_and_r.client_phone%></td>
                   <td><%=p_and_r.audition_time.strftime("%Y-%m-%d %H:%M")%></td>
-                  <td><a href="<%=(is_have_file? p_and_r.html_content_datas)=="" ? "javascript:void(0)":"/down_load_file?file_path=#{(is_have_file? p_and_r.html_content_datas)}" %>" class="downLoad_icon tooltip_html">下载</a>
+                  <td><a href="<%=(is_have_file? p_and_r.html_content_datas)=="" ? "javascript:javascript:tishi_alert('暂无简历！')":"/down_load_file?file_path=#{(is_have_file? p_and_r.html_content_datas)}" %>" class="downLoad_icon tooltip_html">下载</a>
                   </td>
 
                   <td><div class="aFunc">

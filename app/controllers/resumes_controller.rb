@@ -3,7 +3,7 @@ class ResumesController < ApplicationController   #简历模板
   before_filter :get_title
   before_filter :has_sign?,:get_company
   skip_before_filter :has_sign?,only:[:down_load_file]
-  PerPage = 1
+  PerPage = 6
   def index
     #@company = Company.find_by_id(params[:company_id].to_i)
     resume_temp = ResumeTemplate.find_by_company_id(@company.id)
