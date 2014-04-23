@@ -41,56 +41,8 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .main_con2 { background: #e6e4e4; color: #2c2c2c; overflow: hidden; position: relative;}
 
 /* 招聘职位 */
-.companyInfo { padding-bottom: 10px; border-bottom: 1px solid #ddd;}
-.companyInfo li { padding: 5px 0;}
-.companyInfo li label { display: inline-block; width: 120px; text-align: right; color: #828282;}
-.companyInfo li span { display: inline-block; width: 180px; margin-left: 10px;}
-.companyInfo li a { color: #828282;}
 
-.appInfo { position: relative;}
-.appInfo .angle { color: #a4a2a2; position: absolute; left: 80px; top: -13px;}
-.appInfo ul { margin-top: 10px;}
-.appInfo li { background: #a4a2a2; width: 350px;}
-.appInfo li label { color: #eee;}
 
-.toolbar { background: #868686; height: 80px;}
-.toolBox { display: inline-block;}
-.toolBox button { background: #fff; border: 0 none; height: 30px; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
-.white_btn_for_a { display: block;line-height: 25px; background: #fff; border: 0 none; height: 30px; margin: 25px 60px; padding: 0 20px; border: 1px solid #ccc; color: #a2a2a2;}
-.searchTool { width: 250px; float: right; height: 100%; background: #a8a7a7;}
-.searchBox { margin: 22px auto; width: 180px; position: relative;}
-.searchBox input { width: 180px; height: 36px; border: 0; border-radius: 18px; line-height: 36px; text-indent: 20px; background: #e4e8e9; color: #888;}
-.searchBox .search_btn {
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    background: url(../assets/search_btn.png) no-repeat 0 center;
-    width: 25px;
-    height: 24px;
-    text-indent: -999px;
-    overflow: hidden;
-    border: 0;
-    cursor: pointer;
-    margin: 0;
-}
-
-.table1 { width: 100%; font-size: 16px; color: #939393;}
-.table1 tr { background: #d3d2d2;}
-.table1 th { background: #e6e4e4;}
-.table1 th,.table1 td { text-align: left; height: 40px; padding: 5px; padding-left: 30px;word-break:break-all; word-wrap:break-word;}
-
-.delete { display: inline-block; width: 33px; height: 33px; background: url(../assets/delete.png) no-repeat; background-position: -4px -1px; border: 0;}
-.delete:visited { background-position: -4px -41px;}
-.delete:hover { background-position: -4px -81px;}
-.edit { display: inline-block; width: 33px; height: 33px; background: url(../assets/edit.png) no-repeat; background-position: -4px -1px; border: 0;}
-.edit:visited { background-position: -4px -41px;}
-.edit:hover { background-position: -4px -81px;}
-.show { display: inline-block; width: 35px; height: 35px; background: url(../assets/w3.png) no-repeat; border: 0;}
-.show:hover {display: inline-block; width: 35px; height: 35px; background: url(../assets/w2.png) no-repeat; border: 0;}
-.publish { display: inline-block; width: 33px; height: 33px; background: url(../assets/publish.png) no-repeat; background-position: -4px -1px; border: 0;}
-.publish:visited { background-position: -4px -41px;}
-.publish:hover { background-position: -4px -81px;}
-.publish.fabu{ background-position: -4px -41px; cursor: default;}
 
 .jobInfo {  float: left; margin: 50px; min-height: 300px; width: 380px;}
 .jobInfo p { line-height: 36px; overflow: hidden; padding: 5px 0;}
@@ -102,35 +54,7 @@ h1 { line-height: 40px; margin-bottom: 10px;}
 .jobInfoTemp { border: 1px dashed #a8a7a7; float: left; margin: 50px; min-height: 280px; width: 430px; padding: 10px;}
 .jobInfoTemp h2 { line-height: 40px; font-size: 18px; }
 
-.jobTemp { float: left; width: 85px; height: 130px;overflow: hidden; margin: 0 22px 10px 0; position: relative;}
-.jobTemp span { display: block; padding: 5px; text-align: center; color: #939393;}
 
-.JobCategoryBox { padding: 30px;}
-.JobCategoryBox p {
-    background: #FFFFFF;
-    display: inline-block;
-    width: 250px;
-    height: 80px;
-    line-height: 80px;
-    text-align: center;
-    font-size: 28px;
-    margin: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    position: relative;
-}
-.JobCategoryBox p .close {
-    font-size: 28px;
-    display: block;
-    width: 20px;
-    height: 20px;
-    line-height: 15px;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    cursor: pointer;
-    display: none;
-}
-.JobCategoryBox p:hover .close { display: block; }
 
 /* 简历模板 */
 .addItemBtnBar { background: #7f7e7e; overflow: hidden;}
@@ -392,13 +316,10 @@ span.close_1 {
 
 
 
-
-
-
-
-
-
-
+.tuwenBox .close{
+    margin-right: 5px;
+    margin-top: 10px;
+}
 /*new */
 * { padding: 0; margin: 0;}
 body { background: #15465e; font-family:"微软雅黑", "宋体", Arial; font-size: 14px; color:#506470;}

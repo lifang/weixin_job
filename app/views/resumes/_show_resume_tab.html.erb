@@ -9,8 +9,17 @@
     </div>
     <ul>
       <%@client_resume.html_content_datas.each do |ht|%>
-      <li><label><%=ht[1].keys[0]%>:</label><span><%=ht[1].values[0]%></span></li>
-      <%end%>
-    </ul>
+        <%if ht[0].include?("headimage")%>
+          <li><label><%=ht[1].keys[0]%>：</label><span><img src="<%=ht[1].values[0]%>"/></span></li>
+        <%elsif ht[0].include?("file")%>
+          <li><label><%=ht[1].keys[0]%>：</label>
+            <span>
+              <a href="<%="/down_load_file?file_path=#{ht[1].values[0]}" %>" >下载</a>
+            </span>
+          </li>
+        <%else%>
+          <li><label><%=ht[1].keys[0]%>：</label><span><%=ht[1].values[0]%></span></li>
+        <%end%>
+      </ul>
+    </div>
   </div>
-</div>

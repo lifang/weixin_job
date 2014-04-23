@@ -11,7 +11,7 @@
   <body>
     <% if flash[:notice] %>
       <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
-        <div style="font-size:20px;margin: 200px auto;width: 300px;background: #373f42;;padding: 20px;">
+        <div style="font-size:20px;margin: 200px auto;width: 300px;background: white;border-radius: 5px;padding: 20px;box-shadow: 0px 0px 5px rgba(0,0,0,0.6);">
           <span class="close" id="close_flash" style="float:right;" ></span>
           <div class="alert_h"><%=  flash[:notice]%></div>
         </div>
@@ -35,9 +35,11 @@
               <label class="user_password">密码：</label>
               <input name="comp_password" type="password" id="regist_comp_password" value="">
             </li>
-            <li class="btn">
+            <li class="btn" style="width: 250px;">
                <button  type="button" onclick="regist_valid(this)" >注册</button>
-               <a class="register" href="/" style="color: white;">返回登陆</a>
+               <a class="register" href="/" style="color: white;float: right;
+margin-right: -63px;
+margin-top: -40px;">返回登陆</a>
             </li>
           </ul>
         </div>

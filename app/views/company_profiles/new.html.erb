@@ -21,7 +21,7 @@
   function add_tuwen(){
     var html=" \n\
     <div class='tuwenBox' ><span class='close' title='关闭' onclick='close_tuwen(this)'>×</span> \n\
-    <div class='tuwenImg'>  \n\
+    <div class='tuwenImg' style='margin-left: 0px;'>  \n\
     <input type='hidden' class='company_image' value='#' /> \n\
     <form accept-charset='UTF-8' action='/companies/<%=@company.id%>/company_profiles/upload_img' data-remote='true' date-type='script' enctype='multipart/form-data' method='post'> \n\
     <span onclick='$(this).next().click()' >请点击上传图片(图片(git,jpg,png)大小不超过1M)</span> \n\
@@ -29,7 +29,7 @@
     <input type='hidden' id='old_img' name='old_img' value='' /> \n\
     <input type='hidden' id='index' name='index' value='' /><input type='submit' style='display:none;' />        \n\
     </form>  \n\
-    </div><textarea class='k_editor_id'></textarea></div> \n\
+    </div><textarea class='k_editor_id' style='height:300px;'></textarea></div> \n\
     "
     $("#tuwen_box").append(html);
     kind_edit();
@@ -57,9 +57,9 @@
 <div class="area">
   <div class="title clearAfter">
     <h1><%if @company_profile.nil?%>
-        创建微网页
+        创建资讯
       <%else%>
-        更新微网页
+        更新资讯
       <%end%></h1>
     <div class="seek">
       <div class="inquire">

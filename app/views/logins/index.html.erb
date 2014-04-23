@@ -11,27 +11,30 @@
   <body >
     <% if flash[:notice] %>
       <div id="flash_field" style="width:100%;position: fixed; z-index: 4;">
-        <div style="font-size:20px;margin: 200px auto;width: 300px;background: #373f42;;padding: 20px;">
+        <div style="font-size:20px;margin: 200px auto;width: 300px;background: white;border-radius: 5px;;padding: 20px;box-shadow: 0px 0px 5px rgba(0,0,0,0.6);">
           <span class="close" id="close_flash" style="float:right;" ></span>
           <div class="alert_h"><%=  flash[:notice] %></div>
         </div>
       </div>
     <% end %>
-    
-      <div class="login">
-        <div class="logo">微招聘</div>
-        <div class="login_box">
-          <%= form_tag "/logins/valid", :method => :post do %>
+
+    <div class="login">
+      <div class="logo">微招聘</div>
+      <div class="login_box">
+        <%= form_tag "/logins/valid", :method => :post do %>
           <h1>用户登录</h1>
           <ul>
             <li><label class="user_name">用户名：</label><input type="text" name="comp_account" id="comp_account" <% if @comp_account %>value="<%= @comp_account %>"<% end %>/></li>
             <li><label class="user_password">密码：</label><input type="password" name="comp_password" id="comp_password"/></li>
-            <li class="btn"><button  type="button" onclick="login_valid(this)">登录</button>
-              <a class="register" href="/logins/regist" style="color: white;">立即注册</a></li>
+            <li class="btn"  style="width: 250px;">
+              <button  type="button" onclick="login_valid(this)">登录</button>
+              <a class="register" href="/logins/regist" style="color: white;float: right;
+                 margin-right: -63px;
+                 margin-top: -40px;">立即注册</a></li>
           </ul>
-          <% end %>
-        </div>
+        <% end %>
       </div>
-    
+    </div>
+
   </body>
 </html>
