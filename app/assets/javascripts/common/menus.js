@@ -52,7 +52,6 @@ function menu_new_commit(company_id){
     }
     var index =-1;
     index = $(table_1_h).index(table);
-    alert(index);
     if(index==0){
         menu_type = 2;
         temp_id = $(table).find("input[type=radio]:checked").val();
@@ -83,6 +82,46 @@ function menu_new_commit(company_id){
     })
 }
 
+function menu_edit_commit(company_id,menu_id){
+    var top = $(".add_menu_edit").find(".linkPicker");
+    var table_1_h = $(top).find(".tabDiv_1");
+    var table = $(top).find(".tabDiv_1.hover");
+    var parent_id = $(".add_menu_edit").find("input[name='parent_id']").first().val();
+    var menu_name = $(".add_menu_edit").find("#menu_name").val();
+    var menu_type = 0,temp_id =0,file_path = undefined;
+    if($.trim(menu_name)=="" ){
+        tishi_alert("请输入菜单名称!");
+        return false;
+    }
+    var index =-1;
+    index = $(table_1_h).index(table);
+    if(index==0){
+        menu_type = 2;
+        temp_id = $(table).find("input[type=radio]:checked").val();
+    }else if(index == 1){
+        menu_type = 2;
+        temp_id = $(table).find("input[type=radio]:checked").val();
+    }else if(index == 2){
+        menu_type = 3;
+        file_path = $(table).find("#out_link").val();
+        if($.trim(file_path)=="" ){
+            tishi_alert("请输入链接!");
+            return false;
+        }
+    }
+    $.ajax({
+        type: "put",
+        url: "/companies/"+company_id+"/menus/"+menu_id,
+        dataType: "script",
+        data: {
+            parent_id : parent_id,
+            menu_name : menu_name,
+            menu_type : menu_type,
+            temp_id : temp_id,
+            file_path : file_path
+        }
+    })
+}
 
 function add_selected(obj){
     if($(obj).attr("class")=="check checked"){
@@ -131,7 +170,12 @@ function add_menu_cancel(obj){
     $(".second_bg").hide();
     $(obj).parents(".second_box").hide();
 }
-
+function show_edit_area(company_id,id){
+    $.ajax({
+        url:"/companies/"+company_id+"/menus/"+id+"/show_edit_menu",
+        dataType:"script"
+    });
+}
 function edit_menu(level, parent_id, temp_id, menu_name, menu_type, menu_id){
     if(level==1){
         $("#edit_menu_div").find("h1[name='edit_menu_h1']").first().text("编辑一级菜单");

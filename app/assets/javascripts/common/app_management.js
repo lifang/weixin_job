@@ -73,7 +73,7 @@ $(function(){
 
 //保存app登记页面html
 function saveHtml(obj){
-    $("#html_content").val($(".phoneVirtual #form_div").html());
+    $("#html_content").val($(".clearAfter #form_div").html());
     $(obj).parents("form").submit();
 }
 

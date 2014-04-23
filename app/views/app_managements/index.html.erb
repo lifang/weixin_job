@@ -2,11 +2,11 @@
 </script>
 <div class="area">
   <div class="title clearAfter">
-    <h1>简历模版</h1>
-<div class="appNewWarn">
-        <button class="green_btn scd_btn" name="newWarn">新建提醒</button>
-        <button class="green_btn scd_btn" name="newRecord">新建记录</button>
-      </div>
+    <h1>app</h1>
+    <div class="appNewWarn">
+      <button class="green_btn scd_btn" name="newWarn">新建提醒</button>
+      <button class="green_btn scd_btn" name="newRecord">新建记录</button>
+    </div>
   </div>
   <div class="content clearAfter">
     <div class="formOption">
@@ -18,192 +18,190 @@
         <li class="scd_btn" name="addTxtItem"  ><a href="#" class="fo_5 tooltip_html">纯文本</a></li>
 
       </ul>
-      
-    </div>
-    
-      <%= form_for :client_app_form, :url => create_client_info_model_company_app_managements_path(@company), :method => "post"  do |f| %>
-        <div class="template">
-          <div id="form_div">
-            <% if @chi && @chi.html_content.present? %>
-              <%= raw @chi.html_content %>
-            <% else %>
-              <input type='hidden' id="html_content" name="html_content" value=""/>  <!-- 隐藏域存放app登记表单html数据 -->
-            <% end %>
-          </div>
-          <div class="scdBoxAct">
-            <button class="green_btn" type="button" onclick="saveHtml(this)">确定</button>
-            <%= link_to  "/companies/#{@company.id}/app_managements/app_regist", :target => "_blank" do%>
-              <button class="green_btn" type="button">预览</button>
-            <% end %>
-          </div>
 
+    </div>
+
+    <%= form_for :client_app_form, :url => create_client_info_model_company_app_managements_path(@company), :method => "post"  do |f| %>
+      <div class="template">
+        <div id="form_div">
+          <% if @chi && @chi.html_content.present? %>
+            <%= raw @chi.html_content %>
+          <% else %>
+            <input type='hidden' id="html_content" name="html_content" value=""/>  <!-- 隐藏域存放app登记表单html数据 -->
+          <% end %>
         </div>
-
-      <% end %>
-      <div class="profileExplain">
-        <h1>功能说明</h1>
-        <ul>
-          <li class="">
-            <h2>信息栏</h2>
-            <img src="/assets/explain1.png" />
-          </li>
-          <li class="">
-            <h2>单选、复选框</h2>
-            <img src="/assets/explain2.jpg" />
-          </li>
-          <li class="">
-            <h2>下拉框</h2>
-            <img src="/assets/explain3.jpg" />
-          </li>
-          <li class="">
-            <h2>标签栏</h2>
-            <p>用于在微小秘app端，根据标签筛选特定的用户</p>
-          </li>
-        </ul>
+        <div class="scdBoxAct">
+          <button class="green_btn" type="button" onclick="saveHtml(this)">确定</button>
+          <%= link_to  "/companies/#{@company.id}/app_managements/app_regist", :target => "_blank" do%>
+            <button class="green_btn" type="button">预览</button>
+          <% end %>
+        </div>
       </div>
+    <% end %>
+    <div class="profileExplain">
+      <h1>功能说明</h1>
+      <ul>
+        <li class="">
+          <h2>信息栏</h2>
+          <img src="/assets/explain1.png" />
+        </li>
+        <li class="">
+          <h2>单选、复选框</h2>
+          <img src="/assets/explain2.jpg" />
+        </li>
+        <li class="">
+          <h2>下拉框</h2>
+          <img src="/assets/explain3.jpg" />
+        </li>
+        <li class="">
+          <h2>标签栏</h2>
+          <p>用于在微小秘app端，根据标签筛选特定的用户</p>
+        </li>
+      </ul>
     </div>
   </div>
-  <!--增加表单元素 -->
-  <%= render "/resumes/add_form_item" %>
+</div>
+<!--增加表单元素 -->
+<%= render "/resumes/add_form_item" %>
 
 
-  <!--增加标签元素 -->
-  <div class="second_box addItem addTagItem">
-    <div class="second_content" style="width: 450px;">
-      <span class="close" title="关闭">×</span>
-      <h1>增加标签栏</h1>
-      <div class="insetBox">
-        <p><label>标签问题：</label><input type="text" name="add_item_title"/></p>
-        <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-        <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-        <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
-      </div>
-      <div class="scdBoxAct">
-        <button class="orangeBtn addOptBox" onclick="add_tag_p('checkbox_div',this)">增加标签</button>
-        <button class="orangeBtn addItemSub" onclick="add_form_item('add_tag_div',this, <%= @company.id %>)">确认</button>
-      </div>
+<!--增加标签元素 -->
+<div class="second_box addItem addTagItem">
+  <div class="second_content" style="width: 450px;">
+    <span class="close" title="关闭">×</span>
+    <h1>增加标签栏</h1>
+    <div class="insetBox">
+      <p><label>标签问题：</label><input type="text" name="add_item_title"/></p>
+      <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+      <p class="optBox"><label>标签选项：</label><input type="text" name="add_checkbox_option"/><span class="close_1" onclick="del_tag_p(this)">×</span></p>
+    </div>
+    <div class="scdBoxAct">
+      <button class="orangeBtn addOptBox" onclick="add_tag_p('checkbox_div',this)">增加标签</button>
+      <button class="orangeBtn addItemSub" onclick="add_form_item('add_tag_div',this, <%= @company.id %>)">确认</button>
     </div>
   </div>
+</div>
 
-  <!--新建提醒 -->
-  <div class="second_box second_box_fixed newWarn">
-    <div class="second_content" style="width: 650px;">
-      <span class="close" title="关闭">×</span>
-      <h1>新建提醒</h1>
-      <%= form_for [@company,@remind] do |f| %>
-        <div>
-          <p><label>名称：</label>
-            <%= f.text_field :title %>
-          </p>
-          <div class="itemBox2">
-            <label>发送时间：</label>
-            <div class="labRight">
-              <div class="radioBox1 first">
-                <input type="radio" class="time_or_day" name="day_or_time" <%= @remind.new_record? ? " checked = 'checked'" : (@remind.reseve_time.present? ? "checked = 'checked'" : "") %>/>
-                <%= f.text_field :reseve_time, :readonly => true, :class =>"Wdate", :style => "width: 215px;", :onclick => "WdatePicker();" %>
-              </div>
-              <div class="radioBox1 second">
-                <input type="radio" class="time_or_day" name="day_or_time" <%= !@remind.new_record? && @remind.days.present? ? "checked = 'checked'" : "" %>/>
-                <% if @remind.new_record? %>
+<!--新建提醒 -->
+<div class="second_box second_box_fixed newWarn">
+  <div class="second_content" style="width: 650px;">
+    <span class="close" title="关闭">×</span>
+    <h1>新建提醒</h1>
+    <%= form_for [@company,@remind] do |f| %>
+      <div>
+        <p><label>名称：</label>
+          <%= f.text_field :title %>
+        </p>
+        <div class="itemBox2">
+          <label>发送时间：</label>
+          <div class="labRight">
+            <div class="radioBox1 first">
+              <input type="radio" class="time_or_day" name="day_or_time" <%= @remind.new_record? ? " checked = 'checked'" : (@remind.reseve_time.present? ? "checked = 'checked'" : "") %>/>
+              <%= f.text_field :reseve_time, :readonly => true, :class =>"Wdate", :style => "width: 215px;", :onclick => "WdatePicker();" %>
+            </div>
+            <div class="radioBox1 second">
+              <input type="radio" class="time_or_day" name="day_or_time" <%= !@remind.new_record? && @remind.days.present? ? "checked = 'checked'" : "" %>/>
+              <% if @remind.new_record? %>
+                <%= f.text_field :days, :style => "width: 215px;", :disabled => true %><span class="txtSpan">天后</span>
+              <% else %>
+                <% if @remind.reseve_time.present?  %>
                   <%= f.text_field :days, :style => "width: 215px;", :disabled => true %><span class="txtSpan">天后</span>
                 <% else %>
-                  <% if @remind.reseve_time.present?  %>
-                    <%= f.text_field :days, :style => "width: 215px;", :disabled => true %><span class="txtSpan">天后</span>
-                  <% else %>
-                    <%= f.text_field :days, :style => "width: 215px;" %><span class="txtSpan">天后</span>
-                  <% end %>
+                  <%= f.text_field :days, :style => "width: 215px;" %><span class="txtSpan">天后</span>
                 <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="itemBox2">
-            <label>发送范围：</label>
-            <div class="labRight">
-              <div class="radioBox1 radioBox2 check">
-                <%= f.radio_button :range, 0, :checked => @remind.new_record? ? true : @remind.range == false %>
-                <span class="txtSpan">所有人</span>
-              </div>
-              <div class="radioBox1 radioBox2">
-                <%= f.radio_button :range, 1,:checked => @remind.new_record? ? false : @remind.range == true %>
-                <span class="txtSpan">当前用户</span>
-              </div>
-            </div>
-          </div>
-          <div class="itemBox2">
-            <label>内容：</label>
-            <div class="warnArea labRight">
-              <div class="warnTit">
-                <span class="time"></span>
-                <span class="cont thd_btn" name="addcont"></span>
-                <span class="space"></span>
-              </div>
-              <div class="warnTxt">
-                <%= f.text_area :content %>
-              </div>
+              <% end %>
             </div>
           </div>
         </div>
-        <div class="scdBoxAct">
-          <button class="orangeBtn" onclick="return check_remind_nonempty(this)">保存</button>
-          <button type="button" type="button" class="orangeBtn cancel">放弃</button>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-  <!--新建提醒 -->
-  <div class="second_box second_box_fixed newRecord">
-    <div class="second_content" style="width: 650px;">
-      <span class="close" title="关闭">×</span>
-      <h1>新建记录</h1>
-      <%= form_for [@company,@record] do |f| %>
-        <div>
-          <p><label>名称：</label>
-            <%= f.text_field :title %>
-          </p>
-
-          <div class="itemBox2">
-            <label>内容：</label>
-            <div class="warnArea labRight">
-              <div class="warnTit">
-                <span class="time"></span>
-                <span class="cont thd_btn" name="addcont"></span>
-                <span class="space"></span>
-              </div>
-              <div class="warnTxt">
-                <%= f.text_area :content %>
-              </div>
+        <div class="itemBox2">
+          <label>发送范围：</label>
+          <div class="labRight">
+            <div class="radioBox1 radioBox2 check">
+              <%= f.radio_button :range, 0, :checked => @remind.new_record? ? true : @remind.range == false %>
+              <span class="txtSpan">所有人</span>
+            </div>
+            <div class="radioBox1 radioBox2">
+              <%= f.radio_button :range, 1,:checked => @remind.new_record? ? false : @remind.range == true %>
+              <span class="txtSpan">当前用户</span>
             </div>
           </div>
         </div>
-
-        <div class="scdBoxAct">
-          <button class="orangeBtn" onclick="return check_record_nonempty(this)">保存</button>
-          <button type="button" class="orangeBtn cancel">放弃</button>
+        <div class="itemBox2">
+          <label>内容：</label>
+          <div class="warnArea labRight">
+            <div class="warnTit">
+              <span class="time"></span>
+              <span class="cont thd_btn" name="addcont"></span>
+              <span class="space"></span>
+            </div>
+            <div class="warnTxt">
+              <%= f.text_area :content %>
+            </div>
+          </div>
         </div>
-      <% end %>
-    </div>
-  </div>
-
-
-  <div class="third_bg"></div>
-  <div class="third_box second_box second_box_fixed addcont">
-    <div class="third_content second_content" style="width: 300px;">
-      <span class="close" title="关闭">×</span>
-      <textarea class="addcontarea"></textarea>
-      <div class="scdBoxAct">
-        <button class="orangeBtn" onclick="interception_wrap(this)">保存</button>
       </div>
+      <div class="scdBoxAct">
+        <button class="orangeBtn" onclick="return check_remind_nonempty(this)">保存</button>
+        <button type="button" type="button" class="orangeBtn cancel">放弃</button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!--新建提醒 -->
+<div class="second_box second_box_fixed newRecord">
+  <div class="second_content" style="width: 650px;">
+    <span class="close" title="关闭">×</span>
+    <h1>新建记录</h1>
+    <%= form_for [@company,@record] do |f| %>
+      <div>
+        <p><label>名称：</label>
+          <%= f.text_field :title %>
+        </p>
+
+        <div class="itemBox2">
+          <label>内容：</label>
+          <div class="warnArea labRight">
+            <div class="warnTit">
+              <span class="time"></span>
+              <span class="cont thd_btn" name="addcont"></span>
+              <span class="space"></span>
+            </div>
+            <div class="warnTxt">
+              <%= f.text_area :content %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scdBoxAct">
+        <button class="orangeBtn" onclick="return check_record_nonempty(this)">保存</button>
+        <button type="button" class="orangeBtn cancel">放弃</button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="third_bg"></div>
+<div class="third_box second_box second_box_fixed addcont">
+  <div class="third_content second_content" style="width: 300px;">
+    <span class="close" title="关闭">×</span>
+    <textarea class="addcontarea"></textarea>
+    <div class="scdBoxAct">
+      <button class="orangeBtn" onclick="interception_wrap(this)">保存</button>
     </div>
   </div>
+</div>
 
-  <script type="text/javascript">
+<script type="text/javascript">
 
-  <% if @status == "record_save_failed" %>
-      $(".second_bg").show();
-      $(".second_box.newRecord").show();
-  <% else %>
-      $(".second_bg").show();
-      $(".second_box.newRemind").show();
-  <% end %>
-  </script>
+<% if @status == "record_save_failed" %>
+    $(".second_bg").show();
+    $(".second_box.newRecord").show();
+<% else %>
+    $(".second_bg").show();
+    $(".second_box.newRemind").show();
+<% end %>
+</script>

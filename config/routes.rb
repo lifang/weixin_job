@@ -61,7 +61,12 @@ match "/down_load_file" => "resumes#down_load_file"
         get :release,:dis_release,:see_position,:edit_position
       end
     end
-    resources :menus
+    resources :menus do
+      member do
+        get :show_edit_menu
+      end
+
+    end
     resources :exports do
       collection do
         get :create_xsl_table,:down_zip_file

@@ -70,6 +70,12 @@ class MenusController < ApplicationController   #菜单
     end
   end
 
+  def show_edit_menu
+    @comp_profiles = CompanyProfile.select("id,title,file_path").where(["company_id = ?", @company.id])
+    @menu = Menu.find_by_id(params[:id])
+    @position_types = PositionType.where(["company_id = ?", @company.id])
+  end
+
   def destroy
     Menu.transaction do
       menu = Menu.find_by_id(params[:id].to_i)

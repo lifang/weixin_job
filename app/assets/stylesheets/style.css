@@ -577,6 +577,9 @@ button.gray_btn { background: #b6c2c9; }
     border: 1px #dde2e7 solid;
     left: 0px;
     top: 32px;
+    height: 200px;
+    overflow: auto;
+
 }
 .select_ul li { float: none; margin: 0; padding: 0 5px; cursor: pointer;}
 .select_ul li:hover, .select_ul li.hover { background: #F6F7F8;}
@@ -961,20 +964,20 @@ input.search { width: 250px;}
 
 /*placeholder*/
 ::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #ffffff;
+                              color:    #ffffff;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    #ffffff;
+                    color:    #ffffff;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    #ffffff;
+                     color:    #ffffff;
 }
 :-ms-input-placeholder { /* Internet Explorer 10+ */
-    color:    #ffffff;
+                         color:    #ffffff;
 }
 
 
-
+ .setBox li p span { display: block; text-indent: 16px;}
 
 
 

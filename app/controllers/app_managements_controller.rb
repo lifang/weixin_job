@@ -31,6 +31,7 @@ class AppManagementsController < ApplicationController
   end
   
   def create_client_info_model
+    p 111111111111111111
     @client = Client.where("company_id=? and types = #{Client::TYPES[:ADMIN]}" , @company.id)[0]
     @chi = ClientHtmlInfo.find_by_client_id(@client.id) if @client
     tags = params[:tags].select {|k, v| k.include?("tag")} if params[:tags] #标签

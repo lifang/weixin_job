@@ -5,10 +5,10 @@
   <div class="content">
     <div class="setBox">
       <ul>
-        <li><p>公司名称:<%= @company.name %></p><a href="javascript:void(0)" class="edit_icon" onclick="show_companyInfo()"></a></li>
-        <li><p>公众账号类型:<%= @company.app_type.nil? ? "未配置" : @company.app_type.to_i==0 ? "订阅号" : "服务号" %></p></li>
-        <li><p>公众账号token:<%= @company.cweb %></p></li>
-        <li><p>公众账AppSecret:<%= @company.app_secret %></p></li>
+        <li><p>公司名称<span><%= @company.name %></span></p><a href="javascript:void(0)" class="edit_icon" onclick="show_companyInfo()"></a></li>
+        <li><p>公众账号类型<span><%= @company.app_type.nil? ? "未配置" : @company.app_type.to_i==0 ? "订阅号" : "服务号" %></span></p></li>
+        <li><p>公众账号token<span><%= @company.cweb %></span></p></li>
+        <li><p>公众账AppSecret<span><%= @company.app_secret %></span></p></li>
       </ul>
       <div class="setBox2">
         <div class="cr_input">
@@ -16,9 +16,9 @@
           <p class="checkbox"><a class="sync_user" data-url="<%= synchronize_old_users_companies_path + "?company_id=#{@company.id}" %>">同步微信公众号关注者数据</a></p>
         </div>
         <ul>
-          <li><p>是否认证:<%= @company.app_service_certificate ? "已认证" : "未认证" %></p></li>
-          <li><p>公众号AppId:<%= @company.app_id %></p></li>
-          <li><p>是否配置App:<%= @company.has_app ? "是" : "否" %></p><a href="javascript:void(0)" class="edit_icon" onclick="show_appInfoEdit()"></a></li>
+          <li><p>是否认证<span><%= @company.app_service_certificate ? "已认证" : "未认证" %></span></p></li>
+          <li><p>公众号AppId<span><%= @company.app_id %></span></p></li>
+          <li><p>是否配置App<span><%= @company.has_app ? "是" : "否" %></span></p><a href="javascript:void(0)" class="edit_icon" onclick="show_appInfoEdit()"></a></li>
         </ul>
       </div>
     </div>
