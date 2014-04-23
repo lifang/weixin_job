@@ -3,13 +3,13 @@
 <div class="tab_content">
   <div class="see_resume">
     <div class="user">
-      <img src="images/tx.jpg"/>
+      <img src="<%=is_have_headimage? @client_resume.html_content_datas%>"/>
       <h2><%=@client_resume.name%></h2>
       <p><%=@client_resume.created_at.strftime("%Y-%m-%d %H:%M")%></p>
     </div>
     <ul>
       <%@client_resume.html_content_datas.each do |ht|%>
-      <li><label><%=ht[1].keys[0].to_s%></label><span><%=ht[1].values[0]%></span></li>
+      <li><label><%=ht[1].keys[0]%>:</label><span><%=ht[1].values[0]%></span></li>
       <%end%>
     </ul>
   </div>

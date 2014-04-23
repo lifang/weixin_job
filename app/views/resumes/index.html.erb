@@ -42,7 +42,7 @@
               </div>
             <% elsif k.to_s.split("_")[0]=="radio" %>
               <div class="radioItem itemBox radio_div">
-                <span class="close" onclick="remove_form_item(this, 'radio_div')">×</span>
+                <span class="close_1" onclick="remove_form_item(this, 'radio_div')">×</span>
                 <p><label><%= v[:name] %></label></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
@@ -56,7 +56,7 @@
               </div>
             <% elsif k.to_s.split("_")[0]=="checkbox" %>
               <div class="checkItem itemBox check_box_div">
-                <span class="close" onclick="remove_form_item(this, 'check_box_div')">×</span>
+                <span class="close_1" onclick="remove_form_item(this, 'check_box_div')">×</span>
                 <p><label><%= v[:name] %></label></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
@@ -67,7 +67,7 @@
               </div>
             <% elsif  k.to_s.split("_")[0]=="select" %>
               <div class="selectItem itemBox select_div">
-                <span class="close" onclick="remove_form_item(this, 'select_div')">×</span>
+                <span class="close_1" onclick="remove_form_item(this, 'select_div')">×</span>
                 <p><label><%= v[:name] %></label>
                   <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                   <input type="hidden" name="tags[<%= k %>][<%= :name %>]" value="<%= v[:name] %>"/>
@@ -83,7 +83,7 @@
               </div>
             <% elsif k.to_s.split("_")[0]=="headimage" %>
               <div class="imgItem itemBox image_div head_image_div">
-                <span class="close" onclick="remove_form_item(this, 'headimage_div')">×</span>
+                <span class="close_1" onclick="remove_form_item(this, 'headimage_div')">×</span>
                 <p>
                   <label><%= v["name"] %></label>
                   <input type="file"/>
@@ -94,7 +94,7 @@
               </div>
             <% elsif k.to_s.split("_")[0]=="file" %>
               <div class="imgItem itemBox image_div file_div">
-                <span class="close" onclick="remove_form_item(this, 'file_div')">×</span>
+                <span class="close_1" onclick="remove_form_item(this, 'file_div')">×</span>
                 <p>
                   <label><%= v[:name] %></label>
                   <input type="file"/>
@@ -105,7 +105,7 @@
               </div>
             <% elsif k.to_s.split("_")[0]=="text" %>
               <div class="txtItem itemBox text_div">
-                <span class="close" onclick="remove_form_item(this, 'text_div')">×</span>
+                <span class="close_1" onclick="remove_form_item(this, 'text_div')">×</span>
                 <p><%= v[:text] %></p>
                 <input type="hidden" name="k_name" value="<%= k.to_s %>"/>
                 <input type="hidden" name="tags[<%= k %>][<%= :text %>]" value="<%= v[:text] %>"/>
