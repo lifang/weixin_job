@@ -1,0 +1,58 @@
+<div class="area">
+  <div class="title clearAfter">
+    <h1>自动回复</h1>
+    <div class="seek">
+      <div class="inquire">
+        <ul>
+          <li>
+            <%= link_to new_company_weixin_reply_path(@company) do %>
+              <button>新建自动回复</button>
+            <% end %>
+          </li>
+          <li style="position: relative;">
+            <input type="text" class="search" >
+            <button class="searchBtn"></button>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="list clearAfter">
+      <ul>
+        <li>
+          <div class="text">
+            <h2 style="line-height: 48px; padding-left: 10px; color: #F30">关注后回复</h2>
+          </div>
+          <div class="aFunc" style=" float: right;">
+            <a href="#" class="edit_icon tooltip_html">编辑</a>
+            <a href="#" class="delete_icon tooltip_html">删除</a>
+          </div>
+        </li>
+        
+        <li>
+          <div class="text">
+            <h2 style="line-height: 48px; padding-left: 10px;">关键字回复</h2>
+          </div>
+          <div class="aFunc" style=" float: right;">
+            <a href="#" class="edit_icon tooltip_html">编辑</a>
+            <a href="#" class="delete_icon tooltip_html">删除</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="pageTurn">
+    <a href="#" class="disabled">上一页</a>
+    <a href="#" class="current">1</a>
+    <a href="#?page=2">2</a>
+    <a href="#?page=3">3</a>
+    <a href="#?page=4">4</a>
+    <a href="#?page=5">5</a>
+				...
+    <a href="#?page=199">199</a>
+    <a href="#?page=200">200</a>
+    <a href="#?page=2">下一页</a>
+  </div>
+</div>

@@ -15,6 +15,8 @@ class Company < ActiveRecord::Base
   #scope  :clients, -> { where("types = #{Client::TYPES[:CONCERNED]}") }
   #scope  :client, -> { where("types = #{Client::TYPES[:ADMIN]}") }
   has_many :menus
+  has_many :keywords ,dependent: :destroy
+  has_many :micro_messages ,dependent: :destroy
 
   validate :name, :uniqueness => true, :allow_nil => false, :message => "该公司名称已被注册!"
   validate :company_account, :uniqueness => true, :allow_nil => false, :message => "该用户名已被注册!"

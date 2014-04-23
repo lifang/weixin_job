@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   include ApplicationHelper
   include PositionsHelper
+  include MicroMessageHelper
   require 'net/http'
   require "uri"
   require 'openssl'

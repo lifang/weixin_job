@@ -1,0 +1,54 @@
+.list {overflow: hidden;}
+.list li .img { height: 100px; overflow: hidden; margin-bottom: 10px; position: relative;}
+.list li .img img { width: 100%;}
+.list li .img p,.info_bar .img p {
+    background: #333333;
+    bottom: 0;
+    color: #FFFFFF;
+    height: 25px;
+    line-height: 25px;
+    opacity: 0.7;
+    position: absolute;
+    text-indent: 10px;
+    width: 100%;
+}
+
+.list li .img2 { height: 100px; overflow: hidden; margin-bottom: 10px; position: relative;}
+.list li .img2 img { width: 150px; float: right;}
+.list li .img2 p { margin: 5px;}
+
+.twEdit { float: left; margin: 10px; width: 400px;}
+.twEdit li { overflow: hidden; margin: 0;}
+.twEdit li label { float: left; margin-top: 3px;}
+.twEdit li input[type="text"] { width: 180px;}
+.twEdit li textarea { resize: none; border: 1px solid #DDE2E7; border-radius: 5px; padding: 6px; background: #FAFAFA; width: 180px;}
+.twEdit li button { margin: 0; padding: 0 20px;}
+.twEdit li .imgBox { float: left; border: 1px solid #DDE2E7; border-radius: 5px; background: #FAFAFA; width: 272px; height: 75px;}
+.list li.add { cursor: pointer; overflow: hidden;}
+.list li.add p {
+    color: #FFFFFF;
+    font-size: 120px;
+    line-height: 80px;
+    margin-top: -20px;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.info_bar .img { min-height: 120px; border: 1px solid #DDE2E7; font-size: 0; margin-bottom: 3px; position: relative; border-radius: 5px;}
+.info_bar .img img { width: 378px;}
+.info_bar .img span { display: block; margin-top: 40px; text-align: center; font-size: 20px; color: #a3a3a3;}
+.info_bar .img input[type="file"] { position:absolute; top:0; left:0; opacity: 0; filter: alpha(opacity=0); width:100%; margin:0;}
+.info_bar textarea { width: 368px;}
+.temp_explain .green_btn { display: block; width: 200px; margin-bottom: 6px;}
+.tab_content .list li { background: none; border: 1px solid #3CC0C4; margin: 0; margin-bottom: 10px;}
+.tab_content .list li .img { margin: -20px 0 0 25px;}
+
+.template_btn_1 button { padding: 0 20px;}
+/* file */
+.fileBox { position:relative; overflow:hidden; float:left;}
+.fileBox .fileText_1 { border:1px solid #cdcdcd; margin:0;}
+.fileBox .fileBtn_1 { margin:0; padding: 0 10px; }
+.fileBox .file_1 { position:absolute; top:0; left:0; opacity: 0; filter: alpha(opacity=0); width:100%; margin:0;}
+.tab{
+    display: none
+}
