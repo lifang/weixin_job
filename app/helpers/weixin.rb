@@ -388,7 +388,7 @@ module Weixin
     if gzh_client
       wx_token = gzh_client.wx_login_token
       wx_cookie = gzh_client.wx_cookie
-      newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie)
+      newest_msg_id, faker_id = get_newest_message_id_and_faker_id(wx_token, wx_cookie) if wx_token && wx_cookie
       if !newest_msg_id
         login_info = login_to_weixin(company)
         if login_info.present?

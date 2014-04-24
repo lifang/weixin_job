@@ -86,6 +86,10 @@ module ApplicationHelper
                   <label>#{label_name}</label>
                  <select name=app_client[#{ele_type_name}]>#{select}</select>
                 </li>"
+      elsif ele_type_name.include?("text")
+        ele +="<li class='txtItem itemBox'>
+                 <h1>#{label_and_options["text"]}</h1>
+               </li>"
       end
     end if optional_fileds
     ele
