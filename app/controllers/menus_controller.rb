@@ -23,6 +23,11 @@ class MenusController < ApplicationController   #菜单
     Menu.transaction do
       temp_id = params[:temp_id].nil? || params[:temp_id]=="" ? Menu::NO_TEMP : params[:temp_id].to_i
       types = params[:menu_type].nil? || params[:menu_type]=="" ? Menu::TYPES[:no_type] : params[:menu_type].to_i
+      file_path = params[:file_path]
+      if types == 0 #选择的是资讯
+        company_profile = CompanyProfile.find_by_id temp_id
+        file_path = company_profile.file_path if company_profile #获取对应资讯的file_path
+      end
       if params[:parent_id].to_i == 0   #建立一级菜单
         father_menus = Menu.where(["parent_id = ? and company_id = ?", params[:parent_id].to_i, @company.id]).length
         if father_menus >= 3
@@ -30,7 +35,7 @@ class MenusController < ApplicationController   #菜单
         else
           menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
             :company_id => params[:company_id].to_i, :types => types,
-            :file_path => params[:file_path].nil? || params[:file_path]=="" ? nil : params[:file_path])
+            :file_path => file_path.blank? ? nil : file_path)
           if menu.save
             flash[:notice] = "创建成功!"
           else
@@ -44,7 +49,7 @@ class MenusController < ApplicationController   #菜单
         else
           menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
             :company_id => params[:company_id].to_i, :types => types,
-            :file_path => params[:file_path].nil? || params[:file_path]=="" ? nil : params[:file_path])
+            :file_path => file_path.blank? ? nil : file_path)
           if menu.save
             flash[:notice] = "创建成功!"
           else
@@ -60,8 +65,13 @@ class MenusController < ApplicationController   #菜单
       menu = Menu.find_by_id(params[:id].to_i)
       temp_id = params[:temp_id].nil? || params[:temp_id]=="" ? Menu::NO_TEMP : params[:temp_id].to_i
       types = params[:menu_type].nil? || params[:menu_type]=="" ? Menu::TYPES[:no_type] : params[:menu_type].to_i
+      file_path = params[:file_path]
+      if types == 0  #选择的是资讯
+        company_profile = CompanyProfile.find_by_id temp_id
+        file_path = company_profile.file_path if company_profile #获取对应资讯的file_path
+      end
       hash = {:parent_id => params[:parent_id].to_i, :name => params[:menu_name], :temp_id => temp_id, :types => types,
-        :file_path => params[:file_path].nil? || params[:file_path] == "" ? nil : params[:file_path]}
+        :file_path => file_path.blank? ? nil : file_path}
       if menu.update_attributes(hash)
         @status = 1
       else

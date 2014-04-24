@@ -950,14 +950,14 @@ input.search { width: 250px;}
 
 .linkPicker li { border-radius: 0;}
 .tab_1 { overflow: hidden;}
-.tab_1 li { border-bottom: 1px solid #e4e9ed; float: left; width: 160px; text-align: center;}
+.tab_1 li { border-bottom: 1px solid #e4e9ed; float: left; width: 160px; text-align: center; cursor: pointer;}
 .tab_1 li:hover,.tab_1 li.hover { border-bottom: 1px solid #3cc0c4;}
 .tabDiv_1,.tabDiv_2 { display: none;}
 .tabDiv_1.hover,.tabDiv_2.hover { display: block;}
 .tabDiv_1 li { display: inline-block; margin: 10px 26px; text-indent: 20px; width: 200px; border-bottom: 1px solid #ebeff1;}
 
 .tab_2 { overflow: hidden; border: 1px solid #f3f3f3; width: 516px; margin: 0 auto; border-radius: 5px; margin-top: 10px;}
-.tab_2 li { border: 0; float: left; width: 172px; text-align: center; padding: 5px 0; margin: 0; text-indent: 0;}
+.tab_2 li { border: 0; float: left; width: 172px; text-align: center; padding: 5px 0; margin: 0; text-indent: 0; cursor: pointer;}
 .tab_2 li:hover,.tab_2 li.hover { background: #3bc0c3; color: #fff; border-radius: 5px; box-shadow: 0 0 1px rgba(0,0,0,0.3);}
 
 
