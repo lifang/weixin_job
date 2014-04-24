@@ -53,7 +53,7 @@ class PositionsController < ApplicationController   #招聘职位
         @position.requirement = requirement
         @position.status = Position::STATUS[:RELEASED]
         @position.company_id = @company.id
-        if Position.find_by_name_and_company_id(name,@company.id).blank? && @position.save
+        if Position.where("name= ? and company_id= ? and (status = 1 or status=2)",name,@company.id).blank? && @position.save
           address.each do |ad|
             PositionAddressRelation.create(position_id:@position.id,
               work_address_id:ad,
