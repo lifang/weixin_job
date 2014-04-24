@@ -38,7 +38,16 @@ function address_search_city(obj,company_id,type){
                 }
                 
             }
-            select_init();
+            //select_init();
+            $(".select_box ul li").click(function() {
+		$(this).addClass("hover").siblings().removeClass("hover");
+		var text = $(this).html();
+		var $val = $(this).find("input").val();
+		$(this).parents(".select_box").find(".select_tag span").html(text);
+		$(this).parents(".select_box").find("input.tag_input").val($val);
+		$(this).parents(".select_box").find("ul").hide();
+	});
+        
         },
         error: function(data){
             tishi_alert("数据错误!");

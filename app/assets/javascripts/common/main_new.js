@@ -69,7 +69,7 @@ $(function(){
 //模拟select
 $(function(){
 	$(".select_tag").click(function() {
-		$(this).parent(".select_box").find("ul").toggle();
+		$(this).parent(".select_box").find("ul").show();
 	});
 	$(".select_box ul li").click(function() {
 		$(this).addClass("hover").siblings().removeClass("hover");
