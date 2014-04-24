@@ -337,7 +337,7 @@ module Weixin
                 :status => Message::STATUS[:UNREAD], :msg_id => params[:xml][:MsgId],
                 :message_type => msg_type_value, :message_path => wx_resource_url)
               p mess
-              if mess && (!@company.receive_status || !(@company.receive_status && @company.not_receive_start_at && @company.not_receive_end_at && time_now >= @site.not_receive_start_at.strftime("%H:%M") && time_now <= @site.not_receive_end_at.strftime("%H:%M")))
+              if mess && (!@company.receive_status || !(@company.receive_status && @company.not_receive_start_at && @company.not_receive_end_at && time_now >= @company.not_receive_start_at.strftime("%H:%M") && time_now <= @company.not_receive_end_at.strftime("%H:%M")))
                 #推送到IOS端
                 p "000000000000000000000"
                 APNS.host = 'gateway.sandbox.push.apple.com'
@@ -777,5 +777,66 @@ Text
   def get_name(name)
     name.present? ? name : "无"
   end
-  
+
+
+
+  #根据微信 cweb，获取自动回复的消息
+  def get_return_message(cweb, flag, content=nil)
+    company = Company.find_by_cweb(cweb)
+    if company
+      if flag == "auto"
+        return_message = Keyword.find_by_company_id_and_types(company.id, Keyword::TYPE[:auto]) #查询是否有自动回复
+      else
+        keyword_param = content.gsub(/[%_]/){|x| '\\' + x}
+        messages = Keyword.keyword.where("company_id = ? and keyword like '%#{keyword_param}%'", company.id) #查询是否有关键词对应回复
+        for message in messages
+          keywords_arr = message.keyword.split(%r{[,|，|\s]})
+          if keywords_arr.include?(keyword_param)
+            return_message = message
+            break
+          end
+        end
+      end
+    end
+    if return_message
+      micro_message =  return_message.micro_message  #获取对应的消息记录
+      micro_it = micro_message.micro_imgtexts if micro_message
+      return [micro_message, micro_it]
+    else
+      return false
+    end
+  end
+
+  def define_render(return_message, flag)
+    if return_message
+      micro_message, micro_image_text = return_message
+      if micro_message && micro_message.text?
+        message = micro_image_text[0].content if micro_image_text && micro_image_text[0]
+        if @company.has_app && micro_message.solid_link_flag == MicroMessage::SOLID_LINK[:app]
+          message = "&lt;a href='#{MW_URL + message}?open_id=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"
+        end
+        if micro_message.solid_link_flag == MicroMessage::SOLID_LINK[:ggl]
+          message = "&lt;a href='#{MW_URL + message}&amp;secret_key=#{params[:xml][:FromUserName]}' &gt;点击参与&lt;/a&gt;"
+        end
+        xml = teplate_xml(message)
+        render :xml => xml        #关注 自动回复的文字消息
+      else
+        @items = micro_image_text || []
+        render "news" , :formats => :xml, :layout => false  #关注 自动回复的图文消息
+      end
+    else
+      txml =
+        <<Text
+<xml>
+  <ToUserName><![CDATA[#{params[:xml][:FromUserName]}]]></ToUserName>
+  <FromUserName><![CDATA[#{params[:xml][:ToUserName]}]]></FromUserName>
+  <CreateTime>#{Time.now.to_i}</CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content></Content>
+  <FuncFlag>0</FuncFlag>
+</xml>
+Text
+      render :xml => txml
+    end
+  end
 end

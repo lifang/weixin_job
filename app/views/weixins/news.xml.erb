@@ -1,0 +1,17 @@
+<xml>
+<ToUserName><![CDATA[<%= params[:xml][:FromUserName] %>]]></ToUserName>
+<FromUserName><![CDATA[<%= params[:xml][:ToUserName] %>]]></FromUserName>
+<CreateTime><%= Time.now.to_i %></CreateTime>
+<MsgType><![CDATA[news]]></MsgType>
+<ArticleCount><%= @items.length %></ArticleCount>
+<Articles>
+  <% @items.each do |item| %>
+<item>
+<Title><![CDATA[<%= item[:title] %>]]></Title>
+<Description><![CDATA[<%= item[:content] %>]]></Description>
+<PicUrl><![CDATA[<%= Weixin::MW_URL + get_min1_by_imgpath(item[:img_path]) %>]]></PicUrl>
+<Url><![CDATA[<%= item[:url] %>]]></Url>
+</item>
+  <% end %>
+</Articles>
+</xml>

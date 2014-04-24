@@ -14,7 +14,7 @@ $(function(){
    })
    $(".info_bar").on("click", ".x", function(){
        if(confirm("确定移除？")){
-           $(this).next().remove();
+           $(this).next().html("");
            $(this).hide();
        }
    })
@@ -32,16 +32,29 @@ function setChoose(selector_id){
     var html;
     if(selector_id == "add_imgtext"){  //图文
         var selectBlock = $("#" + selector_id).find("p.hRadio_Checked");
+        var micro_message_id = selectBlock.prev().val();
         html= selectBlock.next().html();
+        set_area.html(html);
+        $(".micro_message_id").val(micro_message_id);
+        $(".micro_message_content").val("");
+        $(".solid_link_flag").val("");
     }else if(selector_id == "add_text"){ //文字
         var text = $("#" + selector_id).find(".select_pure_text").val();
         html = HTMLEnCode(text);
+        set_area.html("<p>" + html + "</p>");
+        $(".micro_message_content").val(html);
+        $(".micro_message_id").val("");
+        $(".solid_link_flag").val("");
     }else if(selector_id == "add_app_link"){
         var selectlink = $("#" + selector_id).find("p.hRadio_Checked");
         var app_link = selectlink.prev().val();
         html = HTMLEnCode(app_link);
+        set_area.html("<p>" + html + "</p>");
+        $(".micro_message_content").val(html);
+        $(".solid_link_flag").val("app");
+        $(".micro_message_id").val("");
     }
-    set_area.html(html);
+    
     set_area.prev().show();
     $("#" + selector_id).hide();
 }
@@ -59,4 +72,14 @@ function HTMLEnCode(str)
     s    =    s.replace(/\"/g,      "&quot;");
     s    =    s.replace(/\n/g,      "<br>");
     return    s;
+}
+
+
+function checkContent(obj){
+     var micro_message_id = $(".micro_message_id").val();
+     var content= $(".micro_message_content").val();
+     if(micro_message_id == "" && content == ""){
+         tishi_alert("内容不能为空！");
+         return false;
+     }
 }

@@ -2,6 +2,7 @@
 class WeixinRepliesController < ApplicationController
   before_filter :has_sign?
   before_filter  :get_company
+  before_filter :get_imgtexts, :only => [:new, :edit]
   
   def index
     #关注后回复
@@ -12,7 +13,7 @@ class WeixinRepliesController < ApplicationController
     #app登记
     @app_link = "/companies/#{@company.id}/app_managements/app_regist" if @company.has_app
     #关键詞回复
-    @key_replies = @company.keywords.includes(:micro_message).keyword.paginate(:per_page => 9, :page => params[:page])
+    @key_replies = @company.keywords.includes(:micro_message).keyword.paginate(:per_page => 5, :page => params[:page])
     key_micro_messages = MicroMessage.where(:id => @key_replies.map(&:micro_message_id))
     @key_micro_imagetexts = MicroImgtext.where(:micro_message_id => key_micro_messages.map(&:id)).group_by{|mm| mm.micro_message_id}
 
@@ -23,11 +24,14 @@ class WeixinRepliesController < ApplicationController
 
   def new
     @keyword = @company.keywords.new
-    #所有图文消息
-    micro_messages = @company.micro_messages.image_text
-    @micro_imagetexts = MicroImgtext.where(:micro_message_id => micro_messages.map(&:id)).group_by{|mm| mm.micro_message_id}
-    #app登记
-    @app_link = "/companies/#{@company.id}/app_managements/app_regist" if @company.has_app
+  end
+
+  def edit
+    @keyword = Keyword.find_by_id params[:id]
+    if @keyword
+      @micro_message = @keyword.micro_message
+      @this_micro_imagetexts = @micro_message.micro_imgtexts
+    end
   end
 
   def destroy
@@ -38,11 +42,11 @@ class WeixinRepliesController < ApplicationController
     end
     keyword.destroy
     flash[:notice] = "删除成功"
-    redirect_to site_weixin_replies_path(@company)
+    redirect_to company_weixin_replies_path(@company)
   end
 
   def create
-    micro_message_id, text, flag, keyword, solid_link_flag = params[:micro_message_id], params[:text], params[:flag], params[:keyword], params[:solid_link_flag] #图文消息，文字消息， 自动回复(auto)/关键字回复(keyword) 关键字  刮刮乐/app
+    micro_message_id, text, keyword, solid_link_flag = params[:micro_message_id], params[:content], params[:keyword], params[:solid_link_flag] #图文消息，文字消息， 自动回复(auto)/关键字回复(keyword) 关键字  刮刮乐/app
     begin
       Keyword.transaction do
         if text.present? #文字回复
@@ -50,7 +54,7 @@ class WeixinRepliesController < ApplicationController
           micro_message_id = micro_message.id if micro_message
           micro_message.micro_imgtexts.create(:content => text ) if micro_message
         end
-        if flag == 'auto'  #自动回复
+        if keyword.blank?  #自动回复
           auto_message = @company.keywords.auto[0]
           if auto_message.present?
             auto_message.update_attribute(:micro_message_id, micro_message_id)
@@ -63,14 +67,14 @@ class WeixinRepliesController < ApplicationController
         
       end
       flash[:notice] = "保存成功"
-      render :success
+      redirect_to company_weixin_replies_path(@company)
     rescue
-      render :failed
+      render :new
     end
   end
 
   def update  #关键字更新
-    micro_message_id, text, flag, keyword_param,@index, solid_link_flag = params[:micro_message_id], params[:text], params[:flag], params[:keyword], params[:index].to_i, params[:solid_link_flag] #图文消息，文字消息， 自动回复(auto)/关键字回复(keyword) 关键字 li索引 刮刮乐/app
+    micro_message_id, text,keyword_param,@index, solid_link_flag = params[:micro_message_id], params[:content], params[:keyword], params[:index].to_i, params[:solid_link_flag] #图文消息，文字消息， 自动回复(auto)/关键字回复(keyword) 关键字 li索引 刮刮乐/app
     begin
       Keyword.transaction do
         @keyword = Keyword.find_by_id params[:id]
@@ -99,9 +103,19 @@ class WeixinRepliesController < ApplicationController
         @key_micro_imagetexts = MicroImgtext.where(:micro_message_id => key_micro_message).group_by{|mm| mm.micro_message_id}
       end
       flash[:notice] = "保存成功"
-      render :update
+      redirect_to company_weixin_replies_path(@company)
     rescue
-      render :failed
+      render :edit
     end
+  end
+
+  private
+  
+  def get_imgtexts
+    #所有图文消息
+    micro_messages = @company.micro_messages.image_text
+    @micro_imagetexts = MicroImgtext.where(:micro_message_id => micro_messages.map(&:id)).group_by{|mm| mm.micro_message_id}
+    #app登记
+    @app_link = "/companies/#{@company.id}/app_managements/app_regist" if @company.has_app
   end
 end
