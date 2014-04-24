@@ -10,9 +10,10 @@
             <% end %>
           </li>
           <li style="position: relative;">
-            <input type="text" class="search" >
-            <button class="searchBtn"></button>
-
+            <%= form_for :search, :url => company_weixin_replies_path(@company), :method=> :get do |f|%>
+            <input type="text" class="search" name="search_wx" value="<%= @content %>" />
+              <button class="searchBtn"></button>
+            <% end %>
           </li>
         </ul>
       </div>
@@ -21,32 +22,32 @@
   <div class="content">
     <div class="list clearAfter">
       <ul>
-        <li>
-          <div class="text">
-            <h2 style="line-height: 48px; padding-left: 10px; color: #F30">关注后回复</h2>
-            <%= @auto_reply ? @auto_reply.keyword : "" %>
-          </div>
-          <div class="aFunc" style=" float: right;">
-            <a href="<%= @auto_reply ? edit_company_weixin_reply_path(@company, @auto_reply) : '#' %>" class="edit_icon tooltip_html">编辑</a>
-            <a href="#" class="delete_icon tooltip_html">删除</a>
-          </div>
-        </li>
-        <div class="keyword_list">
-          <% @key_replies.each do |keyword| %>
-            <li>
-              <div class="text">
-                <h2 style="line-height: 48px; padding-left: 10px;">关键字回复</h2>
-                <%= keyword.keyword %>
-              </div>
-              <div class="aFunc" style=" float: right;">
-                <a href="<%= edit_company_weixin_reply_path(@company, keyword) %>" class="edit_icon tooltip_html">编辑</a>
-                <a href="<%= company_weixin_reply_path(@company, keyword) %>" data-method="delete" data-confirm="确定删除？" class="delete_icon tooltip_html">删除</a>
-              </div>
-            </li>
-          <% end %>
-        </div>
+        <% if @flag != "search" %>
+          <li>
+            <div class="text">
+              <h2 style="line-height: 48px; padding-left: 10px; color: #F30">关注后回复</h2>
+            </div>
+            <div class="aFunc" style=" float: right;">
+              <a href="<%= @auto_reply ? edit_company_weixin_reply_path(@company, @auto_reply) : '#' %>" class="edit_icon tooltip_html">编辑</a>
+              <a href="#" class="delete_icon tooltip_html">删除</a>
+            </div>
+          </li>
+        <% end %>
+
+        <% @key_replies.each do |keyword| %>
+          <li>
+            <div class="text">
+              <h2 style="line-height: 48px; padding-left: 10px;">关键字回复</h2>
+              <%= keyword.keyword %>
+            </div>
+            <div class="aFunc" style=" float: right;">
+              <a href="<%= edit_company_weixin_reply_path(@company, keyword) %>" class="edit_icon tooltip_html">编辑</a>
+              <a href="<%= company_weixin_reply_path(@company, keyword) %>" data-method="delete" data-confirm="确定删除？" class="delete_icon tooltip_html">删除</a>
+            </div>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
-<%= will_paginate @key_replies, :previous_label=>'上一页',:next_label=>'下一页', :class => "pageTurn" %>
+  <%= will_paginate @key_replies, :previous_label=>'上一页',:next_label=>'下一页', :class => "pageTurn" %>
 </div>

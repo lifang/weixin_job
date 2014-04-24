@@ -104,3 +104,26 @@ function address_cancel(obj){
     $(obj).parents(".second_box").hide();
 }
 
+$(function(){
+    $(".select_tag").on('click',function() {
+      $(this).parent(".select_box").find("ul").toggle();
+    });
+    $(".select_box ul li").on('click', function() {
+      $(this).addClass("hover").siblings().removeClass("hover");
+      var text = $(this).html();
+      var $val = $(this).find("input").val();
+      $(this).parents(".select_box").find(".select_tag span").html(text);
+      $(this).parents(".select_box").find("input.tag_input").val($val);
+      $(this).parents(".select_box").find(".select_tag span input").attr("name","positions[types]")
+      $(this).parents(".select_box").find("ul").hide();
+    });
+
+    $(document).bind('click', function(e) {
+      var $clicked = $(e.target);
+      if (! $clicked.parents().hasClass("select_box"))
+        $(".select_box ul").hide();
+
+    });
+
+  });
+   

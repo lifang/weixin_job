@@ -32,7 +32,7 @@
   <h1>添加图文</h1>
   <div class="tab_content">
     <div class="list clearAfter" style="width: 462px;">
-      <ul>
+      <ul style="height: 500px;overflow: auto;">
         <% @micro_imagetexts.each do |micor_message_id, micro_imgtexts| %>
           <% if micro_imgtexts.present? %>
             <li class="cr_input">

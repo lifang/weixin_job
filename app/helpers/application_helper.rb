@@ -183,4 +183,9 @@ module ApplicationHelper
     end
     0
   end
+
+  #搜索的时候，处理like参数
+  def search_content(content)
+    content.present? ? content.gsub(/[%_]/){|x| '\\' + x} : ""
+  end
 end

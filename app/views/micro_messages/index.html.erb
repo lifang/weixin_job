@@ -10,8 +10,10 @@
             <% end %>
           </li>
           <li style="position: relative;">
-            <input type="text" class="search" >
+            <%= form_for :search, :url => company_micro_messages_path(@company), :method=> :get do |f|%>
+            <input type="text" class="search" name="search_mme" value="<%= @content %>"/>
             <button class="searchBtn"></button>
+            <% end %>
           </li>
         </ul>
       </div>
@@ -20,10 +22,11 @@
   <div class="content">
     <div class="list clearAfter">
       <ul>
-        <% @micro_imgtexts.each do |micro_message_id, micro_imgtexts|  %>
+        <% @micro_messages.each do |micro_message|  %>
+         <% micro_imgtexts = @micro_imgtexts[micro_message.id] if @micro_imgtexts %>
           <% if micro_imgtexts %>
             <li>
-              <%= render "message", :micro_message_id => micro_message_id, :micro_imgtexts  => micro_imgtexts, :if_edit => true %>
+              <%= render "message", :micro_message_id => micro_message.id, :micro_imgtexts  => micro_imgtexts, :if_edit => true %>
             </li>
           <% end %>
         <% end %>

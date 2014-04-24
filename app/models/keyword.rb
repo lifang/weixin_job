@@ -1,3 +1,4 @@
+#encoding:utf-8
 class Keyword < ActiveRecord::Base
   belongs_to :company
   belongs_to  :micro_message
@@ -5,6 +6,7 @@ class Keyword < ActiveRecord::Base
 
   TYPE_STR = ["auto", "keyword"]
   TYPE = {:auto => 0, :keyword => 1}  #types: 0 => 自动回复, 1 =>关键词回复
+  TYPE_NAME = {0 => "关注后回复", 1 => "关键词回复"}
 
   TYPE_STR.each do |type|
     #取出等于 type的集合

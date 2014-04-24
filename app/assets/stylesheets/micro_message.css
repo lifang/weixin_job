@@ -34,8 +34,7 @@
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.info_bar .img { min-height: 120px; border: 1px solid #DDE2E7; font-size: 0; margin-bottom: 3px; position: relative; border-radius: 5px;}
-.info_bar .img img { width: 378px;}
+
 .info_bar .img span { display: block; margin-top: 40px; text-align: center; font-size: 20px; color: #a3a3a3;}
 .info_bar .img input[type="file"] { position:absolute; top:0; left:0; opacity: 0; filter: alpha(opacity=0); width:100%; margin:0;}
 .info_bar textarea { width: 368px;}
@@ -52,3 +51,20 @@
 .tab{
     display: none
 }
+
+.info_bar .img { height: 100px; overflow: hidden; margin-bottom: 10px; border: 1px solid #DDE2E7; position: relative; border-radius: 5px;}
+.info_bar .img img { width: 100%;}
+.info_bar .img p {
+    background: #333333;
+    bottom: 0;
+    color: #FFFFFF;
+    height: 25px;
+    line-height: 25px;
+    opacity: 0.7;
+    position: absolute;
+    text-indent: 10px;
+    width: 100%;
+}
+.info_bar .img2 { height: 100px; overflow: hidden; margin-bottom: 10px; position: relative;}
+.info_bar .img2 img { width: 150px; float: right;}
+.info_bar .img2 p { margin: 5px;}

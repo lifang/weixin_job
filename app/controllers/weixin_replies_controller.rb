@@ -5,28 +5,33 @@ class WeixinRepliesController < ApplicationController
   before_filter :get_imgtexts, :only => [:new, :edit]
   
   def index
-    #关注后回复
-    @auto_reply = @company.keywords.auto[0]
-    @auto_micro_message = @auto_reply.micro_message if @auto_reply
-    @auto_micro_imagetexts = @auto_micro_message.micro_imgtexts if @auto_micro_message
+    @title = "自动回复"
+    if params[:search_wx]  #搜索关键詞
+      @content = search_content(params[:search_wx])
+      @key_replies = @company.keywords.where("keyword like (?)","%#{@content}%" ).paginate(:per_page => 9, :page => params[:page])
+      @flag = "search"
+    else
+      @flag = "index"
+      #关注后回复
+      @auto_reply = @company.keywords.auto[0]
+      @auto_micro_message = @auto_reply.micro_message if @auto_reply
+      @auto_micro_imagetexts = @auto_micro_message.micro_imgtexts if @auto_micro_message
 
-    #app登记
-    @app_link = "/companies/#{@company.id}/app_managements/app_regist" if @company.has_app
-    #关键詞回复
-    @key_replies = @company.keywords.includes(:micro_message).keyword.paginate(:per_page => 5, :page => params[:page])
+      #关键詞回复
+      @key_replies = @company.keywords.keyword.paginate(:per_page => 9, :page => params[:page])
+    end
+
     key_micro_messages = MicroMessage.where(:id => @key_replies.map(&:micro_message_id))
     @key_micro_imagetexts = MicroImgtext.where(:micro_message_id => key_micro_messages.map(&:id)).group_by{|mm| mm.micro_message_id}
-
-    #所有图文消息
-    micro_messages = @company.micro_messages.image_text
-    @micro_imagetexts = MicroImgtext.where(:micro_message_id => micro_messages.map(&:id)).group_by{|mm| mm.micro_message_id}
   end
 
   def new
+    @title = "自动回复"
     @keyword = @company.keywords.new
   end
 
   def edit
+    @title = "自动回复"
     @keyword = Keyword.find_by_id params[:id]
     if @keyword
       @micro_message = @keyword.micro_message
