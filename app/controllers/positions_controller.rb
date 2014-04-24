@@ -7,6 +7,7 @@ class PositionsController < ApplicationController   #招聘职位
   PerPage = 3
 
   def index
+    @status = 2
     time = Time.now.prev_month
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status = 2) "])
     delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
@@ -14,6 +15,7 @@ class PositionsController < ApplicationController   #招聘职位
   end
 
   def history_index
+    @status = 1
     time = Time.now.prev_month
     @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 )"])
     delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
@@ -144,7 +146,10 @@ class PositionsController < ApplicationController   #招聘职位
   
   def search_position
     p = params[:position]
-    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%").paginate(page:params[:page],per_page: 2*PerPage)||[]
+    @status = params[:status]
+
+    @positions = Position.where("company_id=#{@company.id} and name like ? and (status = ? )","%#{p}%",@status).paginate(page:params[:page],per_page: 2*PerPage)||[]
+  
     delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
     @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
  

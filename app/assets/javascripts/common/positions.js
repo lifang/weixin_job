@@ -77,9 +77,9 @@ function check_position(){
     $(".create_position").children("form").submit();
 }
 
-function search_position(obj,url){
+function search_position(obj,url,status){
     var position = $(obj).parent().children("input").val();
-    location.href=url+"/search_position?position=" + $.trim(position);
+    location.href=url+"/search_position?position=" + $.trim(position)+"&status="+status;
 
 }
 
