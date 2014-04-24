@@ -19,21 +19,25 @@ class WeixinsController < ApplicationController
 
         if params[:xml][:MsgType] == "event" && params[:xml][:Event] == "subscribe"   #用户关注事件
           create_menu if @company.app_id.present? && @company.app_secret.present?   #创建自定义菜单
-          return_app_regist_link  #返回app登记链接
+          #return_app_regist_link  #返回app登记链接
+          return_message = get_return_message(cweb, "auto")  #获得关注后回复消息的内容
+          define_render(return_message, "auto") #返回渲染方式 :  text/news
           save_client_info(open_id, @company) #新建client记录，保存头像，nick_name, faker_id, open_id
         
         elsif params[:xml][:MsgType] == "text"   #用户发送文字消息
-       
+          content = params[:xml][:Content]
+          return_message = get_return_message(cweb, "keyword", content)  #获得关键词回复消息
+          define_render(return_message, "key") #返回渲染方式 :  text/news
           #完善用户信息
           complete_client_info(@company, client, open_id)  #save open_id
           #存储消息并推送到ios端
           get_client_message
           
-          if client && client.html_content.blank? #返回app登记链接
-            return_app_regist_link
-          else
-            render :text => "ok"
-          end
+          #          if client && client.html_content.blank? #返回app登记链接
+          #            #return_app_regist_link
+          #          else
+          #            render :text => "ok"
+          #          end
         elsif params[:xml][:MsgType] == "image" #用户发送图片
           save_image_or_voice_from_wx("image")
           render :text => "ok"

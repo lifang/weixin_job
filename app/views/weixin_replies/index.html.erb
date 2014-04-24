@@ -24,35 +24,29 @@
         <li>
           <div class="text">
             <h2 style="line-height: 48px; padding-left: 10px; color: #F30">关注后回复</h2>
+            <%= @auto_reply ? @auto_reply.keyword : "" %>
           </div>
           <div class="aFunc" style=" float: right;">
-            <a href="#" class="edit_icon tooltip_html">编辑</a>
+            <a href="<%= @auto_reply ? edit_company_weixin_reply_path(@company, @auto_reply) : '#' %>" class="edit_icon tooltip_html">编辑</a>
             <a href="#" class="delete_icon tooltip_html">删除</a>
           </div>
         </li>
-        
-        <li>
-          <div class="text">
-            <h2 style="line-height: 48px; padding-left: 10px;">关键字回复</h2>
-          </div>
-          <div class="aFunc" style=" float: right;">
-            <a href="#" class="edit_icon tooltip_html">编辑</a>
-            <a href="#" class="delete_icon tooltip_html">删除</a>
-          </div>
-        </li>
+        <div class="keyword_list">
+          <% @key_replies.each do |keyword| %>
+            <li>
+              <div class="text">
+                <h2 style="line-height: 48px; padding-left: 10px;">关键字回复</h2>
+                <%= keyword.keyword %>
+              </div>
+              <div class="aFunc" style=" float: right;">
+                <a href="<%= edit_company_weixin_reply_path(@company, keyword) %>" class="edit_icon tooltip_html">编辑</a>
+                <a href="<%= company_weixin_reply_path(@company, keyword) %>" data-method="delete" data-confirm="确定删除？" class="delete_icon tooltip_html">删除</a>
+              </div>
+            </li>
+          <% end %>
+        </div>
       </ul>
     </div>
   </div>
-  <div class="pageTurn">
-    <a href="#" class="disabled">上一页</a>
-    <a href="#" class="current">1</a>
-    <a href="#?page=2">2</a>
-    <a href="#?page=3">3</a>
-    <a href="#?page=4">4</a>
-    <a href="#?page=5">5</a>
-				...
-    <a href="#?page=199">199</a>
-    <a href="#?page=200">200</a>
-    <a href="#?page=2">下一页</a>
-  </div>
+<%= will_paginate @key_replies, :previous_label=>'上一页',:next_label=>'下一页', :class => "pageTurn" %>
 </div>

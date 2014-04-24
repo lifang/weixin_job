@@ -4,8 +4,8 @@ class MicroMessagesController < ApplicationController
   before_filter  :get_company
   
   def index
-    micro_messages = @company.micro_messages.image_text
-    micro_message_ids = micro_messages.map(&:id)
+    @micro_messages = @company.micro_messages.image_text.paginate(:per_page => 6, :page => params[:page])
+    micro_message_ids = @micro_messages.map(&:id)
     micro_imgtexts = MicroImgtext.where(:micro_message_id => micro_message_ids)
     if micro_imgtexts
       @micro_imgtexts = micro_imgtexts.group_by{|mm| mm[:micro_message_id]}

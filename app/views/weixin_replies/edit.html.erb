@@ -14,22 +14,28 @@
   </div>
   <div class="content clearAfter">
     <div class="template">
-      <%= form_for :keyword, :url => company_weixin_replies_path(@company) do |f| %>
+      <%= form_for :keyword, :url => company_weixin_reply_path(@company, @keyword), :method => :put do |f| %>
         <div class="template_box">
+          <% if @keyword.auto? %>
           <label>关键字：（输入关键字为关键字回复，否则作为关注后回复）</label>
-          <input type="text" name="keyword"/>
+          <input type="text" name="keyword" value="<%= @keyword.keyword %>"/>
+          <% end %>
           <div class="info_bar">
             <a href="#" class="x" style="display:none">close</a>
             <div class="seted_area">
-              
+              <% if @micro_message && @micro_message.text? %>
+                <p><%= @this_micro_imagetexts[0].content if @this_micro_imagetexts.present? %></p>
+              <% else %>
+                <%= render "/micro_messages/message", :micro_message_id => @micro_message.id, :micro_imgtexts => @this_micro_imagetexts %>
+              <% end %>
             </div>
-            <input type="hidden" name="micro_message_id" class="micro_message_id" />
-            <input type="hidden" name="content" class="micro_message_content" />
-            <input type="hidden" name="solid_link_flag" class="solid_link_flag" />
+            <input type="hidden" name="micro_message_id" class="micro_message_id" value="<%= @keyword.micro_message_id %>"/>
+            <input type="hidden" name="content" class="micro_message_content" value="<%= @this_micro_imagetexts[0].content if @this_micro_imagetexts.present? %>"/>
+            <input type="hidden" name="solid_link_flag" class="solid_link_flag" value="<%= @micro_message.solid_link_flag %>" />
           </div>
         </div>
         <div class="template_btn">
-          <button class="green_btn" onclick="return checkContent(this)">确定</button>
+          <button class="green_btn">确定</button>
           <button class="gray_btn">预览</button>
         </div>
       <% end %>
@@ -41,5 +47,4 @@
     </div>
   </div>
 </div>
-
 <%= render "reply_poptab" %>
