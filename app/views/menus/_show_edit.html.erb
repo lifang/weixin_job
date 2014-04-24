@@ -36,7 +36,7 @@
           </ul>
           <ul class="tabDiv_1 <%=  @menu.types == 0 ? "hover":""%>">
             <%@comp_profiles.each do|cp|%>
-              <li><div class="cr_input"><input name="website_page" type="radio" value="<%=cp.id%>" /><p><%=cp.title%></p></div></li>
+              <li><div class="cr_input"><input name="website_page" type="radio" value="<%=cp.id%>" <%=@menu.temp_id == cp.id ? "checked":""%> /><p><%=cp.title%></p></div></li>
             <%end%>
           </ul>
           <ul class="tabDiv_1 <%=(@menu.types == 2 )  ? "hover":"" %>">

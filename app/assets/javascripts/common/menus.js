@@ -53,7 +53,7 @@ function menu_new_commit(company_id){
     var index =-1;
     index = $(table_1_h).index(table);
     if(index==0){
-        menu_type = 2;
+        menu_type = 0;
         temp_id = $(table).find("input[type=radio]:checked").val();
     }else if(index == 1){
         menu_type = 2;
@@ -96,7 +96,7 @@ function menu_edit_commit(company_id,menu_id){
     var index =-1;
     index = $(table_1_h).index(table);
     if(index==0){
-        menu_type = 2;
+        menu_type = 0;
         temp_id = $(table).find("input[type=radio]:checked").val();
     }else if(index == 1){
         menu_type = 2;
@@ -109,6 +109,7 @@ function menu_edit_commit(company_id,menu_id){
             return false;
         }
     }
+    alert(temp_id);
     $.ajax({
         type: "put",
         url: "/companies/"+company_id+"/menus/"+menu_id,
