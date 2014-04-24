@@ -59,10 +59,14 @@ function menu_new_commit(company_id){
         menu_type = 2;
         temp_id = $(table).find("input[type=radio]:checked").val();
     }else if(index == 2){
-        menu_type = 3;
         temp_id = $(table).find("input[type=radio]:checked").val();
+        if(temp_id==0){
+            menu_type = 2;
+        }else{
+            menu_type = 3;
+        }
         file_path = $(table).find("#out_link").val();
-        if($.trim(file_path)=="" && temp_id==0 ){
+        if($.trim(file_path)=="" && temp_id==-10 ){
             tishi_alert("请输入链接!");
             return false;
         }
@@ -100,18 +104,22 @@ function menu_edit_commit(company_id,menu_id){
         menu_type = 0;
         temp_id = $(table).find("input[type=radio]:checked").val();
     }else if(index == 1){
-        menu_type = 2;
+        menu_type = 1;
         temp_id = $(table).find("input[type=radio]:checked").val();
-    }else if(index == 2){
-        menu_type = 3;
+    }else if(index == 2)
+    {
         temp_id = $(table).find("input[type=radio]:checked").val();
+        if(temp_id==0){
+            menu_type = 2;
+        }else{
+            menu_type = 3;
+        }
         file_path = $(table).find("#out_link").val();
-        if($.trim(file_path)=="" && temp_id==0 ){
+        if($.trim(file_path)=="" && temp_id==-10 ){
             tishi_alert("请输入链接!");
             return false;
         }
     }
-    alert(temp_id);
     $.ajax({
         type: "put",
         url: "/companies/"+company_id+"/menus/"+menu_id,
