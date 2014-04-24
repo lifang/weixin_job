@@ -41,6 +41,8 @@
                 </li>
                 <li><%= link_to company_resumes_path(@company),:class=>(is_hover?("resumes") if controller.action_name == 'index') do %>
                     简历模版<%end%></li>
+                <li><%= link_to company_exports_path(@company),:class=>(is_hover?("exports") if controller.action_name == 'index') do %>
+                    导出简历<%end%></li>
               </ul>
             </div>
             <div class="nav_list <%=is_hover_top?(controller.controller_name) == 2 ? "hover":""%>"><p class="position">职位</p>

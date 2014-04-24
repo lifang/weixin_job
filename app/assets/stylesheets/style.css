@@ -982,4 +982,9 @@ input.search { width: 250px;}
 
 
 
+ /* 导出简历 */
+.resumeDownload { margin: 50px 100px;}
+.zipBtn { background: url(/assets/resumeDownload.png) no-repeat; height: 71px; width: 71px; border: 0; color: #fff; line-height: 100px; float: left;}
+.downloadBtn { margin-left: 10px; height: 71px; line-height: 71px; width: 200px; background: #f6b435; border: 0; color: #fff; font-size: 28px; }
+
 
