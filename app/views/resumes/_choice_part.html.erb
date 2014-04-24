@@ -16,7 +16,7 @@
         </div>
       </li>
       <li>
-        <%if @status == 0%>投递<%elsif @status == 1%>入职<%elsif @status == 2 %>面试<%else%>投递<%end%>时间从：
+        <%if @status == 0%>投递<%elsif @status == 3%>入职<%elsif @status == 2 %>面试<%else%>投递<%end%>时间从：
         <input name="start" type="text" placeholder="时间起" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
       </li>
       <li>
