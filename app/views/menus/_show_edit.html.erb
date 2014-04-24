@@ -1,20 +1,28 @@
 <script>
   $(function(){
-	$(".tab_1").on("click","li",function(){
-		$(".tab_1 li").removeClass("hover");
-		$(this).addClass("hover");
-		var i = $(".tab_1 li").index($(this));
-		$(".tabDiv_1").removeClass("hover");
-		$(".tabDiv_1").eq(i).addClass("hover");
-	})
-	$(".tab_2").on("click","li",function(){
-		$(".tab_2 li").removeClass("hover");
-		$(this).addClass("hover");
-		var i = $(".tab_2 li").index($(this));
-		$(".tabDiv_2").removeClass("hover");
-		$(".tabDiv_2").eq(i).addClass("hover");
-	})
-});
+    $(".tab_1").on("click","li",function(){
+      $(".tab_1 li").removeClass("hover");
+      $(this).addClass("hover");
+      var i = $(".tab_1 li").index($(this));
+      $(".tabDiv_1").removeClass("hover");
+      $(".tabDiv_1").eq(i).addClass("hover");
+    })
+    $(".tab_2").on("click","li",function(){
+      $(".tab_2 li").removeClass("hover");
+      $(this).addClass("hover");
+      var i = $(".tab_2 li").index($(this));
+      $(".tabDiv_2").removeClass("hover");
+      $(".tabDiv_2").eq(i).addClass("hover");
+    })
+  });
+</script>
+
+<script type="text/javascript" src="/assets/common/jquery-hcheckbox.js"></script>
+<link href="/assets/hcheckbox.css" rel="stylesheet" type="text/css"/>
+<script>
+  $(function(){
+    $('.cr_input').hradio();
+  })
 </script>
 <input type="hidden" name="parent_id" value="<%=@menu.parent_id%>" />
 <a href="#" class="close">close</a>
@@ -42,13 +50,17 @@
           <ul class="tabDiv_1 <%=(@menu.types == 2 )  ? "hover":"" %>">
             <li><div class="cr_input"><input name="position_type" type="radio" value="<%=Menu::TEMP_TYPES[:search_job]%>" <%=@menu.temp_id==-3 ? "checked":""%> /><p>全部职位</p></div></li>
             <li><div class="cr_input"><input name="position_type" type="radio" value="<%=Menu::TEMP_TYPES[:search_job]%>" <%=@menu.temp_id==-4 ? "checked":""%>/><p>最新职位</p></div></li>
+            <li><div class="cr_input"><input name="position_type" type="radio" value="0" <%=(@menu.temp_id==0&&@menu.types == 2 ) ? "checked":""%>/><p>我的简历</p></div></li>
             <%@position_types.each do |pt|%>
               <li><div class="cr_input"><input name="position_type" type="radio" value="<%=pt.id%>" <%=@menu.temp_id == pt.id ? "checked":""%>/><p><%=pt.name%></p></div></li>
             <%end%>
           </ul>
           <ul class="tabDiv_1 <%=  @menu.types == 3 ? "hover":""%>">
+            <li><div class="cr_input"><input name="other" type="radio" value="<%=Menu::TEMP_TYPES[:my_jobs]%>" <%=@menu.temp_id==Menu::TEMP_TYPES[:my_jobs] ? "checked":""%>/><p>我的求职</p></div></li>
+            <li><div class="cr_input"><input name="other" type="radio" value="<%=Menu::TEMP_TYPES[:my_recommend]%>" <%=@menu.temp_id==Menu::TEMP_TYPES[:my_recommend] ? "checked":""%>/><p>我的推荐</p></div></li>
             <li style="width: auto;">
               <div class="cr_input">
+                <input name="other" type="radio" value="0" <%=@menu.temp_id==0 ? "checked":""%>/>
                 <p>外部链接</p>
                 <input type="text" id="out_link" style="margin: 0 13px; width: 320px;" value="<%=@menu.file_path%>" />
               </div>
