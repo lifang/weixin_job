@@ -252,7 +252,7 @@ class ResumesController < ApplicationController   #简历模板
       where(arr).
       joins("inner join delivery_resume_records drr on drr.client_resume_id = client_resumes.id").
       joins("inner join positions p on drr.position_id = p.id ").
-      select("drr.id,p.name,
+      select("drr.id,p.name position_name,
              p.id position_id,
              client_resumes.id client_resume_id,
              client_resumes.html_content_datas,

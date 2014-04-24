@@ -60,7 +60,7 @@ function menu_new_commit(company_id){
         temp_id = $(table).find("input[type=radio]:checked").val();
     }else if(index == 2){
         menu_type = 3;
-         temp_id = $(table).find("input[type=radio]:checked").val();
+        temp_id = $(table).find("input[type=radio]:checked").val();
         file_path = $(table).find("#out_link").val();
         if($.trim(file_path)=="" && temp_id==0 ){
             tishi_alert("请输入链接!");
@@ -225,5 +225,13 @@ function edit_menu_commit(company_id){
                 file_path : file_path2
             }
         })
+    }
+}
+function stopPropagation(e) {
+    e = e || window.event;
+    if(e.stopPropagation) { //W3C阻止冒泡方法
+        e.stopPropagation();
+    } else {
+        e.cancelBubble = true; //IE阻止冒泡方法
     }
 }
