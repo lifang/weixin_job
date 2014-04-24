@@ -16,7 +16,7 @@
     <div class="template">
       <%= form_for :keyword, :url => company_weixin_reply_path(@company, @keyword), :method => :put do |f| %>
         <div class="template_box">
-          <% if @keyword.auto? %>
+          <% if !@keyword.auto? %>
           <label>关键字：（输入关键字为关键字回复，否则作为关注后回复）</label>
           <input type="text" name="keyword" value="<%= @keyword.keyword %>"/>
           <% end %>
