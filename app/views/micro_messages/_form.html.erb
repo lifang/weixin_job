@@ -1,0 +1,28 @@
+<%= form_for [@company,@micro_message] do |mime_form| %>
+  <%= mime_form.fields_for @micro_imgtext do |micro_imgtext_fields| %>
+    <li><label>标题：</label>
+      <%= micro_imgtext_fields.text_field :title %>
+    </li>
+    <li>
+      <label>上传图片：</label>
+      <div class="fileBox" style="">
+        <input type="text" class="fileText_1" />
+        <button class="fileBtn_1 green_btn" >浏览...</button>
+        <%= micro_imgtext_fields.file_field :img_path, class:"file_1" %>
+        </div>
+      </li>
+      <% if @micro_imgtext && @micro_imgtext.img_path %>
+        <li>
+          <img src="<%= @micro_imgtext.img_path %>" height="200"></img>
+          <input type="hidden" name = "micro_imgtext_id" value="<%= @micro_imgtext.id %>"/>
+        </li>
+      <% end %>
+      <li><label>内容：</label>
+        <%= micro_imgtext_fields.text_area :content, rows:2 %>
+      </li>
+      <li><label>Url：</label>
+        <%= micro_imgtext_fields.text_field :url %>
+      </li>
+    <% end %>
+    <li><label></label><button class="green_btn">确定</button></li>
+  <% end %>

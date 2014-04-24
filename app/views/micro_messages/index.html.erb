@@ -1,0 +1,45 @@
+<div class="area">
+  <div class="title clearAfter">
+    <h1>图文消息</h1>
+    <div class="seek">
+      <div class="inquire">
+        <ul>
+          <li>
+            <%= link_to new_company_micro_message_path(@company)  do %>
+              <button>新建图文消息</button>
+            <% end %>
+          </li>
+          <li style="position: relative;">
+            <input type="text" class="search" >
+            <button class="searchBtn"></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="list clearAfter">
+      <ul>
+        <% @micro_imgtexts.each do |micro_message_id, micro_imgtexts|  %>
+          <% if micro_imgtexts %>
+            <li>
+              <%= render "message", :micro_message_id => micro_message_id, :micro_imgtexts  => micro_imgtexts, :if_edit => true %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="pageTurn">
+    <a href="#" class="disabled">上一页</a>
+    <a href="#" class="current">1</a>
+    <a href="#?page=2">2</a>
+    <a href="#?page=3">3</a>
+    <a href="#?page=4">4</a>
+    <a href="#?page=5">5</a>
+				...
+    <a href="#?page=199">199</a>
+    <a href="#?page=200">200</a>
+    <a href="#?page=2">下一页</a>
+  </div>
+</div>

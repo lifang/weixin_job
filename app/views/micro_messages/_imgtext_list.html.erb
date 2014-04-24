@@ -1,0 +1,27 @@
+<div class="list">
+  <% @micro_imgtexts.each_with_index do |micro_imgtext, index| %>
+    <li>
+      <% if index == 0 %>
+        <div class="img">
+          <img src="<%= micro_imgtext.img_path %>" />
+          <p><%= micro_imgtext.content %></p>
+        </div>
+      <% else %>
+        <div class="img2">
+          <img src="<%= micro_imgtext.img_path %>" />
+          <p><%= micro_imgtext.title %></p>
+          <p><%= micro_imgtext.content %></p>
+        </div>
+      <% end %>
+      <div class="aFunc" style="padding-left: 10px;">
+        <a href="<%= edit_company_micro_imgtext_path(@company, micro_imgtext) %>" data-remote="true" class="edit_icon tooltip_html">编辑</a>
+        <a href="<%= company_micro_imgtext_path(@company, micro_imgtext) %>" data-method="delete" data-confirm="确定删除吗？" class="delete_icon tooltip_html">删除</a>
+      </div>
+    </li>
+  <% end if @micro_imgtexts%>
+  <li class="add">
+    <%= link_to new_company_micro_imgtext_path(@company)+"?micro_message_id=#{@micro_message.id}", :remote => true do %>
+      <p>+</p>
+    <% end %>
+  </li>
+</div>

@@ -169,7 +169,7 @@ module ApplicationHelper
   #
   def is_hover_top? controller_name
     arr4 = ["company_profiles"]
-    arr3 = ["companies","position_types","address_settings","menus","app_managements"]
+    arr3 = ["companies","position_types","address_settings","menus","app_managements", "micro_messages", "weixin_replies"]
     arr2 = ["positions"]
     arr1 = ["resumes","exports"]
     if arr1.include?(controller_name)

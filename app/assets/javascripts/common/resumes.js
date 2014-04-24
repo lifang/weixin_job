@@ -215,7 +215,7 @@ function tab_function(t){
     $(t).css('display','block');
     $(t).css('top',(doc_height-$(window).scrollTop()-layer_height)/2);
     $(t).css('left',(win_width-layer_width)/2);
-    $(".close").click(function(){
+    $(".close, .cancel").click(function(){
         $(this).parent().css("display","none");
     });
 }

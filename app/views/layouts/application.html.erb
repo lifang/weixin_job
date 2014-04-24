@@ -75,6 +75,8 @@
                           <li ><%= link_to company_app_managements_path(@company),class:is_hover?('app_managements') do %>
                                 APP管理
                               <% end %></li>
+                  <li><%= link_to "图文消息", company_micro_messages_path(@company), class:is_hover?('micro_messages') %></li>
+                  <li><%= link_to "自动回复", company_weixin_replies_path(@company), class:is_hover?('weixin_replies') %></li>
                           </ul>
                         </div>
                       </div>

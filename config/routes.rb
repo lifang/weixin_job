@@ -87,6 +87,10 @@ match "/down_load_file" => "resumes#down_load_file"
         get :search_citties
       end
     end
+
+    resources :micro_messages
+    resources :micro_imgtexts
+    resources :weixin_replies
   end
 
   resources :client_resumes do

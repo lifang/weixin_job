@@ -1,0 +1,95 @@
+<div class="area">
+  <div class="title clearAfter">
+    <h1>自动回复</h1>
+    <div class="seek">
+      <div class="inquire">
+        <ul>
+          <li style="position: relative;">
+            <input type="text" class="search" />
+            <button class="searchBtn"></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="content clearAfter">
+    <div class="template">
+      <%= form_for :keywork do |f| %>
+        <div class="template_box">
+          <input type="text" name="keywork"/>
+          <div class="info_bar">
+            <a href="#" class="x" style="display:none">close</a>
+            <div class="seted_area"></div>
+            <input type="hidden" name="micro_message_id" class="micro_message_id" />
+          </div>
+        </div>
+        <div class="template_btn">
+          <button class="green_btn">确定</button>
+          <button class="gray_btn">预览</button>
+        </div>
+      <% end %>
+    </div>
+    <div class="temp_explain">
+      <button class="green_btn" data-id="add_text">添加文字</button>
+      <button class="green_btn" data-id="add_imgtext">添加图文</button>
+      <button class="green_btn" data-id="add_app_link">添加app链接</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="add_text">
+  <a href="#" class="close">close</a>
+  <h1>纯文本</h1>
+  <div class="tab_content">
+    <div class="tab_templateInfo_bar">
+      <label>增加纯文本：</label><input class="select_pure_text" type="text"/>
+    </div>
+  </div>
+  <div class="tab_btn"><button class="green_btn chooseReplyType">确定</button><button class="gray_btn cancel">取消</button></div>
+</div>
+
+<div class="tab" id="add_app_link">
+  <a href="#" class="close">close</a>
+  <h1>添加链接</h1>
+  <div class="tab_content">
+    <div class="tab_templateInfo_bar">
+      <div class="cr_input">
+        <% if @app_link %>
+          <input type="radio" style="display: none;" name="select_app_link" value="<%= @app_link %>"/>
+          <p class="hRadio">app登记</p>
+        <% else %>
+          <span>app登记页面不存在</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="tab_btn"><button class="green_btn chooseReplyType">确定</button><button class="gray_btn cancel">取消</button></div>
+</div>
+
+<div class="tab" id="add_imgtext">
+  <a href="#" class="close">close</a>
+  <h1>添加图文</h1>
+  <div class="tab_content">
+    <div class="list clearAfter" style="width: 462px;">
+      <ul>
+        <% @micro_imagetexts.each do |micor_message_id, micro_imgtexts| %>
+          <% if micro_imgtexts.present? %>
+            <li class="cr_input">
+              <input type="radio" style="display: none;" name="select_micro_message_id" value="<%= micor_message_id %>"/>
+              <p class="hRadio" onclick="SelectOne(this)"></p>
+              <div class="message_block">
+                <%= render "/micro_messages/message", :micro_message_id => micor_message_id, :micro_imgtexts  => micro_imgtexts, :if_edit => false %>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="tab_btn"><button class="green_btn chooseReplyType">确定</button><button class="gray_btn cancel">取消</button></div>
+</div>
+<script type="text/javascript">
+  $(function(){
+    $('.cr_input').hradio();
+  })
+</script>
