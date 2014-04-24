@@ -20,8 +20,10 @@
       <div class="inquire">
         <ul>
           <li>
-            <%=link_to  create_position_company_positions_path(@company),remote:'true' do%>
-              <button >新建职位</button>
+            <%unless controller.action_name=="history_index"%>
+              <%=link_to  create_position_company_positions_path(@company),remote:'true' do%>
+                <button >新建职位</button>
+              <%end%>
             <%end%>
           </li>
           <li style="position: relative;">

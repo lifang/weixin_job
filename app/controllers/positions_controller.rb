@@ -8,14 +8,14 @@ class PositionsController < ApplicationController   #招聘职位
 
   def index
     time = Time.now.prev_month
-    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 or status = 2) and created_at>=?",time])
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status = 2) "])
     delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
     @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
   end
 
   def history_index
     time = Time.now.prev_month
-    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 or status = 2) and created_at <?",time])
+    @positions = @company.positions.paginate(page:params[:page],per_page: PerPage*2,conditions:["(status =1 )"])
     delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
     @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
     render 'index'
@@ -49,7 +49,7 @@ class PositionsController < ApplicationController   #招聘职位
         @position.name = name
         @position.description = description
         @position.requirement = requirement
-        @position.status = Position::STATUS[:UNRELEASE]
+        @position.status = Position::STATUS[:RELEASED]
         @position.company_id = @company.id
         if Position.find_by_name_and_company_id(name,@company.id).blank? && @position.save
           address.each do |ad|

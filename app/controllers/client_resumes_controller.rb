@@ -272,6 +272,8 @@ class ClientResumesController < ApplicationController
     secret_id = Time.now.strftime("%Y%m%d%H%M%S")
     hash = params[:form_p]
     status = 1
+    clint_name=""
+    client_phone=""
     @err_msg = ""
     status, @err_msg = ClientResume.image_and_file_valid(hash)
     if status == 1
@@ -302,11 +304,20 @@ class ClientResumesController < ApplicationController
           if status == 0
             break
           end
+        elsif k.to_s == "message_1"
+          v.each do |name, file|
+            clint_name = hash[k][name]
+          end
+        elsif k.to_s == "message_2"
+
+          v.each do |name, file|
+            client_phone = hash[k][name]
+          end
         end
       end
     end
     if status == 1
-      cr = ClientResume.new(:html_content_datas => hash, :resume_template_id => resume_id, :has_completed => true,
+      cr = ClientResume.new(:clint_name=>clint_name,:client_phone=>client_phone,:html_content_datas => hash, :resume_template_id => resume_id, :has_completed => true,
         :open_id => secret_id, :company_id => company_id)
       if cr.save
         #@err_msg = "简历填写成功!"
