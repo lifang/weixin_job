@@ -80,7 +80,7 @@ class PositionsController < ApplicationController   #招聘职位
     requirement = params[:positions][:requirement]
     address = params[:address_id]
     @position = Position.find_by_id(id)
-    positions = Position.where(["name=? and company_id = ? and name !=?",name,@company.id,@position.name])
+    positions = Position.where(["name=? and company_id = ? and name !=? and (status = 1 or status=2)",name,@company.id,@position.name])
     if positions.length<1 
       if @position&& @position.update_attributes(name:name,
           requirement:requirement,

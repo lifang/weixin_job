@@ -813,7 +813,7 @@ Text
       if micro_message && micro_message.text?
         message = micro_image_text[0].content if micro_image_text && micro_image_text[0]
         if @company.has_app && micro_message.solid_link_flag
-          message = "&lt;a href='#{MW_URL + message}?open_id=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"
+          message = "&lt;a href='#{MW_URL + message}?secret_key=#{params[:xml][:FromUserName]}' &gt; 请点击登记您的信息&lt;/a&gt;"
         end
         xml = teplate_xml(message)
         render :xml => xml        #关注 自动回复的文字消息
