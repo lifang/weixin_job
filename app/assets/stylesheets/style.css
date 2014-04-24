@@ -630,7 +630,7 @@ button.gray_btn { background: #b6c2c9; }
     box-shadow: 0px 0px 5px rgba(0,0,0,0.6);
     position: absolute;
 }
-.close {
+.close ,.close_s{
     width: 30px;
     height: 30px;
     display: block;

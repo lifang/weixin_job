@@ -88,7 +88,7 @@ function tishi_alert(message) {
     tab.css('left', (doc_width - layer_width) / 2);
     tab.css('display', 'block');
     tab.fadeTo("slow", 1);
-    $(".tab_alert .close").click(function() {
+    $(".tab_alert .close_s").click(function() {
         tab.css('display', 'none');
     })
     setTimeout(function() {
