@@ -35,7 +35,7 @@ class WeixinRepliesController < ApplicationController
     @keyword = Keyword.find_by_id params[:id]
     if @keyword
       @micro_message = @keyword.micro_message
-      @this_micro_imagetexts = @micro_message.micro_imgtexts
+      @this_micro_imagetexts = @micro_message.micro_imgtexts if @micro_message
     end
   end
 
