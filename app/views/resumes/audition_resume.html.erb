@@ -35,7 +35,7 @@
             <tbody>
               <%@positions_and_resumes.each do |p_and_r|%>
                 <tr>
-                  <td><%=p_and_r.name%></td>
+                  <td><%=p_and_r.position_name%></td>
                   <td><%=p_and_r.clint_name%></td>
                   <td><%=p_and_r.client_phone%></td>
                   <td><%=p_and_r.audition_time.strftime("%Y-%m-%d %H:%M")%></td>
@@ -43,7 +43,7 @@
                   </td>
 
                   <td><div class="aFunc">
-                      <a href="/companies/<%=@company.id%>/resumes/<%=p_and_r.client_resume_id%>/show_resumes_new" class="preview_icon tooltip_html" data-remote="true">预览</a>
+                      <a href="/companies/<%=@company.id%>/resumes/<%=p_and_r.id%>/show_resumes_new" class="preview_icon tooltip_html" data-remote="true">预览</a>
                       <a href="javascript:void(0)" class="refuse_icon tooltip_html" onclick="change_status(this,<%=@company.id%>,<%=p_and_r.id%>,1)">拒绝</a>
                       <a href="javascript:void(0)" class="entry_icon tooltip_html" onclick="deal_join(<%=@company.id%>,<%=p_and_r.id%>)">入职</a>
                     </div></td>

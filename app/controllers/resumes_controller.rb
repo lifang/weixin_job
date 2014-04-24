@@ -62,7 +62,7 @@ class ResumesController < ApplicationController   #简历模板
       where(["drr.status= ? and drr.company_id= ?",status,@company.id]).
       joins("inner join delivery_resume_records drr on drr.client_resume_id = client_resumes.id").
       joins("inner join positions p on drr.position_id = p.id ").
-      select("drr.id,p.name,
+      select("drr.id,p.name position_name,
              p.id position_id,
              client_resumes.id client_resume_id,
              client_resumes.html_content_datas,
@@ -178,10 +178,10 @@ class ResumesController < ApplicationController   #简历模板
   def show_resumes_new
     #client_resume = ClientResume.find_by_id(params[:id])
     @client_resume = ClientResume.
-      where(["client_resumes.id= ? ",params[:id]]).
+      where(["drr.id= ? ",params[:id]]).
       joins("inner join delivery_resume_records drr on drr.client_resume_id = client_resumes.id").
       joins("inner join positions p on drr.position_id = p.id ").
-      select("drr.id,p.name,
+      select("drr.id,p.name position_name,
              p.id position_id,
              client_resumes.id client_resume_id,
              client_resumes.html_content_datas,
