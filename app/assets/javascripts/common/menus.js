@@ -60,8 +60,9 @@ function menu_new_commit(company_id){
         temp_id = $(table).find("input[type=radio]:checked").val();
     }else if(index == 2){
         menu_type = 3;
+         temp_id = $(table).find("input[type=radio]:checked").val();
         file_path = $(table).find("#out_link").val();
-        if($.trim(file_path)=="" ){
+        if($.trim(file_path)=="" && temp_id==0 ){
             tishi_alert("请输入链接!");
             return false;
         }
@@ -103,8 +104,9 @@ function menu_edit_commit(company_id,menu_id){
         temp_id = $(table).find("input[type=radio]:checked").val();
     }else if(index == 2){
         menu_type = 3;
+        temp_id = $(table).find("input[type=radio]:checked").val();
         file_path = $(table).find("#out_link").val();
-        if($.trim(file_path)=="" ){
+        if($.trim(file_path)=="" && temp_id==0 ){
             tishi_alert("请输入链接!");
             return false;
         }

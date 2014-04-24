@@ -58,12 +58,12 @@ class LoginsController < ApplicationController
               ResumeTemplate.get_html(resume)
             end
             menu1 = Menu.create(name:"我的...",
-              temp_id:0,
+              temp_id:-100,
               parent_id:0,
               company_id:company.id,
               types:3)
             menu2 = Menu.create(name:"职位",
-              temp_id:0,
+              temp_id:-100,
               parent_id:0,
               company_id:company.id,
               types:3)
