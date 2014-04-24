@@ -21,7 +21,7 @@
           <li><a href="#" class="add" onclick="add_menu_new(2,<%=fm.id%>,<%=@child_menus[fm.id.to_s].nil? ? 0:@child_menus[fm.id.to_s].length%>)">+</a></li>
           <% @child_menus[fm.id.to_s].each do |cm| %>
             <li onclick="show_edit_area(<%=@company.id%>,<%=cm.id%>)">
-              <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
+              <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?" onclick="stopPropagation(arguments[0]);" data-method="delete">x</a>
               <p><%= cm.name %></p></li>
           <%end if @child_menus[fm.id.to_s]%>
         </ul>

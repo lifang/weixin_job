@@ -50,7 +50,7 @@
               <div class="aFunc" style="padding-left: 10px;">
                 <a href="/companies/<%=@company.id%>/positions/<%=position.id%>/see_position" class="show_icon tooltip_html" data-remote="true">查看</a>
                 <%=link_to '编辑',edit_position_company_position_path(@company,position),remote:'true',class:"edit_icon tooltip_html" %>
-                  <%=link_to "删除",company_position_path(@company,position,(controller.action_name=='index'? 0 : 1)),method: :delete,confirm:'是否确认删除？',class:"delete_icon tooltip_html" %>
+                  <%=link_to "删除",company_position_path(@company,position,@status),method: :delete,confirm:'是否确认删除？',class:"delete_icon tooltip_html" %>
                     <%if position.status == 1%>
                       <%=link_to release_company_position_path(@company,position,(controller.action_name=='index'? 0 : 1)),class:"publish_icon tooltip_html" do%>
                           发布

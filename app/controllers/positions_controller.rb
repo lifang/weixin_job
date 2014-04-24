@@ -147,9 +147,7 @@ class PositionsController < ApplicationController   #招聘职位
   def search_position
     p = params[:position]
     @status = params[:status]
-
     @positions = Position.where("company_id=#{@company.id} and name like ? and (status = ? )","%#{p}%",@status).paginate(page:params[:page],per_page: 2*PerPage)||[]
-  
     delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
     @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
  
@@ -169,10 +167,11 @@ class PositionsController < ApplicationController   #招聘职位
     @position = Position.find_by_id(params[:id])
     if @position && @position.update_attribute(:status,status)
       flash[:success] = "#{msg}成功！"
-      if params[:format]=='0'
-        redirect_to company_positions_path(@company)
-      else
+      if params[:format]=='1'
         redirect_to history_index_company_positions_path(@company)
+      elsif params[:format]=='2'
+        redirect_to company_positions_path(@company)
+        
       end
     else
       flash[:error] = "#{msg}失败，不存在职位，请刷新页面！"
