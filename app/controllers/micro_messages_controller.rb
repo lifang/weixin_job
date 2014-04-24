@@ -4,7 +4,16 @@ class MicroMessagesController < ApplicationController
   before_filter  :get_company
   
   def index
-    @micro_messages = @company.micro_messages.image_text.paginate(:per_page => 6, :page => params[:page])
+    @title = "图文消息"
+    @content = params[:search_mme]
+    if @content.present?
+      @micro_messages = @company.micro_messages.image_text.joins(:micro_imgtexts)
+      .where("micro_imgtexts.title like (?) or micro_imgtexts.content like (?)","%#{@content}%", "%#{@content}%")
+      .paginate(:per_page => 8, :page => params[:page])
+    else
+      @micro_messages = @company.micro_messages.image_text
+      .paginate(:per_page => 8, :page => params[:page])
+    end
     micro_message_ids = @micro_messages.map(&:id)
     micro_imgtexts = MicroImgtext.where(:micro_message_id => micro_message_ids)
     if micro_imgtexts
@@ -13,11 +22,13 @@ class MicroMessagesController < ApplicationController
   end
 
   def new
+    @title = "图文消息"
     @micro_message = @company.micro_messages.new
     @micro_imgtext = MicroImgtext.new
   end
   
   def edit
+    @title = "图文消息"
     @micro_message =MicroMessage.find_by_id(params[:id])
     @micro_imgtext = MicroImgtext.new
     @micro_imgtexts = @micro_message.micro_imgtexts

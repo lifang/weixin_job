@@ -1,3 +1,4 @@
+#encoding:utf-8
 class MicroMessage < ActiveRecord::Base
   has_many :micro_imgtexts, :dependent => :destroy
   has_one :keyword

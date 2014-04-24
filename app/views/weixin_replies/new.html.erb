@@ -16,8 +16,11 @@
     <div class="template">
       <%= form_for :keyword, :url => company_weixin_replies_path(@company) do |f| %>
         <div class="template_box">
-          <label>关键字：（输入关键字为关键字回复，否则作为关注后回复）</label>
-          <input type="text" name="keyword"/>
+          <div class="info_bar">
+            <label>关键字： </label>
+            <input type="text" name="keyword"/>
+          </div>
+          <i>（输入关键字即为关键字回复，否则作为关注后回复）</i>
           <div class="info_bar">
             <a href="#" class="x" style="display:none">close</a>
             <div class="seted_area">

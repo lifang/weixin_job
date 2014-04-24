@@ -74,7 +74,7 @@ function HTMLEnCode(str)
     return    s;
 }
 
-
+//消息内容不能为空
 function checkContent(obj){
      var micro_message_id = $(".micro_message_id").val();
      var content= $(".micro_message_content").val();
@@ -82,4 +82,28 @@ function checkContent(obj){
          tishi_alert("内容不能为空！");
          return false;
      }
+}
+
+function showFileName(obj){
+    var file_name = $(obj).val();
+    var show_input = $(obj).parent().find(".fileText_1");
+    show_input.val(file_name);
+}
+
+//图文消息验证必填
+function checkValid(obj){
+    flag = true;
+    $(obj).parents("form").find("input, textarea").each(function(){
+        var title = $(this).attr("data_alt");
+        if($.trim($(this).val()) == ""){
+            tishi_alert(title + "不能为空！");
+            flag = false;
+            return flag;
+        }
+        return flag;
+    });
+    if(flag){
+       $(obj).parents("form").submit();
+    }
+    
 }
