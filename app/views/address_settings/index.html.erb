@@ -55,7 +55,7 @@
         <li style="display: inline-block; width: 250px;">
           <label>省：</label>
           <div class="select_box" style="position: absolute; top: 4px; background: #fafafa; margin-left: 4px;">
-            <div class="select_tag" id="new_address_province"><span>选择词性</span> <input name="" type="text" value="" class="tag_input"></div>
+            <div class="select_tag" id="new_address_province"><span>选择省</span> <input name="" type="text" value="" class="tag_input"></div>
             <ul class="select_ul">
               <% @provinces.each do |p| %>
               <li onclick="address_search_city(this, <%= @company.id %>, 0)"><%=p.name%><input name="" type="text" value="<%=p.id%>"/></li>
