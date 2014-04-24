@@ -144,7 +144,7 @@ class PositionsController < ApplicationController   #招聘职位
   
   def search_position
     p = params[:position]
-    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%").paginate(page:params[:page],per_page: PerPage)||[]
+    @positions = Position.where("company_id=#{@company.id} and name like ? and (status =1 or status = 2)","%#{p}%").paginate(page:params[:page],per_page: 2*PerPage)||[]
     delivery_resume_records = DeliveryResumeRecord.where("position_id in (?)",@positions.map(&:id))
     @delivery_resume_records_group = delivery_resume_records.group_by{|drr| drr.position_id }
  

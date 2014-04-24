@@ -1,10 +1,10 @@
 function create_xsl_table(obj,company_id){
-    var date_time = $.trim($(obj).parent().find('.start').val());
+    var date_time = $.trim($(obj).parent().parent().find('.start').val());
 	if (date_time == "") {
 		 tishi_alert("开始时间不能为空");
 		return false;
 	}
-        var date_time1 = $.trim($(obj).parent().find('.end').val());
+        var date_time1 = $.trim($(obj).parent().parent().find('.end').val());
         if (date_time1 == "") {
 		 tishi_alert("结束时间不能为空");
 		return false;

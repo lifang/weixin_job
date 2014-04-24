@@ -16,14 +16,17 @@
         </div>
       </li>
       <li>
-        <input name="start" type="text" placeholder="时间起" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
+        时间起：<input name="start" type="text" placeholder="时间起" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})" />
       </li>
       <li>
-        <input name="end" type="text" placeholder="时间止" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
+        时间止：<input name="end" type="text"   placeholder="时间止" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',autoPickDate:true})"/>
       </li>
       <li>
-        <button type="button" onclick="search_positon_resumes(this)" class="orangeBtn">查询</button>
+        <button type="button" onclick="search_positon_resumes(this)" class="orangeBtn">选择职位</button>
       </li>
     </form>
   </ul>
 </div>
+<script>
+  select_init();
+</script>
