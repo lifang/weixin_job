@@ -222,7 +222,7 @@ class ResumesController < ApplicationController   #简历模板
     arr=[""]
     arr << status << @company.id
     str="drr.status= ? and drr.company_id= ? "
-    if start_time!=""
+    if start_time!=" 00:00:00"
       if status == DeliveryResumeRecord::STATUS[:audition]
         str+="and drr.audition_time >= ? "
       elsif status == DeliveryResumeRecord::STATUS[:pass]
@@ -232,7 +232,7 @@ class ResumesController < ApplicationController   #简历模板
       end
       arr<< start_time
     end
-    if end_time !=""
+    if end_time !=" 23:59:59"
       if status == DeliveryResumeRecord::STATUS[:audition]
         str+="and drr.audition_time <= ? "
       elsif status == DeliveryResumeRecord::STATUS[:pass]
@@ -247,7 +247,7 @@ class ResumesController < ApplicationController   #简历模板
       arr<< position_id
     end
     arr[0]= str
-    p 11111111111111111111111,arr
+    p 11111111111111111111111,str,arr
     @positions_and_resumes =  ClientResume.
       where(arr).
       joins("inner join delivery_resume_records drr on drr.client_resume_id = client_resumes.id").
