@@ -1,7 +1,7 @@
 <div class="area">
   <div class="title clearAfter">
     <h1><%= Keyword::TYPE_NAME[@keyword.types] %>回复</h1>
-   
+
   </div>
   <div class="content clearAfter">
     <div class="template">
@@ -12,25 +12,26 @@
               <label>关键字：</label>
               <input type="text" name="keyword" value="<%= @keyword.keyword %>"/>
             </div>
-          <i>（输入关键字即为关键字回复，否则作为关注后回复）</i>
+            <i>（输入关键字即为关键字回复，否则作为关注后回复）</i>
           <% end %>
           <div class="info_bar">
             <a href="#" class="x" style="display:none">close</a>
             <div class="seted_area">
-              <% if @micro_message && @micro_message.text? %>
-                <p><%= @this_micro_imagetexts[0].content if @this_micro_imagetexts.present? %></p>
-              <% else %>
-                <%= render "/micro_messages/message", :micro_message_id => @micro_message.id, :micro_imgtexts => @this_micro_imagetexts %>
+              <% if @micro_message %>
+                <% if @micro_message.text? %>
+                  <p><%= @this_micro_imagetexts[0].content if @this_micro_imagetexts.present? %></p>
+                <% else %>
+                  <%= render "/micro_messages/message", :micro_message_id => @micro_message.id, :micro_imgtexts => @this_micro_imagetexts %>
+                <% end %>
               <% end %>
             </div>
             <input type="hidden" name="micro_message_id" class="micro_message_id" value="<%= @keyword.micro_message_id %>"/>
             <input type="hidden" name="content" class="micro_message_content" value="<%= @this_micro_imagetexts[0].content if @this_micro_imagetexts.present? %>"/>
-            <input type="hidden" name="solid_link_flag" class="solid_link_flag" value="<%= @micro_message.solid_link_flag %>" />
+            <input type="hidden" name="solid_link_flag" class="solid_link_flag" value="<%= @micro_message ? @micro_message.solid_link_flag : "" %>" />
           </div>
         </div>
         <div class="template_btn">
           <button class="green_btn">确定</button>
-          <button class="gray_btn">预览</button>
         </div>
       <% end %>
     </div>

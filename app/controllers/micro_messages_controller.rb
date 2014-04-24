@@ -7,7 +7,7 @@ class MicroMessagesController < ApplicationController
     @title = "图文消息"
     @content = params[:search_mme]
     if @content.present?
-      @micro_messages = @company.micro_messages.image_text.joins(:micro_imgtexts)
+      @micro_messages = @company.micro_messages.image_text.includes(:micro_imgtexts)
       .where("micro_imgtexts.title like (?) or micro_imgtexts.content like (?)","%#{@content}%", "%#{@content}%")
       .paginate(:per_page => 8, :page => params[:page])
     else
