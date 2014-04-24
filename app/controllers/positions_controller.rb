@@ -171,7 +171,8 @@ class PositionsController < ApplicationController   #招聘职位
         redirect_to history_index_company_positions_path(@company)
       elsif params[:format]=='2'
         redirect_to company_positions_path(@company)
-        
+      elsif params[:format]=='0'
+        redirect_to company_positions_path(@company)
       end
     else
       flash[:error] = "#{msg}失败，不存在职位，请刷新页面！"
