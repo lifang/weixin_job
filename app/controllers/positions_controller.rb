@@ -97,11 +97,11 @@ class PositionsController < ApplicationController   #招聘职位
         redirect_to company_positions_path(@company)
       else
         flash[:error] = "更新失败！职位不存在！"
-        render 'new'
+        redirect_to company_positions_path(@company)
       end
     else
       flash[:error] = "更新失败！不能跟其他职位名称相同！"
-      render 'new'
+      redirect_to company_positions_path(@company)
     end
 
   end

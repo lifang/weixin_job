@@ -119,8 +119,8 @@ class ResumesController < ApplicationController   #简历模板
   def choice_position
     status = params[:status].to_i
     postion_id = params[:position_id]
-    start_time = params[:start]
-    end_time = params[:end]
+    start_time =params[:start]+" 00:00:00" #DateTime.strptime((params[:start]+" 00:00:00"), "%Y-%m-%d %h:%m:%s")
+    end_time = params[:end]+" 23:59:59"  #DateTime.strptime((params[:end]+" 23:59:59"), "%Y-%m-%d %h:%m:%s")
     case status
     when DeliveryResumeRecord::STATUS[:newest]
       get_positions_and_resumes postion_id,start_time,end_time,DeliveryResumeRecord::STATUS[:newest]
