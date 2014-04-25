@@ -34,8 +34,8 @@
           <li onclick="show_edit_area(<%=@company.id%>,<%=fm.id%>)">
             <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= fm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
             <p><%= fm.name %></p></li>
-        <%end%>
-        <li><a href="javascript:void(0)" class="add" onclick="add_menu_new(1,0,<%=@father_menus.length%>)">+</a></li>
+        <%end if @father_menus%>
+        <li><a href="javascript:void(0)" class="add" onclick="add_menu_new(1,0,<%= @father_menus ? @father_menus.length : 0%>)">+</a></li>
       </ul>
     </div>
     <img src="/assets/menu_temp.png" style="position: absolute; top: 20px; right: 20px;" />
