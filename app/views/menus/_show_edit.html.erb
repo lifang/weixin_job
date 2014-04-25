@@ -39,8 +39,8 @@
         <div class="linkPicker">
           <ul class="tab_1">
             <li class="<%=  @menu.types == 0 ? "hover":""%>">微网页</li>
-            <li class="<%=  @menu.types == 2 ? "hover":""%>">职位</li>
-            <li class="<%=  @menu.types == 3 ? "hover":""%>">其他</li>
+            <li class="<%=  @menu.types == 1 ? "hover":""%>">职位</li>
+            <li class="<%=  (@menu.types == 3 or @menu.types == 2) ? "hover":""%>">其他</li>
           </ul>
           <ul class="tabDiv_1 <%=  @menu.types == 0 ? "hover":""%>">
             <%@comp_profiles.each do|cp|%>
