@@ -8,7 +8,7 @@
       <div class="fileBox" style="">
         <input type="text" class="fileText_1" value="点击上传图片" />
         <button class="fileBtn_1 green_btn" >浏览...</button>
-        <%= micro_imgtext_fields.file_field :img_path, class:"file_1", :onchange => "showFileName(this)", :data_alt => "图片" %>
+        <%= micro_imgtext_fields.file_field :img_path, class:"file_1", :onchange => "showFileName(this)", :data_alt => "图片",:value => "#{@micro_imgtext.img_path}" %>
         </div>
       </li>
       <% if @micro_imgtext && @micro_imgtext.img_path %>

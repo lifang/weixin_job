@@ -681,7 +681,7 @@ Text
   #自定义菜单，点击事件，返回对应链接
   def get_link_by_event_key(event_key, open_id)  #resume_5
     event_key_arr = event_key.split("_")
-    menu_id = event_key_arr[1].to_i  #类型名称_menuId
+    menu_id = event_key_arr[-1].to_i  #类型名称_menuId
     menu = Menu.find_by_id menu_id
     if menu
       if menu.temp_id == 0  #请求的不是 职位
@@ -695,6 +695,7 @@ Text
 
   #微信菜单点击事件，返回对应数据
   def return_wx_menu_link_no_temp_id(menu, open_id)
+    
     if menu.my_resume? #我的简历
       link = return_my_resume_click_link(open_id)
     elsif menu.all_pos?  #全部职位
@@ -717,7 +718,7 @@ Text
   def return_wx_menu_link_has_temp_id(open_id, temp_id)
     position_type = PositionType.find_by_id temp_id
     if position_type
-      positions = position_type.positions
+      positions = position_type.positions.where("status=?", Position::STATUS[:RELEASED])
       link = ""
       positions.each do |position|
         message = "/companies/#{@company.id}/positions/#{position.id}"
@@ -763,7 +764,7 @@ Text
   end
 
   #微信菜单点击事件，返回 -> 最新职位
-  def return_newest_positions(open_id)
+  def return_newest_position(open_id)
     time = Time.now.prev_month
     positions = Position.where("status=? and created_at>=? and company_id = ?", Position::STATUS[:RELEASED],time,@company.id)
     new_positions = "点击最新职位\n"

@@ -19,7 +19,7 @@ class Menu < ActiveRecord::Base
   type_names_arr.each do |type|
     scope type, :conditions => { :types => TYPES[type] }
     define_method  "#{type.to_s}?" do
-      self.types == TYPE_NAMES[type]
+      self.types == TYPES[type]
     end
   end
 

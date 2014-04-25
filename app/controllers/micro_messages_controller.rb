@@ -7,12 +7,9 @@ class MicroMessagesController < ApplicationController
     @title = "图文消息"
     @content = params[:search_mme]
     if @content.present?
-      @micro_messages = @company.micro_messages.image_text.includes(:micro_imgtexts)
-      .where("micro_imgtexts.title like (?) or micro_imgtexts.content like (?)","%#{@content}%", "%#{@content}%")
-      .paginate(:per_page => 8, :page => params[:page])
+      @micro_messages = @company.micro_messages.image_text.includes(:micro_imgtexts).where("micro_imgtexts.title like (?) or micro_imgtexts.content like (?)","%#{@content}%", "%#{@content}%").paginate(:per_page => 8, :page => params[:page])
     else
-      @micro_messages = @company.micro_messages.image_text
-      .paginate(:per_page => 8, :page => params[:page])
+      @micro_messages = @company.micro_messages.image_text.paginate(:per_page => 8, :page => params[:page])
     end
     micro_message_ids = @micro_messages.map(&:id)
     micro_imgtexts = MicroImgtext.where(:micro_message_id => micro_message_ids)
@@ -64,6 +61,7 @@ class MicroMessagesController < ApplicationController
       params[:micro_message][:micro_imgtext].delete(:img_path)
       if params[:micro_imgtext_id].present?
         @micro_imgtext = MicroImgtext.find_by_id(params[:micro_imgtext_id])
+        @micro_imgtext.update_attributes(params[:micro_message][:micro_imgtext])
         old_file_path = @micro_imgtext.img_path
       else
         @micro_imgtext = @micro_message.micro_imgtexts.new(params[:micro_message][:micro_imgtext])

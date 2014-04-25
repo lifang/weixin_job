@@ -21,7 +21,11 @@ class MenusController < ApplicationController   #菜单
 
   def create
     Menu.transaction do
-      temp_id, menu_types, file_path =  before_create_update
+      if params[:menu_types]
+        temp_id, menu_types, file_path =  before_create_update
+      else
+        temp_id, menu_types = 0, Menu::TYPES[:nothing]
+      end
       temp_id = temp_id || 0
       if params[:parent_id].to_i == 0   #建立一级菜单
         father_menus = Menu.where(["parent_id = ? and company_id = ?", params[:parent_id].to_i, @company.id]).length
@@ -104,7 +108,6 @@ class MenusController < ApplicationController   #菜单
   private
   def before_create_update
     menu_types = params[:menu_types]
-
     if menu_types.include?("company_profile")
       cp_arr = menu_types.split("_")
       cp_id = cp_arr[-1].to_i

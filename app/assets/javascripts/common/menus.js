@@ -52,11 +52,7 @@ function menu_commit(flag){
         tishi_alert("请输入菜单名称!");
         return false;
     }
-    var menu_types = $(table).find("input[type=radio]:checked").val();
-    if($.trim(menu_types) == ""){
-        tishi_alert("请选择指向地址!");
-        return false;
-    }
+
     if($(table).find("input.outside_link:checked").length > 0){
         file_path = $(table).find("#out_link").val();
         if($.trim(file_path)==""){

@@ -93,17 +93,21 @@ function showFileName(obj){
 //图文消息验证必填
 function checkValid(obj){
     flag = true;
-    $(obj).parents("form").find("input, textarea").each(function(){
+    $(obj).parents("form").find("input[type=text], textarea").each(function(){
         var title = $(this).attr("data_alt");
         if($.trim($(this).val()) == ""){
             tishi_alert(title + "不能为空！");
             flag = false;
             return flag;
         }
-        return flag;
     });
-    if(flag){
-       $(obj).parents("form").submit();
+    var file_value = $(obj).parents("form").find("input[type=file]").attr("value");
+    if($.trim(file_value) == ""){
+        tishi_alert("图片不能为空！");
+        flag = false;
+        return flag;
     }
-    
+    if(flag){
+        $(obj).parents("form").submit();
+    }
 }
