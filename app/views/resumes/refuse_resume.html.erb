@@ -35,7 +35,7 @@
                   <td><%=p_and_r.position_name%></td>
                   <td><%=p_and_r.clint_name%></td>
                   <td><%=p_and_r.client_phone%></td>
-                  <td><a href="<%= get_accessory_from  p_and_r.html_content_datas%>" target="_blank">下载附件</a></td>
+                  <td><a href="<%=(is_have_file? p_and_r.html_content_datas)=="" ? "javascript:javascript:tishi_alert('暂无附件！')":"/down_load_file?file_path=#{(is_have_file? p_and_r.html_content_datas)}" %>" target="_blank">下载附件</a></td>
                   <td><div class="aFunc">
                        <a href="/companies/<%=@company.id%>/resumes/<%=p_and_r.id%>/show_resumes_new?" class="preview_icon tooltip_html" data-remote="true">预览</a>
                       <%=link_to company_resume_path(@company,p_and_r.id),method:'delete',class:"delete_icon",confirm:"是否确定删除？" do%>

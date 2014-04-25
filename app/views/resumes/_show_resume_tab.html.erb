@@ -3,7 +3,9 @@
 <div class="tab_content">
   <div class="see_resume">
     <div class="user">
+     <% if is_have_headimage? @client_resume.html_content_datas %>
       <img src="<%=is_have_headimage? @client_resume.html_content_datas%>"/>
+     <% end %> 
       <h2><%=@client_resume.position_name%></h2>
       <p><%=@client_resume.created_at.strftime("%Y-%m-%d %H:%M")%></p>
     </div>
@@ -14,7 +16,7 @@
         <%elsif ht[0].include?("file")%>
           <li><label><%=ht[1].keys[0]%>：</label>
             <span>
-              <a href="<%="/down_load_file?file_path=#{ht[1].values[0]}" %>" >下载</a>
+              <a href="<%=(is_have_file? @client_resume.html_content_datas)=="" ? "javascript:tishi_alert('暂无附件！')":"/down_load_file?file_path=#{ht[1].values[0]}" %>" >下载</a>
             </span>
           </li>
         <%else%>

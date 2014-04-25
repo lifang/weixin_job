@@ -16,11 +16,11 @@ class PositionTypesController < ApplicationController
         redirect_to company_position_types_path(@company)
       else
         flash[:error] = "创建失败，#{@position_type.errors.messages.values.flatten.join("\\n")}"
-        render 'index'
+        redirect_to company_position_types_path(@company)
       end
     else
         flash[:error] = "创建失败，名称已经存在"
-        render 'index'
+        redirect_to company_position_types_path(@company)
     end
   end
   def destroy
@@ -30,7 +30,7 @@ class PositionTypesController < ApplicationController
       redirect_to company_position_types_path(@company)
     else
       flash[:error] = "删除失败，不存在职位类型"
-      render 'index'
+      redirect_to company_position_types_path(@company)
     end
   end
 
