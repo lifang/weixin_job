@@ -22,7 +22,7 @@
                   <li class="imgItem itemBox">
                     <label><%= v["name"] %></label>
                     <input type="file" name="[form_p][<%= k.to_s %>][<%= v["name"] %>]"/>
-                    <img <% if @html_content_datas["headimage"] %> src="<%= @html_content_datas["headimage"].values[0] %>" <% end %>/>
+                    <img <% if @html_content_datas["headimage"] %> src="<%= @html_content_datas["headimage"].values[0] %>" <% end %> width="100%" />
                   </li>
                 <% elsif  k.to_s.include?("message") %>
                   <li class="infoItem itemBox">
