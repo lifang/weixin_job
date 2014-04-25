@@ -3,7 +3,7 @@
 <div class="tab_content">
   <div class="see_resume">
     <div class="user">
-     <% if is_have_headimage? @client_resume.html_content_datas %>
+     <% unless (is_have_headimage? @client_resume.html_content_datas) == "" %>
       <img src="<%=is_have_headimage? @client_resume.html_content_datas%>"/>
      <% end %> 
       <h2><%=@client_resume.position_name%></h2>

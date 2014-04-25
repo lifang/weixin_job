@@ -17,7 +17,7 @@
           <%@positions_and_resumes.each do |p_and_r|%>
             <li>
               <div class="avatar">
-              	<% if is_have_headimage? p_and_r.html_content_datas %>
+              	<% unless (is_have_headimage? p_and_r.html_content_datas) == "" %>
               	<img src="<%=is_have_headimage? p_and_r.html_content_datas %>"/>
               	<% end %>
               	</div>

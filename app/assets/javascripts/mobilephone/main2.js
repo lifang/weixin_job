@@ -16,12 +16,8 @@ function client_resume_valid(obj){
     });
     $(".itemBox").find("input[type='file']").each(function(){
         var name = $(this).prev("label").text();
-        if($.trim($(this).val())==""){
-            flag = false;
-            msg += name+"不能为空!\r\n";
-        }else{
-            var input_name = $(this).attr("name");
-            if(input_name.indexOf("headimage")>0){
+        var input_name = $(this).attr("name");
+        if(input_name.indexOf("headimage")>0 && $(this).val()!=""){
                 var img = $.trim($(this).val());
                 var img_format =["png","gif","jpg","bmp","jpeg","JPG","PNG","BMP","JPEG","GIF"];
                 var img_type = img.substring(img.lastIndexOf(".")).toLowerCase();
@@ -29,7 +25,6 @@ function client_resume_valid(obj){
                     flag = false;
                     msg += name + "请上传正确的头像图片,图片格式可以为"+img_format+"\r\n";
                 }
-            }
         }
     })
     $(".checkItem").each(function(){
