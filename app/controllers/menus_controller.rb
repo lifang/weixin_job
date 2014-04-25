@@ -63,7 +63,11 @@ class MenusController < ApplicationController   #菜单
   def update
     Menu.transaction do
       menu = Menu.find_by_id(params[:id].to_i)
-      temp_id,menu_types,file_path =  before_create_update
+      if params[:menu_types]
+        temp_id, menu_types, file_path =  before_create_update
+      else
+        temp_id, menu_types = 0, Menu::TYPES[:nothing]
+      end
       hash = {:parent_id => params[:parent_id].to_i, :name => params[:menu_name], :temp_id => temp_id || 0, :types => menu_types,
         :file_path => file_path.blank? ? nil : file_path}
       if menu.update_attributes(hash)

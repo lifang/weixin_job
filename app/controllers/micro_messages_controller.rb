@@ -55,7 +55,7 @@ class MicroMessagesController < ApplicationController
   end
 
   def update
-    MicroMessage.transaction do
+    #MicroMessage.transaction do
       @micro_message = MicroMessage.find_by_id(params[:id])
       file = params[:micro_message][:micro_imgtext][:img_path]
       params[:micro_message][:micro_imgtext].delete(:img_path)
@@ -63,17 +63,17 @@ class MicroMessagesController < ApplicationController
         @micro_imgtext = MicroImgtext.find_by_id(params[:micro_imgtext_id])
         @micro_imgtext.update_attributes(params[:micro_message][:micro_imgtext])
         old_file_path = @micro_imgtext.img_path
+        flash[:notice] = "模块修改成功"
       else
+       flash[:notice] = "模块添加成功"
         @micro_imgtext = @micro_message.micro_imgtexts.new(params[:micro_message][:micro_imgtext])
       end
       json_return = MicroImgtext.save_and_return_file_path(file, @company) if file
-      if json_return && json_return[:status] == 0
-        @micro_imgtext.img_path = json_return[:file_path]
+      if (file && json_return && json_return[:status] == 0) || file.blank?
+        @micro_imgtext.img_path = json_return[:file_path] if file && json_return[:file_path]
         if @micro_imgtext.save
-          flash[:notice] = "模块添加成功"
-          if old_file_path
+          if file && json_return[:file_path] && old_file_path
             destroy_Original_img Rails.root.to_s+"/public"+ old_file_path
-            flash[:notice] = "模块修改成功"
           end
           redirect_to edit_company_micro_message_path(@company, @micro_message)
         else
@@ -86,7 +86,7 @@ class MicroMessagesController < ApplicationController
         @micro_imgtexts = @micro_message.micro_imgtexts
         render :edit
       end
-    end
+   # end
   end
 
   def destroy

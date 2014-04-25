@@ -17,6 +17,9 @@ class ExportsController < ApplicationController   #导出简历
     if File.exists?(zipfile_name)
       FileUtils.rm_f zipfile_name
     end
+
+    `convmv -f gbk -t utf-8 -r --notest  #{directory}`
+    
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
       Dir[File.join(directory, '**', '**')].each do |file|
         zipfile.add(file.sub(directory, ''), file)

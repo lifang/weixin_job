@@ -20,9 +20,9 @@
         <ul class ="menu_ul" style="left: <%=150+index*120%>px;">
           <li><a href="javascript:void(0)" class="add" onclick="add_menu_new(2,<%=fm.id%>,<%=@child_menus[fm.id.to_s].nil? ? 0:@child_menus[fm.id.to_s].length%>)">+</a></li>
           <% @child_menus[fm.id.to_s].each do |cm| %>
-            <li onclick="show_edit_area(<%=@company.id%>,<%=cm.id%>)">
+            <li>
               <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= cm.id %>" data-confirm="确定删除该菜单?"  data-method="delete">x</a>
-              <p><%= cm.name %></p></li>
+              <p onclick="show_edit_area(<%=@company.id%>,<%=cm.id%>)"><%= cm.name %></p></li>
           <%end if @child_menus[fm.id.to_s]%>
         </ul>
       <%end if @father_menus%>
@@ -31,9 +31,9 @@
       <span>一级菜单(最多3个)</span>
       <ul class ="menu_ul">
         <% @father_menus.each do |fm| %>
-          <li onclick="show_edit_area(<%=@company.id%>,<%=fm.id%>)">
+          <li>
             <a class="close_1" title="删除" href="/companies/<%= @company.id %>/menus/<%= fm.id %>" data-confirm="确定删除该菜单?" data-method="delete">x</a>
-            <p><%= fm.name %></p></li>
+            <p onclick="show_edit_area(<%=@company.id%>,<%=fm.id%>)"><%= fm.name %></p></li>
         <%end if @father_menus%>
         <li><a href="javascript:void(0)" class="add" onclick="add_menu_new(1,0,<%= @father_menus ? @father_menus.length : 0%>)">+</a></li>
       </ul>
