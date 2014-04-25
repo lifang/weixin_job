@@ -10,6 +10,7 @@ class Menu < ActiveRecord::Base
   TEMP_TYPES = {:my_jobs=>-1,:my_recommend=>-2,:search_job =>-3,:newest =>-4}#我的求职，我的推荐
   scope :one_level, ->{where("parent_id = 0")}
   NO_TEMP = 0   #没有关联任何简介、职位、模板时temp_id为0
+  PARENT_ID = 0 #父菜单parent_id 为0
   type_names_arr.each do |type|
     scope type, :conditions => { :types => TYPES[type] }
     define_method  "#{type.to_s}?" do

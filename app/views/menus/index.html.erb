@@ -57,7 +57,7 @@
           <label>指向地址：</label>
           <div class="linkPicker">
             <ul class="tab_1">
-              <li class="hover">微网页</li>
+              <li class="hover">资讯</li>
               <li>职位</li>
               <li>其他</li>
             </ul>
@@ -67,19 +67,19 @@
               <%end%>
             </ul>
             <ul class="tabDiv_1">
-              <li><div class="cr_input"><input name="position_type" type="radio" value="<%=Menu::TEMP_TYPES[:search_job]%>" /><p>全部职位</p></div></li>
-              <li><div class="cr_input"><input name="position_type" type="radio" value="<%=Menu::TEMP_TYPES[:search_job]%>" /><p>最新职位</p></div></li>
+              <li><div class="cr_input"><input name="p_t_type" type="radio" value="<%= Menu::TYPES[:all_pos] %>" /><p>全部职位</p></div></li>
+              <li><div class="cr_input"><input name="p_t_type" type="radio" value="<%= Menu::TYPES[:newest_pos] %>" /><p>最新职位</p></div></li>
               <%@position_types.each do |pt|%>
                 <li><div class="cr_input"><input name="position_type" type="radio" value="<%=pt.id%>" /><p><%=pt.name%></p></div></li>
               <%end%>
             </ul>
             <ul class="tabDiv_1">
-              <li><div class="cr_input"><input name="other" type="radio" value="<%=Menu::TEMP_TYPES[:my_jobs]%>" /><p>我的求职</p></div></li>
-              <li><div class="cr_input"><input name="other" type="radio" value="<%=Menu::TEMP_TYPES[:my_recommend]%>" /><p>我的推荐</p></div></li>
-              <li><div class="cr_input"><input name="other" type="radio" value="0"/><p>我的简历</p></div></li>
+              <li><div class="cr_input"><input name="other" type="radio" value="<%= Menu::TYPES[:my_jobs] %>" /><p>我的求职</p></div></li>
+              <li><div class="cr_input"><input name="other" type="radio" value="<%= Menu::TYPES[:my_recommend] %>" /><p>我的推荐</p></div></li>
+              <li><div class="cr_input"><input name="other" type="radio" value="<%= Menu::TYPES[:my_resume] %>"/><p>我的简历</p></div></li>
               <li style="width: auto;">
                 <div class="cr_input">
-                  <input name="other" type="radio" value="-10"/>
+                  <input name="other" type="radio" value="<%= Menu::TYPES[:outside_link] %>"/>
                   <p>外部链接</p>
                   <input type="text" id="out_link" style="margin: 0 13px; width: 320px;" />
                 </div>
