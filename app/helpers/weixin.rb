@@ -680,99 +680,141 @@ Text
 
   #自定义菜单，点击事件，返回对应链接
   def get_link_by_event_key(event_key, open_id)  #resume_5
-    event = event_key.split("_")
-    if(event.length>2)
-      menu_type = event[0...-1].join("_")
-    else
-      menu_type = event[0]
-    end
-    temp_id = event[-1].to_i
-    link = ""
-    if menu_type == "resume"
-      rt = ResumeTemplate.find_by_company_id(@company.id)
-      if rt
-        cr = ClientResume.where(:resume_template_id => rt.id, :open_id => open_id, :company_id => @company.id)[0]
-        if cr
-          message = "/client_resumes/#{cr.id}/edit?company_id=#{@company.id}&amp;secret_key=#{open_id}"
-          link = "&lt;a href='#{MW_URL + message}' &gt; 点击查看简历 &lt;/a&gt;"  #简历url
-        else
-          message = rt.html_url
-          link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
-        end
+    event_key_arr = event_key.split("_")
+    menu_id = event_key_arr[1].to_i  #类型名称_menuId
+    menu = Menu.find_by_id menu_id
+    if menu
+      if menu.temp_id == 0  #请求的不是 职位
+        link = return_wx_menu_link_no_temp_id(menu, open_id)
+      else  #返回职位
+        link = return_wx_menu_link_has_temp_id(open_id, menu.temp_id)
       end
-    elsif menu_type == "positions"
-      if temp_id == Menu::TEMP_TYPES[:search_job]
-        positions = Position.where("company_id = ? and status=? ",@company.id,Position::STATUS[:RELEASED])
-        all_positions = "点击全部职位\n"
-        positions.each do |position|
-          message = "/companies/#{@company.id}/positions/#{position.id}"
-          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
-          all_positions += message
-        end if positions
-        link = positions.present? ? all_positions : ""
-      elsif temp_id == Menu::TEMP_TYPES[:newest]
-        time = Time.now.prev_month
-        positions = Position.where("status=? and created_at>=? and company_id = ?", Position::STATUS[:RELEASED],time,@company.id)
-        all_positions = "点击最新职位\n"
-        positions.each do |position|
-          message = "/companies/#{@company.id}/positions/#{position.id}"
-          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
-          all_positions += message
-        end if positions
-        link = positions.present? ? all_positions : ""
-      else
-        position_type = PositionType.find_by_id[temp_id]
-        positions = position_type.positions
-        positions.each do |position|
-          message = "/companies/#{@company.id}/positions/#{position.id}"
-          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
-          all_positions += message
-        end if positions
-        link = positions.present? ? all_positions : ""
-      end
-    elsif menu_type == "no_type"
-      if temp_id == Menu::TEMP_TYPES[:my_recommend]
-        delivery_resume_records = DeliveryResumeRecord.
-          select("cr.clint_name").
-          joins("inner join client_resumes cr on cr.id = delivery_resume_records.client_resume_id").
-          where("delivery_resume_records.recomender_id = ? and delivery_resume_records.company_id = ? ",open_id,@company.id)
-        delivery_resume_records.each do |drr|
-          all_positions += drr.clint_name+"\n"
-        end if delivery_resume_records
-        link = positions.present? ? all_positions : ""
-      elsif temp_id == Menu::TEMP_TYPES[:search_job]
-        positions = Position.where("company_id = ? and status=? ",@company.id,Position::STATUS[:RELEASED])
-        all_positions = "点击全部职位\n"
-        positions.each do |position|
-          message = "/companies/#{@company.id}/positions/#{position.id}"
-          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
-          all_positions += message
-        end if positions
-        link = positions.present? ? all_positions : ""
-      elsif temp_id == Menu::TEMP_TYPES[:my_jobs]
-        client_resumes = ClientResume.find_by_open_id_and_company_id(open_id,@company.id)
-        if client_resumes
-          delivery_resume_records = DeliveryResumeRecord.where("client_resume_id = ?",client_resumes.id)
-          ids = delivery_resume_records.map(&:position_id)
-          unless ids.blank?
-            positions = Position.where("id in (?)",ids)
-            all_positions = "我的求职！\n"
-            positions.each do |position|
-              message = "/companies/#{@company.id}/positions/#{position.id}"
-              message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
-              all_positions += message
-            end if positions
-            link = positions.present? ? all_positions : ""
-          end
-        end
-      end
-    end
-    if link==""
-      link="暂无数据"
     end
     link
   end
 
+  #微信菜单点击事件，返回对应数据
+  def return_wx_menu_link_no_temp_id(menu, open_id)
+    if menu.my_resume? #我的简历
+      link = return_my_resume_click_link(open_id)
+    elsif menu.all_pos?  #全部职位
+      link = return_all_positions(open_id)
+    elsif menu.newest_pos? #最新职位
+      link = return_newest_position(open_id)
+    elsif menu.my_recommend? #我的推荐
+      link =  return_my_recommend(open_id)
+    elsif menu.my_jobs? #我的求职
+      link = return_my_jobs(open_id)
+    elsif menu.nothing? #职位
+      link = "未设置此菜单"
+    else
+      link = "暂无数据"
+    end
+    link
+  end
+
+  #微信菜单点击事件，根据职位类型  返回 -> 职位
+  def return_wx_menu_link_has_temp_id(open_id, temp_id)
+    position_type = PositionType.find_by_id temp_id
+    if position_type
+      positions = position_type.positions
+      link = ""
+      positions.each do |position|
+        message = "/companies/#{@company.id}/positions/#{position.id}"
+        message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+        link += message
+      end
+    else
+      link = "不存在该职位类别"
+    end
+
+    link = link.present? ? link : "暂无职位"
+  end
+
+  #微信菜单点击事件，返回 -> 我的简历
+  def return_my_resume_click_link(open_id)
+    rt = ResumeTemplate.find_by_company_id(@company.id)
+    if rt
+      cr = ClientResume.where(:resume_template_id => rt.id, :open_id => open_id, :company_id => @company.id)[0]
+      if cr
+        message = "/client_resumes/#{cr.id}/edit?company_id=#{@company.id}&amp;secret_key=#{open_id}"
+        link = "&lt;a href='#{MW_URL + message}' &gt; 点击查看简历 &lt;/a&gt;"  #简历url
+      else
+        message = rt.html_url
+        link = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; 点击填写简历 &lt;/a&gt;"  #简历url
+      end
+    else
+      link = "暂无简历模板"
+    end
+    link
+  end
+  
+  #微信菜单点击事件，返回 -> 全部职位
+  def return_all_positions(open_id)
+    positions = Position.where("company_id = ? and status=? ",@company.id,Position::STATUS[:RELEASED])
+    all_positions = "点击全部职位\n"
+    positions.each do |position|
+      message = "/companies/#{@company.id}/positions/#{position.id}"
+      message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+      all_positions += message
+    end if positions
+    link = positions.present? ? all_positions : "暂无职位"
+    link
+  end
+
+  #微信菜单点击事件，返回 -> 最新职位
+  def return_newest_positions(open_id)
+    time = Time.now.prev_month
+    positions = Position.where("status=? and created_at>=? and company_id = ?", Position::STATUS[:RELEASED],time,@company.id)
+    new_positions = "点击最新职位\n"
+    positions.each do |position|
+      message = "/companies/#{@company.id}/positions/#{position.id}"
+      message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+      new_positions += message
+    end if positions
+    link = positions.present? ? new_positions : "暂无最新职位"
+    link
+  end
+
+  #微信菜单点击事件，返回 -> 我的推荐
+  def return_my_recommend(open_id)
+    delivery_resume_records = DeliveryResumeRecord.
+      select("cr.clint_name").
+      joins("inner join client_resumes cr on cr.id = delivery_resume_records.client_resume_id").
+      where("delivery_resume_records.recomender_id = ? and delivery_resume_records.company_id = ? ",open_id,@company.id)
+    if delivery_resume_records.present?
+      link = delivery_resume_records.map{|drr| drr.clint_name }.join("\n")
+    else
+      link = "暂无数据"
+    end
+    link 
+  end
+
+  #返回我的求职
+  def return_my_jobs(open_id)
+    client_resumes = ClientResume.find_by_open_id_and_company_id(open_id,@company.id)
+    if client_resumes
+      delivery_resume_records = DeliveryResumeRecord.where("client_resume_id = ?",client_resumes.id)
+      if delivery_resume_records.present?
+        ids = delivery_resume_records.map(&:position_id)
+        positions = Position.where("id in (?)",ids)
+        link = "我的求职！\n"
+        positions.each do |position|
+          message = "/companies/#{@company.id}/positions/#{position.id}"
+          message = "&lt;a href='#{MW_URL + message}?secret_key=#{open_id}' &gt; #{position.try(:name)} &lt;/a&gt;\n"  #单个职位url
+          link += message
+        end
+        link = positions.present? ? link : "无对应职位"
+      else
+        link = "暂无求职记录"
+      end
+    else
+      link = "您还未填写过简历"
+    end
+    link
+  end
+  
+  
   #处理名字
   def get_name(name)
     name.present? ? name : "无"

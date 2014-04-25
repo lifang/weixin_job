@@ -21,20 +21,15 @@ class MenusController < ApplicationController   #菜单
 
   def create
     Menu.transaction do
-      temp_id = params[:temp_id].nil? || params[:temp_id]=="" ? Menu::NO_TEMP : params[:temp_id].to_i
-      types = params[:menu_type].nil? || params[:menu_type]=="" ? Menu::TYPES[:no_type] : params[:menu_type].to_i
-      file_path = params[:file_path]
-      if types == 0 #选择的是资讯
-        company_profile = CompanyProfile.find_by_id temp_id
-        file_path = company_profile.file_path if company_profile #获取对应资讯的file_path
-      end
+      temp_id, menu_types, file_path =  before_create_update
+      temp_id = temp_id || 0
       if params[:parent_id].to_i == 0   #建立一级菜单
         father_menus = Menu.where(["parent_id = ? and company_id = ?", params[:parent_id].to_i, @company.id]).length
         if father_menus >= 3
           flash[:notice] = "每个一级菜单最多只能保持3个!"
         else
           menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
-            :company_id => params[:company_id].to_i, :types => types,
+            :company_id => params[:company_id].to_i, :types => menu_types,
             :file_path => file_path.blank? ? nil : file_path)
           if menu.save
             flash[:notice] = "创建成功!"
@@ -45,10 +40,10 @@ class MenusController < ApplicationController   #菜单
       else  #建立二级菜单
         child_menus = Menu.where(["parent_id = ? and company_id = ?", params[:parent_id].to_i, @company.id]).length
         if child_menus >= 5
-          flash[:notice] = "每个一级菜单的二级菜单最多只能保持3个!"
+          flash[:notice] = "每个一级菜单的二级菜单最多只能保持5个!"
         else
           menu = Menu.new(:name => params[:menu_name], :temp_id => temp_id, :parent_id => params[:parent_id].to_i,
-            :company_id => params[:company_id].to_i, :types => types,
+            :company_id => params[:company_id].to_i, :types => menu_types,
             :file_path => file_path.blank? ? nil : file_path)
           if menu.save
             flash[:notice] = "创建成功!"
@@ -57,25 +52,22 @@ class MenusController < ApplicationController   #菜单
           end
         end
       end
+      redirect_to company_menus_path(@company)
     end
   end
 
   def update
     Menu.transaction do
       menu = Menu.find_by_id(params[:id].to_i)
-      temp_id = params[:temp_id].nil? || params[:temp_id]=="" ? Menu::NO_TEMP : params[:temp_id].to_i
-      types = params[:menu_type].nil? || params[:menu_type]=="" ? Menu::TYPES[:no_type] : params[:menu_type].to_i
-      file_path = params[:file_path]
-      if types == 0  #选择的是资讯
-        company_profile = CompanyProfile.find_by_id temp_id
-        file_path = company_profile.file_path if company_profile #获取对应资讯的file_path
-      end
-      hash = {:parent_id => params[:parent_id].to_i, :name => params[:menu_name], :temp_id => temp_id, :types => types,
+      temp_id,menu_types,file_path =  before_create_update
+      hash = {:parent_id => params[:parent_id].to_i, :name => params[:menu_name], :temp_id => temp_id || 0, :types => menu_types,
         :file_path => file_path.blank? ? nil : file_path}
       if menu.update_attributes(hash)
-        @status = 1
+        flash[:notice] = "编辑成功"
+        redirect_to company_menus_path(@company)
       else
-        @status = 0
+        flash[:notice] = "编辑失败"
+        redirect_to company_menus_path(@company)
       end
     end
   end
@@ -107,5 +99,27 @@ class MenusController < ApplicationController   #菜单
 
   def get_title
     @title = "菜单"
+  end
+
+  private
+  def before_create_update
+    menu_types = params[:menu_types]
+
+    if menu_types.include?("company_profile")
+      cp_arr = menu_types.split("_")
+      cp_id = cp_arr[-1].to_i
+      cp_new = cp_arr[0..1].join("_")
+      temp_id = cp_id
+      menu_types = Menu::TYPES[cp_new.to_sym]
+      company_profile = CompanyProfile.find_by_id cp_id
+      file_path = company_profile.file_path if company_profile
+    elsif menu_types.include?("positions")
+      pt_id = menu_types.split("_")[1].to_i
+      menu_types = Menu::TYPES[menu_types.split("_")[0].to_sym]
+      temp_id = pt_id
+    elsif menu_types.to_i == Menu::TYPES[:outside_link]
+      file_path = params[:outside_link]
+    end
+    [temp_id,menu_types,file_path]
   end
 end

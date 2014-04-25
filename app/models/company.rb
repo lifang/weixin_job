@@ -39,16 +39,16 @@ class Company < ActiveRecord::Base
   def get_menu_by_website
     one_level_menus = self.menus.one_level
     menu_hash = {:button => []}
+    link_arr = ["http://", "https://"]
     one_level_menus.each do |om|
-      view_arr = ["company_profile", "no_type"]
       this_second_menus = om.children
       if this_second_menus.present? #如果有二级菜单
         second_level_menu = [] #二级菜单
         this_second_menus.each do |sm|
           template_name = Menu::TYPE_NAMES[sm.types]
-          second_level_menu << (view_arr.include?(template_name) ?
-              {:type => "view", :name => sm.name, :url => sm.file_path.present? ? (sm.file_path.include?("http://") ? sm.file_path : Weixin::MW_URL + sm.file_path.to_s) : ""}:
-              {:type => "click", :name => sm.name, :key => "#{template_name}_#{sm.temp_id}" })
+          second_level_menu << (sm.file_path.present? ?
+              {:type => "view", :name => sm.name, :url => (link_arr.include?(sm.file_path) ? sm.file_path : Weixin::MW_URL + sm.file_path.to_s)}:
+              {:type => "click", :name => sm.name, :key => "#{template_name}_#{sm.id}" })
         end
         #一级菜单
         one_level_menu = {:type => "click",
@@ -58,18 +58,17 @@ class Company < ActiveRecord::Base
       else  #如果没有二级菜单
         #一级菜单
         template_name = Menu::TYPE_NAMES[om.types]
-        if view_arr.include?(template_name)
+        if om.file_path.present?
            one_level_menu = {:type => "view",
             :name => om.name,
-            :url => om.file_path.present? ? (om.file_path.include?("http://") ? om.file_path : Weixin::MW_URL + om.file_path.to_s) : ""
+            :url => link_arr.include?(om.file_path) ? om.file_path : Weixin::MW_URL + om.file_path.to_s
           }
         else
           one_level_menu = {:type => "click",
             :name => om.name,
-            :key => "#{template_name}_#{om.temp_id}"
+            :key => "#{template_name}_#{om.id}"
           }
         end
-
       end
 
       menu_hash[:button] << one_level_menu

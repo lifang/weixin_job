@@ -43,6 +43,7 @@
 </div>
 
 <div class="tab add_menu_new" style="display:none;">
+  <%= form_for :menu, :url => company_menus_path(@company),:method => :post, :remote => true, 'data-type' => 'script' do |f|%>
   <input type="hidden" name="parent_id" value />
   <a href="#" class="close">close</a>
   <h1>添加菜单项</h1>
@@ -51,7 +52,7 @@
       <ul>
         <li>
           <label>菜单名称：</label>
-          <input type="text" id="menu_name"/>
+          <input type="text" name="menu_name" id="menu_name"/>
         </li>
         <li>
           <label>指向地址：</label>
@@ -63,25 +64,25 @@
             </ul>
             <ul class="tabDiv_1 hover">
               <%@comp_profiles.each do|cp|%>
-                <li><div class="cr_input"><input name="website_page" type="radio" value="<%=cp.id%>" /><p><%=cp.title%></p></div></li>
+                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "company_profile_#{cp.id}" %>" /><p><%=cp.title%></p></div></li>
               <%end%>
             </ul>
             <ul class="tabDiv_1">
-              <li><div class="cr_input"><input name="p_t_type" type="radio" value="<%= Menu::TYPES[:all_pos] %>" /><p>全部职位</p></div></li>
-              <li><div class="cr_input"><input name="p_t_type" type="radio" value="<%= Menu::TYPES[:newest_pos] %>" /><p>最新职位</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:all_pos] %>" /><p>全部职位</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:newest_pos] %>" /><p>最新职位</p></div></li>
               <%@position_types.each do |pt|%>
-                <li><div class="cr_input"><input name="position_type" type="radio" value="<%=pt.id%>" /><p><%=pt.name%></p></div></li>
+                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "positions_#{pt.id}" %>" /><p><%=pt.name%></p></div></li>
               <%end%>
             </ul>
             <ul class="tabDiv_1">
-              <li><div class="cr_input"><input name="other" type="radio" value="<%= Menu::TYPES[:my_jobs] %>" /><p>我的求职</p></div></li>
-              <li><div class="cr_input"><input name="other" type="radio" value="<%= Menu::TYPES[:my_recommend] %>" /><p>我的推荐</p></div></li>
-              <li><div class="cr_input"><input name="other" type="radio" value="<%= Menu::TYPES[:my_resume] %>"/><p>我的简历</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:my_jobs] %>" /><p>我的求职</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:my_recommend] %>" /><p>我的推荐</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:my_resume] %>"/><p>我的简历</p></div></li>
               <li style="width: auto;">
                 <div class="cr_input">
-                  <input name="other" type="radio" value="<%= Menu::TYPES[:outside_link] %>"/>
+                  <input name="menu_types" class="outside_link" type="radio" value="<%= Menu::TYPES[:outside_link] %>"/>
                   <p>外部链接</p>
-                  <input type="text" id="out_link" style="margin: 0 13px; width: 320px;" />
+                  <input type="text" name="outside_link" id="out_link" style="margin: 0 13px; width: 320px;" />
                 </div>
               </li>
             </ul>
@@ -91,8 +92,9 @@
     </div>
   </div>
   <div class="tab_btn">
-    <button class="green_btn" button="type" onclick="menu_new_commit(<%=@company.id%>)">确定</button>
+    <button class="green_btn" type="button" onclick="menu_commit('new')">确定</button>
   </div>
+  <% end %>
 </div>
 
 

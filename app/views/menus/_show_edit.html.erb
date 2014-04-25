@@ -24,53 +24,55 @@
     $('.cr_input').hradio();
   })
 </script>
-<input type="hidden" name="parent_id" value="<%=@menu.parent_id%>" />
-<a href="#" class="close">close</a>
-<h1>添加菜单项</h1>
-<div class="tab_content">
-  <div class="new_job">
-    <ul>
-      <li>
-        <label>菜单名称：</label>
-        <input type="text" id="menu_name" value="<%=@menu.name%>"/>
-      </li>
-      <li>
-        <label>指向地址：</label>
-        <div class="linkPicker">
-          <ul class="tab_1">
-            <li class="<%=  (@menu.types == Menu::TYPES[:comapny_profile] or @menu.types == Menu::TYPES[:nothing]) ? "hover":""%>">资讯</li>
-            <li class="<%=  (@menu.types == Menu::TYPES[:positions] or @menu.types == Menu::TYPES[:all_pos] or @menu.types == Menu::TYPES[:newest_pos]) ? "hover":""%>">职位</li>
-            <li class="<%=  (@menu.types >= Menu::TYPES[:my_resume] and @menu.types <= Menu::TYPES[:outside_link]) ? "hover":""%>">其他</li>
-          </ul>
-          <ul class="tabDiv_1 <%=  (@menu.types == Menu::TYPES[:comapny_profile] or @menu.types == Menu::TYPES[:nothing]) ? "hover":""%>">
-            <%@comp_profiles.each do|cp|%>
-              <li><div class="cr_input"><input name="website_page" type="radio" value="<%=cp.id%>" <%=@menu.temp_id == cp.id ? "checked":""%> /><p><%=cp.title%></p></div></li>
-            <%end%>
-          </ul>
-          <ul class="tabDiv_1 <%= (@menu.types == Menu::TYPES[:positions] or @menu.types == Menu::TYPES[:all_pos] or @menu.types == Menu::TYPES[:newest_pos])  ? "hover":"" %>">
-            <li><div class="cr_input"><input name="p_t_type" type="radio" value="<%= @menu.types %>" <%= @menu.types == Menu::TYPES[:all_pos] ? "checked":""%> /><p>全部职位</p></div></li>
-            <li><div class="cr_input"><input name="p_t_type" type="radio" value="<%= @menu.types %>" <%= @menu.types == Menu::TYPES[:newest_pos] ? "checked":""%>/><p>最新职位</p></div></li>
-            <%@position_types.each do |pt|%>
-              <li><div class="cr_input"><input name="position_type" type="radio" value="<%=pt.id%>" <%=@menu.temp_id == pt.id ? "checked":""%>/><p><%=pt.name%></p></div></li>
-            <%end%>
-          </ul>
-          <ul class="tabDiv_1 <%=  (@menu.types >= Menu::TYPES[:my_resume] and @menu.types <= Menu::TYPES[:outside_link]) ? "hover":""%>">
-            <li><div class="cr_input"><input name="other" type="radio" value="<%= @menu.types %>" <%= @menu.types == Menu::TYPES[:my_jobs] ? "checked":""%>/><p>我的求职</p></div></li>
-            <li><div class="cr_input"><input name="other" type="radio" value="<%= @menu.types %>" <%= @menu.types == Menu::TYPES[:my_recommend] ? "checked":""%>/><p>我的推荐</p></div></li>
-            <li><div class="cr_input"><input name="other" type="radio" value="<%= @menu.types %>" <%= @menu.types == Menu::TYPES[:my_resume] ? "checked":""%>/><p>我的简历</p></div></li>
-            <li style="width: auto;">
-              <div class="cr_input">
-                <input name="other" type="radio" value="<%= Menu::TYPES[:outside_link] %>" <%= @menu.types == Menu::TYPES[:outside_link] ? "checked":""%>/>
-                <p>外部链接</p>
-                <input type="text" id="out_link" style="margin: 0 13px; width: 320px;" value="<%=@menu.file_path%>" />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
+<%= form_for [@company, @menu] do |f| %>
+  <input type="hidden" name="parent_id" value="<%=@menu.parent_id%>" />
+  <a href="#" class="close">close</a>
+  <h1>添加菜单项</h1>
+  <div class="tab_content">
+    <div class="new_job">
+      <ul>
+        <li>
+          <label>菜单名称：</label>
+          <input type="text" id="menu_name" name="menu_name" value="<%=@menu.name%>"/>
+        </li>
+        <li>
+          <label>指向地址：</label>
+          <div class="linkPicker">
+            <ul class="tab_1">
+              <li class="<%=  (Menu::Tab_1.include?(@menu.types)) ? "hover":""%>">资讯</li>
+              <li class="<%=  (Menu::Tab_2.include?(@menu.types)) ? "hover":""%>">职位</li>
+              <li class="<%=  (Menu::Tab_3.include?(@menu.types)) ? "hover":""%>">其他</li>
+            </ul>
+            <ul class="tabDiv_1 <%=  (Menu::Tab_1.include?(@menu.types)) ? "hover":""%>">
+              <%@comp_profiles.each do|cp|%>
+                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "company_profile_#{cp.id}" %>" <%=@menu.temp_id == cp.id ? "checked":""%> /><p><%=cp.title%></p></div></li>
+              <%end%>
+            </ul>
+            <ul class="tabDiv_1 <%= (Menu::Tab_2.include?(@menu.types))  ? "hover":"" %>">
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:all_pos] %>" <%= @menu.types == Menu::TYPES[:all_pos] ? "checked":""%> /><p>全部职位</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:newest_pos] %>" <%= @menu.types == Menu::TYPES[:newest_pos] ? "checked":""%>/><p>最新职位</p></div></li>
+              <%@position_types.each do |pt|%>
+                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "positions_#{pt.id}"%>" <%=@menu.temp_id == pt.id ? "checked":""%>/><p><%=pt.name%></p></div></li>
+              <%end%>
+            </ul>
+            <ul class="tabDiv_1 <%=  (Menu::Tab_3.include?(@menu.types)) ? "hover":""%>">
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:my_jobs] %>" <%= @menu.types == Menu::TYPES[:my_jobs] ? "checked":""%>/><p>我的求职</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:my_recommend] %>" <%= @menu.types == Menu::TYPES[:my_recommend] ? "checked":""%>/><p>我的推荐</p></div></li>
+              <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:my_resume] %>" <%= @menu.types == Menu::TYPES[:my_resume] ? "checked":""%>/><p>我的简历</p></div></li>
+              <li style="width: auto;">
+                <div class="cr_input">
+                  <input name="menu_types" class="outside_link" type="radio" value="<%= Menu::TYPES[:outside_link] %>" <%= @menu.types == Menu::TYPES[:outside_link] ? "checked":""%>/>
+                  <p>外部链接</p>
+                  <input type="text" id="out_link" name="outside_link" style="margin: 0 13px; width: 320px;" value="<%=@menu.file_path%>" />
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
-<div class="tab_btn">
-  <button class="green_btn" button="type" onclick="menu_edit_commit(<%=@company.id%>,<%=@menu.id%>)">确定</button>
-</div>
+  <div class="tab_btn">
+    <button class="green_btn" type="button" onclick="menu_commit('edit')">确定</button>
+  </div>
+<% end %>

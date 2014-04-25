@@ -213,10 +213,14 @@ function tab_function(t){
     var layer_height = $(t).height();
     var layer_width = $(t).width();
     $(t).css('display','block');
+    $(this).parent().css("display","none");
+    //$(this).parents(".tab").css('display','block');
     $(t).css('top',(doc_height-$(window).scrollTop()-layer_height)/2);
     $(t).css('left',(win_width-layer_width)/2);
     $(".close, .cancel").click(function(){
-        $(this).parent().css("display","none");
+        //$(this).parent().css("display","none");
+        //$(this).parents(".tab").css("display","none");
+        $(t).css('display','none');
     });
 }
         
