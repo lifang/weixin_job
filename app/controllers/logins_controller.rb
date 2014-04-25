@@ -58,39 +58,39 @@ class LoginsController < ApplicationController
               ResumeTemplate.get_html(resume)
             end
             menu1 = Menu.create(name:"我的...",
-              temp_id:-100,
+              temp_id: Menu::NO_TEMP,
               parent_id:0,
               company_id:company.id,
-              types:1)
+              types: Menu::TYPES[:positions])
             menu2 = Menu.create(name:"职位",
-              temp_id:-100,
+              temp_id: Menu::NO_TEMP,
               parent_id:0,
               company_id:company.id,
-              types:1)
+              types:Menu::TYPES[:positions])
             
             Menu.create(name:"我的简历",
-              temp_id:0,
+              temp_id: Menu::NO_TEMP,
               parent_id: menu1.id,
               company_id:company.id,
               types:2)
             Menu.create(
               name:"我的求职",
-              temp_id:Menu::TEMP_TYPES[:my_jobs],
+              temp_id: Menu::NO_TEMP,
               parent_id: menu1.id,
               company_id:company.id,
               types:3)
             Menu.create(name:"我的推荐",
-              temp_id:Menu::TEMP_TYPES[:my_recommend],
+              temp_id: Menu::NO_TEMP,
               parent_id: menu1.id,
               company_id:company.id,
               types:3)
             Menu.create(name:"全部职位",
-              temp_id:Menu::TEMP_TYPES[:search_job],
+              temp_id: Menu::NO_TEMP,
               parent_id: menu2.id,
               company_id:company.id,
               types:1)
             Menu.create(name:"最新职位",
-              temp_id: Menu::TEMP_TYPES[:newest],
+              temp_id: Menu::NO_TEMP,
               parent_id: menu2.id,
               company_id:company.id,
               types:1)
