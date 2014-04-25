@@ -25,7 +25,7 @@
               <p><%= cm.name %></p></li>
           <%end if @child_menus[fm.id.to_s]%>
         </ul>
-      <%end%>
+      <%end if @father_menus%>
     </div>
     <div class="menuLv1_box">
       <span>一级菜单(最多3个)</span>
