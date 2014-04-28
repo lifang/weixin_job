@@ -32,6 +32,7 @@ article:after{
 	box-shadow: 0px 0px 5px rgba(64,64,64,0.8);
 }
 .area {
+        position: relative;
 	background: #FFF;
 	margin: 10px;
 	padding: 10px;
@@ -125,3 +126,50 @@ article:after{
 .about img { width: 100%; margin-bottom: 10px;}
 .about div {line-height: 32px; padding: 10px 0;}
 
+/******职位介绍页面分享*******/
+.share {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 80px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 5px;
+    color: #333;
+    text-shadow: 0px 0px 2px rgba(64,64,64,0.3);
+    box-shadow: 0px 0px 2px rgba(64,64,64,0.6);
+    font-weight: normal;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f1f1f1));
+    background: -moz-linear-gradient(top, #ffffff,#f1f1f1);
+    background: -ms-linear-gradient(top, #ffffff, #f1f1f1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#f1f1f1,grandientType=1);
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#f1f1f1,grandientType=1);
+}
+
+.share span {
+    height: 25px;
+    display: inline-block;
+    padding-left: 30px;
+    background: url(/assets/pyq.png) no-repeat 0 center;
+}
+
+.tab_share {
+    position: fixed;
+    z-index: 3000;
+    top: 0px;
+    right: 0px;
+    width: 250px;
+    height: 200px;
+    background: url(/assets/share.png) no-repeat;
+    display: none;
+}
+
+.mask {
+    background: url(/assets/black.png) repeat;
+    position: fixed;
+    z-index: 2000;
+    top: 0px;
+    right: 0px;
+    display: none;
+}

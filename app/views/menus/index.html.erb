@@ -100,9 +100,15 @@
 
 
 <div class="tab add_menu_edit" style="display:none;">
-
 </div>
-
+<script type="text/javascript">
+  $(function(){
+    $('p.hRadio').on('click',function(){
+      $(".linkPicker").find("p.hRadio").removeClass("hRadio_Checked");
+      $(this).addClass("hRadio_Checked");
+    })
+  })
+</script>
 
 
 

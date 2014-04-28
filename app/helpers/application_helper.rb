@@ -37,6 +37,7 @@ module ApplicationHelper
       if client_html_content && client_html_content[label_name]
         saved_value = client_html_content[label_name]
       end
+      label_name = CGI.escapeHTML(label_name) if label_name
       # input
       if ele_type_name.include?("message")
         ele += "<li class='infoItem itemBox'>
@@ -48,6 +49,7 @@ module ApplicationHelper
         radio=""
 
         options.each do |value|
+          value = CGI.escapeHTML(value)
           radio += "<p><input type='radio' name='app_client[#{ele_type_name}]' value='#{value}'  #{saved_value && saved_value == value ? 'checked=checked' : ''} />#{value}</p>"
         end
         ele += "<li class='radioItem itemBox'>
@@ -59,6 +61,7 @@ module ApplicationHelper
       elsif ele_type_name.include?("checkbox")
         checkbox = ""
         options.each do |value|
+          value = CGI.escapeHTML(value)
           checkbox += "<p><input type='checkbox' name='app_client[#{ele_type_name}][]' value='#{value}'  #{saved_value && saved_value.include?(value) ? 'checked=checked' : ''}/>#{value}<p>"
         end
         ele += " <li class='checkItem itemBox'>
@@ -69,6 +72,7 @@ module ApplicationHelper
       elsif ele_type_name.include?("tag")
         checkbox = ""
         options.each do |value|
+          value = CGI.escapeHTML(value)
           checkbox += "<p><input type='checkbox' name='tags[#{ele_type_name}][]' value='#{value}' #{tag_names.include?(value) ? 'checked=checked' : ''}/>#{value}</p>"
         end
         ele += "<li class='checkItem itemBox'>
@@ -79,6 +83,7 @@ module ApplicationHelper
       elsif ele_type_name.include?("select")
         select = ""
         options.each do |value|
+          value = CGI.escapeHTML(value)
           select += "<option value='#{value}' #{saved_value == value ? 'selected=selected' : ''}>#{value}</option>"
         end
 
@@ -87,8 +92,10 @@ module ApplicationHelper
                  <select name=app_client[#{ele_type_name}]>#{select}</select>
                 </li>"
       elsif ele_type_name.include?("text")
+        text = label_and_options["text"]
+        text = CGI.escapeHTML(text)
         ele +="<li class='txtItem itemBox'>
-                 <h1>#{label_and_options["text"]}</h1>
+                 <h1>#{text}</h1>
                </li>"
       end
     end if optional_fileds

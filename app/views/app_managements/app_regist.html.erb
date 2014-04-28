@@ -13,7 +13,7 @@
     <%= form_tag :url => "/companies/#{@company.id}/app_managements/get_form_date", :method => "post" do |f|%>
       <section class="area">
         <div class="input_list">
-          <%= raw @ele %>
+          <%= @ele.html_safe %>
         </div>
       </section>
       <section class="btn"><button type='button' onclick='submit_form(this)'>确定</button></section>

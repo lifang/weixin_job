@@ -69,6 +69,7 @@
           <h1>任职要求</h1>
           <div><%=raw @position.requirement%></div>
         </div>
+        <div class="share"><span>分享</span></div>
       </section>
       <section class="btn">
         <form action="/companies/<%=@company.id%>/positions/send_resume" method="post">
@@ -80,10 +81,32 @@
         </form>
       </section>
     </article>
+    <div class="mask"></div>
+    <div class="tab_share"></div>
   </body>
   <script>
     var from = getQueryString("from")
     $("#from").val(from);
+
+    $(function(){
+	var doc_width = $(document).width();
+	var doc_height = $(document).height();
+
+	$(".mask").css("height",doc_height);
+	$(".mask").css("width",doc_width);
+
+	$(".share").click(function(){
+		$(".tab_share").css('display','block');
+		$(".mask").css("display","block");
+		return false;
+	})
+
+	$(".mask").click(function(){
+		$(".tab_share").css("display","none");
+		$(".mask").css("display","none");
+	});
+
+})
   </script>
 </html>
 

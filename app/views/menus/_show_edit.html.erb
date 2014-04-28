@@ -21,13 +21,13 @@
 <link href="/assets/hcheckbox.css" rel="stylesheet" type="text/css"/>
 <script>
   $(function(){
-    $('.cr_input').hradio();
+    $('.add_menu_edit .cr_input').hradio();
   })
 </script>
 <%= form_for [@company, @menu] do |f| %>
   <input type="hidden" name="parent_id" value="<%=@menu.parent_id%>" />
   <a href="#" class="close">close</a>
-  <h1>添加菜单项</h1>
+  <h1>编辑菜单项</h1>
   <div class="tab_content">
     <div class="new_job">
       <ul>
@@ -45,14 +45,14 @@
             </ul>
             <ul class="tabDiv_1 <%=  (Menu::Tab_1.include?(@menu.types)) ? "hover":""%>">
               <%@comp_profiles.each do|cp|%>
-                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "company_profile_#{cp.id}" %>" <%=@menu.temp_id == cp.id ? "checked":""%> /><p><%=cp.title%></p></div></li>
+                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "company_profile_#{cp.id}" %>" <%= @menu.types == Menu::TYPES[:company_profile] && @menu.temp_id == cp.id ? "checked":""%> /><p><%=cp.title%></p></div></li>
               <%end%>
             </ul>
             <ul class="tabDiv_1 <%= (Menu::Tab_2.include?(@menu.types))  ? "hover":"" %>">
               <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:all_pos] %>" <%= @menu.types == Menu::TYPES[:all_pos] ? "checked":""%> /><p>全部职位</p></div></li>
               <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= Menu::TYPES[:newest_pos] %>" <%= @menu.types == Menu::TYPES[:newest_pos] ? "checked":""%>/><p>最新职位</p></div></li>
               <%@position_types.each do |pt|%>
-                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "positions_#{pt.id}"%>" <%=@menu.temp_id == pt.id ? "checked":""%>/><p><%=pt.name%></p></div></li>
+                <li><div class="cr_input"><input name="menu_types" type="radio" value="<%= "positions_#{pt.id}"%>" <%=@menu.types == Menu::TYPES[:positions] && @menu.temp_id == pt.id ? "checked":""%>/><p><%=pt.name%></p></div></li>
               <%end%>
             </ul>
             <ul class="tabDiv_1 <%=  (Menu::Tab_3.include?(@menu.types)) ? "hover":""%>">
@@ -76,3 +76,12 @@
     <button class="green_btn" type="button" onclick="menu_commit('edit')">确定</button>
   </div>
 <% end %>
+
+  <script type="text/javascript">
+  $(function(){
+    $('p.hRadio').on('click',function(){
+      $(".linkPicker").find("p.hRadio").removeClass("hRadio_Checked");
+      $(this).addClass("hRadio_Checked");
+    })
+  })
+</script>
