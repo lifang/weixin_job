@@ -54,19 +54,13 @@
           <p><em><%=@position.updated_at.strftime("%Y-%m-%d")%></em></p>
           <div class="company">
             <h3><%=@company.name%></h3>
-            <p>工作地点：<%@addr_and_position_relations.each_with_index do |aapr, i|%>
-                <%if aapr.position_id==@position.id%>
-                  <%@work_addresses.each do |wa|%>
-                    <%if wa.id == aapr.work_address_id%>
-                      <% if i == 0 %>
-                        <%=get_address_name wa%>
-                      <% else %>
-                        <p style="text-indent: 84px"><%=get_address_name wa%></p>
-                      <% end %>
-                    <%end%>
-                  <%end%>
-                <%end%>
-              <%end if @addr_and_position_relations%></p>
+            <p>工作地点：<%@work_addresses.each_with_index do |wa, i|%>
+                <% if i == 0 %>
+                  <%=get_address_name wa%>
+                <% else %>
+                  <p style="text-indent: 84px"><%=get_address_name wa%></p>
+                <% end %>
+              <%end if @work_addresses%></p>
           </div>
           <h1>职位描述</h1>
           <div><%=raw @position.description%></div>

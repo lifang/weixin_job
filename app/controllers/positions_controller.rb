@@ -111,6 +111,13 @@ class PositionsController < ApplicationController   #招聘职位
     @position_types = @company.position_types || []
     @position = Position.find_by_id(params[:id])
     @client_resume = ClientResume.find_by_open_id_and_company_id(params[:secret_key],@company.id)
+
+    @work_addresses = WorkAddress.select("work_addresses.id,work_addresses.address,c2.name province,c1.name city,work_addresses.company_id,work_addresses.created_at,work_addresses.updated_at").
+      joins("left join cities c1 on c1.id = city_id").
+      joins("left join cities c2 on c1.parent_id = c2.id").
+      joins("inner join position_address_relations par on par.work_address_id = work_addresses.id").
+      where(["work_addresses.company_id = ? and par.position_id = ?",@company.id, @position.id])||[]
+    
     if @position.blank?
       @title = "职位不存在，或者已经被删除"
       render 'public/404', :layout => false
@@ -190,6 +197,11 @@ class PositionsController < ApplicationController   #招聘职位
 
   def see_position
     @position = Position.where("(status =1 or status = 2) and id=?",params[:id])[0]
+    @work_addresses = WorkAddress.select("work_addresses.id,work_addresses.address,c2.name province,c1.name city,work_addresses.company_id,work_addresses.created_at,work_addresses.updated_at").
+      joins("left join cities c1 on c1.id = city_id").
+      joins("left join cities c2 on c1.parent_id = c2.id").
+      joins("inner join position_address_relations par on par.work_address_id = work_addresses.id").
+      where(["work_addresses.company_id = ? and par.position_id = ?",@company.id, @position.id])||[]
     if @position.blank?
       @status = 0
     else
