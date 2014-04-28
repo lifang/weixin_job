@@ -54,15 +54,19 @@
           <p><em><%=@position.updated_at.strftime("%Y-%m-%d")%></em></p>
           <div class="company">
             <h3><%=@company.name%></h3>
-            <p>工作地点：<%@addr_and_position_relations.each do |aapr|%>
+            <p>工作地点：<%@addr_and_position_relations.each_with_index do |aapr, i|%>
                 <%if aapr.position_id==@position.id%>
                   <%@work_addresses.each do |wa|%>
                     <%if wa.id == aapr.work_address_id%>
-                      <%=get_address_name wa%>
+                      <% if i == 0 %>
+                        <%=get_address_name wa%>
+                      <% else %>
+                        <p style="text-indent: 84px"><%=get_address_name wa%></p>
+                      <% end %>
                     <%end%>
                   <%end%>
                 <%end%>
-              <%end%></p>
+              <%end if @addr_and_position_relations%></p>
           </div>
           <h1>职位描述</h1>
           <div><%=raw @position.description%></div>
@@ -89,24 +93,24 @@
     $("#from").val(from);
 
     $(function(){
-	var doc_width = $(document).width();
-	var doc_height = $(document).height();
+      var doc_width = $(document).width();
+      var doc_height = $(document).height();
 
-	$(".mask").css("height",doc_height);
-	$(".mask").css("width",doc_width);
+      $(".mask").css("height",doc_height);
+      $(".mask").css("width",doc_width);
 
-	$(".share").click(function(){
-		$(".tab_share").css('display','block');
-		$(".mask").css("display","block");
-		return false;
-	})
+      $(".share").click(function(){
+        $(".tab_share").css('display','block');
+        $(".mask").css("display","block");
+        return false;
+      })
 
-	$(".mask").click(function(){
-		$(".tab_share").css("display","none");
-		$(".mask").css("display","none");
-	});
+      $(".mask").click(function(){
+        $(".tab_share").css("display","none");
+        $(".mask").css("display","none");
+      });
 
-})
+    })
   </script>
 </html>
 
