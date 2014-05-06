@@ -61,7 +61,7 @@ class Company < ActiveRecord::Base
         if om.file_path.present?
            one_level_menu = {:type => "view",
             :name => om.name,
-            :url => ((om.file_path.include?("http://") || om.file_path.include?("https://")) ? om.file_path : Weixin::MW_URL + sm.file_path.to_s)
+            :url => ((om.file_path.include?("http://") || om.file_path.include?("https://")) ? om.file_path : Weixin::MW_URL + om.file_path.to_s)
           }
         else
           one_level_menu = {:type => "click",
