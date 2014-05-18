@@ -7,7 +7,7 @@ gem 'rails', '3.2.1'
 #加压
 gem 'rubyzip', '1.1.0'
 gem 'zip-zip'
-gem 'mysql2' , '0.3.10'
+gem 'mysql2' , '~> 0.3.10'
 gem 'spreadsheet', '0.9.7'
 gem "will_paginate", '3.0.3'
 gem 'remotipart', '~> 1.0' #ajax upload file
